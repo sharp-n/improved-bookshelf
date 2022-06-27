@@ -1,3 +1,0 @@
-{"itemID":1,"title":"Географія і туризм","pages":105,"borrowed":false}
-{"itemID":2,"title":"MARIE CLAIRE","pages":48,"borrowed":false}
-{"itemID":10,"title":"Вісник","pages":35,"borrowed":false}

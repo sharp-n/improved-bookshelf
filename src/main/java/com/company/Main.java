@@ -1,46 +1,89 @@
 package com.company;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Main {
 
-    public static void main(String[] args) {
+    private final static int ADD_BOOK = 1;
+    private final static int DELETE_BOOK = 2;
+    private final static int TAKE_BOOK = 3;
+    private final static int RETURN_BOOK = 4;
+    private final static int SHOW_BOOKS = 5;
+    private final static int ADD_JOURNAL = 6;
+    private final static int DELETE_JOURNAL = 7;
+    private final static int TAKE_JOURNAL = 8;
+    private final static int RETURN_JOURNAL = 9;
+    private final static int SHOW_JOURNALS = 10;
+    private final static int EXIT_VALUE = 11;
 
+    public static void main(String[] args) throws IOException {
+
+        System.out.println(Arrays.toString(args));
         boolean value = true;
         while (value) {
 
-            System.out.println("\n1 - Add book\t6 - Add journal\n" +
-                    "2 - Delete book\t7 - Delete journal\n" +
-                    "3 - Take book\t8 - Take journal\n" +
-                    "4 - Return book\t9 - Return journal\n" +
-                    "5 - Show books\t10 - Show journals\n" +
-                    "\t\t11 - Exit");
+            System.out.println("""
+                    
+                    1 - Add book\t6 - Add journal
+                    2 - Delete book\t7 - Delete journal
+                    3 - Take book\t8 - Take journal
+                    4 - Return book\t9 - Return journal
+                    5 - Show books\t10 - Show journals
+                    \t\t11 - Exit""");
 
+            Dialogues.setScan(new Scanner(System.in));
+            Dialogues bookDialogue = new Dialogues(new Book());
+            Dialogues journalDialogue = new Dialogues(new Journal());
             int var = Dialogues.getMainMenuVar();
-            String booksFilePath = Book.getFilePath();
-            String journalsFilePath = Journal.getFilePath();
             value = switch (var) {
-                case 1 -> Dialogues.addingDialogue(booksFilePath);
 
-                case 2 -> Dialogues.deletingDialogue(booksFilePath);
+                case ADD_BOOK:
+                    bookDialogue.addingDialogue();
+                    yield true;
 
-                case 3 -> Dialogues.takingDialogue(booksFilePath);
+                case DELETE_BOOK:
+                    bookDialogue.deletingDialogue();
+                    yield true;
 
-                case 4 -> Dialogues.returningDialogue(booksFilePath);
+                case TAKE_BOOK:
+                    bookDialogue.borrowingDialogue(true);
+                    yield true;
 
-                case 5 -> Dialogues.sortingDialogue(booksFilePath);
+                case RETURN_BOOK:
+                    bookDialogue.borrowingDialogue(false);
+                    yield true;
 
-                case 6 -> Dialogues.addingDialogue(journalsFilePath);
+                case SHOW_BOOKS:
+                    bookDialogue.sortingDialogue();
+                    yield true;
 
-                case 7 -> Dialogues.deletingDialogue(journalsFilePath);
+                case ADD_JOURNAL:
+                    journalDialogue.addingDialogue();
+                    yield true;
 
-                case 8 -> Dialogues.takingDialogue(journalsFilePath);
+                case DELETE_JOURNAL:
+                    journalDialogue.deletingDialogue();
+                    yield true;
 
-                case 9 -> Dialogues.returningDialogue(journalsFilePath);
+                case TAKE_JOURNAL:
+                    journalDialogue.borrowingDialogue(true);
+                    yield true;
 
-                case 10 -> Dialogues.sortingDialogue(journalsFilePath);
+                case RETURN_JOURNAL:
+                    journalDialogue.borrowingDialogue(false);
+                    yield true;
 
-                case 11 -> false;
+                case SHOW_JOURNALS:
+                    journalDialogue.sortingDialogue();
+                    yield true;
 
-                default -> Dialogues.printDefaultMessage();
+                case EXIT_VALUE: yield false;
+
+                default:
+                    Dialogues.printDefaultMessage();
+                    yield true;
             };
         }
     }

@@ -3,8 +3,6 @@ package com.company;
 
 public class Journal extends Item {
 
-    private static final String filePath = "journals.txt";
-
     public Journal() {
     }
 
@@ -13,10 +11,6 @@ public class Journal extends Item {
         super.title = title;
         super.pages = pages;
         super.borrowed = false;
-    }
-
-    public static String getFilePath() {
-        return filePath;
     }
 
 }

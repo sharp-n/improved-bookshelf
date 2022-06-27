@@ -6,11 +6,10 @@ public class Book extends Item{
 
     private String author;
     private GregorianCalendar publishingDate;
-    private static final String filePath = "books.txt";
 
     public Book(){
-
     }
+
     public Book(int bookID, String title, String author, GregorianCalendar publishingDate, int pages ) {
         super.itemID = bookID;
         super.title = title;
@@ -26,10 +25,6 @@ public class Book extends Item{
 
     public GregorianCalendar getPublishingDate() {
         return publishingDate;
-    }
-
-    public static String getFilePath() {
-        return filePath;
     }
 
 }

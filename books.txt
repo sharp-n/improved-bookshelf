@@ -1,6 +1,0 @@
-{"author":"Tolkien J.R.R.","publishingDate":{"year":2007,"month":4,"dayOfMonth":28,"hourOfDay":0,"minute":0,"second":0},"itemID":5,"title":"The Children of Hurin","pages":256,"borrowed":false}
-{"author":"Andrzej Sapkowski","publishingDate":{"year":2020,"month":6,"dayOfMonth":21,"hourOfDay":0,"minute":0,"second":0},"itemID":8,"title":"Wiedzmin. Pani Jeziora","pages":576,"borrowed":false}
-{"author":"Ray Bradbury","publishingDate":{"year":2016,"month":0,"dayOfMonth":28,"hourOfDay":0,"minute":0,"second":0},"itemID":25,"title":"Dandelion wine","pages":432,"borrowed":false}
-{"author":"Neil Gaiman","publishingDate":{"year":2021,"month":10,"dayOfMonth":14,"hourOfDay":0,"minute":0,"second":0},"itemID":65,"title":"Neverwhere","pages":432,"borrowed":false}
-{"author":"Neil Gaiman","publishingDate":{"year":2020,"month":10,"dayOfMonth":10,"hourOfDay":0,"minute":0,"second":0},"itemID":89,"title":"The Graveyard Book","pages":352,"borrowed":false}
-{"author":"Dianna Wynne Jones","publishingDate":{"year":2021,"month":3,"dayOfMonth":6,"hourOfDay":0,"minute":0,"second":0},"itemID":1,"title":"Howl\u0027s Mowing Castle","pages":352,"borrowed":false}
