@@ -12,11 +12,9 @@ public class Dialogues {
     static Scanner scan;
     Item item;
 
-
     public Dialogues(Item item) {
        this.item = item;
     }
-
 
     public static void setScan(Scanner scan) {
         Dialogues.scan = scan;
@@ -63,7 +61,7 @@ public class Dialogues {
         Pattern pattern= Pattern.compile("[@\t#$;:=+*&|/<>?!~()%']");
         Matcher matcher = pattern.matcher(author);
         if (!Librarian.checkItemForValidity(author) || matcher.find()) {
-            printBadValidationMessage("author`s name. It must contains only letters, numbers or underscore with spaces");
+            printBadValidationMessage("author`s name. It should contains only letters, numbers or underscore and spaces");
             return null;
         }
         return author;
