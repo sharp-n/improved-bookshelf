@@ -1,12 +1,8 @@
 package com.company;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-
-import java.lang.reflect.Type;
 
 @AllArgsConstructor
-
 public class Container<T> {
 
     T item;
@@ -18,13 +14,4 @@ public class Container<T> {
         if(item instanceof Journal) this.typeOfClass = "Journal";
     }
 
-    public Book getBook() {
-        System.out.println(item);
-        //xBook b = (Book) item;
-        return (Book) item;
-    }
-
-    public Journal getJournal() {
-        return (Journal) item;
-    }
 }

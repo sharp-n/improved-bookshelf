@@ -1,9 +1,6 @@
 package com.company;
 
-import org.graalvm.compiler.word.WordOperationPlugin;
-
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
