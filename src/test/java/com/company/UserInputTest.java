@@ -14,10 +14,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-
 public class UserInputTest {
 /*
-
     public static Object[][] dataprovider(){
         return new Object[][]{
                 {"a", "A"},
@@ -42,13 +40,13 @@ public class UserInputTest {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
         Dialogues.setScan(scanner);
-        return new Dialogues(new Book());
+        return new Dialogues(new Book(),new Librarian(WorkWithFiles.SINGLE_FILE_PATH));
     }
 
     //  PAGES
 
     @ParameterizedTest
-    @ValueSource(strings = {"0", "-5", " 5 000 ", "2304.213"})
+    @ValueSource(strings = {"0", "-5", "6000", " 5 000 ", "2304.213"})
     void pagesBadInput(String input){
         Dialogues dialogues = getDialogues(input);
         assertNull(dialogues.getPagesDialogue(dialogues.pagesUsersInput()));
@@ -65,7 +63,7 @@ public class UserInputTest {
         return Stream.of(
                 Arguments.of("1",1),
                 Arguments.of("25",25),
-                Arguments.of("5000",5000)
+                Arguments.of("4000",4000)
         );
     }
 

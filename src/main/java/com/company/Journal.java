@@ -1,10 +1,9 @@
 package com.company;
 
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Journal extends Item {
-
-    public Journal() {
-    }
 
     public Journal(int itemID, String title, int pages) {
         super.itemID=itemID;

@@ -1,10 +1,15 @@
 package com.company;
 
+import org.graalvm.compiler.word.WordOperationPlugin;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+
+    private final static int ONE_FILE = 1;
+    private final static int TWO_FILES = 2;
 
     private final static int ADD_BOOK = 1;
     private final static int DELETE_BOOK = 2;
@@ -16,75 +21,109 @@ public class Main {
     private final static int TAKE_JOURNAL = 8;
     private final static int RETURN_JOURNAL = 9;
     private final static int SHOW_JOURNALS = 10;
-    private final static int EXIT_VALUE = 11;
+    private final static int EXIT_VALUE = 0;
 
     public static void main(String[] args) throws IOException {
 
-        System.out.println(Arrays.toString(args));
+        boolean filesValue = true;
         boolean value = true;
-        while (value) {
+        while (filesValue) {
+            System.out.println("\n0 - Exit\n1 - Use one file\n2 - Use two files");
+            int filesVar = Dialogues.getMainMenuVar();
 
-            System.out.println("""
-                    
-                    1 - Add book\t6 - Add journal
-                    2 - Delete book\t7 - Delete journal
-                    3 - Take book\t8 - Take journal
-                    4 - Return book\t9 - Return journal
-                    5 - Show books\t10 - Show journals
-                    \t\t11 - Exit""");
-
-            Dialogues.setScan(new Scanner(System.in));
-            Dialogues bookDialogue = new Dialogues(new Book());
-            Dialogues journalDialogue = new Dialogues(new Journal());
-            int var = Dialogues.getMainMenuVar();
-            value = switch (var) {
-
-                case ADD_BOOK:
-                    bookDialogue.addingDialogue();
-                    yield true;
-
-                case DELETE_BOOK:
-                    bookDialogue.deletingDialogue();
-                    yield true;
-
-                case TAKE_BOOK:
-                    bookDialogue.borrowingDialogue(true);
-                    yield true;
-
-                case RETURN_BOOK:
-                    bookDialogue.borrowingDialogue(false);
-                    yield true;
-
-                case SHOW_BOOKS:
-                    bookDialogue.sortingDialogue();
-                    yield true;
-
-                case ADD_JOURNAL:
-                    journalDialogue.addingDialogue();
-                    yield true;
-
-                case DELETE_JOURNAL:
-                    journalDialogue.deletingDialogue();
-                    yield true;
-
-                case TAKE_JOURNAL:
-                    journalDialogue.borrowingDialogue(true);
-                    yield true;
-
-                case RETURN_JOURNAL:
-                    journalDialogue.borrowingDialogue(false);
-                    yield true;
-
-                case SHOW_JOURNALS:
-                    journalDialogue.sortingDialogue();
-                    yield true;
-
-                case EXIT_VALUE: yield false;
-
+            Librarian librarian = new Librarian();
+            switch (filesVar) {
+                case ONE_FILE:
+                    librarian = new Librarian(WorkWithFiles.SINGLE_FILE_PATH);
+                    System.out.println("Your items will be saved in one file");
+                    break;
+                case TWO_FILES:
+                    System.out.println("Your items will be saved in different files");
+                    break;
+                case EXIT_VALUE:
+                    filesValue = false;
+                    value = false;
+                    break;
                 default:
                     Dialogues.printDefaultMessage();
-                    yield true;
-            };
+                    break;
+            }
+
+
+            while (value) {
+
+                System.out.println("\n\t\t0 - Exit" +
+                        "\n1 - Add book\t6 - Add journal" +
+                        "\n2 - Delete book\t7 - Delete journal" +
+                        "\n3 - Take book\t8 - Take journal" +
+                        "\n4 - Return book\t9 - Return journal" +
+                        "\n5 - Show books\t10 - Show journals");
+
+                Dialogues bookDialogue;
+                Dialogues journalDialogue;
+                if (librarian.filePath == null) {
+                    bookDialogue = new Dialogues(new Book(), new Librarian(WorkWithFiles.BOOK_FILE_PATH));
+                    journalDialogue = new Dialogues(new Journal(), new Librarian(WorkWithFiles.JOURNALS_FILE_PATH));
+                } else {
+                    bookDialogue = new Dialogues(new Book(), librarian);
+                    journalDialogue = new Dialogues(new Journal(), librarian);
+                }
+
+                Dialogues.setScan(new Scanner(System.in));
+
+                int var = Dialogues.getMainMenuVar();
+
+                switch (var) {
+
+                    case ADD_BOOK:
+                        bookDialogue.addingDialogue();
+                        break;
+
+                    case DELETE_BOOK:
+                        bookDialogue.deletingDialogue();
+                        break;
+
+                    case TAKE_BOOK:
+                        bookDialogue.borrowingDialogue(true);
+                        break;
+
+                    case RETURN_BOOK:
+                        bookDialogue.borrowingDialogue(false);
+                        break;
+
+                    case SHOW_BOOKS:
+                        bookDialogue.sortingDialogue();
+                        break;
+
+                    case ADD_JOURNAL:
+                        journalDialogue.addingDialogue();
+                        break;
+
+                    case DELETE_JOURNAL:
+                        journalDialogue.deletingDialogue();
+                        break;
+
+                    case TAKE_JOURNAL:
+                        journalDialogue.borrowingDialogue(true);
+                        break;
+
+                    case RETURN_JOURNAL:
+                        journalDialogue.borrowingDialogue(false);
+                        break;
+
+                    case SHOW_JOURNALS:
+                        journalDialogue.sortingDialogue();
+                        break;
+
+                    case EXIT_VALUE:
+                        value = false;
+                        break;
+
+                    default:
+                        Dialogues.printDefaultMessage();
+                        break;
+                }
+            }
         }
     }
 }

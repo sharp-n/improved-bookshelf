@@ -1,5 +1,10 @@
 package com.company;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@Getter
 public class Item {
 
     protected int itemID;
@@ -11,19 +16,4 @@ public class Item {
         this.borrowed = borrowed;
     }
 
-    public int getItemID() {
-        return itemID;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getPages() {
-        return pages;
-    }
-
-    public boolean isBorrowed() {
-        return borrowed;
-    }
 }

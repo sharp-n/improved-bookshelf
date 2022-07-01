@@ -1,57 +1,78 @@
 package com.company;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import org.slf4j.Logger;
+import com.google.gson.*;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkWithFiles {
 
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final String FILE_PATH = "items.txt";
+    static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    static final String SINGLE_FILE_PATH = System.getProperty("user.home") + "\\items.txt";
+    static final String BOOK_FILE_PATH = System.getProperty("user.home") + "\\books.txt";
+    static final String JOURNALS_FILE_PATH = System.getProperty("user.home") + "\\journals.txt";
 
-    public static void writeList(List<? extends Item> items) {
+    public static void addItemToFile(Container<? extends Item> itemContainer, String filePath) throws IOException {
+        List<Container<? extends Item>> containers = readToContainersList(filePath);
+        containers.add(itemContainer);
+        rewriteFile(containers, filePath);
+    }
+
+    static void rewriteFile(List<Container<? extends Item>> containers, String filePath){
         try {
-            List<List<? extends Item>> lists = new ArrayList<>();
-            if(items.get(0) instanceof Book){
-                List<Journal> journals = readToJournalsList();
-                lists.add(items);
-                lists.add(journals);
-            } else {
-                List<Book> journals = readToBooksList();
-                lists.add(journals);
-                lists.add(items);
-            }
-            FileWriter fw = new FileWriter(FILE_PATH, false);
+            File file = new File(filePath);
+            if (!file.exists()) file.createNewFile();
+            FileWriter fw = new FileWriter(filePath, false);
             BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(gson.toJson(lists));
+            bw.write(gson.toJson(containers));
             bw.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static List<Journal> readToJournalsList() throws IOException {
-        Type type = new TypeToken<List<List<Journal>>>() {}.getType();
-        List<List<Journal>> lists = gson.fromJson(new FileReader(FILE_PATH), type);
-        if(lists==null) {
-            return new ArrayList<>();
+    public static List<Journal> readToJournalsList(String filePath) throws IOException {
+        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+        if(jsonArray==null) return new ArrayList<>();
+        List<Journal> journals = new ArrayList<>();
+        for (JsonElement element : jsonArray) {
+            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
+            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
+            if (typeOfClass.equals("Journal")) {
+                journals.add(gson.fromJson(itemObject, Journal.class));
+            }
         }
-        return lists.get(1);
+        return journals;
     }
 
-    public static List<Book> readToBooksList() throws IOException {
-        Type type = new TypeToken<List<List<Book>>>() {}.getType();
-        List<List<Book>> lists = gson.fromJson(new FileReader(FILE_PATH), type);
-        if(lists==null) {
-            return new ArrayList<>();
+    public static List<Book> readToBooksList( String filePath) throws IOException {
+        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+        if(jsonArray==null) return new ArrayList<>();
+        List<Book> books = new ArrayList<>();
+        for (JsonElement element : jsonArray) {
+            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
+            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
+            if (typeOfClass.equals("Book")) {
+                books.add(gson.fromJson(itemObject, Book.class));
+            }
         }
-        return lists.get(0);
+        return books;
+    }
+
+    public static List<Container<? extends Item>> readToContainersList(String filePath) throws IOException {
+        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+        List<Container<? extends Item>> containers = new ArrayList<>();
+        if(jsonArray != null) {
+            for (JsonElement element : jsonArray) {
+                containers.add(gson.fromJson(element, Container.class));
+            }
+        }
+        return containers;
+    }
+
+    static JsonArray makeJsonArrayFromFile(String filePath) throws FileNotFoundException {
+        return  gson.fromJson(new FileReader(filePath), JsonArray.class);
     }
 
 }
