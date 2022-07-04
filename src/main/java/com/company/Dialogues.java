@@ -28,6 +28,16 @@ public class Dialogues {
         return scan.nextLine().trim();
     }
 
+    String validateTitle(String title){
+        Pattern pattern= Pattern.compile("[\t|/<>~\\\\]");
+        Matcher matcher = pattern.matcher(title);
+        if (!Librarian.checkItemForValidity(title)||matcher.find()) {
+            printBadValidationMessage("title. It should not contains such symbols as \\t, |, /, <, > ~ or \\");
+            return null;
+        }
+        else return title;
+    }
+
     String usernameInput() {
         System.out.println("\nInput your name. If you want to use default folders(s) write \"default\"");
         return scan.nextLine().trim();
@@ -41,16 +51,6 @@ public class Dialogues {
         return null;
     }
 
-    String getTitleDialogue(String title){
-        Pattern pattern= Pattern.compile("[\t|/<>~\\\\]");
-        Matcher matcher = pattern.matcher(title);
-        if (!Librarian.checkItemForValidity(title)||matcher.find()) {
-            printBadValidationMessage("title. It should not contains such symbols as \\t, |, /, <, > ~ or \\");
-            return null;
-        }
-        else return title;
-    }
-
     Integer idUserInput(){
         try {
             System.out.println("Item ID:");
@@ -60,7 +60,7 @@ public class Dialogues {
         }
     }
 
-    Integer getIDDialogue(Integer id) {
+    Integer validateID(Integer id) {
         if (id==null) {return null;}
         if (Librarian.checkItemForValidity(id)) {
             return id;
@@ -74,7 +74,7 @@ public class Dialogues {
         return scan.nextLine().trim();
     }
 
-    String getAuthorDialogue(String author) {
+    String validateAuthorName(String author) {
         Pattern pattern= Pattern.compile("[@\t#$;:=+*&|/<>?!~()%']");
         Matcher matcher = pattern.matcher(author);
         if (!Librarian.checkItemForValidity(author) || matcher.find()) {
@@ -111,7 +111,7 @@ public class Dialogues {
         }
     }
 
-    GregorianCalendar getDateDialogue(Integer year, Integer month, Integer day) {
+    GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
         if (day==null||month==null||year==null) {
             printBadValidationMessage("date");
             return null;
@@ -131,7 +131,7 @@ public class Dialogues {
         return null;
     }
 
-    Integer getPagesDialogue(Integer pages) {
+    Integer validatePages(Integer pages) {
         if (pages == null) {return null;}
         if (!Librarian.checkItemForValidity(pages)) {
             printBadValidationMessage("pages");
@@ -160,17 +160,17 @@ public class Dialogues {
             boolean add = true;
             String author = "";
             GregorianCalendar publishingDate = new GregorianCalendar();
-            Integer itemID = getIDDialogue(idUserInput());
+            Integer itemID = validateID(idUserInput());
             if (itemID!=null) {
                 if (!librarian.checkIDForExistence(itemID,typeOfItem)) {
-                    String title = getTitleDialogue(titleUserInput());
+                    String title = validateTitle(titleUserInput());
                     if (Librarian.checkItemForValidity(title)) {
 
                         if (item instanceof Book) {
-                            author = getAuthorDialogue(authorUserInput());
+                            author = validateAuthorName(authorUserInput());
                             if (author != null)
                             {
-                                publishingDate = getDateDialogue(yearUserInput(),monthUserInput(),dayUserInput());
+                                publishingDate = validateDate(yearUserInput(),monthUserInput(),dayUserInput());
                                 if (publishingDate==null){
                                     System.out.println("Try again");
                                     add=false;
@@ -179,7 +179,7 @@ public class Dialogues {
                         }
                         if (add) {
                             System.out.println("Pages:");
-                            Integer numOfPages = getPagesDialogue(pagesUsersInput());
+                            Integer numOfPages = validatePages(pagesUsersInput());
                             if (numOfPages != null) {
 
                                 if (item instanceof Book) {
@@ -200,9 +200,9 @@ public class Dialogues {
         }
     }
 
-    private Integer getIDToBorrowDialogue() throws IOException{
+    private Integer validateIdToBorrow() throws IOException{
 
-        Integer itemID = getIDDialogue(idUserInput());
+        Integer itemID = validateID(idUserInput());
         if (itemID==null){
             return null;
         }
@@ -221,7 +221,7 @@ public class Dialogues {
     }
 
     public void deletingDialogue() throws IOException{
-        Integer itemID = getIDToBorrowDialogue();
+        Integer itemID = validateIdToBorrow();
         if(itemID!=null) {
             boolean deleted;
             if(item instanceof Book)
@@ -234,7 +234,7 @@ public class Dialogues {
     }
 
     public void borrowingDialogue(boolean borrow) throws IOException{
-        Integer itemID = getIDToBorrowDialogue();
+        Integer itemID = validateIdToBorrow();
         if(itemID!=null) {
             if (item instanceof Book) {
                 librarian.borrowItem(itemID, "Book", borrow);
