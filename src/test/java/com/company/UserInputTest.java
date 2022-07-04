@@ -43,6 +43,51 @@ public class UserInputTest {
         return new Dialogues(new Book(),new Librarian(WorkWithFiles.SINGLE_FILE_PATH));
     }
 
+    // USERNAME
+
+    @ParameterizedTest
+    @MethodSource("provideNulls")
+    void usernameNullInput(String input){
+        Dialogues dialogues = getDialogues(input);
+        assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideUsernameForGoodInput")
+    void usernameGoodInput(String input, String expected){
+        Dialogues dialogues = getDialogues(input);
+        assertEquals(expected,dialogues.usernameValidation(dialogues.usernameInput()));
+    }
+
+    private static Stream<Arguments> provideUsernameForGoodInput(){
+        return Stream.of(
+                Arguments.of("User", "User"),
+                Arguments.of(" just_a_user ","just_a_user")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideUsernameForBadInput")
+    void usernameBadInput(String input){
+        Dialogues dialogues = getDialogues(input);
+        assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
+    }
+
+    private static Stream<Arguments> provideUsernameForBadInput(){
+        return Stream.of(
+                Arguments.of("use"),
+                Arguments.of("first_user%"),
+                Arguments.of("f1rst_user@"),
+                Arguments.of("f1rst_User\\"),
+                Arguments.of("f1rst_User&"),
+                Arguments.of("f1rst_User?"),
+                Arguments.of("f1rst_User!"),
+                Arguments.of("f1rst_User#"),
+                Arguments.of("f1rst_User^"),
+                Arguments.of("f1rst_User:")
+        );
+    }
+
     //  PAGES
 
     @ParameterizedTest

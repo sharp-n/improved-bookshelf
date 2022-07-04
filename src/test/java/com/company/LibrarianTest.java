@@ -50,7 +50,7 @@ public class LibrarianTest {
             containers.add(new Container<>(firstBook));
             containers.add(new Container<>(secondBook));
             containers.add(new Container<>(firstJournal));
-            FileWriter fw = new FileWriter("testItems.txt", false);
+            FileWriter fw = new FileWriter(System.getProperty("user.home") + "\\testItems.txt", false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
             bw.close();

@@ -1,6 +1,5 @@
 package com.company;
 
-import jdk.javadoc.internal.doclets.toolkit.WorkArounds;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -9,9 +9,21 @@ import java.util.List;
 public class WorkWithFiles {
 
     static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    static final String SINGLE_FILE_PATH = System.getProperty("user.home") + "\\items.txt";
-    static final String BOOK_FILE_PATH = System.getProperty("user.home") + "\\books.txt";
-    static final String JOURNALS_FILE_PATH = System.getProperty("user.home") + "\\journals.txt";
+    static String SINGLE_FILE_PATH;
+    static String BOOK_FILE_PATH;
+    static String JOURNALS_FILE_PATH;
+
+    public static void setSingleFilePath(String userName) {
+        SINGLE_FILE_PATH = System.getProperty("user.home") + "\\items_" + userName + ".txt";
+    }
+
+    public static void setBookFilePath(String userName) {
+        BOOK_FILE_PATH = System.getProperty("user.home") + "\\books_" + userName + ".txt";
+    }
+
+    public static void setJournalsFilePath(String userName) {
+        JOURNALS_FILE_PATH = System.getProperty("user.home") + "\\journals_" + userName + ".txt";
+    }
 
     public static void addItemToFile(Container<? extends Item> itemContainer, String filePath) throws IOException {
         List<Container<? extends Item>> containers = readToContainersList(filePath);

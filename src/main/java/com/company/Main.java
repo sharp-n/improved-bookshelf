@@ -22,19 +22,34 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        Dialogues.setScan(new Scanner(System.in));
         boolean filesValue = true;
         boolean value = true;
+        boolean validUserName = false;
         while (filesValue) {
+
+            String userName = "";
+            Dialogues dialogue = new Dialogues();
+
+            while(!validUserName) {
+                userName = dialogue.usernameValidation(dialogue.usernameInput());
+                if (userName != null) validUserName = true;
+            }
+
+            User user = new User(userName);
             System.out.println("\n0 - Exit\n1 - Use one file\n2 - Use two files");
             int filesVar = Dialogues.getMainMenuVar();
 
             Librarian librarian = new Librarian();
             switch (filesVar) {
                 case ONE_FILE:
+                    WorkWithFiles.setSingleFilePath(user.userName);
                     librarian = new Librarian(WorkWithFiles.SINGLE_FILE_PATH);
                     System.out.println("Your items will be saved in one file");
                     break;
                 case TWO_FILES:
+                    WorkWithFiles.setBookFilePath(user.userName);
+                    WorkWithFiles.setJournalsFilePath(user.userName);
                     System.out.println("Your items will be saved in different files");
                     break;
                 case EXIT_VALUE:
@@ -45,7 +60,6 @@ public class Main {
                     Dialogues.printDefaultMessage();
                     break;
             }
-
 
             while (value) {
 
@@ -65,8 +79,6 @@ public class Main {
                     bookDialogue = new Dialogues(new Book(), librarian);
                     journalDialogue = new Dialogues(new Journal(), librarian);
                 }
-
-                Dialogues.setScan(new Scanner(System.in));
 
                 int var = Dialogues.getMainMenuVar();
 

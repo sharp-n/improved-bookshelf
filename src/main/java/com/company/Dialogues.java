@@ -1,6 +1,7 @@
 package com.company;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -9,6 +10,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@NoArgsConstructor
 @AllArgsConstructor
 public class Dialogues {
 
@@ -22,9 +24,21 @@ public class Dialogues {
     }
 
     String titleUserInput(){
-
         System.out.println("Title:");
         return scan.nextLine().trim();
+    }
+
+    String usernameInput() {
+        System.out.println("\nInput your name. If you want to use default folders(s) write \"default\"");
+        return scan.nextLine().trim();
+    }
+
+    String usernameValidation(String userName){
+        boolean validUserName = User.checkUserNameForValidity(userName);
+        if (validUserName) {
+            return userName;
+        }
+        return null;
     }
 
     String getTitleDialogue(String title){
