@@ -94,14 +94,14 @@ public class UserInputTest {
     @ValueSource(strings = {"0", "-5", "6000", " 5 000 ", "2304.213"})
     void pagesBadInput(String input){
         Dialogues dialogues = getDialogues(input);
-        assertNull(dialogues.getPagesDialogue(dialogues.pagesUsersInput()));
+        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbersForGoodInput")
     void pagesGoodInput(String input, Integer expected){
         Dialogues dialogues = getDialogues(input);
-        assertEquals(expected,dialogues.getPagesDialogue(dialogues.pagesUsersInput()));
+        assertEquals(expected,dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
     private static Stream<Arguments> provideNumbersForGoodInput(){
@@ -116,7 +116,7 @@ public class UserInputTest {
     @MethodSource("provideNulls")
     void pagesNullInput(String input){
         Dialogues dialogues = getDialogues(input);
-        assertNull(dialogues.getPagesDialogue(dialogues.pagesUsersInput()));
+        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
     private static Stream<Arguments> provideNulls(){
@@ -132,7 +132,7 @@ public class UserInputTest {
     @ValueSource(strings = {"pages", " string", " author ", "#"})
     void pagesStringInput(String input){
         Dialogues dialogues = getDialogues(input);
-        assertNull(dialogues.getPagesDialogue(dialogues.pagesUsersInput()));
+        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
     //AUTHOR
