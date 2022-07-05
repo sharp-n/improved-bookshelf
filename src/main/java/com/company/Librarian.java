@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class Librarian {
 
-    String filePath;
+    public String filePath;
 
     public void addItem(Item item) throws IOException {
         if(item instanceof Book){WorkWithFiles.addItemToFile(new Container<>((Book) item),filePath);}

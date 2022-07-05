@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @AllArgsConstructor
 public class Dialogues {
 
-    static Scanner scan;
+    public static Scanner scan;
     Item item;
 
     Librarian librarian;
@@ -38,12 +38,12 @@ public class Dialogues {
         else return title;
     }
 
-    String usernameInput() {
-        System.out.println("\nInput your name. If you want to use default folders(s) write \"default\"");
+    public String usernameInput() {
+        System.out.println("\nInput your name. If you want to use default file(s) write \"default\"");
         return scan.nextLine().trim();
     }
 
-    String usernameValidation(String userName){
+    public String usernameValidation(String userName){
         boolean validUserName = User.checkUserNameForValidity(userName);
         if (validUserName) {
             return userName;

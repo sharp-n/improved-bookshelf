@@ -3,26 +3,27 @@ package com.company;
 import com.google.gson.*;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkWithFiles {
 
     static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    static String SINGLE_FILE_PATH;
-    static String BOOK_FILE_PATH;
-    static String JOURNALS_FILE_PATH;
+    public static String SINGLE_FILE_PATH;
+    public static String BOOK_FILE_PATH;
+    public static String JOURNALS_FILE_PATH;
 
     public static void setSingleFilePath(String userName) {
-        SINGLE_FILE_PATH = System.getProperty("user.home") + "\\items_" + userName + ".txt";
+        SINGLE_FILE_PATH = System.getProperty("user.home") + "/items_" + userName + ".txt";
     }
 
     public static void setBookFilePath(String userName) {
-        BOOK_FILE_PATH = System.getProperty("user.home") + "\\books_" + userName + ".txt";
+        BOOK_FILE_PATH = System.getProperty("user.home") + "/books_" + userName + ".txt";
     }
 
     public static void setJournalsFilePath(String userName) {
-        JOURNALS_FILE_PATH = System.getProperty("user.home") + "\\journals_" + userName + ".txt";
+        JOURNALS_FILE_PATH = System.getProperty("user.home") + "/journals_" + userName + ".txt";
     }
 
     public static void addItemToFile(Container<? extends Item> itemContainer, String filePath) throws IOException {
@@ -33,8 +34,7 @@ public class WorkWithFiles {
 
     static void rewriteFile(List<Container<? extends Item>> containers, String filePath){
         try {
-            File file = new File(filePath);
-            if (!file.exists()) file.createNewFile();
+            File file = createFileIfNotExists(filePath);
             FileWriter fw = new FileWriter(filePath, false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
@@ -45,6 +45,7 @@ public class WorkWithFiles {
     }
 
     public static List<Journal> readToJournalsList(String filePath) throws IOException {
+        createFileIfNotExists(filePath);
         JsonArray jsonArray = makeJsonArrayFromFile(filePath);
         if(jsonArray==null) return new ArrayList<>();
         List<Journal> journals = new ArrayList<>();
@@ -59,6 +60,7 @@ public class WorkWithFiles {
     }
 
     public static List<Book> readToBooksList( String filePath) throws IOException {
+        createFileIfNotExists(filePath);
         JsonArray jsonArray = makeJsonArrayFromFile(filePath);
         if(jsonArray==null) return new ArrayList<>();
         List<Book> books = new ArrayList<>();
@@ -73,6 +75,7 @@ public class WorkWithFiles {
     }
 
     public static List<Container<? extends Item>> readToContainersList(String filePath) throws IOException {
+        createFileIfNotExists(filePath);
         JsonArray jsonArray = makeJsonArrayFromFile(filePath);
         List<Container<? extends Item>> containers = new ArrayList<>();
         if(jsonArray != null) {
@@ -83,8 +86,14 @@ public class WorkWithFiles {
         return containers;
     }
 
-    static JsonArray makeJsonArrayFromFile(String filePath) throws FileNotFoundException {
+    static JsonArray makeJsonArrayFromFile(String filePath) throws IOException {
+        createFileIfNotExists(filePath);
         return  gson.fromJson(new FileReader(filePath), JsonArray.class);
     }
 
+    static File createFileIfNotExists(String filePath) throws IOException {
+        File file = new File(filePath);
+        if (!file.exists()) file.createNewFile();
+        return file;
+    }
 }
