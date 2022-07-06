@@ -15,7 +15,6 @@ public class ServerHandler {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public ServerHandler(PrintWriter out) {
-        this.in = in;
         this.out = out;
     }
 
@@ -84,7 +83,7 @@ public class ServerHandler {
             }
 
             while (value) {
-
+                Dialogues.setScan(in);
                 writeLineMessage("\n\t\t0 - Exit" +
                         "\n1 - Add book\t6 - Add journal" +
                         "\n2 - Delete book\t7 - Delete journal" +

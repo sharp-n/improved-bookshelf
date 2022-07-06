@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class Dialogues {
 
-    public static Scanner scan;
+    static Scanner scan;
     Item item;
 
     Librarian librarian;
