@@ -14,17 +14,21 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(8080);
+
         Socket input = serverSocket.accept();
         Scanner in = new Scanner(input.getInputStream());
         PrintWriter out = new PrintWriter(input.getOutputStream());
-        Scanner send = new Scanner(System.in);
-
-        ServerHandler.handle(in,out,send);
-
+        //Scanner send = new Scanner(System.in);
+        out.println("smth");
         out.flush();
+        ServerHandler serverHandler = new ServerHandler(in,out);
+
+        serverHandler.handle();
+
+
         in.close();
         out.close();
-        send.close();
+        //send.close();
         input.close();
         serverSocket.close();
 

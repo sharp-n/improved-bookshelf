@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ClientHandler {
-
+/*
     static final Gson gson = new Gson();
 
 
@@ -50,5 +50,5 @@ public class ClientHandler {
         out.println(message);
         out.flush();
     }
-
+*/
 }

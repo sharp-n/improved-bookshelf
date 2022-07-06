@@ -27,7 +27,6 @@ public class Main {
         boolean value = true;
         boolean validUserName = false;
         while (filesValue) {
-
             String userName = "";
             Dialogues dialogue = new Dialogues();
 
@@ -40,16 +39,18 @@ public class Main {
             System.out.println("\n0 - Exit\n1 - Use one file\n2 - Use two files");
             int filesVar = Dialogues.getMainMenuVar();
 
+            WorkWithFiles workWithFirstFile = new WorkWithFiles();
+            WorkWithFiles workWithSecondFile = new WorkWithFiles();
             Librarian librarian = new Librarian();
             switch (filesVar) {
                 case ONE_FILE:
-                    WorkWithFiles.setSingleFilePath(user.userName);
-                    librarian = new Librarian(WorkWithFiles.SINGLE_FILE_PATH);
+                    workWithFirstFile = new WorkWithFiles(user.userName);
+                    librarian = new Librarian(workWithFirstFile);
                     System.out.println("Your items will be saved in one file");
                     break;
                 case TWO_FILES:
-                    WorkWithFiles.setBookFilePath(user.userName);
-                    WorkWithFiles.setJournalsFilePath(user.userName);
+                    workWithFirstFile = new WorkWithFiles("books_" + user.userName);
+                    workWithSecondFile = new WorkWithFiles("journals_" + user.userName);
                     System.out.println("Your items will be saved in different files");
                     break;
                 case EXIT_VALUE:
@@ -57,11 +58,11 @@ public class Main {
                     value = false;
                     break;
                 default:
-                    Dialogues.printDefaultMessage();
+                    new Dialogues().printDefaultMessage();
                     break;
             }
 
-            while (value) {
+           /* while (value) {
 
                 System.out.println("\n\t\t0 - Exit" +
                         "\n1 - Add book\t6 - Add journal" +
@@ -72,9 +73,9 @@ public class Main {
 
                 Dialogues bookDialogue;
                 Dialogues journalDialogue;
-                if (librarian.filePath == null) {
-                    bookDialogue = new Dialogues(new Book(), new Librarian(WorkWithFiles.BOOK_FILE_PATH));
-                    journalDialogue = new Dialogues(new Journal(), new Librarian(WorkWithFiles.JOURNALS_FILE_PATH));
+                if (workWithSecondFile.filePath != null) {
+                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile));
+                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile));
                 } else {
                     bookDialogue = new Dialogues(new Book(), librarian);
                     journalDialogue = new Dialogues(new Journal(), librarian);
@@ -132,7 +133,7 @@ public class Main {
                         Dialogues.printDefaultMessage();
                         break;
                 }
-            }
+            }*/
         }
     }
 }

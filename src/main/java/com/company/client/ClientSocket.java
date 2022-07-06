@@ -36,7 +36,7 @@ public class ClientSocket {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         Scanner in = new Scanner(socket.getInputStream());
         Scanner send = new Scanner(System.in);
-
+/*
         ClientDialogues.setScan(send);
 
         while (filesValue) {
@@ -115,7 +115,7 @@ public class ClientSocket {
         in.close();
         send.close();
         out.close();
-        socket.close();
+        socket.close();*/
     }
 
 

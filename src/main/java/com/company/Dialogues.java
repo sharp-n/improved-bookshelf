@@ -1,9 +1,10 @@
 package com.company;
 
-import lombok.AllArgsConstructor;
+import com.company.server.ServerHandler;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,7 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @NoArgsConstructor
-@AllArgsConstructor
 public class Dialogues {
 
     public static Scanner scan;
@@ -19,12 +19,28 @@ public class Dialogues {
 
     Librarian librarian;
 
+    PrintWriter out;
+
+    ServerHandler serverHandler;
+
+    public Dialogues(PrintWriter out) {
+        this.out=out;
+        serverHandler = new ServerHandler(out);
+    }
+
+    public Dialogues(Item item, Librarian librarian, PrintWriter out) {
+        this.item = item;
+        this.librarian = librarian;
+        this.out = out;
+        serverHandler = new ServerHandler(out);
+    }
+
     public static void setScan(Scanner scan) {
         Dialogues.scan = scan;
     }
 
     public String titleUserInput(){
-        System.out.println("Title:");
+        serverHandler.writeLineMessage("Title:");
         return scan.nextLine().trim();
     }
 
@@ -39,7 +55,7 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        System.out.println("\nInput your name. If you want to use default file(s) write \"default\"");
+        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\"");
         return scan.nextLine().trim();
     }
 
@@ -53,7 +69,7 @@ public class Dialogues {
 
     public Integer idUserInput(){
         try {
-            System.out.println("Item ID:");
+            serverHandler.writeLineMessage("Item ID:");
             return Integer.parseInt(scan.nextLine().trim());
         }  catch (NumberFormatException e){
             return null;
@@ -70,7 +86,7 @@ public class Dialogues {
     }
 
     public String authorUserInput(){
-        System.out.println("Author:");
+        serverHandler.writeLineMessage("Author:");
         return scan.nextLine().trim();
     }
 
@@ -86,7 +102,7 @@ public class Dialogues {
 
     public Integer yearUserInput(){
         try {
-            System.out.println("Date of publish:\n\tYear: ");
+            serverHandler.writeLineMessage("Date of publish:\n\tYear: ");
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -95,7 +111,7 @@ public class Dialogues {
 
     public Integer dayUserInput(){
         try {
-            System.out.println("\tDay: ");
+            serverHandler.writeLineMessage("\tDay: ");
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -104,7 +120,7 @@ public class Dialogues {
 
     public Integer monthUserInput(){
         try {
-            System.out.println("\tMonth: ");
+            serverHandler.writeLineMessage("\tMonth: ");
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -146,7 +162,7 @@ public class Dialogues {
 
     public Integer pagesUsersInput(){
         try {
-            System.out.println("Pages: ");
+            serverHandler.writeLineMessage("Pages: ");
             return Integer.parseInt(scan.nextLine().trim());
         } catch(NumberFormatException e){
             return null;
@@ -173,7 +189,7 @@ public class Dialogues {
                             {
                                 publishingDate = validateDate(yearUserInput(),monthUserInput(),dayUserInput());
                                 if (publishingDate==null){
-                                    System.out.println("Try again");
+                                    serverHandler.writeLineMessage("Try again");
                                     add=false;
                                 }
                             }
@@ -193,7 +209,7 @@ public class Dialogues {
                             }
                         }
                     }
-                } else System.out.println("Item with this ID exists. Please change ID and try again");
+                } else out.println("Item with this ID exists. Please change ID and try again");
             } else printBadValidationMessage("ID. It should be a number (>0)");
         } catch (NullPointerException e){
             e.printStackTrace();
@@ -214,7 +230,7 @@ public class Dialogues {
         if(item instanceof Book) typeOfItem = "Book";
         else typeOfItem = "Journal";
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
-            System.out.println("There`s no item with such ID");
+            serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
         }
         return itemID;
@@ -243,35 +259,35 @@ public class Dialogues {
     }
 
     public void printListOfItems(List<? extends Item> items){
-        if (items.size()==0) System.out.println("There`s no items here");
+        if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
-            System.out.print(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
-            if (item instanceof Book) System.out.print(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
-            System.out.print(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
+            serverHandler.writeMessage(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
+            if (item instanceof Book) serverHandler.writeMessage(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
+            serverHandler.writeMessage(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
                     "BORROWED") );
-            System.out.print("\n----------|---------------------------------------");
-            if (item instanceof Book) System.out.print("|-------------------------------|-----------------");
-            System.out.println("|-------|----------");
+            serverHandler.writeMessage("\n----------|---------------------------------------");
+            if (item instanceof Book) serverHandler.writeMessage("|-------------------------------|-----------------");
+            serverHandler.writeLineMessage("|-------|----------");
             items.forEach(i -> {
-                System.out.print(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));
+                serverHandler.writeMessage(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));
                 if (item instanceof Book) {
                     DateFormat df = new SimpleDateFormat("dd.M.y");
-                    System.out.print(String.format("%-32s", "| " + ((Book) i).getAuthor())
+                    serverHandler.writeMessage(String.format("%-32s", "| " + ((Book) i).getAuthor())
                             + String.format("%-18s", "| " + df.format(((Book) i).getPublishingDate().getTime())));
                 }
-                System.out.print(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n");
+                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n");
             });
         }
     }
 
     private int getSortingVar(){
         try {
-            System.out.println("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
+            serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
             if (item instanceof Book) {
-                System.out.println("\t4 - Author\n\t5 - Publishing date");
+                serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
             }
-            System.out.println("0 - Return");
-            return new Scanner(System.in).nextInt();
+            serverHandler.writeLineMessage("0 - Return");
+            return scan.nextInt();
         }catch(InputMismatchException e){
             printDefaultMessage();
             return 0;
@@ -280,36 +296,33 @@ public class Dialogues {
 
     public static int getMainMenuVar(){
         try {
-            return new Scanner(System.in).nextInt();
+            return scan.nextInt();
         }catch(InputMismatchException e){
             return 0;
         }
     }
 
     public void sortingDialogue() throws IOException {
+        WorkWithFiles workWithFiles = librarian.workWithFiles;
         int var = getSortingVar();
+        List<? extends Item> items = new ArrayList<>();
         if (item instanceof Book)
             switch(var){
                 case 0: break;
                 case 1:
-                    List<? extends Item > books1 = librarian.sortingItemsByID(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books1);
+                    items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
                     break;
                 case 2:
-                    List<? extends Item > books2 = librarian.sortingItemsByTitle(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books2);
+                    items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
                     break;
                 case 3:
-                    List<? extends Item > books3 = librarian.sortingItemsByPages(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books3);
+                    items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
                     break;
                 case 4:
-                    List<? extends Item > books4 = librarian.sortingBooksByAuthor(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books4);
+                    items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
                     break;
                 case 5:
-                    List<? extends Item > books5 = librarian.sortingBooksByPublishingDate(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books5);
+                    items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
                     break;
                 default: printDefaultMessage();
                     break;
@@ -317,36 +330,34 @@ public class Dialogues {
         else switch(var){
             case 0: break;
             case 1:
-                List<? extends Item > journals1 = librarian.sortingItemsByID(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals1);
+                items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
                 break;
             case 2:
-                List<? extends Item > journals2 = librarian.sortingItemsByTitle(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals2);
+                items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
                 break;
             case 3:
-                List<? extends Item > journals3 = librarian.sortingItemsByPages(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals3);
+                items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
                 break;
             default: printDefaultMessage();
                 break;
         }
+        printListOfItems(items);
     }
 
-    public static void printItemNotExistsMessage(){
-        System.out.println("There`s no such item");
+    public void printItemNotExistsMessage(){
+        serverHandler.writeLineMessage("There`s no such item");
     }
 
-    public static void printBadValidationMessage(String item){
-        System.out.println("Please, input valid " + item);
+    public void printBadValidationMessage(String item){
+        serverHandler.writeLineMessage("Please, input valid " + item);
     }
 
-    public static void printSuccessMessage(String item){
-        System.out.println("The item is successfully " + item);
+    public void printSuccessMessage(String item){
+        serverHandler.writeLineMessage("The item is successfully " + item);
     }
 
-    public static void printDefaultMessage(){
-        System.out.println("Input the proposed option");
+    public void printDefaultMessage(){
+        serverHandler.writeLineMessage("Input the proposed option");
     }
 
 }
