@@ -23,12 +23,12 @@ public class Dialogues {
         Dialogues.scan = scan;
     }
 
-    String titleUserInput(){
+    public String titleUserInput(){
         System.out.println("Title:");
         return scan.nextLine().trim();
     }
 
-    String validateTitle(String title){
+    public String validateTitle(String title){
         Pattern pattern= Pattern.compile("[\t|/<>~\\\\]");
         Matcher matcher = pattern.matcher(title);
         if (!Librarian.checkItemForValidity(title)||matcher.find()) {
@@ -51,7 +51,7 @@ public class Dialogues {
         return null;
     }
 
-    Integer idUserInput(){
+    public Integer idUserInput(){
         try {
             System.out.println("Item ID:");
             return Integer.parseInt(scan.nextLine().trim());
@@ -60,7 +60,7 @@ public class Dialogues {
         }
     }
 
-    Integer validateID(Integer id) {
+    public Integer validateID(Integer id) {
         if (id==null) {return null;}
         if (Librarian.checkItemForValidity(id)) {
             return id;
@@ -69,12 +69,12 @@ public class Dialogues {
         return null;
     }
 
-    String authorUserInput(){
+    public String authorUserInput(){
         System.out.println("Author:");
         return scan.nextLine().trim();
     }
 
-    String validateAuthorName(String author) {
+    public String validateAuthorName(String author) {
         Pattern pattern= Pattern.compile("[@\t#$;:=+*&|/<>?!~()%']");
         Matcher matcher = pattern.matcher(author);
         if (!Librarian.checkItemForValidity(author) || matcher.find()) {
@@ -84,7 +84,7 @@ public class Dialogues {
         return author;
     }
 
-    Integer yearUserInput(){
+    public Integer yearUserInput(){
         try {
             System.out.println("Date of publish:\n\tYear: ");
             return Integer.parseInt(scan.nextLine().trim());
@@ -93,7 +93,7 @@ public class Dialogues {
         }
     }
 
-    Integer dayUserInput(){
+    public Integer dayUserInput(){
         try {
             System.out.println("\tDay: ");
             return Integer.parseInt(scan.nextLine().trim());
@@ -102,7 +102,7 @@ public class Dialogues {
         }
     }
 
-    Integer monthUserInput(){
+    public Integer monthUserInput(){
         try {
             System.out.println("\tMonth: ");
             return Integer.parseInt(scan.nextLine().trim());
@@ -111,7 +111,7 @@ public class Dialogues {
         }
     }
 
-    GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
+    public GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
         if (day==null||month==null||year==null) {
             printBadValidationMessage("date");
             return null;
@@ -131,7 +131,7 @@ public class Dialogues {
         return null;
     }
 
-    Integer validatePages(Integer pages) {
+    public Integer validatePages(Integer pages) {
         if (pages == null) {return null;}
         if (!Librarian.checkItemForValidity(pages)) {
             printBadValidationMessage("pages");
@@ -144,8 +144,9 @@ public class Dialogues {
         return pages;
     }
 
-    Integer pagesUsersInput(){
+    public Integer pagesUsersInput(){
         try {
+            System.out.println("Pages: ");
             return Integer.parseInt(scan.nextLine().trim());
         } catch(NumberFormatException e){
             return null;
@@ -178,7 +179,6 @@ public class Dialogues {
                             }
                         }
                         if (add) {
-                            System.out.println("Pages:");
                             Integer numOfPages = validatePages(pagesUsersInput());
                             if (numOfPages != null) {
 
