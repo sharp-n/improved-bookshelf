@@ -133,8 +133,4 @@ public class ClientSocket {
         return userName;
     }
 
-    private static int chooseFile(){
-        System.out.println("\n0 - Exit\n1 - Use one file\n2 - Use two files");
-        return Dialogues.getMainMenuVar();
-    }
 }

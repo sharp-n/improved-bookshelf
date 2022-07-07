@@ -8,58 +8,39 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 
 public class Server {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
-        CompletableFuture.runAsync(()->{
-            while(true){
-                try{
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        var threads = new ArrayList<Thread>();
-        try(ServerSocket serverSocket = new ServerSocket(8080)) {
-            for(int i=0;i<5;i++){
-                var t = new Thread(()->{
-                    try(Socket input = serverSocket.accept();){
-                        Scanner in = new Scanner(input.getInputStream());
-                        PrintWriter out = new PrintWriter(input.getOutputStream());
-                        ServerHandler serverHandler = new ServerHandler(in, out);
-
-                        serverHandler.handle();
-                    } catch(Exception ignored){
-
-                    }
-                });
-                t.start();
-                threads.add(t);
-                //Scanner send = new Scanner(System.in);
-            }
-            threads.forEach(t-> {
+        ServerSocket serverSocket = new ServerSocket(8080);
+        int connections = 0;
+        var connectionThreads = new ArrayList<Thread>();
+        while (connections != 20) {
+            Socket input = serverSocket.accept();
+            connections++;
+            Thread connectionThread = new Thread(() -> {
                 try {
-                    t.join();
-                } catch (InterruptedException e) {
+                    Scanner in = new Scanner(input.getInputStream());
+                    PrintWriter out = new PrintWriter(input.getOutputStream());
+                    ServerHandler serverHandler = new ServerHandler(in, out);
+
+                    serverHandler.handle();
+                    in.close();
+                    out.close();
+                    input.close();
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             });
+            connectionThread.start();
+            connectionThreads.add(connectionThread);
         }
-        /*
-        in.close();
-        out.close();
-        //send.close();
-        input.close();
+        for (Thread connectionThread : connectionThreads) {
+            connectionThread.join();
+        }
         serverSocket.close();
-*/
-        //out.close();
-        //in.close();
-        //input.close();
-        //serverSocket.close();
+
     }
+
 }

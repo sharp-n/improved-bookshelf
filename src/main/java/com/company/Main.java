@@ -22,13 +22,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Dialogues.setScan(new Scanner(System.in));
         boolean filesValue = true;
         boolean value = true;
         boolean validUserName = false;
         while (filesValue) {
             String userName = "";
-            Dialogues dialogue = new Dialogues();
+            Dialogues dialogue = new Dialogues(new Scanner(System.in));
 
             while(!validUserName) {
                 userName = dialogue.usernameValidation(dialogue.usernameInput());
@@ -37,7 +36,7 @@ public class Main {
 
             User user = new User(userName);
             System.out.println("\n0 - Exit\n1 - Use one file\n2 - Use two files");
-            int filesVar = Dialogues.getMainMenuVar();
+            int filesVar = dialogue.getMainMenuVar();
 
             WorkWithFiles workWithFirstFile = new WorkWithFiles();
             WorkWithFiles workWithSecondFile = new WorkWithFiles();

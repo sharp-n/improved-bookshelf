@@ -42,13 +42,12 @@ public class ServerHandler {
 
     void handle() throws IOException {
 
-        Dialogues.setScan(in);
         boolean filesValue = true;
         boolean value = true;
         boolean validUserName = false;
         while (filesValue) {
             String userName = "";
-            Dialogues dialogue = new Dialogues(out);
+            Dialogues dialogue = new Dialogues(out,in);
 
             while (!validUserName) {
                 userName = dialogue.usernameValidation(dialogue.usernameInput());
@@ -57,7 +56,7 @@ public class ServerHandler {
 
             User user = new User(userName);
             writeLineMessage("\n0 - Exit\n1 - Use one file\n2 - Use two files");
-            int filesVar = Dialogues.getMainMenuVar();
+            int filesVar = dialogue.getMainMenuVar();
 
             WorkWithFiles workWithFirstFile = new WorkWithFiles();
             WorkWithFiles workWithSecondFile = new WorkWithFiles();
@@ -83,7 +82,7 @@ public class ServerHandler {
             }
 
             while (value) {
-                Dialogues.setScan(in);
+                Dialogues dialogues = new Dialogues(out,in);
                 writeLineMessage("\n\t\t0 - Exit" +
                         "\n1 - Add book\t6 - Add journal" +
                         "\n2 - Delete book\t7 - Delete journal" +
@@ -94,14 +93,14 @@ public class ServerHandler {
                 Dialogues bookDialogue;
                 Dialogues journalDialogue;
                 if (workWithSecondFile.filePath != null) {
-                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile), out);
-                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile), out);
+                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile),out,in);
+                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile), out,in);
                 } else {
-                    bookDialogue = new Dialogues(new Book(), librarian, out);
-                    journalDialogue = new Dialogues(new Journal(), librarian, out);
+                    bookDialogue = new Dialogues(new Book(), librarian, out,in);
+                    journalDialogue = new Dialogues(new Journal(), librarian, out,in);
                 }
 
-                int var = Dialogues.getMainMenuVar();
+                Integer var = dialogues.getMainMenuVar();
 
                 switch (var) {
 

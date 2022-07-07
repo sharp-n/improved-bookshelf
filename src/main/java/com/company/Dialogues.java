@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @NoArgsConstructor
 public class Dialogues {
 
-    static Scanner scan;
+    Scanner scan;
     Item item;
 
     Librarian librarian;
@@ -23,20 +23,22 @@ public class Dialogues {
 
     ServerHandler serverHandler;
 
-    public Dialogues(PrintWriter out) {
+    public Dialogues(Scanner scan) {
+        this.scan = scan;
+    }
+
+    public Dialogues(PrintWriter out,Scanner scan) {
         this.out=out;
+        this.scan = scan;
         serverHandler = new ServerHandler(out);
     }
 
-    public Dialogues(Item item, Librarian librarian, PrintWriter out) {
+    public Dialogues(Item item, Librarian librarian, PrintWriter out,Scanner scan) {
         this.item = item;
         this.librarian = librarian;
         this.out = out;
+        this.scan = scan;
         serverHandler = new ServerHandler(out);
-    }
-
-    public static void setScan(Scanner scan) {
-        Dialogues.scan = scan;
     }
 
     public String titleUserInput(){
@@ -280,68 +282,76 @@ public class Dialogues {
         }
     }
 
-    private int getSortingVar(){
+    private Integer getSortingVar(){
         try {
             serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
             if (item instanceof Book) {
                 serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
             }
             serverHandler.writeLineMessage("0 - Return");
-            return scan.nextInt();
-        }catch(InputMismatchException e){
+            return Integer.parseInt(scan.nextLine().trim());
+        }catch(NumberFormatException e){
             printDefaultMessage();
-            return 0;
+            return null;
         }
     }
 
-    public static int getMainMenuVar(){
+    public Integer getMainMenuVar(){
         try {
-            return scan.nextInt();
-        }catch(InputMismatchException e){
-            return 0;
+            return Integer.parseInt(scan.nextLine().trim());
+        }catch(NumberFormatException e){
+            printDefaultMessage();
+            return null;
         }
     }
 
     public void sortingDialogue() throws IOException {
         WorkWithFiles workWithFiles = librarian.workWithFiles;
-        int var = getSortingVar();
-        List<? extends Item> items = new ArrayList<>();
-        if (item instanceof Book)
-            switch(var){
-                case 0: break;
+        Integer var = getSortingVar();
+        if (var != null) {
+            List<? extends Item> items = new ArrayList<>();
+            if (item instanceof Book)
+                switch (var) {
+                    case 0:
+                        break;
+                    case 1:
+                        items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
+                        break;
+                    case 2:
+                        items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
+                        break;
+                    case 3:
+                        items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
+                        break;
+                    case 4:
+                        items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
+                        break;
+                    case 5:
+                        items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
+                        break;
+                    default:
+                        printDefaultMessage();
+                        break;
+
+                }
+            else switch (var) {
+                case 0:
+                    break;
                 case 1:
-                    items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
+                    items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
                     break;
                 case 2:
-                    items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
+                    items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
                     break;
                 case 3:
-                    items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
+                    items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
                     break;
-                case 4:
-                    items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
-                    break;
-                case 5:
-                    items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
-                    break;
-                default: printDefaultMessage();
+                default:
+                    printDefaultMessage();
                     break;
             }
-        else switch(var){
-            case 0: break;
-            case 1:
-                items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
-                break;
-            case 2:
-                items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
-                break;
-            case 3:
-                items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
-                break;
-            default: printDefaultMessage();
-                break;
-        }
-        printListOfItems(items);
+            printListOfItems(items);
+        } else printDefaultMessage();
     }
 
     public void printItemNotExistsMessage(){
