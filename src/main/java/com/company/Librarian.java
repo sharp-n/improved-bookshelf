@@ -49,6 +49,8 @@ public class Librarian {
         return false;
     }
 
+    // !!!!!REFACTOR!!!!!
+
     public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
         if (!forBorrow) {
             if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {
@@ -60,11 +62,11 @@ public class Librarian {
     }
 
     public void borrowItem(int itemID, String typeOfItem, boolean borrow) throws IOException {
-        Item item;
+        Item item = new Item();
         if(typeOfItem.equals("Book")){
             List<Book> items = workWithFiles.readToBooksList();
             item = findItemByID(itemID,items);
-        } else {
+        } else  if(typeOfItem.equals("Journal")){
             List<Journal> items = workWithFiles.readToJournalsList();
             item = findItemByID(itemID,items);
         }
@@ -100,10 +102,12 @@ public class Librarian {
     }
 
     public boolean checkIDForExistence(int itemID, String typeOfItem) throws IOException {
-        List<? extends Item> items ;
+        List<? extends Item> items = new ArrayList<>();
         if (typeOfItem.equals("Book")){
             items = workWithFiles.readToBooksList();
-        } else items = workWithFiles.readToJournalsList();
+        } else if (typeOfItem.equals("Journal")) {
+            items = workWithFiles.readToJournalsList();
+        }
         if (items != null) {
             for (Item item : items) {
                 if (item.getItemID() == itemID) return true;

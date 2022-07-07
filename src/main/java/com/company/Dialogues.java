@@ -173,9 +173,9 @@ public class Dialogues {
 
     public void addingDialogue() throws IOException{
         try {
-            String typeOfItem;
+            String typeOfItem = "";
             if(item instanceof Book) typeOfItem = "Book";
-            else typeOfItem = "Journal";
+            else if (item instanceof Journal) typeOfItem = "Journal";
             boolean add = true;
             String author = "";
             GregorianCalendar publishingDate = new GregorianCalendar();
@@ -228,9 +228,9 @@ public class Dialogues {
             printBadValidationMessage("ID. It should be a number (>0)");
             return null;
         }
-        String typeOfItem;
+        String typeOfItem = "";
         if(item instanceof Book) typeOfItem = "Book";
-        else typeOfItem = "Journal";
+        else if (item instanceof Journal) typeOfItem = "Journal";
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
             serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
@@ -256,7 +256,7 @@ public class Dialogues {
         if(itemID!=null) {
             if (item instanceof Book) {
                 librarian.borrowItem(itemID, "Book", borrow);
-            } else librarian.borrowItem(itemID, "Journal", borrow);
+            } else if (item instanceof Journal) librarian.borrowItem(itemID, "Journal", borrow);
         }
     }
 
@@ -334,7 +334,7 @@ public class Dialogues {
                         break;
 
                 }
-            else switch (var) {
+            else if (item instanceof Journal) switch (var) {
                 case 0:
                     break;
                 case 1:

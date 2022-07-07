@@ -26,6 +26,7 @@ public class Server {
                     ServerHandler serverHandler = new ServerHandler(in, out);
 
                     serverHandler.handle();
+
                     in.close();
                     out.close();
                     input.close();
