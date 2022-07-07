@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
@@ -39,8 +40,7 @@ public class UserInputTest {
     private Dialogues getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        Dialogues.setScan(scanner);
-        return new Dialogues(new Book(),new Librarian(WorkWithFiles.SINGLE_FILE_PATH));
+        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test")),new PrintWriter(System.out),scanner);
     }
 
     // USERNAME

@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.server.Server;
 import com.company.server.ServerHandler;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +12,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@NoArgsConstructor
 public class Dialogues {
 
     Scanner scan;
@@ -22,10 +22,6 @@ public class Dialogues {
     PrintWriter out;
 
     ServerHandler serverHandler;
-
-    public Dialogues(Scanner scan) {
-        this.scan = scan;
-    }
 
     public Dialogues(PrintWriter out,Scanner scan) {
         this.out=out;
@@ -42,7 +38,8 @@ public class Dialogues {
     }
 
     public String titleUserInput(){
-        serverHandler.writeLineMessage("Title:");
+        serverHandler.writeLineMessage("Input title:");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
@@ -58,6 +55,7 @@ public class Dialogues {
 
     public String usernameInput() {
         serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\"");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
@@ -72,8 +70,9 @@ public class Dialogues {
     public Integer idUserInput(){
         try {
             serverHandler.writeLineMessage("Item ID:");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        }  catch (NumberFormatException e){
+        }  catch (NumberFormatException e) {
             return null;
         }
     }
@@ -89,6 +88,7 @@ public class Dialogues {
 
     public String authorUserInput(){
         serverHandler.writeLineMessage("Author:");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
@@ -104,7 +104,9 @@ public class Dialogues {
 
     public Integer yearUserInput(){
         try {
+            System.out.println();
             serverHandler.writeLineMessage("Date of publish:\n\tYear: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -114,6 +116,7 @@ public class Dialogues {
     public Integer dayUserInput(){
         try {
             serverHandler.writeLineMessage("\tDay: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -123,6 +126,7 @@ public class Dialogues {
     public Integer monthUserInput(){
         try {
             serverHandler.writeLineMessage("\tMonth: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
@@ -165,6 +169,7 @@ public class Dialogues {
     public Integer pagesUsersInput(){
         try {
             serverHandler.writeLineMessage("Pages: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch(NumberFormatException e){
             return null;
@@ -289,6 +294,7 @@ public class Dialogues {
                 serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
             }
             serverHandler.writeLineMessage("0 - Return");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         }catch(NumberFormatException e){
             printDefaultMessage();
@@ -358,7 +364,7 @@ public class Dialogues {
         serverHandler.writeLineMessage("There`s no such item");
     }
 
-    public void printBadValidationMessage(String item){
+    public void printBadValidationMessage(String Item){
         serverHandler.writeLineMessage("Please, input valid " + item);
     }
 
@@ -368,6 +374,10 @@ public class Dialogues {
 
     public void printDefaultMessage(){
         serverHandler.writeLineMessage("Input the proposed option");
+    }
+
+    public void printWaitingForReplyMessage(){
+        serverHandler.writeLineMessage("Waiting for reply...");
     }
 
 }

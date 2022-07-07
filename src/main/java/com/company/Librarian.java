@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.server.ServerHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -17,6 +18,12 @@ import java.util.stream.Collectors;
 public class Librarian {
 
     WorkWithFiles workWithFiles;
+    ServerHandler serverHandler;
+
+    public Librarian(WorkWithFiles workWithFirstFile) {
+        this.workWithFiles=workWithFirstFile;
+    }
+
 
     public void addItem(Item item) throws IOException {
         if(item instanceof Book){workWithFiles.addItemToFile(new Container<>((Book) item));}
@@ -54,7 +61,7 @@ public class Librarian {
     public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
         if (!forBorrow) {
             if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {
-                System.out.println("This item is borrowed, please return it first");
+                serverHandler.writeMessage("This item is borrowed, please return it first");
                 return false;
             }
         }
@@ -75,10 +82,17 @@ public class Librarian {
                 deleteItem(itemID,true, typeOfItem);
                 item.setBorrowed(borrow);
                 addItem(item);
-                System.out.println("Success");
-            } else if (borrow) System.out.println("Item has already been taken by someone else");
-            else System.out.println("Item has already been returned");
-        } else new Dialogues().printItemNotExistsMessage();
+
+                serverHandler.writeMessage("Success");
+            } else if (borrow) {
+                serverHandler.writeMessage("Item has already been taken by someone else");
+            }
+            else {
+                serverHandler.writeMessage("Item has already been returned");
+            }
+        } else {
+            serverHandler.writeLineMessage("There`s no such item");
+        }
     }
 
     public List<? extends Item> sortingItemsByID(List<? extends Item> list) {

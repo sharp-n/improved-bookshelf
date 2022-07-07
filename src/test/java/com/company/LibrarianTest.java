@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LibrarianTest {
 
-    Librarian booksLibrarian = new Librarian(WorkWithFiles.BOOK_FILE_PATH);
-    Librarian journalsLibrarian = new Librarian(WorkWithFiles.BOOK_FILE_PATH);
-    Librarian bothItemsLibrarian = new Librarian(WorkWithFiles.SINGLE_FILE_PATH);
+    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"));
+    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"));
+    Librarian bothItemsLibrarian = new Librarian(new WorkWithFiles("test"));
 
     Book firstBook = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
     Book secondBook = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
@@ -67,9 +67,6 @@ public class LibrarianTest {
 
     @Test
     void addItemsToAllFilesTest() throws IOException {
-
-        Librarian booksLibrarian = new Librarian(WorkWithFiles.BOOK_FILE_PATH);
-        Librarian journalsLibrarian = new Librarian(WorkWithFiles.JOURNALS_FILE_PATH);
 
         booksLibrarian.addItem(firstBook);
         booksLibrarian.addItem(secondBook);
