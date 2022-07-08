@@ -20,10 +20,6 @@ public class Librarian {
     WorkWithFiles workWithFiles;
     ServerHandler serverHandler;
 
-    public Librarian(WorkWithFiles workWithFirstFile) {
-        this.workWithFiles=workWithFirstFile;
-    }
-
 
     public void addItem(Item item) throws IOException {
         if(item instanceof Book){workWithFiles.addItemToFile(new Container<>((Book) item));}
