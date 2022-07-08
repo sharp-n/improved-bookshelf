@@ -1,34 +1,49 @@
 package com.company;
 
-import lombok.AllArgsConstructor;
+import com.company.server.Server;
+import com.company.server.ServerHandler;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class Dialogues {
 
-    public static Scanner scan;
+    Scanner scan;
     Item item;
 
     Librarian librarian;
 
-    public static void setScan(Scanner scan) {
-        Dialogues.scan = scan;
+    PrintWriter out;
+
+    ServerHandler serverHandler;
+
+    public Dialogues(PrintWriter out,Scanner scan) {
+        this.out=out;
+        this.scan = scan;
+        serverHandler = new ServerHandler(out);
     }
 
-    String titleUserInput(){
-        System.out.println("Title:");
+    public Dialogues(Item item, Librarian librarian, PrintWriter out,Scanner scan) {
+        this.item = item;
+        this.librarian = librarian;
+        this.out = out;
+        this.scan = scan;
+        serverHandler = new ServerHandler(out);
+    }
+
+    public String titleUserInput(){
+        serverHandler.writeLineMessage("Input title:");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
-    String validateTitle(String title){
+    public String validateTitle(String title){
         Pattern pattern= Pattern.compile("[\t|/<>~\\\\]");
         Matcher matcher = pattern.matcher(title);
         if (!Librarian.checkItemForValidity(title)||matcher.find()) {
@@ -39,7 +54,8 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        System.out.println("\nInput your name. If you want to use default file(s) write \"default\"");
+        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\"");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
@@ -51,16 +67,17 @@ public class Dialogues {
         return null;
     }
 
-    Integer idUserInput(){
+    public Integer idUserInput(){
         try {
-            System.out.println("Item ID:");
+            serverHandler.writeLineMessage("Item ID:");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        }  catch (NumberFormatException e){
+        }  catch (NumberFormatException e) {
             return null;
         }
     }
 
-    Integer validateID(Integer id) {
+    public Integer validateID(Integer id) {
         if (id==null) {return null;}
         if (Librarian.checkItemForValidity(id)) {
             return id;
@@ -69,12 +86,13 @@ public class Dialogues {
         return null;
     }
 
-    String authorUserInput(){
-        System.out.println("Author:");
+    public String authorUserInput(){
+        serverHandler.writeLineMessage("Author:");
+        printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
-    String validateAuthorName(String author) {
+    public String validateAuthorName(String author) {
         Pattern pattern= Pattern.compile("[@\t#$;:=+*&|/<>?!~()%']");
         Matcher matcher = pattern.matcher(author);
         if (!Librarian.checkItemForValidity(author) || matcher.find()) {
@@ -84,34 +102,38 @@ public class Dialogues {
         return author;
     }
 
-    Integer yearUserInput(){
+    public Integer yearUserInput(){
         try {
-            System.out.println("Date of publish:\n\tYear: ");
+            System.out.println();
+            serverHandler.writeLineMessage("Date of publish:\n\tYear: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
         }
     }
 
-    Integer dayUserInput(){
+    public Integer dayUserInput(){
         try {
-            System.out.println("\tDay: ");
+            serverHandler.writeLineMessage("\tDay: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
         }
     }
 
-    Integer monthUserInput(){
+    public Integer monthUserInput(){
         try {
-            System.out.println("\tMonth: ");
+            serverHandler.writeLineMessage("\tMonth: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
             return null;
         }
     }
 
-    GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
+    public GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
         if (day==null||month==null||year==null) {
             printBadValidationMessage("date");
             return null;
@@ -131,7 +153,7 @@ public class Dialogues {
         return null;
     }
 
-    Integer validatePages(Integer pages) {
+    public Integer validatePages(Integer pages) {
         if (pages == null) {return null;}
         if (!Librarian.checkItemForValidity(pages)) {
             printBadValidationMessage("pages");
@@ -144,8 +166,10 @@ public class Dialogues {
         return pages;
     }
 
-    Integer pagesUsersInput(){
+    public Integer pagesUsersInput(){
         try {
+            serverHandler.writeLineMessage("Pages: ");
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch(NumberFormatException e){
             return null;
@@ -154,9 +178,9 @@ public class Dialogues {
 
     public void addingDialogue() throws IOException{
         try {
-            String typeOfItem;
+            String typeOfItem = "";
             if(item instanceof Book) typeOfItem = "Book";
-            else typeOfItem = "Journal";
+            else if (item instanceof Journal) typeOfItem = "Journal";
             boolean add = true;
             String author = "";
             GregorianCalendar publishingDate = new GregorianCalendar();
@@ -172,13 +196,12 @@ public class Dialogues {
                             {
                                 publishingDate = validateDate(yearUserInput(),monthUserInput(),dayUserInput());
                                 if (publishingDate==null){
-                                    System.out.println("Try again");
+                                    serverHandler.writeLineMessage("Try again");
                                     add=false;
                                 }
                             }
                         }
                         if (add) {
-                            System.out.println("Pages:");
                             Integer numOfPages = validatePages(pagesUsersInput());
                             if (numOfPages != null) {
 
@@ -193,7 +216,7 @@ public class Dialogues {
                             }
                         }
                     }
-                } else System.out.println("Item with this ID exists. Please change ID and try again");
+                } else out.println("Item with this ID exists. Please change ID and try again");
             } else printBadValidationMessage("ID. It should be a number (>0)");
         } catch (NullPointerException e){
             e.printStackTrace();
@@ -210,11 +233,11 @@ public class Dialogues {
             printBadValidationMessage("ID. It should be a number (>0)");
             return null;
         }
-        String typeOfItem;
+        String typeOfItem = "";
         if(item instanceof Book) typeOfItem = "Book";
-        else typeOfItem = "Journal";
+        else if (item instanceof Journal) typeOfItem = "Journal";
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
-            System.out.println("There`s no item with such ID");
+            serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
         }
         return itemID;
@@ -238,115 +261,123 @@ public class Dialogues {
         if(itemID!=null) {
             if (item instanceof Book) {
                 librarian.borrowItem(itemID, "Book", borrow);
-            } else librarian.borrowItem(itemID, "Journal", borrow);
+            } else if (item instanceof Journal) librarian.borrowItem(itemID, "Journal", borrow);
         }
     }
 
     public void printListOfItems(List<? extends Item> items){
-        if (items.size()==0) System.out.println("There`s no items here");
+        if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
-            System.out.print(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
-            if (item instanceof Book) System.out.print(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
-            System.out.print(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
+            serverHandler.writeMessage(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
+            if (item instanceof Book) serverHandler.writeMessage(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
+            serverHandler.writeMessage(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
                     "BORROWED") );
-            System.out.print("\n----------|---------------------------------------");
-            if (item instanceof Book) System.out.print("|-------------------------------|-----------------");
-            System.out.println("|-------|----------");
+            serverHandler.writeMessage("\n----------|---------------------------------------");
+            if (item instanceof Book) serverHandler.writeMessage("|-------------------------------|-----------------");
+            serverHandler.writeLineMessage("|-------|----------");
             items.forEach(i -> {
-                System.out.print(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));
+                serverHandler.writeMessage(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));
                 if (item instanceof Book) {
                     DateFormat df = new SimpleDateFormat("dd.M.y");
-                    System.out.print(String.format("%-32s", "| " + ((Book) i).getAuthor())
+                    serverHandler.writeMessage(String.format("%-32s", "| " + ((Book) i).getAuthor())
                             + String.format("%-18s", "| " + df.format(((Book) i).getPublishingDate().getTime())));
                 }
-                System.out.print(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n");
+                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n");
             });
         }
     }
 
-    private int getSortingVar(){
+    private Integer getSortingVar(){
         try {
-            System.out.println("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
+            serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
             if (item instanceof Book) {
-                System.out.println("\t4 - Author\n\t5 - Publishing date");
+                serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
             }
-            System.out.println("0 - Return");
-            return new Scanner(System.in).nextInt();
-        }catch(InputMismatchException e){
+            serverHandler.writeLineMessage("0 - Return");
+            printWaitingForReplyMessage();
+            return Integer.parseInt(scan.nextLine().trim());
+        }catch(NumberFormatException e){
             printDefaultMessage();
-            return 0;
+            return null;
         }
     }
 
-    public static int getMainMenuVar(){
+    public Integer getMainMenuVar(){
         try {
-            return new Scanner(System.in).nextInt();
-        }catch(InputMismatchException e){
-            return 0;
+            return Integer.parseInt(scan.nextLine().trim());
+        }catch(NumberFormatException e){
+            printDefaultMessage();
+            return null;
         }
     }
 
     public void sortingDialogue() throws IOException {
-        int var = getSortingVar();
-        if (item instanceof Book)
-            switch(var){
-                case 0: break;
+        WorkWithFiles workWithFiles = librarian.workWithFiles;
+        Integer var = getSortingVar();
+        if (var != null) {
+            List<? extends Item> items = new ArrayList<>();
+            if (item instanceof Book)
+                switch (var) {
+                    case 0:
+                        break;
+                    case 1:
+                        items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
+                        break;
+                    case 2:
+                        items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
+                        break;
+                    case 3:
+                        items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
+                        break;
+                    case 4:
+                        items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
+                        break;
+                    case 5:
+                        items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
+                        break;
+                    default:
+                        printDefaultMessage();
+                        break;
+
+                }
+            else if (item instanceof Journal) switch (var) {
+                case 0:
+                    break;
                 case 1:
-                    List<? extends Item > books1 = librarian.sortingItemsByID(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books1);
+                    items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
                     break;
                 case 2:
-                    List<? extends Item > books2 = librarian.sortingItemsByTitle(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books2);
+                    items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
                     break;
                 case 3:
-                    List<? extends Item > books3 = librarian.sortingItemsByPages(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books3);
+                    items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
                     break;
-                case 4:
-                    List<? extends Item > books4 = librarian.sortingBooksByAuthor(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books4);
-                    break;
-                case 5:
-                    List<? extends Item > books5 = librarian.sortingBooksByPublishingDate(WorkWithFiles.readToBooksList(librarian.filePath));
-                    printListOfItems(books5);
-                    break;
-                default: printDefaultMessage();
+                default:
+                    printDefaultMessage();
                     break;
             }
-        else switch(var){
-            case 0: break;
-            case 1:
-                List<? extends Item > journals1 = librarian.sortingItemsByID(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals1);
-                break;
-            case 2:
-                List<? extends Item > journals2 = librarian.sortingItemsByTitle(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals2);
-                break;
-            case 3:
-                List<? extends Item > journals3 = librarian.sortingItemsByPages(WorkWithFiles.readToJournalsList(librarian.filePath));
-                printListOfItems(journals3);
-                break;
-            default: printDefaultMessage();
-                break;
-        }
+            printListOfItems(items);
+        } else printDefaultMessage();
     }
 
-    public static void printItemNotExistsMessage(){
-        System.out.println("There`s no such item");
+    public void printItemNotExistsMessage(){
+        serverHandler.writeLineMessage("There`s no such item");
     }
 
-    public static void printBadValidationMessage(String item){
-        System.out.println("Please, input valid " + item);
+    public void printBadValidationMessage(String Item){
+        serverHandler.writeLineMessage("Please, input valid " + item);
     }
 
-    public static void printSuccessMessage(String item){
-        System.out.println("The item is successfully " + item);
+    public void printSuccessMessage(String item){
+        serverHandler.writeLineMessage("The item is successfully " + item);
     }
 
-    public static void printDefaultMessage(){
-        System.out.println("Input the proposed option");
+    public void printDefaultMessage(){
+        serverHandler.writeLineMessage("Input the proposed option");
+    }
+
+    public void printWaitingForReplyMessage(){
+        serverHandler.writeLineMessage("Waiting for reply...");
     }
 
 }

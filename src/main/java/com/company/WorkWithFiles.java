@@ -1,41 +1,36 @@
 package com.company;
 
 import com.google.gson.*;
+import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
+
 public class WorkWithFiles {
 
-    static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static String SINGLE_FILE_PATH;
-    public static String BOOK_FILE_PATH;
-    public static String JOURNALS_FILE_PATH;
+    final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public Path filePath;
 
-    public static void setSingleFilePath(String userName) {
-        SINGLE_FILE_PATH = System.getProperty("user.home") + "/items_" + userName + ".txt";
+    public WorkWithFiles(String filePath) {
+        this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
     }
 
-    public static void setBookFilePath(String userName) {
-        BOOK_FILE_PATH = System.getProperty("user.home") + "/books_" + userName + ".txt";
-    }
 
-    public static void setJournalsFilePath(String userName) {
-        JOURNALS_FILE_PATH = System.getProperty("user.home") + "/journals_" + userName + ".txt";
-    }
-
-    public static void addItemToFile(Container<? extends Item> itemContainer, String filePath) throws IOException {
-        List<Container<? extends Item>> containers = readToContainersList(filePath);
+    public void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
+        List<Container<? extends Item>> containers = readToContainersList();
         containers.add(itemContainer);
-        rewriteFile(containers, filePath);
+        rewriteFile(containers);
     }
 
-    static void rewriteFile(List<Container<? extends Item>> containers, String filePath){
+    void rewriteFile(List<Container<? extends Item>> containers){
         try {
-            File file = createFileIfNotExists(filePath);
-            FileWriter fw = new FileWriter(filePath, false);
+            File file = createFileIfNotExists();
+            FileWriter fw = new FileWriter(file, false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
             bw.close();
@@ -44,9 +39,9 @@ public class WorkWithFiles {
         }
     }
 
-    public static List<Journal> readToJournalsList(String filePath) throws IOException {
-        createFileIfNotExists(filePath);
-        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+    public List<Journal> readToJournalsList() throws IOException {
+        createFileIfNotExists();
+        JsonArray jsonArray = makeJsonArrayFromFile();
         if(jsonArray==null) return new ArrayList<>();
         List<Journal> journals = new ArrayList<>();
         for (JsonElement element : jsonArray) {
@@ -59,9 +54,9 @@ public class WorkWithFiles {
         return journals;
     }
 
-    public static List<Book> readToBooksList( String filePath) throws IOException {
-        createFileIfNotExists(filePath);
-        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+    public List<Book> readToBooksList() throws IOException {
+        createFileIfNotExists();
+        JsonArray jsonArray = makeJsonArrayFromFile();
         if(jsonArray==null) return new ArrayList<>();
         List<Book> books = new ArrayList<>();
         for (JsonElement element : jsonArray) {
@@ -74,9 +69,9 @@ public class WorkWithFiles {
         return books;
     }
 
-    public static List<Container<? extends Item>> readToContainersList(String filePath) throws IOException {
-        createFileIfNotExists(filePath);
-        JsonArray jsonArray = makeJsonArrayFromFile(filePath);
+    public List<Container<? extends Item>> readToContainersList() throws IOException {
+        createFileIfNotExists();
+        JsonArray jsonArray = makeJsonArrayFromFile();
         List<Container<? extends Item>> containers = new ArrayList<>();
         if(jsonArray != null) {
             for (JsonElement element : jsonArray) {
@@ -86,13 +81,13 @@ public class WorkWithFiles {
         return containers;
     }
 
-    static JsonArray makeJsonArrayFromFile(String filePath) throws IOException {
-        createFileIfNotExists(filePath);
-        return  gson.fromJson(new FileReader(filePath), JsonArray.class);
+    JsonArray makeJsonArrayFromFile() throws IOException {
+        createFileIfNotExists();
+        return  gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
-    static File createFileIfNotExists(String filePath) throws IOException {
-        File file = new File(filePath);
+    File createFileIfNotExists() throws IOException {
+        File file = filePath.toFile();
         if (!file.exists()) file.createNewFile();
         return file;
     }

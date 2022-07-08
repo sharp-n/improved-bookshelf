@@ -1,6 +1,5 @@
 package com.company;
 
-import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

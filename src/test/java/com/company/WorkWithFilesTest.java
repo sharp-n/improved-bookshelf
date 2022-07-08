@@ -1,32 +1,36 @@
 package com.company;
 
+import com.company.server.ServerHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Scanner;
 
 public class WorkWithFilesTest {
 
-    Librarian booksLibrarian = new Librarian(WorkWithFiles.BOOK_FILE_PATH);
-    Librarian journalsLibrarian = new Librarian(WorkWithFiles.BOOK_FILE_PATH);
+    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out)));
+    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out)));
+    WorkWithFiles workWithFiles = new WorkWithFiles("test");
 
     Book secondBook = new Book(101, "Second Book", "Second Author", new GregorianCalendar(2021, Calendar.APRIL,21),924);
 
     @Test
     void readToBooksListTest() throws IOException {
-        WorkWithFiles.readToBooksList(WorkWithFiles.SINGLE_FILE_PATH).forEach(b->System.out.println(b.getItemID() + " - " + b.getTitle() + " - " + b.getAuthor()));
+        workWithFiles.readToBooksList().forEach(b->System.out.println(b.getItemID() + " - " + b.getTitle() + " - " + b.getAuthor()));
     }
 
     @Test
     void readToJournalsListTest() throws IOException {
-        WorkWithFiles.readToJournalsList(WorkWithFiles.SINGLE_FILE_PATH).forEach(b->System.out.println(b.getItemID() + " - " + b.getTitle()));
+        workWithFiles.readToJournalsList().forEach(b->System.out.println(b.getItemID() + " - " + b.getTitle()));
     }
 
     @Test
     void readToContainersListTest() throws IOException {
-        WorkWithFiles.readToContainersList(WorkWithFiles.SINGLE_FILE_PATH).forEach(b->System.out.println(b.item + " - " + b.typeOfClass));
+        workWithFiles.readToContainersList().forEach(b->System.out.println(b.item + " - " + b.typeOfClass));
     }
 
     @Test
@@ -37,7 +41,7 @@ public class WorkWithFilesTest {
 
     @Test
     void addItemToFileTest() throws IOException {
-        WorkWithFiles.addItemToFile(new Container<>(secondBook), WorkWithFiles.SINGLE_FILE_PATH);
+        workWithFiles.addItemToFile(new Container<>(secondBook));
     }
 
 }
