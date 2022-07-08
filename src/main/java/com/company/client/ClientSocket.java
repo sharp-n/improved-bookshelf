@@ -1,8 +1,5 @@
 package com.company.client;
 
-import com.company.*;
-import jdk.internal.org.jline.utils.WriterOutputStream;
-
 import java.io.*;
 import java.net.Socket;
 
