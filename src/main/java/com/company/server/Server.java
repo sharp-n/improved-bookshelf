@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Server {
@@ -13,7 +14,7 @@ public class Server {
 
         ServerSocket serverSocket = new ServerSocket(8080);
         int connections = 0;
-        var connectionThreads = new ArrayList<Thread>();
+        List<Thread> connectionThreads = new ArrayList<>();
         while (connections != 20) {
             Socket input = serverSocket.accept();
             connections++;
