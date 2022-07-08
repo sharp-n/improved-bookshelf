@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,10 +14,10 @@ import java.util.List;
 public class WorkWithFiles {
 
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public String filePath;
+    public Path filePath;
 
     public WorkWithFiles(String filePath) {
-        this.filePath = System.getProperty("user.home") + "/items_" + filePath + ".txt";;
+        this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
     }
 
 
@@ -29,7 +30,7 @@ public class WorkWithFiles {
     void rewriteFile(List<Container<? extends Item>> containers){
         try {
             File file = createFileIfNotExists();
-            FileWriter fw = new FileWriter(filePath, false);
+            FileWriter fw = new FileWriter(file, false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
             bw.close();
@@ -82,11 +83,11 @@ public class WorkWithFiles {
 
     JsonArray makeJsonArrayFromFile() throws IOException {
         createFileIfNotExists();
-        return  gson.fromJson(new FileReader(filePath), JsonArray.class);
+        return  gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
     File createFileIfNotExists() throws IOException {
-        File file = new File(filePath);
+        File file = filePath.toFile();
         if (!file.exists()) file.createNewFile();
         return file;
     }
