@@ -52,8 +52,6 @@ public class Librarian {
         return false;
     }
 
-    // !!!!!REFACTOR!!!!!
-
     public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
         if (!forBorrow) {
             if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {

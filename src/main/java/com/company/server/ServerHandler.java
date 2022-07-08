@@ -22,6 +22,7 @@ public class ServerHandler {
 
     private final static int ONE_FILE = 1;
     private final static int TWO_FILES = 2;
+    private final static int CHANGE_USER_VALUE = 3;
     final static int ADD_BOOK = 1;
     final static int DELETE_BOOK = 2;
     final static int TAKE_BOOK = 3;
@@ -37,11 +38,13 @@ public class ServerHandler {
     public void handle() throws IOException {
 
         boolean filesValue = true;
-        boolean value = true;
+        boolean value;
         boolean validUserName = false;
+        String userName = "";
+
         while (filesValue) {
 
-            String userName = "";
+
             Dialogues dialogue = new Dialogues(out,in);
 
             while (!validUserName) {
@@ -50,7 +53,7 @@ public class ServerHandler {
             }
 
             User user = new User(userName);
-            writeLineMessage("\n0 - Exit\n1 - Use one file\n2 - Use two files");
+            writeLineMessage("\n0 - Exit\n1 - Use one file\n2 - Use two files\n3 - Change user");
             dialogue.printWaitingForReplyMessage();
             Integer filesVar = dialogue.getMainMenuVar();
             if (filesVar == null) filesVar = -1;
@@ -71,6 +74,11 @@ public class ServerHandler {
                     workWithFirstFile = new WorkWithFiles("books_" + user.userName);
                     workWithSecondFile = new WorkWithFiles("journals_" + user.userName);
                     writeLineMessage("Your items will be saved in different files");
+                    break;
+                case CHANGE_USER_VALUE:
+                    value = false;
+                    validUserName = false;
+                    userName = "";
                     break;
                 case EXIT_VALUE:
                     filesValue = false;
