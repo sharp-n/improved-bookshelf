@@ -251,10 +251,13 @@ public class Dialogues {
     public void deletingDialogue() throws IOException{
         Integer itemID = validateIdToBorrow();
         if(itemID!=null) {
-            boolean deleted;
-            if(item instanceof Book)
-            deleted = librarian.deleteItem(itemID, false, "Book");
-            else deleted = librarian.deleteItem(itemID, false, "Journal");
+            boolean deleted = false;
+            if(item instanceof Book) {
+                deleted = librarian.deleteItem(itemID, false, "Book");
+            }
+            else  if (item instanceof Journal) {
+                deleted = librarian.deleteItem(itemID, false, "Journal");
+            }
             if (deleted) {
                 printSuccessMessage("deleted");
             }
