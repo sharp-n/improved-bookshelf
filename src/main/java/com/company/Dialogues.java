@@ -147,8 +147,9 @@ public class Dialogues {
             return null;
         }
         if (Librarian.checkItemForValidity(year) && Librarian.checkItemForValidity(month)
-                && Librarian.checkItemForValidity(day))
+                && Librarian.checkItemForValidity(day)) {
             return new GregorianCalendar(year, month - 1, day);
+        }
         printBadValidationMessage("date");
         return null;
     }
@@ -234,8 +235,12 @@ public class Dialogues {
             return null;
         }
         String typeOfItem = "";
-        if(item instanceof Book) typeOfItem = "Book";
-        else if (item instanceof Journal) typeOfItem = "Journal";
+        if(item instanceof Book) {
+            typeOfItem = "Book";
+        }
+        else if (item instanceof Journal) {
+            typeOfItem = "Journal";
+        }
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
             serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
@@ -265,6 +270,8 @@ public class Dialogues {
         }
     }
 
+    // TODO refactor printListOfItems() -> if-else & table
+
     public void printListOfItems(List<? extends Item> items){
         if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
@@ -289,12 +296,14 @@ public class Dialogues {
 
     private Integer getSortingVar(){
         try {
-            serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
-            if (item instanceof Book) {
-                serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
+            if (item instanceof Book || item instanceof Journal) {
+                serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
+                if (item instanceof Book) {
+                    serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
+                }
+                serverHandler.writeLineMessage("0 - Return");
+                printWaitingForReplyMessage();
             }
-            serverHandler.writeLineMessage("0 - Return");
-            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         }catch(NumberFormatException e){
             printDefaultMessage();
@@ -358,10 +367,6 @@ public class Dialogues {
             }
             printListOfItems(items);
         } else printDefaultMessage();
-    }
-
-    public void printItemNotExistsMessage(){
-        serverHandler.writeLineMessage("There`s no such item");
     }
 
     public void printBadValidationMessage(String Item){

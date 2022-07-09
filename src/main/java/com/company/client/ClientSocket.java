@@ -14,13 +14,15 @@ public class ClientSocket {
 
             boolean read = true;
 
+            ClientHandler clientHandlerReader = new ClientHandler(in);
+            ClientHandler clientHandlerWriter = new ClientHandler(reader, out);
+
             while (read) {
-                ClientHandler clientHandler = new ClientHandler();
-                String message = clientHandler.read(in);
+                String message = clientHandlerReader.read();
                 if (message != null) {
                     System.out.println(message);
                     out.flush();
-                    clientHandler.write(reader, out);
+                    clientHandlerWriter.write();
                 } else read = false;
             }
         }

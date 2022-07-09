@@ -52,6 +52,8 @@ public class Librarian {
         return false;
     }
 
+    //TODO add Book check in defineIfCanDelete()
+
     public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
         if (!forBorrow) {
             if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {
