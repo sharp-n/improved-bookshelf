@@ -279,17 +279,17 @@ public class Dialogues {
     public void printListOfItems(List<? extends Item> items){
         if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
-            String str = "%-11s%-40s";
+            String str = "%-12s%-40s";
             serverHandler.writeMessage(String.format(str, "\n\r ITEM ID", "| TITLE"));
             if (item instanceof Book) {
                 serverHandler.writeMessage(String.format("%-32s%-18s", "| AUTHOR", "| PUBLISHING DATE"));
             }
             serverHandler.writeMessage(String.format("%-8s%-30s", "| PAGES", "| " + "BORROWED"));
-            serverHandler.writeMessage("\n\r----------|---------------------------------------");
+            serverHandler.writeMessage("\n\r----------+---------------------------------------");
             if (item instanceof Book) {
-                serverHandler.writeMessage("|-------------------------------|-----------------");
+                serverHandler.writeMessage("+-------------------------------+-----------------");
             }
-            serverHandler.writeLineMessage("|-------|----------");
+            serverHandler.writeLineMessage("+-------+----------");
             for (Item i : items) {
                 serverHandler.writeMessage(String.format("%-10s%-40s", " " + i.getItemID(), "| " + i.getTitle()));
                 if (item instanceof Book) {

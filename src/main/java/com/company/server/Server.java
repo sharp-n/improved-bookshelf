@@ -10,43 +10,77 @@ import java.util.Scanner;
 
 public class Server {
 
+    static ServerSocket serverSocket;
     public static void main(String[] args) {
-        //TODO create method start() for initializing server socket
-        try {
-            ServerSocket serverSocket = new ServerSocket(8081);
+            runServer();
             int connections = 0;
             List<Thread> connectionThreads = new ArrayList<>();
             while (connections != 20) {
-                Socket input = serverSocket.accept();
-                connections++;
-                Thread connectionThread = new Thread(() -> {
-                    try {
-                        Scanner in = new Scanner(input.getInputStream());
-                        PrintWriter out = new PrintWriter(input.getOutputStream());
-                        ServerHandler serverHandler = new ServerHandler(in, out);
+                Socket input = runInputSocket();
+                if (input!=null) {
+                    connections++;
+                    Thread connectionThread = new Thread(() -> {
+                        try {
+                            Scanner in = new Scanner(input.getInputStream());
+                            PrintWriter out = new PrintWriter(input.getOutputStream());
+                            ServerHandler serverHandler = new ServerHandler(in, out);
 
-                        serverHandler.handle();
+                            serverHandler.handle();
 
-                        in.close();
-                        out.close();
-                        input.close();
+                            in.close();
+                            out.close();
+                            input.close();
 
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-                connectionThread.start();
-                connectionThreads.add(connectionThread);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+                    connectionThread.start();
+                    connectionThreads.add(connectionThread);
+                }
             }
+            joinThreads(connectionThreads);
+            stopServer();
+    }
+
+    private static void runServer() {
+        int port = 8080;
+        boolean openPort = false;
+        while(!openPort){
+            try {
+                serverSocket = new ServerSocket(port);
+                openPort = true;
+            } catch (IOException e){
+                openPort = false;
+                port++;
+            }
+        }
+    }
+
+    private static Socket runInputSocket() {
+        try {
+            return serverSocket.accept();
+        } catch (IOException e){
+            return null;
+        }
+    }
+
+    private static void joinThreads(List<Thread> connectionThreads) {
+        try {
             for (Thread connectionThread : connectionThreads) {
                 connectionThread.join();
             }
-            serverSocket.close();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        } catch(InterruptedException ignored){
 
+        }
     }
 
+    private static void stopServer(){
+        try {
+            serverSocket.close();
+        } catch (IOException ignored){
 
+        }
+    }
 }
