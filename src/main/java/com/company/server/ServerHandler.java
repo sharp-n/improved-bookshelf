@@ -79,6 +79,7 @@ public class ServerHandler {
                         mainProcValue = false;
                         break;
                     default:
+                        mainProcValue = false;
                         dialogue.printDefaultMessage();
                         break;
                 }
