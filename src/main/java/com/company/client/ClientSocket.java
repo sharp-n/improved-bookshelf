@@ -11,6 +11,7 @@ public class ClientSocket {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+            PrintStream print = new PrintStream(System.out);
 
             boolean read = true;
 
@@ -20,7 +21,8 @@ public class ClientSocket {
             while (read) {
                 String message = clientHandlerReader.read();
                 if (message != null) {
-                    System.out.println(message);
+                    print.println(message);
+                    print.flush();
                     out.flush();
                     clientHandlerWriter.write();
                 } else read = false;

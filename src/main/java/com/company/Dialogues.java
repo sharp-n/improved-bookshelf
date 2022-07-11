@@ -279,11 +279,15 @@ public class Dialogues {
         if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
             serverHandler.writeMessage(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
-            if (item instanceof Book) serverHandler.writeMessage(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
+            if (item instanceof Book) {
+                serverHandler.writeMessage(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
+            }
             serverHandler.writeMessage(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
                     "BORROWED") );
             serverHandler.writeMessage("\n----------|---------------------------------------");
-            if (item instanceof Book) serverHandler.writeMessage("|-------------------------------|-----------------");
+            if (item instanceof Book) {
+                serverHandler.writeMessage("|-------------------------------|-----------------");
+            }
             serverHandler.writeLineMessage("|-------|----------");
             items.forEach(i -> {
                 serverHandler.writeMessage(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));

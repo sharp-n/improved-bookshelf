@@ -20,7 +20,13 @@ public class WorkWithFiles {
         this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
     }
 
-    public void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
+    {
+        if (filePath ==null){
+            filePath=Paths.get(System.getProperty("user.home") + "/items_default.txt");
+        }
+    }
+
+    public synchronized void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
         List<Container<? extends Item>> containers = readToContainersList();
         containers.add(itemContainer);
         rewriteFile(containers);
