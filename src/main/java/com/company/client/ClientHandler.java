@@ -31,7 +31,7 @@ public class ClientHandler {
             String message = "";
             do {
                 lineFromServer = reader.readLine();
-                message += lineFromServer + "\n";
+                message += lineFromServer + "\n\r";
             } while (!lineFromServer.equals(replyMessage));
             return message;
         } catch (NullPointerException ignored){

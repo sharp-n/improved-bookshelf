@@ -100,19 +100,19 @@ public class ServerHandler {
     }
 
     private Integer getUsersMainMenuChoice(Dialogues dialogue){
-        writeLineMessage("\n\t\t0 - Exit" +
-                "\n1 - Add book\t6 - Add journal" +
-                "\n2 - Delete book\t7 - Delete journal" +
-                "\n3 - Take book\t8 - Take journal" +
-                "\n4 - Return book\t9 - Return journal" +
-                "\n5 - Show books\t10 - Show journals");
+        writeLineMessage("\n\r\t\t0 - Exit" +
+                "\n\r1 - Add book\t6 - Add journal" +
+                "\n\r2 - Delete book\t7 - Delete journal" +
+                "\n\r3 - Take book\t8 - Take journal" +
+                "\n\r4 - Return book\t9 - Return journal" +
+                "\n\r5 - Show books\t10 - Show journals");
 
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
     private Integer usersFilesMenuChoice(Dialogues dialogue){
-        writeLineMessage("\n0 - Exit\n1 - Use one file\n2 - Use two files\n3 - Change user");
+        writeLineMessage("\n\r0 - Exit\n\r1 - Use one file\n\r2 - Use two files\n\r3 - Change user");
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }

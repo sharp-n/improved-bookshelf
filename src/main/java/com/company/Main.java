@@ -3,7 +3,6 @@ package com.company;
 import com.company.server.Server;
 import com.company.server.ServerHandler;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -17,7 +16,7 @@ public class Main {
 
         Thread consoleThread = new Thread(()->{
             ServerHandler handler = new ServerHandler(new Scanner(System.in), new PrintWriter(System.out));
-                handler.handle();
+            handler.handle();
         });
 
         serverThread.start();
