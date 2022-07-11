@@ -9,28 +9,17 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws  InterruptedException {
+
         Thread serverThread = new Thread(()->{
-            try {
-                //if (args[0].equals("server")) {
-                    Server.main(new String[]{});
-                //} else {
-                 //   ServerHandler handler = new ServerHandler(new Scanner(System.in), new PrintWriter(System.out));
-                //    handler.handle();
-                //}
-            }catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+                Server.main(new String[]{});
         });
 
         Thread consoleThread = new Thread(()->{
             ServerHandler handler = new ServerHandler(new Scanner(System.in), new PrintWriter(System.out));
-            try {
                 handler.handle();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         });
+
         serverThread.start();
         consoleThread.start();
         serverThread.join();

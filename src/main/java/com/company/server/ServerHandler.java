@@ -35,7 +35,7 @@ public class ServerHandler {
     final static int SHOW_JOURNALS = 10;
     private final static int EXIT_VALUE = 0;
 
-    public void handle() throws IOException {
+    public void handle() {
 
         boolean filesValue = true;
         boolean value;
@@ -91,7 +91,7 @@ public class ServerHandler {
 
 
             while (value) {
-                Dialogues dialogues = new Dialogues(out,in);
+                Dialogues dialogues = new Dialogues(out, in);
                 writeLineMessage("\n\t\t0 - Exit" +
                         "\n1 - Add book\t6 - Add journal" +
                         "\n2 - Delete book\t7 - Delete journal" +
@@ -103,66 +103,70 @@ public class ServerHandler {
                 Dialogues bookDialogue;
                 Dialogues journalDialogue;
                 if (workWithSecondFile.filePath != null) {
-                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in,out)),out,in);
-                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in,out)), out,in);
+                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in, out)), out, in);
+                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in, out)), out, in);
                 } else {
-                    bookDialogue = new Dialogues(new Book(), librarian, out,in);
-                    journalDialogue = new Dialogues(new Journal(), librarian, out,in);
+                    bookDialogue = new Dialogues(new Book(), librarian, out, in);
+                    journalDialogue = new Dialogues(new Journal(), librarian, out, in);
                 }
 
                 Integer var = dialogues.getMainMenuVar();
 
-                if (var ==null) var =-1;
+                if (var == null) var = -1;
 
-                switch (var) {
+                try {
+                    switch (var) {
 
-                    case ADD_BOOK:
-                        bookDialogue.addingDialogue();
-                        break;
+                        case ADD_BOOK:
+                            bookDialogue.addingDialogue();
+                            break;
 
-                    case DELETE_BOOK:
-                        bookDialogue.deletingDialogue();
-                        break;
+                        case DELETE_BOOK:
+                            bookDialogue.deletingDialogue();
+                            break;
 
-                    case TAKE_BOOK:
-                        bookDialogue.borrowingDialogue(true);
-                        break;
+                        case TAKE_BOOK:
+                            bookDialogue.borrowingDialogue(true);
+                            break;
 
-                    case RETURN_BOOK:
-                        bookDialogue.borrowingDialogue(false);
-                        break;
+                        case RETURN_BOOK:
+                            bookDialogue.borrowingDialogue(false);
+                            break;
 
-                    case SHOW_BOOKS:
-                        bookDialogue.sortingDialogue();
-                        break;
+                        case SHOW_BOOKS:
+                            bookDialogue.sortingDialogue();
+                            break;
 
-                    case ADD_JOURNAL:
-                        journalDialogue.addingDialogue();
-                        break;
+                        case ADD_JOURNAL:
+                            journalDialogue.addingDialogue();
+                            break;
 
-                    case DELETE_JOURNAL:
-                        journalDialogue.deletingDialogue();
-                        break;
+                        case DELETE_JOURNAL:
+                            journalDialogue.deletingDialogue();
+                            break;
 
-                    case TAKE_JOURNAL:
-                        journalDialogue.borrowingDialogue(true);
-                        break;
+                        case TAKE_JOURNAL:
+                            journalDialogue.borrowingDialogue(true);
+                            break;
 
-                    case RETURN_JOURNAL:
-                        journalDialogue.borrowingDialogue(false);
-                        break;
+                        case RETURN_JOURNAL:
+                            journalDialogue.borrowingDialogue(false);
+                            break;
 
-                    case SHOW_JOURNALS:
-                        journalDialogue.sortingDialogue();
-                        break;
+                        case SHOW_JOURNALS:
+                            journalDialogue.sortingDialogue();
+                            break;
 
-                    case EXIT_VALUE:
-                        value = false;
-                        break;
+                        case EXIT_VALUE:
+                            value = false;
+                            break;
 
-                    default:
-                        dialogue.printDefaultMessage();
-                        break;
+                        default:
+                            dialogue.printDefaultMessage();
+                            break;
+                    }
+                } catch (IOException e){
+                    out.println(e);
                 }
             }
         }
