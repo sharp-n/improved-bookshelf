@@ -37,7 +37,7 @@ public class Librarian {
                 String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
                 if (typeOfClass.equals(typeOfItem)) {
                     if (workWithFiles.gson.fromJson(itemObject, Journal.class).itemID == itemID){
-                        if(!defineIfCanDelete(element,forBorrow)){return false;}
+                        if(!defineIfCanDelete(element,forBorrow,typeOfItem)){return false;}
                         containers.remove(containers.size()-1);
                         deleted = true;
                     }
@@ -52,11 +52,15 @@ public class Librarian {
         return false;
     }
 
-    // !!!!!REFACTOR!!!!!
-
-    public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
+    public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow, String typeOfItem) {
         if (!forBorrow) {
-            if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {
+            boolean isBorrowed = true;
+            if (typeOfItem.equals("Book")){
+                isBorrowed = workWithFiles.gson.fromJson(itemObject, Book.class).isBorrowed();
+            } else if(typeOfItem.equals("Journal")) {
+                isBorrowed = workWithFiles.gson.fromJson(itemObject, Book.class).isBorrowed();
+            }
+            if (isBorrowed) {
                 serverHandler.writeMessage("This item is borrowed, please return it first");
                 return false;
             }

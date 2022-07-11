@@ -1,8 +1,6 @@
 package com.company;
 
-import com.company.server.Server;
 import com.company.server.ServerHandler;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +24,7 @@ public class Dialogues {
     public Dialogues(PrintWriter out,Scanner scan) {
         this.out=out;
         this.scan = scan;
-        serverHandler = new ServerHandler(out);
+        this.serverHandler = new ServerHandler(out);
     }
 
     public Dialogues(Item item, Librarian librarian, PrintWriter out,Scanner scan) {
@@ -34,7 +32,7 @@ public class Dialogues {
         this.librarian = librarian;
         this.out = out;
         this.scan = scan;
-        serverHandler = new ServerHandler(out);
+        this.serverHandler = new ServerHandler(out);
     }
 
     public String titleUserInput(){
@@ -54,12 +52,15 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\"");
+        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
     public String usernameValidation(String userName){
+        if (userName.equals("exit")){
+            return userName;
+        }
         boolean validUserName = User.checkUserNameForValidity(userName);
         if (validUserName) {
             return userName;
@@ -105,7 +106,7 @@ public class Dialogues {
     public Integer yearUserInput(){
         try {
             System.out.println();
-            serverHandler.writeLineMessage("Date of publish:\n\tYear: ");
+            serverHandler.writeLineMessage("Date of publish:\n\r\tYear: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e){
@@ -147,8 +148,9 @@ public class Dialogues {
             return null;
         }
         if (Librarian.checkItemForValidity(year) && Librarian.checkItemForValidity(month)
-                && Librarian.checkItemForValidity(day))
+                && Librarian.checkItemForValidity(day)) {
             return new GregorianCalendar(year, month - 1, day);
+        }
         printBadValidationMessage("date");
         return null;
     }
@@ -234,8 +236,12 @@ public class Dialogues {
             return null;
         }
         String typeOfItem = "";
-        if(item instanceof Book) typeOfItem = "Book";
-        else if (item instanceof Journal) typeOfItem = "Journal";
+        if(item instanceof Book) {
+            typeOfItem = "Book";
+        }
+        else if (item instanceof Journal) {
+            typeOfItem = "Journal";
+        }
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
             serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
@@ -246,10 +252,13 @@ public class Dialogues {
     public void deletingDialogue() throws IOException{
         Integer itemID = validateIdToBorrow();
         if(itemID!=null) {
-            boolean deleted;
-            if(item instanceof Book)
-            deleted = librarian.deleteItem(itemID, false, "Book");
-            else deleted = librarian.deleteItem(itemID, false, "Journal");
+            boolean deleted = false;
+            if(item instanceof Book) {
+                deleted = librarian.deleteItem(itemID, false, "Book");
+            }
+            else  if (item instanceof Journal) {
+                deleted = librarian.deleteItem(itemID, false, "Journal");
+            }
             if (deleted) {
                 printSuccessMessage("deleted");
             }
@@ -265,36 +274,43 @@ public class Dialogues {
         }
     }
 
+    // TODO refactor printListOfItems() -> if-else & table
+
     public void printListOfItems(List<? extends Item> items){
         if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
         else {
-            serverHandler.writeMessage(String.format("%-11s", "\n ITEM ID") + String.format("%-40s", "| TITLE"));
-            if (item instanceof Book) serverHandler.writeMessage(String.format("%-32s", "| AUTHOR")+String.format("%-18s", "| PUBLISHING DATE"));
-            serverHandler.writeMessage(String.format("%-8s", "| PAGES")+String.format("%-30s", "| " +
-                    "BORROWED") );
-            serverHandler.writeMessage("\n----------|---------------------------------------");
-            if (item instanceof Book) serverHandler.writeMessage("|-------------------------------|-----------------");
+            String str = "%-11s%-40s";
+            serverHandler.writeMessage(String.format(str, "\n\r ITEM ID", "| TITLE"));
+            if (item instanceof Book) {
+                serverHandler.writeMessage(String.format("%-32s%-18s", "| AUTHOR", "| PUBLISHING DATE"));
+            }
+            serverHandler.writeMessage(String.format("%-8s%-30s", "| PAGES", "| " + "BORROWED"));
+            serverHandler.writeMessage("\n\r----------|---------------------------------------");
+            if (item instanceof Book) {
+                serverHandler.writeMessage("|-------------------------------|-----------------");
+            }
             serverHandler.writeLineMessage("|-------|----------");
-            items.forEach(i -> {
-                serverHandler.writeMessage(String.format("%-10s", " " + i.getItemID()) + String.format("%-40s", "| " + i.getTitle()));
+            for (Item i : items) {
+                serverHandler.writeMessage(String.format("%-10s%-40s", " " + i.getItemID(), "| " + i.getTitle()));
                 if (item instanceof Book) {
                     DateFormat df = new SimpleDateFormat("dd.M.y");
-                    serverHandler.writeMessage(String.format("%-32s", "| " + ((Book) i).getAuthor())
-                            + String.format("%-18s", "| " + df.format(((Book) i).getPublishingDate().getTime())));
+                    serverHandler.writeMessage(String.format("%-32s%-18s", "| " + ((Book) i).getAuthor(), "| " + df.format(((Book) i).getPublishingDate().getTime())));
                 }
-                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n");
-            });
+                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n\r");
+            }
         }
     }
 
     private Integer getSortingVar(){
         try {
-            serverHandler.writeLineMessage("Sort by:\n\t1 - Item ID\n\t2 - Title\n\t3 - Pages");
-            if (item instanceof Book) {
-                serverHandler.writeLineMessage("\t4 - Author\n\t5 - Publishing date");
+            if (item instanceof Book || item instanceof Journal) {
+                serverHandler.writeLineMessage("Sort by:\n\r\t1 - Item ID\n\r\t2 - Title\n\r\t3 - Pages");
+                if (item instanceof Book) {
+                    serverHandler.writeLineMessage("\t4 - Author\n\r\t5 - Publishing date");
+                }
+                serverHandler.writeLineMessage("0 - Return");
+                printWaitingForReplyMessage();
             }
-            serverHandler.writeLineMessage("0 - Return");
-            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         }catch(NumberFormatException e){
             printDefaultMessage();
@@ -358,10 +374,6 @@ public class Dialogues {
             }
             printListOfItems(items);
         } else printDefaultMessage();
-    }
-
-    public void printItemNotExistsMessage(){
-        serverHandler.writeLineMessage("There`s no such item");
     }
 
     public void printBadValidationMessage(String Item){

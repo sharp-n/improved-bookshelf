@@ -6,21 +6,23 @@ import java.net.Socket;
 public class ClientSocket {
 
     public static void main(String[] args) throws IOException {
-        try (Socket clientSocket = new Socket("localhost", 8080)) {
+        try (Socket clientSocket = new Socket("localhost", 8081)) {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+            PrintStream print = new PrintStream(System.out,true);
 
             boolean read = true;
 
+            ClientHandler clientHandlerReader = new ClientHandler(in);
+            ClientHandler clientHandlerWriter = new ClientHandler(reader, out);
+
             while (read) {
-                ClientHandler clientHandler = new ClientHandler();
-                String message = clientHandler.read(in);
+                String message = clientHandlerReader.read();
                 if (message != null) {
-                    System.out.println(message);
-                    out.flush();
-                    clientHandler.write(reader, out);
+                    print.println(message);
+                    clientHandlerWriter.write();
                 } else read = false;
             }
         }

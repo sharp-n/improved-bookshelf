@@ -20,8 +20,13 @@ public class WorkWithFiles {
         this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
     }
 
+    {
+        if (filePath ==null){
+            filePath=Paths.get(System.getProperty("user.home") + "/items_default.txt");
+        }
+    }
 
-    public void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
+    public synchronized void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
         List<Container<? extends Item>> containers = readToContainersList();
         containers.add(itemContainer);
         rewriteFile(containers);
@@ -42,7 +47,7 @@ public class WorkWithFiles {
     public List<Journal> readToJournalsList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        if(jsonArray==null) return new ArrayList<>();
+        if(jsonArray==null) {return new ArrayList<>();}
         List<Journal> journals = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
@@ -57,7 +62,7 @@ public class WorkWithFiles {
     public List<Book> readToBooksList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        if(jsonArray==null) return new ArrayList<>();
+        if(jsonArray==null) {return new ArrayList<>();}
         List<Book> books = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
@@ -88,7 +93,7 @@ public class WorkWithFiles {
 
     File createFileIfNotExists() throws IOException {
         File file = filePath.toFile();
-        if (!file.exists()) file.createNewFile();
+        if (!file.exists()) {file.createNewFile();}
         return file;
     }
 }

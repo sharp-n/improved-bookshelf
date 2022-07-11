@@ -10,8 +10,8 @@ public class Container<T> {
 
     public Container(T item) {
         this.item = item;
-        if(item instanceof Book) this.typeOfClass = "Book";
-        if(item instanceof Journal) this.typeOfClass = "Journal";
+        if(item instanceof Book) {this.typeOfClass = "Book";}
+        if(item instanceof Journal) {this.typeOfClass = "Journal";}
     }
 
 }
