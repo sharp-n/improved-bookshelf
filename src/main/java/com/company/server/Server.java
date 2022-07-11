@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Server {
 
     public static void main(String[] args) {
-
+        //TODO create method start() for initializing server socket
         try {
             ServerSocket serverSocket = new ServerSocket(8081);
             int connections = 0;

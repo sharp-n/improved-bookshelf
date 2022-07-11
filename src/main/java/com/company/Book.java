@@ -1,9 +1,7 @@
 package com.company;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
 
 import java.util.GregorianCalendar;
 

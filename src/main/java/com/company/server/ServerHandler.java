@@ -50,54 +50,63 @@ public class ServerHandler {
 
         while (filesValue) {
 
-            Dialogues dialogue = new Dialogues(out,in);
+            Dialogues dialogue = new Dialogues(out, in);
 
-            User user = createUser(dialogue,validUserName);
+            // TODO fix user`s name input
 
-            Integer filesVar = usersFilesMenuChoice(dialogue);
-            if (filesVar == null) filesVar = -1;
+            User user = createUser(dialogue, validUserName);
+            if (user.userName.equals("exit")) {
+                filesValue = false;
+            } else {
 
-            mainProcValue = true;
+                Integer filesVar = usersFilesMenuChoice(dialogue);
+                if (filesVar == null) filesVar = -1;
 
-            switch (filesVar) {
-                case ONE_FILE:
-                    oneFileChoice(user);
-                    break;
-                case TWO_FILES:
-                    twoFilesChoice(user);
-                    break;
-                case CHANGE_USER_VALUE:
-                    mainProcValue = false;
-                    break;
-                case EXIT_VALUE:
-                    filesValue = false;
-                    mainProcValue = false;
-                    break;
-                default:
-                    dialogue.printDefaultMessage();
-                    break;
-            }
+                mainProcValue = true;
 
-            while (mainProcValue) {
-
-                Dialogues bookDialogue;
-                Dialogues journalDialogue;
-                if (workWithSecondFile.filePath != null) {
-                    bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in, out)), out, in);
-                    journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in, out)), out, in);
-                } else {
-                    bookDialogue = new Dialogues(new Book(), librarian, out, in);
-                    journalDialogue = new Dialogues(new Journal(), librarian, out, in);
+                switch (filesVar) {
+                    case ONE_FILE:
+                        oneFileChoice(user);
+                        break;
+                    case TWO_FILES:
+                        twoFilesChoice(user);
+                        break;
+                    case CHANGE_USER_VALUE:
+                        mainProcValue = false;
+                        break;
+                    case EXIT_VALUE:
+                        filesValue = false;
+                        mainProcValue = false;
+                        break;
+                    default:
+                        dialogue.printDefaultMessage();
+                        break;
                 }
 
-                Integer var = getUsersMainMenuChoice(dialogue);
-                if (var == null) var = -1;
+                while (mainProcValue) {
 
-                mainMenuVariants(var,bookDialogue,journalDialogue);
+                    Dialogues bookDialogue;
+                    Dialogues journalDialogue;
+                    if (workWithSecondFile.filePath != null) {
+                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in, out)), out, in);
+                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in, out)), out, in);
+                    } else {
+                        bookDialogue = new Dialogues(new Book(), librarian, out, in);
+                        journalDialogue = new Dialogues(new Journal(), librarian, out, in);
+                    }
 
+                    Integer var = getUsersMainMenuChoice(dialogue);
+                    if (var == null) var = -1;
+
+                    mainMenuVariants(var, bookDialogue, journalDialogue);
+
+                }
             }
         }
     }
+
+    ///TODO use constants in menu
+    // TODO use enum for menu
 
     private Integer getUsersMainMenuChoice(Dialogues dialogue){
         writeLineMessage("\n\r\t\t0 - Exit" +

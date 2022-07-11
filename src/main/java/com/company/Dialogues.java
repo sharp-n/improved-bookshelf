@@ -1,8 +1,6 @@
 package com.company;
 
-import com.company.server.Server;
 import com.company.server.ServerHandler;
-import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +24,7 @@ public class Dialogues {
     public Dialogues(PrintWriter out,Scanner scan) {
         this.out=out;
         this.scan = scan;
-        serverHandler = new ServerHandler(out);
+        this.serverHandler = new ServerHandler(out);
     }
 
     public Dialogues(Item item, Librarian librarian, PrintWriter out,Scanner scan) {
@@ -34,7 +32,7 @@ public class Dialogues {
         this.librarian = librarian;
         this.out = out;
         this.scan = scan;
-        serverHandler = new ServerHandler(out);
+        this.serverHandler = new ServerHandler(out);
     }
 
     public String titleUserInput(){
@@ -54,12 +52,15 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\"");
+        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
 
     public String usernameValidation(String userName){
+        if (userName.equals("exit")){
+            return userName;
+        }
         boolean validUserName = User.checkUserNameForValidity(userName);
         if (validUserName) {
             return userName;
