@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class ServerHandler {
 
-    Scanner in;
-    PrintWriter out;
+    public Scanner in;
+    public PrintWriter out;
 
-    WorkWithFiles workWithFirstFile = new WorkWithFiles();
-    WorkWithFiles workWithSecondFile = new WorkWithFiles();
+    public WorkWithFiles workWithFirstFile = new WorkWithFiles();
+    public WorkWithFiles workWithSecondFile = new WorkWithFiles();
 
     Librarian librarian = new Librarian();
 
