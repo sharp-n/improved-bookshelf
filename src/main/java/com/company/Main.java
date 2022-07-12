@@ -14,6 +14,8 @@ public class Main {
                 Server.main(new String[]{});
         });
 
+        // TODO fix bug on exit from terminal session
+
         Thread consoleThread = new Thread(()->{
             ServerHandler handler = new ServerHandler(new Scanner(System.in), new PrintWriter(System.out));
             handler.handle();

@@ -38,7 +38,7 @@ public class UserInputTest {
     }
 */
 
-    private Dialogues getDialogues(String x) {
+    Dialogues getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
         return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out))),new PrintWriter(System.out),scanner);
@@ -120,7 +120,7 @@ public class UserInputTest {
         assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
-    private static Stream<Arguments> provideNulls(){
+    static Stream<Arguments> provideNulls(){
         return Stream.of(
                 Arguments.of(" "),
                 Arguments.of("  "),
