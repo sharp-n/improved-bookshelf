@@ -30,7 +30,7 @@ public class ServerHandlerTest {
         assertNull(serverHandler.usersFilesMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
     }
 
-    static Stream<Arguments> provideNulls(){
+    private static Stream<Arguments> provideNulls(){
         return Stream.of(
                 Arguments.of(" "),
                 Arguments.of("  "),

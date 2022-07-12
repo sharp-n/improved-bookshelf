@@ -120,7 +120,7 @@ public class UserInputTest {
         assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
-    static Stream<Arguments> provideNulls(){
+    private static Stream<Arguments> provideNulls(){
         return Stream.of(
                 Arguments.of(" "),
                 Arguments.of("  "),
