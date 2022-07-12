@@ -8,11 +8,11 @@ import java.util.Scanner;
 
 public class ServerHandler {
 
-    Scanner in;
-    PrintWriter out;
+    public Scanner in;
+    public PrintWriter out;
 
-    WorkWithFiles workWithFirstFile = new WorkWithFiles();
-    WorkWithFiles workWithSecondFile = new WorkWithFiles();
+    public WorkWithFiles workWithFirstFile = new WorkWithFiles();
+    public WorkWithFiles workWithSecondFile = new WorkWithFiles();
 
     Librarian librarian = new Librarian();
 
@@ -109,7 +109,7 @@ public class ServerHandler {
     ///TODO use constants in menu
     // TODO use enum for menu
 
-    private Integer getUsersMainMenuChoice(Dialogues dialogue){
+    public Integer getUsersMainMenuChoice(Dialogues dialogue){
         writeLineMessage("\n\r\t\t0 - Exit" +
                 "\n\r1 - Add book\t6 - Add journal" +
                 "\n\r2 - Delete book\t7 - Delete journal" +
@@ -121,25 +121,25 @@ public class ServerHandler {
         return dialogue.getMainMenuVar();
     }
 
-    private Integer usersFilesMenuChoice(Dialogues dialogue){
+    public Integer usersFilesMenuChoice(Dialogues dialogue){
         writeLineMessage("\n\r0 - Exit\n\r1 - Use one file\n\r2 - Use two files\n\r3 - Change user");
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
-    private void oneFileChoice(User user){
+    public void oneFileChoice(User user){
         workWithFirstFile = new WorkWithFiles(user.userName);
         librarian = new Librarian(workWithFirstFile, new ServerHandler(in,out));
         writeLineMessage("Your items will be saved in one file");
     }
 
-    private void twoFilesChoice(User user){
+    public void twoFilesChoice(User user){
         workWithFirstFile = new WorkWithFiles("books_" + user.userName);
         workWithSecondFile = new WorkWithFiles("journals_" + user.userName);
         writeLineMessage("Your items will be saved in different files");
     }
 
-    private User createUser(Dialogues dialogue, boolean validUserName){
+    public User createUser(Dialogues dialogue, boolean validUserName){
         String userName = "";
         while (!validUserName) {
             userName = dialogue.usernameValidation(dialogue.usernameInput());
