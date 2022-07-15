@@ -57,7 +57,7 @@ public class Librarian {
             if (typeOfItem.equals("Book")){
                 isBorrowed = workWithFiles.gson.fromJson(itemObject, Book.class).isBorrowed();
             } else if(typeOfItem.equals("Journal")) {
-                isBorrowed = workWithFiles.gson.fromJson(itemObject, Book.class).isBorrowed();
+                isBorrowed = workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed();
             }
             if (isBorrowed) {
                 serverHandler.writeMessage("This item is borrowed, please return it first");
