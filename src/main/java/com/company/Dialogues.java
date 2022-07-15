@@ -21,6 +21,8 @@ public class Dialogues {
 
     ServerHandler serverHandler;
 
+    private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)";
+
     public Dialogues(PrintWriter out,Scanner scan) {
         this.out=out;
         this.scan = scan;
@@ -83,7 +85,7 @@ public class Dialogues {
         if (Librarian.checkItemForValidity(id)) {
             return id;
         }
-        printBadValidationMessage("ID. It should be a number (>0)");
+        printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
         return null;
     }
 
@@ -105,7 +107,7 @@ public class Dialogues {
 
     public Integer yearUserInput(){
         try {
-            System.out.println();
+            serverHandler.writeLineMessage("");
             serverHandler.writeLineMessage("Date of publish:\n\r\tYear: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
@@ -178,51 +180,43 @@ public class Dialogues {
         }
     }
 
-    public void addingDialogue() throws IOException{
-        try {
-            String typeOfItem = "";
-            if(item instanceof Book) typeOfItem = "Book";
-            else if (item instanceof Journal) typeOfItem = "Journal";
-            boolean add = true;
-            String author = "";
-            GregorianCalendar publishingDate = new GregorianCalendar();
-            Integer itemID = validateID(idUserInput());
-            if (itemID!=null) {
-                if (!librarian.checkIDForExistence(itemID,typeOfItem)) {
-                    String title = validateTitle(titleUserInput());
-                    if (Librarian.checkItemForValidity(title)) {
-
-                        if (item instanceof Book) {
-                            author = validateAuthorName(authorUserInput());
-                            if (author != null)
-                            {
-                                publishingDate = validateDate(yearUserInput(),monthUserInput(),dayUserInput());
-                                if (publishingDate==null){
-                                    serverHandler.writeLineMessage("Try again");
-                                    add=false;
-                                }
-                            }
-                        }
-                        if (add) {
-                            Integer numOfPages = validatePages(pagesUsersInput());
-                            if (numOfPages != null) {
-
-                                if (item instanceof Book) {
-                                    Book book = new Book(itemID, title, author, publishingDate, numOfPages);
-                                    librarian.addItem(book);
-                                } else {
-                                    Journal journal = new Journal(itemID, title, numOfPages);
-                                    librarian.addItem(journal);
-                                }
-                                printSuccessMessage("added");
+    public void addingDialogue() throws IOException {
+        String typeOfItem = item.getClass().getSimpleName();
+        boolean add = true;
+        String author = "";
+        GregorianCalendar publishingDate = new GregorianCalendar();
+        Integer itemID = validateID(idUserInput());
+        if (itemID != null) {
+            if (!librarian.checkIDForExistence(itemID, typeOfItem)) {
+                String title = validateTitle(titleUserInput());
+                if (Librarian.checkItemForValidity(title)) {
+                    if (item instanceof Book) {
+                        author = validateAuthorName(authorUserInput());
+                        if (author != null) {
+                            publishingDate = validateDate(yearUserInput(), monthUserInput(), dayUserInput());
+                            if (publishingDate == null) {
+                                serverHandler.writeLineMessage("Try again");
+                                add = false;
                             }
                         }
                     }
-                } else out.println("Item with this ID exists. Please change ID and try again");
-            } else printBadValidationMessage("ID. It should be a number (>0)");
-        } catch (NullPointerException e){
-            e.printStackTrace();
-        }
+                    if (add) {
+                        Integer numOfPages = validatePages(pagesUsersInput());
+                        if (numOfPages != null) {
+
+                            if (item instanceof Book) {
+                                Book book = new Book(itemID, title, author, publishingDate, numOfPages);
+                                librarian.addItem(book);
+                            } else {
+                                Journal journal = new Journal(itemID, title, numOfPages);
+                                librarian.addItem(journal);
+                            }
+                            printSuccessMessage("added");
+                        }
+                    }
+                }
+            } else out.println("Item with this ID exists. Please change ID and try again");
+        } else printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
     }
 
     private Integer validateIdToBorrow() throws IOException{
@@ -232,15 +226,15 @@ public class Dialogues {
             return null;
         }
         if (!Librarian.checkItemForValidity(itemID)) {
-            printBadValidationMessage("ID. It should be a number (>0)");
+            printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
             return null;
         }
         String typeOfItem = "";
         if(item instanceof Book) {
-            typeOfItem = "Book";
+            typeOfItem = Librarian.TYPE_OF_ITEM_BOOK;
         }
         else if (item instanceof Journal) {
-            typeOfItem = "Journal";
+            typeOfItem = Librarian.TYPE_OF_ITEM_JOURNAL;
         }
         if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
             serverHandler.writeLineMessage("There`s no item with such ID");
@@ -277,7 +271,7 @@ public class Dialogues {
     // TODO refactor printListOfItems() -> if-else & table
 
     public void printListOfItems(List<? extends Item> items){
-        if (items.size()==0) serverHandler.writeLineMessage("There`s no items here");
+        if (items.isEmpty()) serverHandler.writeLineMessage("There`s no items here");
         else {
             String str = "%-12s%-40s";
             serverHandler.writeMessage(String.format(str, "\n\r ITEM ID", "| TITLE"));
@@ -329,11 +323,11 @@ public class Dialogues {
 
     public void sortingDialogue() throws IOException {
         WorkWithFiles workWithFiles = librarian.workWithFiles;
-        Integer var = getSortingVar();
-        if (var != null) {
+        Integer sortingParameter = getSortingVar();
+        if (sortingParameter != null) {
             List<? extends Item> items = new ArrayList<>();
             if (item instanceof Book)
-                switch (var) {
+                switch (sortingParameter) {
                     case 0:
                         break;
                     case 1:
@@ -356,7 +350,7 @@ public class Dialogues {
                         break;
 
                 }
-            else if (item instanceof Journal) switch (var) {
+            else if (item instanceof Journal) switch (sortingParameter) {
                 case 0:
                     break;
                 case 1:
@@ -376,7 +370,7 @@ public class Dialogues {
         } else printDefaultMessage();
     }
 
-    public void printBadValidationMessage(String Item){
+    public void printBadValidationMessage(String item){
         serverHandler.writeLineMessage("Please, input valid " + item);
     }
 
