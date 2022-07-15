@@ -28,11 +28,11 @@ public class Table {
     public Table(List<? extends Item> items, PrintWriter out) {
         this.items = items;
         this.out = out;
-        this.idColumnWidth = countMaxSymbols(createStringListFromID(),7);
+        this.idColumnWidth = countMaxSymbols(createStringListFromID(),10);
         this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(),5);
         this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(),6);
         this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(),16);
-        this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(),5);
+        this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(),6);
         this.borrowedColumnWidth = 10;
     }
 
@@ -49,13 +49,22 @@ public class Table {
     }
 
     public void printBody(){
-
-
+        for (Item item : items) {
+            out.print(NEW_LINE);
+            printID(item);
+            printTitle(item);
+            if (item instanceof Book) {
+                printAuthor((Book)item);
+                printPublishingDate((Book)item);
+            }
+            printPages(item);
+            printBorrowed(item);
+        }
     }
 
     private void printItemsOptionsHeader(){
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
-            String str = "%-" + idColumnWidth + "s| %-" + titleColumnWidth + "s";
+            String str = " %-" + idColumnWidth + "s| %-" + titleColumnWidth + "s";
             out.printf(str, NEW_LINE + ITEM_ID, TITLE);
             if (items.get(0) instanceof Book) {
                 out.printf("| %-" + authorColumnWidth + "s| %-" + publishingDateColumnWidth + "s", AUTHOR, PUBLISHING_DATE);
@@ -68,15 +77,15 @@ public class Table {
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
             out.print(NEW_LINE);
 
-            printLineForOption(countMaxSymbols(createStringListFromID(),7), true);
-            printLineForOption(countMaxSymbols(createStringListFromTitle(),5), true);
+            printLineForOption(idColumnWidth-4, true);
+            printLineForOption(titleColumnWidth-1, true);
 
             if (items.get(0) instanceof Book) {
-                printLineForOption(countMaxSymbols(createStringListFromAuthor(),6), true);
-                printLineForOption(countMaxSymbols(createStringListFromPublishingDate(),16), true);
+                printLineForOption(authorColumnWidth-1, true);
+                printLineForOption(publishingDateColumnWidth-1, true);
             }
 
-            printLineForOption(countMaxSymbols(createStringListFromPages(),5), true);
+            printLineForOption(pagesColumnWidth-1, true);
             printLineForOption(8, false);
         }
     }
@@ -140,9 +149,40 @@ public class Table {
     }
 
 
+    private void printID(Item item){
+        String regex = "%-" + (idColumnWidth-2) + "s";
+        out.printf(regex,(item.getItemID()));
+    }
+
+    private void printTitle(Item item){
+        String regex = "| %-" + titleColumnWidth + "s";
+        out.printf(regex,(item.getTitle()));
+    }
+
+    private void printAuthor(Book book){
+        String regex = "| %-" + authorColumnWidth + "s";
+        out.printf(regex,(book.getAuthor()));
+    }
+
+    private void printPublishingDate(Book book){
+        String regex = "| %-" + publishingDateColumnWidth + "s";
+        SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
+        out.printf(regex,(df.format(book.getPublishingDate().getTime())));
+    }
+
+    private void printPages(Item item){
+        String regex = "| %-" + pagesColumnWidth + "s";
+        out.printf(regex,(item.getPages()));
+    }
+
+    private void printBorrowed(Item item){
+        String regex = "| %-" + borrowedColumnWidth + "s";
+        out.printf(regex,(item.isBorrowed()));
+    }
+
+
     private void printPlus(){
         out.print("+");
     }
-
 
 }
