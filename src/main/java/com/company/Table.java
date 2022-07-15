@@ -10,12 +10,12 @@ public class Table {
     List<? extends Item> items;
     PrintWriter out;
 
-    private final int idColumnWidth ;
-    private final int titleColumnWidth ;
-    private final int authorColumnWidth;
-    private final int publishingDateColumnWidth;
-    private final int pagesColumnWidth;
-    private final int borrowedColumnWidth;
+    private int idColumnWidth;
+    private int titleColumnWidth;
+    private int authorColumnWidth;
+    private int publishingDateColumnWidth;
+    private int pagesColumnWidth;
+    private int borrowedColumnWidth;
 
     private static final String NEW_LINE = "\n\r";
     private static final String END_START_PATTERN = "s| %-";
@@ -23,13 +23,18 @@ public class Table {
     public Table(List<? extends Item> items, PrintWriter out) {
         this.items = items;
         this.out = out;
-        this.idColumnWidth = countMaxSymbols(createStringListFromID(),10);
-        this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(),5);
-        this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(),6);
-        this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(),16);
-        this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(),6);
-        this.borrowedColumnWidth = 10;
+        if (items.get(0) instanceof Book||items.get(0) instanceof Journal) {
+            this.idColumnWidth = countMaxSymbols(createStringListFromID(), 10);
+            this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), 5);
+            if (items.get(0) instanceof Book) {
+                this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(), 6);
+            }
+            this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(), 16);
+            this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(), 6);
+            this.borrowedColumnWidth = 10;
+        }
     }
+
 
     public void printTable(){
 
