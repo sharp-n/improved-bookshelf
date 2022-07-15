@@ -3,15 +3,14 @@ package com.company;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class Container<T> {
+public class Container<T extends Item> {
 
     T item;
     String typeOfClass;
 
     public Container(T item) {
         this.item = item;
-        if(item instanceof Book) {this.typeOfClass = "Book";}
-        if(item instanceof Journal) {this.typeOfClass = "Journal";}
+        this.typeOfClass = item.getClass().getSimpleName();
     }
 
 }

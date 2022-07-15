@@ -52,8 +52,6 @@ public class ServerHandler {
 
             Dialogues dialogue = new Dialogues(out, in);
 
-            // TODO fix user`s name input
-
             User user = createUser(dialogue, validUserName);
             if (user.userName.equals("exit")) {
                 filesValue = false;
@@ -105,9 +103,6 @@ public class ServerHandler {
             }
         }
     }
-
-    ///TODO use constants in menu
-    // TODO use enum for menu
 
     private Integer getUsersMainMenuChoice(Dialogues dialogue){
         writeLineMessage("\n\r\t\t0 - Exit" +
