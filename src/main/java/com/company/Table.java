@@ -17,13 +17,8 @@ public class Table {
     private final int pagesColumnWidth;
     private final int borrowedColumnWidth;
 
-    private final String NEW_LINE = "\n\r";
-    private final String ITEM_ID = "ITEM ID";
-    private final String TITLE = "TITLE";
-    private final String AUTHOR = "AUTHOR";
-    private final String PUBLISHING_DATE = "PUBLISHING DATE";
-    private final String PAGES = "PAGES";
-    private final String BORROWED = "BORROWED";
+    private static final String NEW_LINE = "\n\r";
+    private static final String END_START_PATTERN = "s| %-";
 
     public Table(List<? extends Item> items, PrintWriter out) {
         this.items = items;
@@ -51,25 +46,36 @@ public class Table {
     public void printBody(){
         for (Item item : items) {
             out.print(NEW_LINE);
-            printID(item);
-            printTitle(item);
-            if (item instanceof Book) {
-                printAuthor((Book)item);
-                printPublishingDate((Book)item);
+            if (item instanceof Book|| item instanceof Journal) {
+                printID(item);
+                printTitle(item);
+                if (item instanceof Book) {
+                    printAuthor((Book) item);
+                    printPublishingDate((Book) item);
+                }
+                printPages(item);
+                printBorrowed(item);
             }
-            printPages(item);
-            printBorrowed(item);
         }
     }
 
     private void printItemsOptionsHeader(){
+        final String ITEM_ID = "ITEM ID";
+        final String TITLE = "TITLE";
+        final String AUTHOR = "AUTHOR";
+        final String PUBLISHING_DATE = "PUBLISHING DATE";
+        final String PAGES = "PAGES";
+        final String BORROWED = "BORROWED";
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
-            String str = " %-" + idColumnWidth + "s| %-" + titleColumnWidth + "s";
-            out.printf(str, NEW_LINE + ITEM_ID, TITLE);
+            String itemIDAndTitleFormat = " %-" + idColumnWidth + END_START_PATTERN + titleColumnWidth + "s";
+            String pagesAndBorrowedFormat = "| %-" + pagesColumnWidth + END_START_PATTERN + borrowedColumnWidth + "s";
+
+            out.printf(itemIDAndTitleFormat, NEW_LINE + ITEM_ID, TITLE);
             if (items.get(0) instanceof Book) {
-                out.printf("| %-" + authorColumnWidth + "s| %-" + publishingDateColumnWidth + "s", AUTHOR, PUBLISHING_DATE);
+                String bookPartFormat = "| %-" + authorColumnWidth + END_START_PATTERN + publishingDateColumnWidth + "s";
+                out.printf(bookPartFormat, AUTHOR, PUBLISHING_DATE);
             }
-            out.printf("| %-" + pagesColumnWidth + "s| %-" + borrowedColumnWidth + "s", PAGES, BORROWED);
+            out.printf(pagesAndBorrowedFormat, PAGES, BORROWED);
         }
     }
 
