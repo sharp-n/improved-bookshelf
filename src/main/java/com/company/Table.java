@@ -1,17 +1,21 @@
 package com.company;
 
-import lombok.AllArgsConstructor;
-
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class Table {
 
     List<? extends Item> items;
     PrintWriter out;
+
+    private final int idColumnWidth ;
+    private final int titleColumnWidth ;
+    private final int authorColumnWidth;
+    private final int publishingDateColumnWidth;
+    private final int pagesColumnWidth;
+    private final int borrowedColumnWidth;
 
     private final String NEW_LINE = "\n\r";
     private final String ITEM_ID = "ITEM ID";
@@ -21,19 +25,42 @@ public class Table {
     private final String PAGES = "PAGES";
     private final String BORROWED = "BORROWED";
 
+    public Table(List<? extends Item> items, PrintWriter out) {
+        this.items = items;
+        this.out = out;
+        this.idColumnWidth = countMaxSymbols(createStringListFromID(),7);
+        this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(),5);
+        this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(),6);
+        this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(),16);
+        this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(),5);
+        this.borrowedColumnWidth = 10;
+    }
+
+    public void printTable(){
+
+        printHeader();
+        printBody();
+
+    }
+
     public void printHeader(){
         printItemsOptionsHeader();
         printHeaderLines();
     }
 
+    public void printBody(){
+
+
+    }
+
     private void printItemsOptionsHeader(){
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
-            String str = "% -12s| %-40s";
+            String str = "%-" + idColumnWidth + "s| %-" + titleColumnWidth + "s";
             out.printf(str, NEW_LINE + ITEM_ID, TITLE);
             if (items.get(0) instanceof Book) {
-                out.printf("| %-32s| %-18s", AUTHOR, PUBLISHING_DATE);
+                out.printf("| %-" + authorColumnWidth + "s| %-" + publishingDateColumnWidth + "s", AUTHOR, PUBLISHING_DATE);
             }
-            out.printf("| %-8s| %-30s", PAGES, BORROWED);
+            out.printf("| %-" + pagesColumnWidth + "s| %-" + borrowedColumnWidth + "s", PAGES, BORROWED);
         }
     }
 
@@ -41,15 +68,15 @@ public class Table {
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
             out.print(NEW_LINE);
 
-            printLineForOption(countMaxSymbols(createStringListFromID()), true);
-            printLineForOption(countMaxSymbols(createStringListFromTitle()), true);
+            printLineForOption(countMaxSymbols(createStringListFromID(),7), true);
+            printLineForOption(countMaxSymbols(createStringListFromTitle(),5), true);
 
             if (items.get(0) instanceof Book) {
-                printLineForOption(countMaxSymbols(createStringListFromAuthor()), true);
-                printLineForOption(countMaxSymbols(createStringListFromPublishingDate()), true);
+                printLineForOption(countMaxSymbols(createStringListFromAuthor(),6), true);
+                printLineForOption(countMaxSymbols(createStringListFromPublishingDate(),16), true);
             }
 
-            printLineForOption(countMaxSymbols(createStringListFromPages()), true);
+            printLineForOption(countMaxSymbols(createStringListFromPages(),5), true);
             printLineForOption(8, false);
         }
     }
@@ -102,8 +129,8 @@ public class Table {
         return options;
     }
 
-    private int countMaxSymbols(List<String> stringOptions){
-        int max = 0;
+    private int countMaxSymbols(List<String> stringOptions, int min){
+        int max = min;
         int current ;
         for (String option: stringOptions) {
             current = option.length();
@@ -111,6 +138,7 @@ public class Table {
         }
         return max;
     }
+
 
     private void printPlus(){
         out.print("+");
