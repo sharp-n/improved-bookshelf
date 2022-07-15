@@ -221,7 +221,6 @@ public class Dialogues {
                 Journal journal = new Journal(itemID, title, numOfPages);
                 librarian.addItem(journal);
             }
-            printSuccessMessage("added");
             return true;
         }
         return false;
