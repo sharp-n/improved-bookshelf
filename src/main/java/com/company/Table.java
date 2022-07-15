@@ -18,7 +18,7 @@ public class Table {
     private int pagesColumnWidth;
     private int borrowedColumnWidth;
 
-    private static final int SPACE_FOR_PRETTY_COLUMN = 2;
+    private static final int NUMBER_OF_SPACES_FOR_PRETTY_COLUMN = 2;
 
     private static final String NEW_LINE = System.lineSeparator();
     private static final String END_PATTERN = "s";
@@ -35,14 +35,14 @@ public class Table {
         this.items = items;
         this.out = out;
         if (items.get(0) instanceof Book||items.get(0) instanceof Journal) {
-            this.idColumnWidth = countMaxSymbols(createStringListFromID(), ITEM_ID.length() + SPACE_FOR_PRETTY_COLUMN);
-            this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), TITLE.length() + SPACE_FOR_PRETTY_COLUMN);
+            this.idColumnWidth = countMaxSymbols(createStringListFromID(), ITEM_ID.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
+            this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), TITLE.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
             if (items.get(0) instanceof Book) {
-                this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(), AUTHOR.length() + SPACE_FOR_PRETTY_COLUMN);
-                this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(), PUBLISHING_DATE.length() + SPACE_FOR_PRETTY_COLUMN);
+                this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(), AUTHOR.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
+                this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(), PUBLISHING_DATE.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
             }
-            this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(), PAGES.length() + SPACE_FOR_PRETTY_COLUMN);
-            this.borrowedColumnWidth = BORROWED.length() + SPACE_FOR_PRETTY_COLUMN;
+            this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(), PAGES.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
+            this.borrowedColumnWidth = BORROWED.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN;
         }
     }
 
@@ -153,7 +153,7 @@ public class Table {
                 max=current;
             }
         }
-        return max+ SPACE_FOR_PRETTY_COLUMN;
+        return max + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN;
     }
 
 
