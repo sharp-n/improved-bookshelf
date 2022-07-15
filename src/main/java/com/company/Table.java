@@ -91,46 +91,42 @@ public class Table {
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
             out.print(NEW_LINE);
 
-            printLineForOption(idColumnWidth-4, true);
-            printLineForOption(titleColumnWidth-1, true);
+            printLineForOption(idColumnWidth-3, true);
+            printLineForOption(titleColumnWidth, true);
 
             if (items.get(0) instanceof Book) {
-                printLineForOption(authorColumnWidth-1, true);
-                printLineForOption(publishingDateColumnWidth-1, true);
+                printLineForOption(authorColumnWidth, true);
+                printLineForOption(publishingDateColumnWidth, true);
             }
 
-            printLineForOption(pagesColumnWidth-1, true);
-            printLineForOption(8, false);
+            printLineForOption(pagesColumnWidth, true);
+            printLineForOption(borrowedColumnWidth, false);
         }
     }
 
     private void printLineForOption(int max, boolean printPlus){
-        for (int i = 0; i<max+2;i++){
+        for (int i = 0; i<max+1;i++){
             out.print("-");
         }
         if (printPlus) {printPlus();}
     }
 
     private List<String> createStringListFromID(){
-        List<String> options = new ArrayList<>();
-        for (Item item: items){
-            options.add(Integer.toString(item.getItemID()));
-        }
-        return options;
+        return items.stream()
+                .map(item ->Integer.toString(item.getItemID()))
+                .collect(Collectors.toList());
     }
 
     private List<String> createStringListFromTitle(){
         return items.stream()
                 .map(Item::getTitle)
-                .collect(Collectors.toList()); // todo ???
+                .collect(Collectors.toList());
     }
 
     private List<String> createStringListFromAuthor(){
-        List<String> options = new ArrayList<>();
-        for (Item item: items){
-            options.add(((Book) item).getAuthor());
-        }
-        return options;
+        return items.stream()
+                .map(item->((Book)item).getAuthor())
+                .collect(Collectors.toList());
     }
 
     private List<String> createStringListFromPublishingDate(){
@@ -143,11 +139,9 @@ public class Table {
     }
 
     private List<String> createStringListFromPages(){
-        List<String> options = new ArrayList<>();
-        for (Item item: items){
-            options.add(Integer.toString(item.getPages()));
-        }
-        return options;
+        return items.stream()
+                .map(item ->Integer.toString(item.getPages()))
+                .collect(Collectors.toList());
     }
 
     private int countMaxSymbols(List<String> stringOptions, int min){
