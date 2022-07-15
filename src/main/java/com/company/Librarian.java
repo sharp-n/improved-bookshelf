@@ -20,7 +20,6 @@ public class Librarian {
     WorkWithFiles workWithFiles;
     ServerHandler serverHandler;
 
-
     public void addItem(Item item) throws IOException {
         if(item instanceof Book){workWithFiles.addItemToFile(new Container<>((Book) item));}
         if(item instanceof Journal){workWithFiles.addItemToFile(new Container<>((Journal) item));}
