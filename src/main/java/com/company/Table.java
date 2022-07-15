@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Table {
 
@@ -17,30 +18,38 @@ public class Table {
     private int pagesColumnWidth;
     private int borrowedColumnWidth;
 
-    private static final String NEW_LINE = "\n\r";
-    private static final String END_START_PATTERN = "s| %-";
+    private static final int SPACE_FOR_PRETTY_COLUMN = 2;
+
+    private static final String NEW_LINE = System.lineSeparator();
+    private static final String END_PATTERN = "s";
+    private static final String START_PATTERN = "| %-";
+
+    private static final String ITEM_ID = "ITEM ID";
+    private static final String TITLE = "TITLE";
+    private static final String AUTHOR = "AUTHOR";
+    private static final String PUBLISHING_DATE = "PUBLISHING DATE";
+    private static final String PAGES = "PAGES";
+    private static final String BORROWED = "BORROWED";
 
     public Table(List<? extends Item> items, PrintWriter out) {
         this.items = items;
         this.out = out;
         if (items.get(0) instanceof Book||items.get(0) instanceof Journal) {
-            this.idColumnWidth = countMaxSymbols(createStringListFromID(), 10);
-            this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), 5);
+            this.idColumnWidth = countMaxSymbols(createStringListFromID(), ITEM_ID.length() + SPACE_FOR_PRETTY_COLUMN);
+            this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), TITLE.length() + SPACE_FOR_PRETTY_COLUMN);
             if (items.get(0) instanceof Book) {
-                this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(), 6);
+                this.authorColumnWidth = countMaxSymbols(createStringListFromAuthor(), AUTHOR.length() + SPACE_FOR_PRETTY_COLUMN);
+                this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(), PUBLISHING_DATE.length() + SPACE_FOR_PRETTY_COLUMN);
             }
-            this.publishingDateColumnWidth = countMaxSymbols(createStringListFromPublishingDate(), 16);
-            this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(), 6);
-            this.borrowedColumnWidth = 10;
+            this.pagesColumnWidth = countMaxSymbols(createStringListFromPages(), PAGES.length() + SPACE_FOR_PRETTY_COLUMN);
+            this.borrowedColumnWidth = BORROWED.length() + SPACE_FOR_PRETTY_COLUMN;
         }
     }
 
 
     public void printTable(){
-
         printHeader();
         printBody();
-
     }
 
     public void printHeader(){
@@ -65,19 +74,13 @@ public class Table {
     }
 
     private void printItemsOptionsHeader(){
-        final String ITEM_ID = "ITEM ID";
-        final String TITLE = "TITLE";
-        final String AUTHOR = "AUTHOR";
-        final String PUBLISHING_DATE = "PUBLISHING DATE";
-        final String PAGES = "PAGES";
-        final String BORROWED = "BORROWED";
         if(items.get(0) instanceof Book || items.get(0) instanceof Journal) {
-            String itemIDAndTitleFormat = " %-" + idColumnWidth + END_START_PATTERN + titleColumnWidth + "s";
-            String pagesAndBorrowedFormat = "| %-" + pagesColumnWidth + END_START_PATTERN + borrowedColumnWidth + "s";
+            String itemIDAndTitleFormat = START_PATTERN + idColumnWidth + END_PATTERN + START_PATTERN + titleColumnWidth + END_PATTERN;
+            String pagesAndBorrowedFormat = START_PATTERN + pagesColumnWidth + END_PATTERN + START_PATTERN + borrowedColumnWidth + END_PATTERN;
 
             out.printf(itemIDAndTitleFormat, NEW_LINE + ITEM_ID, TITLE);
             if (items.get(0) instanceof Book) {
-                String bookPartFormat = "| %-" + authorColumnWidth + END_START_PATTERN + publishingDateColumnWidth + "s";
+                String bookPartFormat = START_PATTERN + authorColumnWidth + END_PATTERN + START_PATTERN + publishingDateColumnWidth + END_PATTERN;
                 out.printf(bookPartFormat, AUTHOR, PUBLISHING_DATE);
             }
             out.printf(pagesAndBorrowedFormat, PAGES, BORROWED);
@@ -117,11 +120,9 @@ public class Table {
     }
 
     private List<String> createStringListFromTitle(){
-        List<String> options = new ArrayList<>();
-        for (Item item: items){
-            options.add(item.getTitle());
-        }
-        return options;
+        return items.stream()
+                .map(Item::getTitle)
+                .collect(Collectors.toList()); // todo ???
     }
 
     private List<String> createStringListFromAuthor(){
@@ -154,43 +155,48 @@ public class Table {
         int current ;
         for (String option: stringOptions) {
             current = option.length();
-            if (current>max) {max=current;}
+            if (current>max) {
+                max=current;
+            }
         }
-        return max;
+        return max+ SPACE_FOR_PRETTY_COLUMN;
     }
 
 
     private void printID(Item item){
-        String regex = "%-" + (idColumnWidth-2) + "s";
+        String regex = "%-" + (idColumnWidth-2) + END_PATTERN;
         out.printf(regex,(item.getItemID()));
     }
 
     private void printTitle(Item item){
-        String regex = "| %-" + titleColumnWidth + "s";
+        String regex = createPattern(titleColumnWidth);
         out.printf(regex,(item.getTitle()));
     }
 
     private void printAuthor(Book book){
-        String regex = "| %-" + authorColumnWidth + "s";
+        String regex = createPattern(authorColumnWidth);
         out.printf(regex,(book.getAuthor()));
     }
 
     private void printPublishingDate(Book book){
-        String regex = "| %-" + publishingDateColumnWidth + "s";
+        String regex = createPattern(publishingDateColumnWidth);
         SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
         out.printf(regex,(df.format(book.getPublishingDate().getTime())));
     }
 
     private void printPages(Item item){
-        String regex = "| %-" + pagesColumnWidth + "s";
+        String regex = createPattern(pagesColumnWidth);
         out.printf(regex,(item.getPages()));
     }
 
     private void printBorrowed(Item item){
-        String regex = "| %-" + borrowedColumnWidth + "s";
+        String regex =createPattern(borrowedColumnWidth);
         out.printf(regex,(item.isBorrowed()));
     }
 
+    private String createPattern(int width){
+        return START_PATTERN + width+ END_PATTERN;
+    }
 
     private void printPlus(){
         out.print("+");
