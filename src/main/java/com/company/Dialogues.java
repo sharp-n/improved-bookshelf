@@ -186,7 +186,7 @@ public class Dialogues {
     public boolean addingDialogue() throws IOException {
         String typeOfItem = item.getClass().getSimpleName();
         String author = "";
-        GregorianCalendar publishingDate = new GregorianCalendar();
+        GregorianCalendar publishingDate = null;
         Integer itemID = validateID(idUserInput());
         if (itemID == null) {
             printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
@@ -202,13 +202,15 @@ public class Dialogues {
         if (!Librarian.checkItemForValidity(title)) return false;
         if (item instanceof Book) {
             author = validateAuthorName(authorUserInput());
-            if (author != null) {
-                publishingDate = validateDate(yearUserInput(), monthUserInput(), dayUserInput());
-                if (publishingDate == null) {
-                    serverHandler.writeLineMessage("Try again");
-                    return false;
-                }
+            if (author == null) {
+                return false;
             }
+            publishingDate = validateDate(yearUserInput(), monthUserInput(), dayUserInput());
+            if (publishingDate == null) {
+                serverHandler.writeLineMessage("Try again");
+                return false;
+            }
+
         }
 
         Integer numOfPages = validatePages(pagesUsersInput());
