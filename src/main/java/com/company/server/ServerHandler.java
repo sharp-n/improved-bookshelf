@@ -96,10 +96,10 @@ public class ServerHandler {
                         journalDialogue = new Dialogues(new Journal(), librarian, out, in);
                     }
 
-                    Integer var = getUsersMainMenuChoice(dialogue);
-                    if (var == null) var = -1;
+                    Integer usersChoice = getUsersMainMenuChoice(dialogue);
+                    if (usersChoice == null) usersChoice = -1;
 
-                    mainMenuVariants(var, bookDialogue, journalDialogue);
+                    mainMenuVariants(usersChoice, bookDialogue, journalDialogue);
 
                 }
             }
