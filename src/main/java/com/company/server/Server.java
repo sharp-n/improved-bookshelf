@@ -29,11 +29,12 @@ public class Server {
 
                             in.close();
                             out.close();
-                            input.close();
 
+                            input.close();
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            e.printStackTrace();
                         }
+
                     });
 
                     connectionThread.start();
@@ -52,7 +53,6 @@ public class Server {
                 serverSocket = new ServerSocket(port);
                 openPort = true;
             } catch (IOException e){
-                openPort = false;
                 port++;
             }
         }

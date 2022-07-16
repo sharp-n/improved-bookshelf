@@ -27,20 +27,20 @@ public class ServerHandler {
         this.out = out;
     }
 
-    private final static int ONE_FILE = 1;
-    private final static int TWO_FILES = 2;
-    private final static int CHANGE_USER_VALUE = 3;
-    final static int ADD_BOOK = 1;
-    final static int DELETE_BOOK = 2;
-    final static int TAKE_BOOK = 3;
-    final static int RETURN_BOOK = 4;
-    final static int SHOW_BOOKS = 5;
-    final static int ADD_JOURNAL = 6;
-    final static int DELETE_JOURNAL = 7;
-    final static int TAKE_JOURNAL = 8;
-    final static int RETURN_JOURNAL = 9;
-    final static int SHOW_JOURNALS = 10;
-    private final static int EXIT_VALUE = 0;
+    private static final int ONE_FILE = 1;
+    private static final int TWO_FILES = 2;
+    private static final int CHANGE_USER_VALUE = 3;
+    static final int ADD_BOOK = 1;
+    static final int DELETE_BOOK = 2;
+    static final int TAKE_BOOK = 3;
+    static final int RETURN_BOOK = 4;
+    static final int SHOW_BOOKS = 5;
+    static final int ADD_JOURNAL = 6;
+    static final int DELETE_JOURNAL = 7;
+    static final int TAKE_JOURNAL = 8;
+    static final int RETURN_JOURNAL = 9;
+    static final int SHOW_JOURNALS = 10;
+    private static final int EXIT_VALUE = 0;
 
     public void handle() {
 
@@ -96,10 +96,10 @@ public class ServerHandler {
                         journalDialogue = new Dialogues(new Journal(), librarian, out, in);
                     }
 
-                    Integer var = getUsersMainMenuChoice(dialogue);
-                    if (var == null) var = -1;
+                    Integer usersChoice = getUsersMainMenuChoice(dialogue);
+                    if (usersChoice == null) usersChoice = -1;
 
-                    mainMenuVariants(var, bookDialogue, journalDialogue);
+                    mainMenuVariants(usersChoice, bookDialogue, journalDialogue);
 
                 }
             }
@@ -163,7 +163,8 @@ public class ServerHandler {
             switch (variant) {
 
                 case ADD_BOOK:
-                    bookDialogue.addingDialogue();
+                    boolean bookSuccess = bookDialogue.addingDialogue();
+                    if (bookSuccess) bookDialogue.printSuccessMessage("added");
                     break;
 
                 case DELETE_BOOK:
@@ -183,7 +184,8 @@ public class ServerHandler {
                     break;
 
                 case ADD_JOURNAL:
-                    journalDialogue.addingDialogue();
+                    boolean journalSuccess = journalDialogue.addingDialogue();
+                    if (journalSuccess) bookDialogue.printSuccessMessage("added");
                     break;
 
                 case DELETE_JOURNAL:
