@@ -10,8 +10,8 @@ public enum FilesMenu {
     CHANGE_USER(3,"Change user"),
     DEFAULT(-1,"Default");
 
-    private int num;
-    private String option;
+    private final int num;
+    private final String option;
 
     FilesMenu(int num, String option) {
         this.num = num;
