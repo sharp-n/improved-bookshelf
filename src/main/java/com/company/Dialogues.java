@@ -336,27 +336,27 @@ public class Dialogues {
 
     public void sortingDialogue() throws IOException {
         WorkWithFiles workWithFiles = librarian.workWithFiles;
-        Integer sortingParameter = getSortingVar();
-
-        if (sortingParameter != null) {
+        Integer usersChoice = getSortingVar();
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
             List<? extends Item> items = new ArrayList<>();
             if (item instanceof Book)
                 switch (sortingParameter) {
-                    case 0:
+                    case RETURN_VALUE:
                         break;
-                    case 1:
+                    case ITEM_ID:
                         items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
                         break;
-                    case 2:
+                    case TITLE:
                         items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
                         break;
-                    case 3:
+                    case PAGES:
                         items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
                         break;
-                    case 4:
+                    case AUTHOR:
                         items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
                         break;
-                    case 5:
+                    case PUBLISHING_DATE:
                         items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
                         break;
                     default:
@@ -365,15 +365,15 @@ public class Dialogues {
 
                 }
             else if (item instanceof Journal) switch (sortingParameter) {
-                case 0:
+                case RETURN_VALUE:
                     break;
-                case 1:
+                case ITEM_ID:
                     items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
                     break;
-                case 2:
+                case TITLE:
                     items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
                     break;
-                case 3:
+                case PAGES:
                     items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
                     break;
                 default:
