@@ -1,29 +1,31 @@
-package com.company;
+package com.company.enums;
 
 import java.util.Arrays;
 
-public enum FilesMenu {
+public enum SortingMenu {
 
-    EXIT_VALUE(0,"Exit"),
-    ONE_FILE(1,"Use one file"),
-    TWO_FILES(2,"Use two files"),
-    CHANGE_USER(3,"Change user"),
-    DEFAULT(-1,"Default");
+    RETURN_VALUE(0, "Return"),
+    ITEM_ID(1, "Item ID"),
+    TITLE(2, "Title"),
+    PAGES(3, "Pages"),
+    AUTHOR(4, "Author"),
+    PUBLISHING_DATE(5, "Publishing date"),
+    DEFAULT(-1, "DEFAULT");
 
     private final int num;
     private final String option;
 
-    FilesMenu(int num, String option) {
+    SortingMenu(int num, String option) {
         this.num = num;
         this.option = option;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return num + " - " + option;
     }
 
-    public static FilesMenu getByIndex(int index){
+    public static SortingMenu getByIndex(int index){
         return Arrays
                 .stream(values())
                 .filter(e -> e.num == index)
