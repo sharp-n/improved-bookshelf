@@ -27,9 +27,8 @@ public class ServerHandler {
         this.out = out;
     }
 
-    private static final int ONE_FILE = 1;
-    private static final int TWO_FILES = 2;
-    private static final int CHANGE_USER_VALUE = 3;
+    private static final String NEW_LINE = System.lineSeparator();
+
     static final int ADD_BOOK = 1;
     static final int DELETE_BOOK = 2;
     static final int TAKE_BOOK = 3;
@@ -59,19 +58,21 @@ public class ServerHandler {
                 filesValue = false;
             } else {
 
-                Integer filesVar = usersFilesMenuChoice(dialogue);
-                if (filesVar == null) filesVar = -1;
+                Integer usersFilesMenuChoice = usersFilesMenuChoice(dialogue);
+                if (usersFilesMenuChoice == null) usersFilesMenuChoice = -1;
+
+                FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
 
                 mainProcValue = true;
 
-                switch (filesVar) {
+                switch (filesMenuOption) {
                     case ONE_FILE:
                         oneFileChoice(user);
                         break;
                     case TWO_FILES:
                         twoFilesChoice(user);
                         break;
-                    case CHANGE_USER_VALUE:
+                    case CHANGE_USER:
                         mainProcValue = false;
                         break;
                     case EXIT_VALUE:
@@ -122,7 +123,8 @@ public class ServerHandler {
     }
 
     public Integer usersFilesMenuChoice(Dialogues dialogue){
-        writeLineMessage("\n\r0 - Exit\n\r1 - Use one file\n\r2 - Use two files\n\r3 - Change user");
+        writeLineMessage(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE  + FilesMenu.ONE_FILE +
+                NEW_LINE + FilesMenu.TWO_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
