@@ -3,6 +3,8 @@ package com.company.server;
 import com.company.*;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
+import com.company.items.Book;
+import com.company.items.Journal;
 
 import java.io.IOException;
 import java.io.PrintWriter;

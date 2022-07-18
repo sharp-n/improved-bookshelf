@@ -1,4 +1,4 @@
-package com.company;
+package com.company.items;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 @NoArgsConstructor
 @Data
-public class Book extends Item{
+public class Book extends Item {
 
     private String author;
     private GregorianCalendar publishingDate;

@@ -1,6 +1,9 @@
 package com.company;
 
 import com.company.enums.SortingMenu;
+import com.company.items.Book;
+import com.company.items.Item;
+import com.company.items.Journal;
 import com.company.server.ServerHandler;
 
 import java.io.IOException;

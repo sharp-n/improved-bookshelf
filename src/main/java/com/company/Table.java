@@ -1,5 +1,9 @@
 package com.company;
 
+import com.company.items.Book;
+import com.company.items.Item;
+import com.company.items.Journal;
+
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +38,7 @@ public class Table {
     public Table(List<? extends Item> items, PrintWriter out) {
         this.items = items;
         this.out = out;
-        if (items.get(0) instanceof Book||items.get(0) instanceof Journal) {
+        if (items.get(0) instanceof Book ||items.get(0) instanceof Journal) {
             this.idColumnWidth = countMaxSymbols(createStringListFromID(), ITEM_ID.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
             this.titleColumnWidth = countMaxSymbols(createStringListFromTitle(), TITLE.length() + NUMBER_OF_SPACES_FOR_PRETTY_COLUMN);
             if (items.get(0) instanceof Book) {

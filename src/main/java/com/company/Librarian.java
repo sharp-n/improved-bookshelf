@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.items.Book;
+import com.company.items.Item;
+import com.company.items.Journal;
 import com.company.server.ServerHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

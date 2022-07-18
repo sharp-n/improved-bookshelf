@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.items.Book;
 import com.company.server.ServerHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
