@@ -27,20 +27,7 @@ public class ServerHandler {
         this.out = out;
     }
 
-    private static final int ONE_FILE = 1;
-    private static final int TWO_FILES = 2;
-    private static final int CHANGE_USER_VALUE = 3;
-    static final int ADD_BOOK = 1;
-    static final int DELETE_BOOK = 2;
-    static final int TAKE_BOOK = 3;
-    static final int RETURN_BOOK = 4;
-    static final int SHOW_BOOKS = 5;
-    static final int ADD_JOURNAL = 6;
-    static final int DELETE_JOURNAL = 7;
-    static final int TAKE_JOURNAL = 8;
-    static final int RETURN_JOURNAL = 9;
-    static final int SHOW_JOURNALS = 10;
-    private static final int EXIT_VALUE = 0;
+    private static final String NEW_LINE = System.lineSeparator();
 
     public void handle() {
 
@@ -59,19 +46,21 @@ public class ServerHandler {
                 filesValue = false;
             } else {
 
-                Integer filesVar = usersFilesMenuChoice(dialogue);
-                if (filesVar == null) filesVar = -1;
+                Integer usersFilesMenuChoice = usersFilesMenuChoice(dialogue);
+                if (usersFilesMenuChoice == null) usersFilesMenuChoice = -1;
+
+                FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
 
                 mainProcValue = true;
 
-                switch (filesVar) {
+                switch (filesMenuOption) {
                     case ONE_FILE:
                         oneFileChoice(user);
                         break;
                     case TWO_FILES:
                         twoFilesChoice(user);
                         break;
-                    case CHANGE_USER_VALUE:
+                    case CHANGE_USER:
                         mainProcValue = false;
                         break;
                     case EXIT_VALUE:
@@ -98,31 +87,28 @@ public class ServerHandler {
 
                     Integer usersChoice = getUsersMainMenuChoice(dialogue);
                     if (usersChoice == null) usersChoice = -1;
-
-                    mainMenuVariants(usersChoice, bookDialogue, journalDialogue);
+                    MainMenu mainMenuOption = MainMenu.getByIndex(usersChoice);
+                    mainMenuVariants(mainMenuOption, bookDialogue, journalDialogue);
 
                 }
             }
         }
     }
 
-    ///TODO use constants in menu
-    // TODO use enum for menu
-
     public Integer getUsersMainMenuChoice(Dialogues dialogue){
-        writeLineMessage("\n\r\t\t0 - Exit" +
-                "\n\r1 - Add book\t6 - Add journal" +
-                "\n\r2 - Delete book\t7 - Delete journal" +
-                "\n\r3 - Take book\t8 - Take journal" +
-                "\n\r4 - Return book\t9 - Return journal" +
-                "\n\r5 - Show books\t10 - Show journals");
-
+        writeLineMessage(NEW_LINE + MainMenu.EXIT_VALUE +"\t\t" +
+                NEW_LINE + MainMenu.ADD_BOOK + NEW_LINE + "\t" + MainMenu.ADD_JOURNAL +
+                NEW_LINE + MainMenu.DELETE_BOOK + "\t" + MainMenu.DELETE_JOURNAL +
+                NEW_LINE + MainMenu.TAKE_BOOK + "\t" + MainMenu.TAKE_JOURNAL +
+                NEW_LINE + MainMenu.RETURN_BOOK + "\t" + MainMenu.RETURN_JOURNAL +
+                NEW_LINE + MainMenu.SHOW_BOOKS + "\t" + MainMenu.SHOW_JOURNALS);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
     public Integer usersFilesMenuChoice(Dialogues dialogue){
-        writeLineMessage("\n\r0 - Exit\n\r1 - Use one file\n\r2 - Use two files\n\r3 - Change user");
+        writeLineMessage(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE  + FilesMenu.ONE_FILE +
+                NEW_LINE + FilesMenu.TWO_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
@@ -158,9 +144,9 @@ public class ServerHandler {
         out.flush();
     }
 
-    private void mainMenuVariants(Integer variant, Dialogues bookDialogue, Dialogues journalDialogue){
+    private void mainMenuVariants(MainMenu mainMenuOption, Dialogues bookDialogue, Dialogues journalDialogue){
         try {
-            switch (variant) {
+            switch (mainMenuOption) {
 
                 case ADD_BOOK:
                     boolean bookSuccess = bookDialogue.addingDialogue();

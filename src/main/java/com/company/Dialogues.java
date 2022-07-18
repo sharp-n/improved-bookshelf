@@ -23,6 +23,9 @@ public class Dialogues {
 
     private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)";
 
+    private static final String NEW_LINE = System.lineSeparator();
+    private static final String NEW_LINE_WITH_TAB = System.lineSeparator();
+
     public Dialogues(PrintWriter out, Scanner scan) {
         this.out = out;
         this.scan = scan;
@@ -53,7 +56,7 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        serverHandler.writeLineMessage("\nInput your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
+        serverHandler.writeLineMessage(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
@@ -109,7 +112,7 @@ public class Dialogues {
     public Integer yearUserInput() {
         try {
             serverHandler.writeLineMessage("");
-            serverHandler.writeLineMessage("Date of publish:\n\r\tYear: ");
+            serverHandler.writeLineMessage("Date of publish:" + NEW_LINE_WITH_TAB + "Year: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -283,12 +286,12 @@ public class Dialogues {
         if (items.isEmpty()) serverHandler.writeLineMessage("There`s no items here");
         else {
             String str = "%-12s%-40s";
-            serverHandler.writeMessage(String.format(str, "\n\r ITEM ID", "| TITLE"));
+            serverHandler.writeMessage(String.format(str, NEW_LINE + " ITEM ID", "| TITLE"));
             if (item instanceof Book) {
                 serverHandler.writeMessage(String.format("%-32s%-18s", "| AUTHOR", "| PUBLISHING DATE"));
             }
             serverHandler.writeMessage(String.format("%-8s%-30s", "| PAGES", "| " + "BORROWED"));
-            serverHandler.writeMessage("\n\r----------+---------------------------------------");
+            serverHandler.writeMessage(NEW_LINE + "----------+---------------------------------------");
             if (item instanceof Book) {
                 serverHandler.writeMessage("+-------------------------------+-----------------");
             }
@@ -299,7 +302,7 @@ public class Dialogues {
                     DateFormat df = new SimpleDateFormat("dd.M.y");
                     serverHandler.writeMessage(String.format("%-32s%-18s", "| " + ((Book) i).getAuthor(), "| " + df.format(((Book) i).getPublishingDate().getTime())));
                 }
-                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + "\n\r");
+                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + NEW_LINE);
             }
         }
     }
@@ -307,11 +310,12 @@ public class Dialogues {
     private Integer getSortingVar(){
         try {
             if (item instanceof Book || item instanceof Journal) {
-                serverHandler.writeLineMessage("Sort by:\n\r\t1 - Item ID\n\r\t2 - Title\n\r\t3 - Pages");
+                serverHandler.writeLineMessage("Sort by:" + NEW_LINE_WITH_TAB + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB +
+                        SortingMenu.TITLE + NEW_LINE_WITH_TAB + SortingMenu.PAGES);
                 if (item instanceof Book) {
-                    serverHandler.writeLineMessage("\t4 - Author\n\r\t5 - Publishing date");
+                    serverHandler.writeMessage( NEW_LINE_WITH_TAB + SortingMenu.AUTHOR+ NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
                 }
-                serverHandler.writeLineMessage("0 - Return");
+                serverHandler.writeLineMessage(SortingMenu.RETURN_VALUE.toString());
                 printWaitingForReplyMessage();
             }
             return Integer.parseInt(scan.nextLine().trim());
@@ -332,26 +336,27 @@ public class Dialogues {
 
     public void sortingDialogue() throws IOException {
         WorkWithFiles workWithFiles = librarian.workWithFiles;
-        Integer sortingParameter = getSortingVar();
-        if (sortingParameter != null) {
+        Integer usersChoice = getSortingVar();
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
             List<? extends Item> items = new ArrayList<>();
             if (item instanceof Book)
                 switch (sortingParameter) {
-                    case 0:
+                    case RETURN_VALUE:
                         break;
-                    case 1:
+                    case ITEM_ID:
                         items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
                         break;
-                    case 2:
+                    case TITLE:
                         items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
                         break;
-                    case 3:
+                    case PAGES:
                         items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
                         break;
-                    case 4:
+                    case AUTHOR:
                         items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
                         break;
-                    case 5:
+                    case PUBLISHING_DATE:
                         items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
                         break;
                     default:
@@ -360,15 +365,15 @@ public class Dialogues {
 
                 }
             else if (item instanceof Journal) switch (sortingParameter) {
-                case 0:
+                case RETURN_VALUE:
                     break;
-                case 1:
+                case ITEM_ID:
                     items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
                     break;
-                case 2:
+                case TITLE:
                     items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
                     break;
-                case 3:
+                case PAGES:
                     items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
                     break;
                 default:
