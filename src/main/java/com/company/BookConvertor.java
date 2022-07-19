@@ -19,11 +19,13 @@ public class BookConvertor extends ItemConvertor{
     }
 
     public String authorToString(){
+        if(book.getAuthor()==null) return "NULL";
         return book.getAuthor();
     }
 
     public String publishingDateToString(){
         SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
+        if(book.getPublishingDate()==null) return "NULL";
         return df.format(book.getPublishingDate().getTime());
     }
 
