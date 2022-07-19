@@ -50,7 +50,6 @@ public class Table {
         }
     }
 
-
     public void printTable(){
         printHeader();
         printBody();
