@@ -4,12 +4,15 @@ import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import lombok.NoArgsConstructor;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor
@@ -29,9 +32,10 @@ public class WorkWithFiles {
         }
     }
 
-    public synchronized void addItemToFile(Container<? extends Item> itemContainer) throws IOException {
-        List<Container<? extends Item>> containers = readToContainersList();
-        containers.add(itemContainer);
+    public synchronized void addItemToFile(Item itemToAdd) throws IOException {
+        List<Item> items = readToItemsList();
+        items.add(itemToAdd);
+        List<Container<? extends Item>> containers = convertToContainer(items);
         rewriteFile(containers);
     }
 
@@ -45,6 +49,22 @@ public class WorkWithFiles {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
+        List<Item> items = readToItemsList();
+        for (Item item : items) {
+            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID && !forBorrow) {
+
+                if (item.isBorrowed()) {
+                    return false;
+                }
+                items.remove(item);
+                rewriteFile(convertToContainer(items));
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Journal> readToJournalsList() throws IOException {
@@ -77,13 +97,19 @@ public class WorkWithFiles {
         return books;
     }
 
-    public List<Container<? extends Item>> readToContainersList() throws IOException {
+    public List<Item> readToItemsList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        List<Container<? extends Item>> containers = new ArrayList<>();
+        List<Item> containers = new ArrayList<>();
         if(jsonArray != null) {
             for (JsonElement element : jsonArray) {
-                containers.add(gson.fromJson(element, Container.class));
+                JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
+                String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
+                if (typeOfClass.equals("Book")) {
+                    containers.add(gson.fromJson(itemObject, Book.class));
+                } else if (typeOfClass.equals("Journal")) {
+                    containers.add(gson.fromJson(itemObject, Journal.class));
+                }
             }
         }
         return containers;
@@ -99,4 +125,14 @@ public class WorkWithFiles {
         if (!file.exists()) {file.createNewFile();}
         return file;
     }
+
+    List<Container<? extends Item>> convertToContainer(List<Item> items){
+        List<Container<? extends Item>> containers = new ArrayList<>();
+        for (Item item: items) {
+            containers.add(new Container<>(item));
+        }
+        return containers;
+    }
+
+
 }
