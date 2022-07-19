@@ -60,13 +60,13 @@ class TableUtilTest {
                 Arguments.of(Arrays.asList(
                         new Book(1,"some title", "some author", new GregorianCalendar(2022,10,2),932),
                         new Book(534,"TITLE", null, new GregorianCalendar(2022,8,2),932)),
-                        " 1      | some title | some author | 02.11.2022          | 932       | false        " + NEW_LINE +
-                                " 534    | TITLE      | NULL        | 02.9.2022           | 932       | false        " + NEW_LINE),
+                        " 1    | some title | some author | 02.11.2022        | 932     | false      " + NEW_LINE +
+                                " 534  | TITLE      | NULL        | 02.9.2022         | 932     | false      " + NEW_LINE),
                 Arguments.of(Arrays.asList(
                         new Book(534,"TITLE", "author", null,932),
                         new Book(534,"TITLE", null, null,932)),
-                        " 534    | TITLE     | author     | NULL                | 932       | false        " + NEW_LINE +
-                                " 534    | TITLE     | NULL       | NULL                | 932       | false        " + NEW_LINE)
+                        " 534  | TITLE   | author   | NULL              | 932     | false      " + NEW_LINE +
+                                " 534  | TITLE   | NULL     | NULL              | 932     | false      " + NEW_LINE)
         );
     }
 
@@ -85,18 +85,18 @@ class TableUtilTest {
                 Arguments.of(Arrays.asList(
                                 new Book(1,"some title", "some author", new GregorianCalendar(2022,10,2),932),
                                 new Book(534,"TITLE", null, new GregorianCalendar(2022,8,2),932)),
-                        " =ID=   | =TITLE=    | =AUTHOR=    | =PUBLISHING DATE=   | =PAGES=   | =BORROWED=   " + NEW_LINE +
-                                "--------+------------+-------------+---------------------+-----------+--------------" + NEW_LINE +
-                                " 1      | some title | some author | 02.11.2022          | 932       | false        " + NEW_LINE +
-                                " 534    | TITLE      | NULL        | 02.9.2022           | 932       | false        " + NEW_LINE,
+                        " =ID= | =TITLE=    | =AUTHOR=    | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + NEW_LINE +
+                                "------+------------+-------------+-------------------+---------+------------" + NEW_LINE +
+                                " 1    | some title | some author | 02.11.2022        | 932     | false      " + NEW_LINE +
+                                " 534  | TITLE      | NULL        | 02.9.2022         | 932     | false      " + NEW_LINE,
                         bookOptions),
                 Arguments.of(Arrays.asList(
                                 new Book(534,"TITLE", "author", null,932),
                                 new Book(534,"TITLE", null, null,932)),
-                        " =ID=   | =TITLE=   | =AUTHOR=   | =PUBLISHING DATE=   | =PAGES=   | =BORROWED=   " + NEW_LINE +
-                                "--------+-----------+------------+---------------------+-----------+--------------" + NEW_LINE +
-                                " 534    | TITLE     | author     | NULL                | 932       | false        " + NEW_LINE +
-                                " 534    | TITLE     | NULL       | NULL                | 932       | false        " + NEW_LINE,
+                        " =ID= | =TITLE= | =AUTHOR= | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + NEW_LINE +
+                                "------+---------+----------+-------------------+---------+------------" + NEW_LINE +
+                                " 534  | TITLE   | author   | NULL              | 932     | false      " + NEW_LINE +
+                                " 534  | TITLE   | NULL     | NULL              | 932     | false      " + NEW_LINE,
                         bookOptions)
         );
     }
@@ -147,10 +147,10 @@ class TableUtilTest {
                                 new ArrayList<>(Collections.singletonList("first row")),
                                 new ArrayList<>(Collections.singletonList("second row")))),
                         new ArrayList<>(Collections.singletonList("one option")),
-                        " =ONE OPTION=   " + NEW_LINE  +
-                                "----------------" + NEW_LINE +
-                                " first row      " + NEW_LINE +
-                                " second row     " + NEW_LINE),
+                        " =ONE OPTION= " + NEW_LINE  +
+                                "--------------" + NEW_LINE +
+                                " first row    " + NEW_LINE +
+                                " second row   " + NEW_LINE),
 
                 Arguments.of(new ArrayList<>(Arrays.asList(
                                 new ArrayList<>(Collections.singletonList("row")),
@@ -164,5 +164,38 @@ class TableUtilTest {
                                 " another row " + NEW_LINE)
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("provideOptionsForValidation")
+    void validateColumnsTest(List<String> option, String expected){
+        TableUtil tableUtil = new TableUtil(option, new ArrayList<>(), printWriter);
+        tableUtil.validateRows();
+        tableUtil.printHeader();
+        Assertions.assertEquals(expected, outputStream.toString());
+    }
+
+    private static Stream<Arguments> provideOptionsForValidation(){
+        return Stream.of(
+                Arguments.of(new ArrayList<>(Arrays.asList(
+                        "first column",
+                        "",
+                        "last column")),
+                        " =FIRST COLUMN= | =NULL= | =LAST COLUMN= " + NEW_LINE +
+                                "----------------+--------+---------------" + NEW_LINE),
+                Arguments.of(new ArrayList<>(Arrays.asList(
+                                "",
+                                "",
+                                "last column")),
+                        " =NULL= | =NULL= | =LAST COLUMN= " + NEW_LINE +
+                                "--------+--------+---------------" + NEW_LINE),
+                Arguments.of(new ArrayList<>(Collections.singletonList("")),
+                        " =NULL= " + NEW_LINE +
+                                "--------" + NEW_LINE),
+                Arguments.of(new ArrayList<>(Collections.singletonList(null)),
+                        " =NULL= " + NEW_LINE +
+                                "--------" + NEW_LINE)
+        );
+    }
+
 
 }
