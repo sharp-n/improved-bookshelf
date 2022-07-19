@@ -6,7 +6,7 @@ import java.net.Socket;
 public class ClientSocket {
 
     public static void main(String[] args) throws IOException {
-        try (Socket clientSocket = new Socket("localhost", 8081)) {
+        try (Socket clientSocket = new Socket("localhost", 8080)) {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

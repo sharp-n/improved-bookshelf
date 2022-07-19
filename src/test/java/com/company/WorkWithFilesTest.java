@@ -30,11 +30,6 @@ public class WorkWithFilesTest {
     }
 
     @Test
-    void readToContainersListTest() throws IOException {
-        workWithFiles.readToContainersList().forEach(b->System.out.println(b.item + " - " + b.typeOfClass));
-    }
-
-    @Test
     void deleteItemFromFileTest() throws IOException {
         Assertions.assertTrue(booksLibrarian.deleteItem(101,false,"Book"));
         Assertions.assertFalse(booksLibrarian.deleteItem(105, false, "Book"));
@@ -42,7 +37,7 @@ public class WorkWithFilesTest {
 
     @Test
     void addItemToFileTest() throws IOException {
-        workWithFiles.addItemToFile(new Container<>(secondBook));
+        workWithFiles.addItemToFile(secondBook);
     }
 
 }
