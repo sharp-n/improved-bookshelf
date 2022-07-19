@@ -13,12 +13,14 @@ public class TableUtil {
 
     private final int numberOfColumns;
     private static final int NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING = 2;
+    private static final String CONSTANT_FOR_EMPTY_OPTIONS = "NULL";
 
     public TableUtil(List<String> columns, List<List<String>> rows, PrintWriter out) {
         this.columns = columns;
         this.rows = rows;
         this.out = out;
         this.numberOfColumns = columns.size();
+        validateColumns();
         validateRows();
     }
 
@@ -62,12 +64,12 @@ public class TableUtil {
     int countMaxSymbols(String option, int numberOfColumn){
         int max = option.length() + 4;
         for (List<String> row : rows) {
-            int lengthOfItem = row.get(numberOfColumn).length();
+            int lengthOfItem = row.get(numberOfColumn).length()+ NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING;
             if (lengthOfItem > max) {
                 max = lengthOfItem;
             }
         }
-        return max+ NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING;
+        return max;
     }
 
     public void printBody(){
@@ -95,9 +97,23 @@ public class TableUtil {
             int rowsSize = row.size();
             if (rowsSize < numberOfColumns) {
                 for (int dif = numberOfColumns - rowsSize; dif > 0; dif--) {
-                    row.add("NULL");
+                    row.add(CONSTANT_FOR_EMPTY_OPTIONS);
                 }
             }
         }
     }
+
+    private void validateColumns() {
+        for (int i = 0; i< columns.size(); i++){
+            String column = columns.get(i);
+            if (column == null){
+                column = CONSTANT_FOR_EMPTY_OPTIONS;
+            } else column = column.trim();
+            if (column.equals("")){
+                column = CONSTANT_FOR_EMPTY_OPTIONS;
+            }
+            columns.set(i,column);
+        }
+    }
+
 }
