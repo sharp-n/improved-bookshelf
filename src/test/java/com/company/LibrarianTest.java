@@ -25,7 +25,7 @@ public class LibrarianTest {
     Book thirdBook = new Book(103,"Third Book", "Third Author", new GregorianCalendar(2002,Calendar.MAY,10),783);
 
     Journal firstJournal = new Journal(101,"First Journal",95);
-    Journal secondJournal = new Journal(102, "Second Journal", 96);
+    Journal secondJournal = new Journal(105, "Second Journal", 96);
     Journal thirdJournal = new Journal(103, "Existing Journal", 96);
 
     List<Book> books = new ArrayList<>();

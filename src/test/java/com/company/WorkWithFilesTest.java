@@ -42,7 +42,7 @@ public class WorkWithFilesTest {
 
     @Test
     void addItemToFileTest() throws IOException {
-        workWithFiles.addItemToFile(new Container<>(secondBook));
+        workWithFiles.addItemToFile(secondBook);
     }
 
 }
