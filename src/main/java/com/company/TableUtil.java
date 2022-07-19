@@ -5,7 +5,6 @@ import java.util.List;
 
 public class TableUtil {
 
-
     List<String> columns;
 
     List<List<String>> rows;
@@ -20,10 +19,10 @@ public class TableUtil {
         this.rows = rows;
         this.out = out;
         this.numberOfColumns = columns.size();
+        validateRows();
     }
 
     public void printTable(){
-        validateRows();
         printHeader();
         printBody();
     }
