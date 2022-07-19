@@ -1,4 +1,4 @@
-package com.company;
+package com.company.table;
 
 import java.io.PrintWriter;
 import java.util.List;

@@ -1,15 +1,12 @@
-package com.company;
+package com.company.convertors;
 
 import com.company.items.Book;
-import com.company.items.Item;
-import jdk.tools.jlink.internal.plugins.SystemModulesPlugin;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookConvertor extends ItemConvertor{
+public class BookConvertor extends ItemConvertor {
 
     Book book;
 

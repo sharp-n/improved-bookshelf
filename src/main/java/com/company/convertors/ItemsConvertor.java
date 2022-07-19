@@ -1,11 +1,10 @@
-package com.company;
+package com.company.convertors;
 
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import lombok.AllArgsConstructor;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 

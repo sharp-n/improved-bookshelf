@@ -1,4 +1,4 @@
-package com.company;
+package com.company.convertors;
 
 import com.company.items.Item;
 import lombok.AllArgsConstructor;
