@@ -24,27 +24,6 @@ class TableUtilTest {
 
     static final String NEW_LINE = System.lineSeparator();
 
-    @Test
-    void headerTest(){
-        List<String> columns = new ArrayList<>();
-        columns.add("first");
-        columns.add("second");
-        columns.add("third");
-        List<List<String>> rows = new ArrayList<>();
-        List<String> firstObj = new ArrayList<>();
-        firstObj.add("firstElement");
-        firstObj.add("secondElement");
-
-        List<String> secondObj = new ArrayList<>();
-        secondObj.add("firstElement");
-        secondObj.add("secondElement");
-        rows.add(firstObj);
-        rows.add(secondObj);
-
-        TableUtil table = new TableUtil(columns,rows, printWriter);
-        table.printTable();
-    }
-
     @ParameterizedTest
     @MethodSource("provideBooks")
     void bodyBooksTest(List<Book> provided, String expected){
@@ -184,7 +163,7 @@ class TableUtilTest {
                                 "----------------+--------+---------------" + NEW_LINE),
                 Arguments.of(new ArrayList<>(Arrays.asList(
                                 "",
-                                "",
+                                null,
                                 "last column")),
                         " =NULL= | =NULL= | =LAST COLUMN= " + NEW_LINE +
                                 "--------+--------+---------------" + NEW_LINE),
