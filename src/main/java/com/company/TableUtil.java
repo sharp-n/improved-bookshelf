@@ -1,23 +1,24 @@
 package com.company;
 
-import lombok.AllArgsConstructor;
-
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class TableUtil {
 
 
-    List<String> columns = new ArrayList<>();
+    List<String> columns;
 
-    List<List<String>> rows = new ArrayList<>();
+    List<List<String>> rows;
+
+    PrintWriter out;
 
     private final int numberOfColumns;
-    private final int numberOfSpacesForPrettyItemsPrinting = 2;
+    private static final int NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING = 2;
 
-    public TableUtil(List<String> columns, List<List<String>> rows) {
+    public TableUtil(List<String> columns, List<List<String>> rows, PrintWriter out) {
         this.columns = columns;
         this.rows = rows;
+        this.out = out;
         this.numberOfColumns = columns.size();
     }
 
@@ -32,54 +33,54 @@ public class TableUtil {
         for(int i = 0; i<columns.size(); i++){
             int max = countMaxSymbols(columns.get(i),i) ;
             if (i!=0) {
-                System.out.print("|");
+                out.print("|");
             }
             printOption(columns.get(i),max);
         }
-        System.out.println();
+        out.println();
         printLine();
-        System.out.println();
+        out.println();
     }
 
     private void printOption(String option, int numberOfSymbols) {
         String pattern = "%-" + numberOfSymbols + "s";
         String column = " =" + option.toUpperCase() + "= ";
-        System.out.printf(pattern,column);
+        out.printf(pattern,column);
     }
 
     private void printLine() {
         for (int i = 0; i<numberOfColumns;i++){
             int max = countMaxSymbols(columns.get(i),i) ;
             for (int j = 0; j<max;j++){
-                System.out.print("-");
+                out.print("-");
             }
             if (i!=numberOfColumns-1) {
-                System.out.print("+");
+                out.print("+");
             }
         }
     }
 
     int countMaxSymbols(String option, int numberOfColumn){
         int max = option.length() + 4;
-        for(int i = 0; i<rows.size();i++){
-            int lengthOfItem = rows.get(i).get(numberOfColumn).length();
-            if (lengthOfItem>max) {
+        for (List<String> row : rows) {
+            int lengthOfItem = row.get(numberOfColumn).length();
+            if (lengthOfItem > max) {
                 max = lengthOfItem;
             }
         }
-        return max+numberOfSpacesForPrettyItemsPrinting;
+        return max+ NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING;
     }
 
     public void printBody(){
-        for(int i = 0; i< rows.size(); i++){
-            for (int j = 0; j <columns.size(); j++) {
-                int max = countMaxSymbols(columns.get(j),j);
+        for (List<String> row : rows) {
+            for (int j = 0; j < columns.size(); j++) {
+                int max = countMaxSymbols(columns.get(j), j);
                 if (j != 0) {
-                    System.out.print("|");
+                    out.print("|");
                 }
-                printItem(rows.get(i).get(j),max);
+                printItem(row.get(j), max);
             }
-            System.out.println();
+            out.println();
         }
 
     }
@@ -87,15 +88,15 @@ public class TableUtil {
     private void printItem(String item, int numberOfSymbols){
         String pattern = "%-" + numberOfSymbols + "s";
         String prettyItem = " " + item + " ";
-        System.out.printf(pattern,prettyItem);
+        out.printf(pattern,prettyItem);
     }
 
     public void validateRows(){
-        for(int i = 0; i<rows.size(); i++){
-            int rowsSize = rows.get(i).size();
-            if(rowsSize<numberOfColumns){
-                for (int dif = numberOfColumns - rowsSize; dif > 0; dif--){
-                    rows.get(i).add("NULL");
+        for (List<String> row : rows) {
+            int rowsSize = row.size();
+            if (rowsSize < numberOfColumns) {
+                for (int dif = numberOfColumns - rowsSize; dif > 0; dif--) {
+                    row.add("NULL");
                 }
             }
         }
