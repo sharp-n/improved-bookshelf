@@ -12,13 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemsConvertor {
 
-    public List<List<String>> itemsToString(List<Journal> journals) {
+    public List<List<String>> journalsToString(List<Journal> journals) {
         List<List<String>> journalsAsStringList = new ArrayList<>();
         for (Journal journal: journals) {
             ItemConvertor journalConvertor = new JournalConvertor(journal);
             journalsAsStringList.add(journalConvertor.itemToString());
         }
         return journalsAsStringList;
+
     }
 
     public List<List<String>> booksToString(List<Book> books) {
@@ -30,14 +31,14 @@ public class ItemsConvertor {
         return booksAsStringList;
     }
 
-    public List<List<String>> containersToString(List<Container<? extends Item>> containers){
+    public List<List<String>> itemsToString(List<Item> items){
         List<List<String>> containersAsStringList = new ArrayList<>();
-        for (Container<? extends Item> container: containers){
-            if (container.typeOfClass.equals("Book")){
-                ItemConvertor bookConvertor = new BookConvertor(((Book)container.item));
+        for (Item item: items){
+            if (item instanceof Book){
+                ItemConvertor bookConvertor = new BookConvertor(((Book)item));
                 containersAsStringList.add(bookConvertor.itemToString());
-            } else if (container.typeOfClass.equals("Journal")){
-                ItemConvertor journalConvertor = new JournalConvertor(((Journal)container.item));
+            } else if (item instanceof Journal){
+                ItemConvertor journalConvertor = new JournalConvertor(((Journal)item));
                 containersAsStringList.add(journalConvertor.itemToString());
             }
         }
