@@ -1,9 +1,9 @@
 package com.company;
 
+import com.company.items.Book;
+import com.company.items.Item;
+import com.company.items.Journal;
 import com.company.server.ServerHandler;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -20,56 +20,31 @@ public class Librarian {
     WorkWithFiles workWithFiles;
     ServerHandler serverHandler;
 
+    public static final String TYPE_OF_ITEM_JOURNAL = "Journal";
+    public static final String TYPE_OF_ITEM_BOOK = "Book";
 
     public void addItem(Item item) throws IOException {
-        if(item instanceof Book){workWithFiles.addItemToFile(new Container<>((Book) item));}
-        if(item instanceof Journal){workWithFiles.addItemToFile(new Container<>((Journal) item));}
+        if(item instanceof Book){workWithFiles.addItemToFile(item);}
+        if(item instanceof Journal){workWithFiles.addItemToFile(item);}
     }
 
     public boolean deleteItem(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
+        boolean deleted = false;
         if (checkIDForExistence(itemID,typeOfItem)) {
-            boolean deleted = false;
-            JsonArray jsonArray = workWithFiles.makeJsonArrayFromFile();
-            List<Container<? extends Item>> containers = new ArrayList<>();
-            for (JsonElement element: jsonArray) {
-                containers.add(workWithFiles.gson.fromJson(element, Container.class));
-                JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-                String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-                if (typeOfClass.equals(typeOfItem)) {
-                    if (workWithFiles.gson.fromJson(itemObject, Journal.class).itemID == itemID){
-                        if(!defineIfCanDelete(element,forBorrow)){return false;}
-                        containers.remove(containers.size()-1);
-                        deleted = true;
-                    }
-                }
-            }
-            if (deleted){
-                workWithFiles.rewriteFile(containers);
-                return true;
-            }
-            return false;
+            deleted = workWithFiles.removeItemFromFile(itemID,forBorrow,typeOfItem);
         }
-        return false;
-    }
-
-    // !!!!!REFACTOR!!!!!
-
-    public boolean defineIfCanDelete(JsonElement itemObject, boolean forBorrow) {
-        if (!forBorrow) {
-            if (workWithFiles.gson.fromJson(itemObject, Journal.class).isBorrowed()) {
-                serverHandler.writeMessage("This item is borrowed, please return it first");
-                return false;
-            }
+        if(!deleted) {
+            serverHandler.writeLineMessage("This item maybe borrowed or does not exist");
         }
-        return true;
+        return deleted;
     }
 
     public void borrowItem(int itemID, String typeOfItem, boolean borrow) throws IOException {
         Item item = new Item();
-        if(typeOfItem.equals("Book")){
+        if(typeOfItem.equals(TYPE_OF_ITEM_BOOK)){
             List<Book> items = workWithFiles.readToBooksList();
             item = findItemByID(itemID,items);
-        } else  if(typeOfItem.equals("Journal")){
+        } else  if(typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)){
             List<Journal> items = workWithFiles.readToJournalsList();
             item = findItemByID(itemID,items);
         }
@@ -113,9 +88,9 @@ public class Librarian {
 
     public boolean checkIDForExistence(int itemID, String typeOfItem) throws IOException {
         List<? extends Item> items = new ArrayList<>();
-        if (typeOfItem.equals("Book")){
+        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)){
             items = workWithFiles.readToBooksList();
-        } else if (typeOfItem.equals("Journal")) {
+        } else if (typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)) {
             items = workWithFiles.readToJournalsList();
         }
         if (items != null) {

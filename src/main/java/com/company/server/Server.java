@@ -1,48 +1,86 @@
 package com.company.server;
 
-import lombok.var;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Server {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    static ServerSocket serverSocket;
+    public static void main(String[] args) {
+            runServer();
+            int connections = 0;
+            List<Thread> connectionThreads = new ArrayList<>();
+            while (connections != 20) {
+                Socket input = runInputSocket();
+                if (input!=null) {
+                    connections++;
+                    Thread connectionThread = new Thread(() -> {
+                        try {
+                            Scanner in = new Scanner(input.getInputStream());
+                            PrintWriter out = new PrintWriter(input.getOutputStream());
+                            ServerHandler serverHandler = new ServerHandler(in, out);
 
-        ServerSocket serverSocket = new ServerSocket(8080);
-        int connections = 0;
-        var connectionThreads = new ArrayList<Thread>();
-        while (connections != 20) {
-            Socket input = serverSocket.accept();
-            connections++;
-            Thread connectionThread = new Thread(() -> {
-                try {
-                    Scanner in = new Scanner(input.getInputStream());
-                    PrintWriter out = new PrintWriter(input.getOutputStream());
-                    ServerHandler serverHandler = new ServerHandler(in, out);
+                            serverHandler.handle();
 
-                    serverHandler.handle();
+                            in.close();
+                            out.close();
 
-                    in.close();
-                    out.close();
-                    input.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                            input.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    });
+
+                    connectionThread.start();
+                    connectionThreads.add(connectionThread);
                 }
-            });
-            connectionThread.start();
-            connectionThreads.add(connectionThread);
-        }
-        for (Thread connectionThread : connectionThreads) {
-            connectionThread.join();
-        }
-        serverSocket.close();
-
+            }
+            joinThreads(connectionThreads);
+            stopServer();
     }
 
+    private static void runServer() {
+        int port = 8080;
+        boolean openPort = false;
+        while(!openPort){
+            try {
+                serverSocket = new ServerSocket(port);
+                openPort = true;
+            } catch (IOException e){
+                port++;
+            }
+        }
+    }
 
+    private static Socket runInputSocket() {
+        try {
+            return serverSocket.accept();
+        } catch (IOException e){
+            return null;
+        }
+    }
+
+    private static void joinThreads(List<Thread> connectionThreads) {
+        try {
+            for (Thread connectionThread : connectionThreads) {
+                connectionThread.join();
+            }
+        } catch(InterruptedException ignored){
+
+        }
+    }
+
+    private static void stopServer(){
+        try {
+            serverSocket.close();
+        } catch (IOException ignored){
+
+        }
+    }
 }

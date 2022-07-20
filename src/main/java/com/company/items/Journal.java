@@ -1,5 +1,6 @@
-package com.company;
+package com.company.items;
 
+import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor

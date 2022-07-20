@@ -1,16 +1,13 @@
-package com.company;
+package com.company.items;
 
-import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
 
 import java.util.GregorianCalendar;
 
 @NoArgsConstructor
 @Data
-public class Book extends Item{
+public class Book extends Item {
 
     private String author;
     private GregorianCalendar publishingDate;

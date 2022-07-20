@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.items.Book;
+import com.company.server.ServerHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,10 +39,10 @@ public class UserInputTest {
     }
 */
 
-    private Dialogues getDialogues(String x) {
+    Dialogues getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test")),new PrintWriter(System.out),scanner);
+        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out))),new PrintWriter(System.out),scanner);
     }
 
     // USERNAME

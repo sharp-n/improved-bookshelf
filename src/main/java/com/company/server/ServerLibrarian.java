@@ -1,8 +1,8 @@
 package com.company.server;
 
-import com.company.Book;
-import com.company.Item;
-import com.company.Journal;
+import com.company.items.Book;
+import com.company.items.Item;
+import com.company.items.Journal;
 import com.company.Librarian;
 
 import java.io.IOException;
