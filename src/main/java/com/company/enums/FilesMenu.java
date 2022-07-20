@@ -6,7 +6,7 @@ public enum FilesMenu {
 
     EXIT_VALUE(0,"Exit"),
     ONE_FILE(1,"Use one file"),
-    TWO_FILES(2,"Use two files"),
+    FEW_FILES(2,"Use few files"),
     CHANGE_USER(3,"Change user"),
     DEFAULT(-1,"Default");
 

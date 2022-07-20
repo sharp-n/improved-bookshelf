@@ -3,6 +3,7 @@ package com.company;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import com.company.server.ServerHandler;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,18 +23,18 @@ public class Librarian {
 
     public static final String TYPE_OF_ITEM_JOURNAL = "Journal";
     public static final String TYPE_OF_ITEM_BOOK = "Book";
+    public static final String TYPE_OF_ITEM_NEWSPAPER = "Newspaper";
 
     public void addItem(Item item) throws IOException {
-        if(item instanceof Book){workWithFiles.addItemToFile(item);}
-        if(item instanceof Journal){workWithFiles.addItemToFile(item);}
+            workWithFiles.addItemToFile(item);
     }
 
     public boolean deleteItem(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
         boolean deleted = false;
-        if (checkIDForExistence(itemID,typeOfItem)) {
-            deleted = workWithFiles.removeItemFromFile(itemID,forBorrow,typeOfItem);
+        if (checkIDForExistence(itemID, typeOfItem)) {
+            deleted = workWithFiles.removeItemFromFile(itemID, forBorrow, typeOfItem);
         }
-        if(!deleted) {
+        if (!deleted) {
             serverHandler.writeLineMessage("This item maybe borrowed or does not exist");
         }
         return deleted;
@@ -41,24 +42,26 @@ public class Librarian {
 
     public void borrowItem(int itemID, String typeOfItem, boolean borrow) throws IOException {
         Item item = new Item();
-        if(typeOfItem.equals(TYPE_OF_ITEM_BOOK)){
+        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)) {
             List<Book> items = workWithFiles.readToBooksList();
-            item = findItemByID(itemID,items);
-        } else  if(typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)){
+            item = findItemByID(itemID, items);
+        } else if (typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)) {
             List<Journal> items = workWithFiles.readToJournalsList();
-            item = findItemByID(itemID,items);
+            item = findItemByID(itemID, items);
+        } else if (typeOfItem.equals(TYPE_OF_ITEM_NEWSPAPER)) {
+            List<Newspaper> items = workWithFiles.readToNewspapersList();
+            item = findItemByID(itemID, items);
         }
         if (item != null) {
             if (item.isBorrowed() != borrow) {
-                deleteItem(itemID,true, typeOfItem);
+                deleteItem(itemID, true, typeOfItem);
                 item.setBorrowed(borrow);
                 addItem(item);
 
                 serverHandler.writeMessage("Success");
             } else if (borrow) {
                 serverHandler.writeMessage("Item has already been taken by someone else");
-            }
-            else {
+            } else {
                 serverHandler.writeMessage("Item has already been returned");
             }
         } else {
@@ -88,10 +91,12 @@ public class Librarian {
 
     public boolean checkIDForExistence(int itemID, String typeOfItem) throws IOException {
         List<? extends Item> items = new ArrayList<>();
-        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)){
+        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)) {
             items = workWithFiles.readToBooksList();
         } else if (typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)) {
             items = workWithFiles.readToJournalsList();
+        } else if (typeOfItem.equals(TYPE_OF_ITEM_NEWSPAPER)) {
+            items = workWithFiles.readToNewspapersList();
         }
         if (items != null) {
             for (Item item : items) {
@@ -102,15 +107,15 @@ public class Librarian {
         return false;
     }
 
-    public static boolean checkItemForValidity(String item){
-        return item!=null&&!item.trim().equals("");
+    public static boolean checkItemForValidity(String item) {
+        return item != null && !item.trim().equals("");
     }
 
-    public static boolean checkItemForValidity(int item){
-        return item>0;
+    public static boolean checkItemForValidity(int item) {
+        return item > 0;
     }
 
-    private static Item findItemByID(int itemID, List<?extends Item> items){
+    private static Item findItemByID(int itemID, List<? extends Item> items) {
         for (Item item : items) {
             if (item.getItemID() == itemID) {
                 return item;

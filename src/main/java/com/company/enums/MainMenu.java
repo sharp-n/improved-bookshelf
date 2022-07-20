@@ -15,6 +15,11 @@ public enum MainMenu {
     TAKE_JOURNAL(8, "Take journal"),
     RETURN_JOURNAL(9, "Return journal"),
     SHOW_JOURNALS(10, "Show journals"),
+    ADD_NEWSPAPER(11, "Add newspaper"),
+    DELETE_NEWSPAPER(12, "Delete newspaper"),
+    TAKE_NEWSPAPER(13, "Take newspaper"),
+    RETURN_NEWSPAPER(14, "Return newspaper"),
+    SHOW_NEWSPAPERS(15, "Show newspapers"),
     DEFAULT(-1,"Default");
 
     private final int num;

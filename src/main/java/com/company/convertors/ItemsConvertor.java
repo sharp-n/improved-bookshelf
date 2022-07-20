@@ -3,6 +3,7 @@ package com.company.convertors;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -18,7 +19,15 @@ public class ItemsConvertor {
             journalsAsStringList.add(journalConvertor.itemToString());
         }
         return journalsAsStringList;
+    }
 
+    public List<List<String>> newspapersToString(List<Newspaper> newspapers) {
+        List<List<String>> newspapersAsStringList = new ArrayList<>();
+        for (Newspaper newspaper: newspapers) {
+            ItemConvertor newspaperConvertor = new NewspaperConvertor(newspaper);
+            newspapersAsStringList.add(newspaperConvertor.itemToString());
+        }
+        return newspapersAsStringList;
     }
 
     public List<List<String>> booksToString(List<Book> books) {
@@ -30,7 +39,7 @@ public class ItemsConvertor {
         return booksAsStringList;
     }
 
-    public List<List<String>> itemsToString(List<Item> items){
+    public List<List<String>> itemsToString(List<? extends Item> items){
         List<List<String>> containersAsStringList = new ArrayList<>();
         for (Item item: items){
             if (item instanceof Book){
@@ -39,6 +48,10 @@ public class ItemsConvertor {
             } else if (item instanceof Journal){
                 ItemConvertor journalConvertor = new JournalConvertor(((Journal)item));
                 containersAsStringList.add(journalConvertor.itemToString());
+            }
+            else if (item instanceof Newspaper){
+                ItemConvertor newspaperConvertor = new NewspaperConvertor((Newspaper)item);
+                containersAsStringList.add(newspaperConvertor.itemToString());
             }
         }
         return containersAsStringList;

@@ -1,15 +1,16 @@
 package com.company;
 
+import com.company.convertors.ItemsConvertor;
 import com.company.enums.SortingMenu;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import com.company.server.ServerHandler;
+import com.company.table.TableUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,9 +24,9 @@ public class Dialogues {
 
     PrintWriter out;
 
-    ServerHandler serverHandler;
+    ServerHandler serverHandler; // FIXME delete serverHandler later
 
-    private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)";
+    private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)"; // FIXME print twice
 
     private static final String NEW_LINE = System.lineSeparator();
     private static final String NEW_LINE_WITH_TAB = System.lineSeparator();
@@ -229,16 +230,19 @@ public class Dialogues {
             } else if (item instanceof Journal) {
                 Journal journal = new Journal(itemID, title, numOfPages);
                 librarian.addItem(journal);
+            } else if (item instanceof Newspaper) {
+                Newspaper newspaper = new Newspaper(itemID, title, numOfPages);
+                librarian.addItem(newspaper);
             }
             return true;
         }
         return false;
     }
 
-    private Integer validateIdToBorrow() throws IOException{
+    private Integer validateIdToBorrow() throws IOException {
 
         Integer itemID = validateID(idUserInput());
-        if (itemID==null){
+        if (itemID == null) {
             return null;
         }
         if (!Librarian.checkItemForValidity(itemID)) {
@@ -246,28 +250,30 @@ public class Dialogues {
             return null;
         }
         String typeOfItem = "";
-        if(item instanceof Book) {
+        if (item instanceof Book) {
             typeOfItem = Librarian.TYPE_OF_ITEM_BOOK;
-        }
-        else if (item instanceof Journal) {
+        } else if (item instanceof Journal) {
             typeOfItem = Librarian.TYPE_OF_ITEM_JOURNAL;
+        } else if (item instanceof Newspaper) {
+            typeOfItem = Librarian.TYPE_OF_ITEM_NEWSPAPER;
         }
-        if(!librarian.checkIDForExistence(itemID, typeOfItem)) {
+        if (!librarian.checkIDForExistence(itemID, typeOfItem)) {
             serverHandler.writeLineMessage("There`s no item with such ID");
             return null;
         }
         return itemID;
     }
 
-    public void deletingDialogue() throws IOException{
+    public void deletingDialogue() throws IOException {
         Integer itemID = validateIdToBorrow();
-        if(itemID!=null) {
+        if (itemID != null) {
             boolean deleted = false;
-            if(item instanceof Book) {
+            if (item instanceof Book) {
                 deleted = librarian.deleteItem(itemID, false, "Book");
-            }
-            else  if (item instanceof Journal) {
+            } else if (item instanceof Journal) {
                 deleted = librarian.deleteItem(itemID, false, "Journal");
+            } else if (item instanceof Newspaper) {
+                deleted = librarian.deleteItem(itemID, false, "Newspaper");
             }
             if (deleted) {
                 printSuccessMessage("deleted");
@@ -275,64 +281,73 @@ public class Dialogues {
         }
     }
 
-    public void borrowingDialogue(boolean borrow) throws IOException{
+    public void borrowingDialogue(boolean borrow) throws IOException {
         Integer itemID = validateIdToBorrow();
-        if(itemID!=null) {
+        if (itemID != null) {
             if (item instanceof Book) {
                 librarian.borrowItem(itemID, "Book", borrow);
-            } else if (item instanceof Journal) librarian.borrowItem(itemID, "Journal", borrow);
+            } else if (item instanceof Journal) {
+                librarian.borrowItem(itemID, "Journal", borrow);
+            } else if (item instanceof Newspaper) {
+                librarian.borrowItem(itemID, "Newspaper", borrow);
+            }
         }
     }
 
-    // TODO refactor printListOfItems() -> if-else & table
-
-    public void printListOfItems(List<? extends Item> items){
+    public void printListOfItems(List<? extends Item> items) {
         if (items.isEmpty()) serverHandler.writeLineMessage("There`s no items here");
         else {
-            String str = "%-12s%-40s";
-            serverHandler.writeMessage(String.format(str, NEW_LINE + " ITEM ID", "| TITLE"));
-            if (item instanceof Book) {
-                serverHandler.writeMessage(String.format("%-32s%-18s", "| AUTHOR", "| PUBLISHING DATE"));
-            }
-            serverHandler.writeMessage(String.format("%-8s%-30s", "| PAGES", "| " + "BORROWED"));
-            serverHandler.writeMessage(NEW_LINE + "----------+---------------------------------------");
-            if (item instanceof Book) {
-                serverHandler.writeMessage("+-------------------------------+-----------------");
-            }
-            serverHandler.writeLineMessage("+-------+----------");
-            for (Item i : items) {
-                serverHandler.writeMessage(String.format("%-10s%-40s", " " + i.getItemID(), "| " + i.getTitle()));
-                if (item instanceof Book) {
-                    DateFormat df = new SimpleDateFormat("dd.M.y");
-                    serverHandler.writeMessage(String.format("%-32s%-18s", "| " + ((Book) i).getAuthor(), "| " + df.format(((Book) i).getPublishingDate().getTime())));
+            List<String> options = new ArrayList<>();
+            boolean isBook = false;
+            boolean isJournal = false;
+            boolean isNewspaper = false;
+            for (Item someItem : items) {
+                if (someItem instanceof Book) {
+                    isBook = true;
+                } else if (someItem instanceof Journal) {
+                    isJournal = true;
+                } else if (someItem instanceof Newspaper) {
+                    isNewspaper = true;
                 }
-                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + NEW_LINE);
             }
+            if (isBook) {
+                options = new ArrayList<>(Arrays.asList("item id", "title", "author", "publishing date", "pages", "borrowed"));
+            } else if (isJournal) {
+                options = new ArrayList<>(Arrays.asList("item id", "title", "pages", "borrowed"));
+            } else if (isNewspaper) {
+                options = new ArrayList<>(Arrays.asList("item id", "title", "pages", "borrowed"));
+            }
+            ItemsConvertor itemsConvertor = new ItemsConvertor();
+            List<List<String>> strItems = itemsConvertor.itemsToString(items);
+            TableUtil tableUtil = new TableUtil(options, strItems, out);
+            tableUtil.printTable();
         }
     }
 
-    private Integer getSortingVar(){
+    private Integer getSortingVar() {
         try {
-            if (item instanceof Book || item instanceof Journal) {
-                serverHandler.writeLineMessage("Sort by:" + NEW_LINE_WITH_TAB + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB +
-                        SortingMenu.TITLE + NEW_LINE_WITH_TAB + SortingMenu.PAGES);
+            if (item instanceof Book || item instanceof Journal || item instanceof Newspaper) {
+                serverHandler.writeLineMessage("Sort by:" + NEW_LINE_WITH_TAB
+                        + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB
+                        + SortingMenu.TITLE + NEW_LINE_WITH_TAB
+                        + SortingMenu.PAGES);
                 if (item instanceof Book) {
-                    serverHandler.writeMessage( NEW_LINE_WITH_TAB + SortingMenu.AUTHOR+ NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
+                    serverHandler.writeMessage(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
                 }
                 serverHandler.writeLineMessage(SortingMenu.RETURN_VALUE.toString());
                 printWaitingForReplyMessage();
             }
             return Integer.parseInt(scan.nextLine().trim());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             printDefaultMessage();
             return null;
         }
     }
 
-    public Integer getMainMenuVar(){
+    public Integer getMainMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             printDefaultMessage();
             return null;
         }
@@ -366,41 +381,61 @@ public class Dialogues {
                     default:
                         printDefaultMessage();
                         break;
-
                 }
-            else if (item instanceof Journal) switch (sortingParameter) {
-                case RETURN_VALUE:
-                    break;
-                case ITEM_ID:
-                    items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
-                    break;
-                case TITLE:
-                    items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
-                    break;
-                case PAGES:
-                    items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
-                    break;
-                default:
-                    printDefaultMessage();
-                    break;
+            else if (item instanceof Journal) {
+                switch (sortingParameter) {
+                    case RETURN_VALUE:
+                        break;
+                    case ITEM_ID:
+                        items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
+                        break;
+                    case TITLE:
+                        items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
+                        break;
+                    case PAGES:
+                        items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
+                        break;
+                    default:
+                        printDefaultMessage();
+                        break;
+                }
+            }
+            else if (item instanceof Newspaper) {
+                switch (sortingParameter){
+                    case RETURN_VALUE:
+                        break;
+                    case ITEM_ID:
+                        items = librarian.sortingItemsByID(workWithFiles.readToNewspapersList());
+                        break;
+                    case TITLE:
+                        items = librarian.sortingItemsByTitle(workWithFiles.readToNewspapersList());
+                        break;
+                    case PAGES:
+                        items = librarian.sortingItemsByPages(workWithFiles.readToNewspapersList());
+                        break;
+                    default:
+                        printDefaultMessage();
+                        break;
+                }
+
             }
             printListOfItems(items);
         } else printDefaultMessage();
     }
 
-    public void printBadValidationMessage(String item){
+    public void printBadValidationMessage(String item) {
         serverHandler.writeLineMessage("Please, input valid " + item);
     }
 
-    public void printSuccessMessage(String item){
+    public void printSuccessMessage(String item) {
         serverHandler.writeLineMessage("The item is successfully " + item);
     }
 
-    public void printDefaultMessage(){
+    public void printDefaultMessage() {
         serverHandler.writeLineMessage("Input the proposed option");
     }
 
-    public void printWaitingForReplyMessage(){
+    public void printWaitingForReplyMessage() {
         serverHandler.writeLineMessage("Waiting for reply...");
     }
 
