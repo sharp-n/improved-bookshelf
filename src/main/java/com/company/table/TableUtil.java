@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class TableUtil {
-
+    // FIXME fix column width later
     List<String> columns;
 
     List<List<String>> rows;

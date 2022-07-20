@@ -25,7 +25,7 @@ public class Dialogues {
 
     PrintWriter out;
 
-    ServerHandler serverHandler;
+    ServerHandler serverHandler; // FIXME delete serverHandler later
 
     private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)";
 
