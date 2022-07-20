@@ -22,6 +22,7 @@ public class Librarian {
 
     public static final String TYPE_OF_ITEM_JOURNAL = "Journal";
     public static final String TYPE_OF_ITEM_BOOK = "Book";
+    public static final String TYPE_OF_ITEM_NEWSPAPER = "Newspaper";
 
     public void addItem(Item item) throws IOException {
         if(item instanceof Book){workWithFiles.addItemToFile(item);}

@@ -3,6 +3,7 @@ package com.company;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import lombok.NoArgsConstructor;
@@ -95,6 +96,21 @@ public class WorkWithFiles {
             }
         }
         return books;
+    }
+
+    public List<Newspaper> readToNewspapersList() throws IOException {
+        createFileIfNotExists();
+        JsonArray jsonArray = makeJsonArrayFromFile();
+        if(jsonArray==null) {return new ArrayList<>();}
+        List<Newspaper> newspapers = new ArrayList<>();
+        for (JsonElement element : jsonArray) {
+            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
+            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
+            if (typeOfClass.equals("Newspaper")) {
+                newspapers.add(gson.fromJson(itemObject, Newspaper.class));
+            }
+        }
+        return newspapers;
     }
 
     public List<Item> readToItemsList() throws IOException {
