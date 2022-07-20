@@ -168,8 +168,7 @@ public class ServerHandlerTest {
         serverHandler.fewFilesChoice(new User(input));
         assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithBookFile.filePath.toString());
         assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJournalFile.filePath.toString());
-
-        // FIXME add for newspaper
+        assertEquals(System.getProperty("user.home") + "\\items_newspaper_" + input + ".txt",serverHandler.workWithNewspaperFile.filePath.toString());
     }
 
     private static Stream<Arguments> provideFilesForFewFilesChoice(){
