@@ -2,8 +2,10 @@ package com.company;
 
 import com.company.convertors.ItemsConvertor;
 import com.company.items.Book;
+import com.company.items.Newspaper;
 import com.company.table.TableUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,6 +15,8 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TableUtilTest {
 
@@ -24,6 +28,28 @@ class TableUtilTest {
     static List<String> bookOptions = Arrays.asList("ID", "Title", "Author", "Publishing date", "Pages","borrowed");
 
     static final String NEW_LINE = System.lineSeparator();
+
+    @Test
+    void tesNewspapersInTable() {
+        String expectedString ="" +
+                " 1    | title1  | 1        | false             | NULL    | NULL       " + System.lineSeparator() +
+                " 2    | title2  | 2        | false             | NULL    | NULL       " + System.lineSeparator() +
+                " 3    | title3  | 3        | false             | NULL    | NULL       " + System.lineSeparator() +
+                " 4    | title4  | 4        | false             | NULL    | NULL       " + System.lineSeparator();
+        ItemsConvertor itemsConvertor = new ItemsConvertor();
+        List<List<String>> items = itemsConvertor.newspapersToString(new ArrayList<>(
+                Arrays.asList(
+                        new Newspaper(1,"title1", 1),
+                        new Newspaper(2,"title2", 2),
+                        new Newspaper(3,"title3", 3),
+                        new Newspaper(4,"title4", 4)
+                        )
+        ));
+        TableUtil tableUtil = new TableUtil(bookOptions,items, printWriter);
+        tableUtil.printBody();
+
+        assertEquals(expectedString, outputStream.toString());
+    }
 
     @ParameterizedTest
     @MethodSource("provideBooks")

@@ -14,9 +14,11 @@ import java.util.Scanner;
 public class WorkWithFilesTest {
 
     Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out)));
+    Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out)));
     Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out)));
     WorkWithFiles workWithFiles = new WorkWithFiles("test");
 
+    // TODO add tests for newspapersLibrarian and journalsLibrarian
     Book secondBook = new Book(101, "Second Book", "Second Author", new GregorianCalendar(2021, Calendar.APRIL,21),924);
 
     @Test

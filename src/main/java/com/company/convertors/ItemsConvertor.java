@@ -19,7 +19,15 @@ public class ItemsConvertor {
             journalsAsStringList.add(journalConvertor.itemToString());
         }
         return journalsAsStringList;
+    }
 
+    public List<List<String>> newspapersToString(List<Newspaper> newspapers) {
+        List<List<String>> newspapersAsStringList = new ArrayList<>();
+        for (Newspaper newspaper: newspapers) {
+            ItemConvertor newspaperConvertor = new NewspaperConvertor(newspaper);
+            newspapersAsStringList.add(newspaperConvertor.itemToString());
+        }
+        return newspapersAsStringList;
     }
 
     public List<List<String>> booksToString(List<Book> books) {
