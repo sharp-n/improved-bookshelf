@@ -43,8 +43,6 @@ public class ServerHandler {
 
             Dialogues dialogue = new Dialogues(out, in);
 
-            // TODO fix user`s name input
-
             User user = createUser(dialogue, validUserName);
             if (user.userName.equals("exit")) {
                 filesValue = false;

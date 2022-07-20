@@ -1,10 +1,12 @@
 package com.company;
 
+import com.company.convertors.ItemsConvertor;
 import com.company.enums.SortingMenu;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.server.ServerHandler;
+import com.company.table.TableUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -284,30 +286,28 @@ public class Dialogues {
         }
     }
 
-    // TODO refactor printListOfItems() -> if-else & table
-
     public void printListOfItems(List<? extends Item> items){
         if (items.isEmpty()) serverHandler.writeLineMessage("There`s no items here");
         else {
-            String str = "%-12s%-40s";
-            serverHandler.writeMessage(String.format(str, NEW_LINE + " ITEM ID", "| TITLE"));
-            if (item instanceof Book) {
-                serverHandler.writeMessage(String.format("%-32s%-18s", "| AUTHOR", "| PUBLISHING DATE"));
-            }
-            serverHandler.writeMessage(String.format("%-8s%-30s", "| PAGES", "| " + "BORROWED"));
-            serverHandler.writeMessage(NEW_LINE + "----------+---------------------------------------");
-            if (item instanceof Book) {
-                serverHandler.writeMessage("+-------------------------------+-----------------");
-            }
-            serverHandler.writeLineMessage("+-------+----------");
-            for (Item i : items) {
-                serverHandler.writeMessage(String.format("%-10s%-40s", " " + i.getItemID(), "| " + i.getTitle()));
-                if (item instanceof Book) {
-                    DateFormat df = new SimpleDateFormat("dd.M.y");
-                    serverHandler.writeMessage(String.format("%-32s%-18s", "| " + ((Book) i).getAuthor(), "| " + df.format(((Book) i).getPublishingDate().getTime())));
+            List<String> options = new ArrayList<>();
+            boolean isBook = false;
+            boolean isJournal = false;
+            for(Item someItem: items){
+                if(someItem instanceof Book){
+                    isBook = true;
+                } else if (someItem instanceof Journal) {
+                    isJournal = true;
                 }
-                serverHandler.writeMessage(String.format("%-8s", "| " + i.getPages()) + "| " + i.isBorrowed() + NEW_LINE);
             }
+            if(isBook){
+                options = new ArrayList<>(Arrays.asList("item id","title","author","publishing date","pages","borrowed"));
+            } else if (isJournal){
+                options = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
+            }
+            ItemsConvertor itemsConvertor = new ItemsConvertor();
+            List<List<String>> strItems = itemsConvertor.itemsToString(items);
+            TableUtil tableUtil = new TableUtil(options,strItems,out);
+            tableUtil.printTable();
         }
     }
 
@@ -317,7 +317,7 @@ public class Dialogues {
                 serverHandler.writeLineMessage("Sort by:" + NEW_LINE_WITH_TAB + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB +
                         SortingMenu.TITLE + NEW_LINE_WITH_TAB + SortingMenu.PAGES);
                 if (item instanceof Book) {
-                    serverHandler.writeMessage( NEW_LINE_WITH_TAB + SortingMenu.AUTHOR+ NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
+                    serverHandler.writeMessage( SortingMenu.AUTHOR+ NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
                 }
                 serverHandler.writeLineMessage(SortingMenu.RETURN_VALUE.toString());
                 printWaitingForReplyMessage();

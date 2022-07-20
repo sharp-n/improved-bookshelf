@@ -30,7 +30,7 @@ public class ItemsConvertor {
         return booksAsStringList;
     }
 
-    public List<List<String>> itemsToString(List<Item> items){
+    public List<List<String>> itemsToString(List<? extends Item> items){
         List<List<String>> containersAsStringList = new ArrayList<>();
         for (Item item: items){
             if (item instanceof Book){
