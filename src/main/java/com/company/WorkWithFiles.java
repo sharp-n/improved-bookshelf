@@ -28,8 +28,8 @@ public class WorkWithFiles {
     }
 
     {
-        if (filePath ==null){
-            filePath=Paths.get(System.getProperty("user.home") + "/items_default.txt");
+        if (filePath == null) {
+            filePath = Paths.get(System.getProperty("user.home") + "/items_default.txt");
         }
     }
 
@@ -40,7 +40,7 @@ public class WorkWithFiles {
         rewriteFile(containers);
     }
 
-    void rewriteFile(List<Container<? extends Item>> containers){
+    void rewriteFile(List<Container<? extends Item>> containers) {
         try {
             File file = createFileIfNotExists();
             FileWriter fw = new FileWriter(file, false);
@@ -71,7 +71,9 @@ public class WorkWithFiles {
     public List<Journal> readToJournalsList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        if(jsonArray==null) {return new ArrayList<>();}
+        if (jsonArray == null) {
+            return new ArrayList<>();
+        }
         List<Journal> journals = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
@@ -86,7 +88,9 @@ public class WorkWithFiles {
     public List<Book> readToBooksList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        if(jsonArray==null) {return new ArrayList<>();}
+        if (jsonArray == null) {
+            return new ArrayList<>();
+        }
         List<Book> books = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
@@ -101,7 +105,9 @@ public class WorkWithFiles {
     public List<Newspaper> readToNewspapersList() throws IOException {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
-        if(jsonArray==null) {return new ArrayList<>();}
+        if (jsonArray == null) {
+            return new ArrayList<>();
+        }
         List<Newspaper> newspapers = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
@@ -117,7 +123,7 @@ public class WorkWithFiles {
         createFileIfNotExists();
         JsonArray jsonArray = makeJsonArrayFromFile();
         List<Item> containers = new ArrayList<>();
-        if(jsonArray != null) {
+        if (jsonArray != null) {
             for (JsonElement element : jsonArray) {
                 JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
                 String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
@@ -125,6 +131,8 @@ public class WorkWithFiles {
                     containers.add(gson.fromJson(itemObject, Book.class));
                 } else if (typeOfClass.equals("Journal")) {
                     containers.add(gson.fromJson(itemObject, Journal.class));
+                } else if (typeOfClass.equals("Newspaper")) {
+                    containers.add(gson.fromJson(itemObject, Newspaper.class));
                 }
             }
         }
@@ -133,18 +141,20 @@ public class WorkWithFiles {
 
     JsonArray makeJsonArrayFromFile() throws IOException {
         createFileIfNotExists();
-        return  gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
+        return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
     File createFileIfNotExists() throws IOException {
         File file = filePath.toFile();
-        if (!file.exists()) {file.createNewFile();}
+        if (!file.exists()) {
+            file.createNewFile();
+        }
         return file;
     }
 
-    List<Container<? extends Item>> convertToContainer(List<Item> items){
+    List<Container<? extends Item>> convertToContainer(List<Item> items) {
         List<Container<? extends Item>> containers = new ArrayList<>();
-        for (Item item: items) {
+        for (Item item : items) {
             containers.add(new Container<>(item));
         }
         return containers;
