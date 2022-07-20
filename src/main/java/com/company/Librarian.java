@@ -25,16 +25,8 @@ public class Librarian {
     public static final String TYPE_OF_ITEM_BOOK = "Book";
     public static final String TYPE_OF_ITEM_NEWSPAPER = "Newspaper";
 
-    public void addItem(Item item) throws IOException { // TODO is necessary 'if' constructions ???
-        if (item instanceof Book) {
+    public void addItem(Item item) throws IOException {
             workWithFiles.addItemToFile(item);
-        }
-        if (item instanceof Journal) {
-            workWithFiles.addItemToFile(item);
-        }
-        if (item instanceof Newspaper) {
-            workWithFiles.addItemToFile(item);
-        }
     }
 
     public boolean deleteItem(int itemID, boolean forBorrow, String typeOfItem) throws IOException {

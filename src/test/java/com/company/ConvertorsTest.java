@@ -1,12 +1,10 @@
 package com.company;
 
-import com.company.convertors.BookConvertor;
-import com.company.convertors.ItemConvertor;
-import com.company.convertors.ItemsConvertor;
-import com.company.convertors.JournalConvertor;
+import com.company.convertors.*;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -81,4 +79,19 @@ class ConvertorsTest {
                         Arrays.asList(Arrays.asList("1","some title","932","false"),Arrays.asList("1","some title","some author","02.11.2022","932","false")))
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("provideNewspapers")
+    void newspaperConvertorTest(Newspaper provided, List<String> expected){
+        ItemConvertor itemConvertor = new NewspaperConvertor(provided);
+        Assertions.assertEquals(expected,itemConvertor.itemToString());
+    }
+
+    private static Stream<Arguments> provideNewspapers(){
+        return Stream.of(
+                Arguments.of(new Newspaper(1,"some title", 932),
+                        Arrays.asList("1","some title","932","false"))
+        );
+    }
+
 }

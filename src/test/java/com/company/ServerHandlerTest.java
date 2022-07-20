@@ -148,7 +148,7 @@ public class ServerHandlerTest {
         ServerHandler serverHandler = getServerHandler(input);
         serverHandler.oneFileChoice(new User(input));
         assertEquals(expected,serverHandler.workWithBookFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithJurnalFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithJournalFile.filePath.toString());
     }
 
     private static Stream<Arguments> provideFilesForOneFileChoice(){
@@ -167,7 +167,7 @@ public class ServerHandlerTest {
         ServerHandler serverHandler = getServerHandler(input);
         serverHandler.fewFilesChoice(new User(input));
         assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithBookFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJurnalFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJournalFile.filePath.toString());
 
         // FIXME add for newspaper
     }

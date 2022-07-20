@@ -5,15 +5,12 @@ import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import lombok.NoArgsConstructor;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @NoArgsConstructor

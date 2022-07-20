@@ -17,8 +17,8 @@ public class ServerHandler {
     public PrintWriter out;
 
     public WorkWithFiles workWithBookFile = new WorkWithFiles();
-    public WorkWithFiles workWithJurnalFile = new WorkWithFiles();
-    public WorkWithFiles workWithNewspaperFile = new WorkWithFiles();
+    public WorkWithFiles workWithJournalFile = new WorkWithFiles();
+    public WorkWithFiles  workWithNewspaperFile = new WorkWithFiles();
 
     Librarian librarian = new Librarian();
 
@@ -82,9 +82,9 @@ public class ServerHandler {
                     Dialogues bookDialogue;
                     Dialogues journalDialogue;
                     Dialogues newspaperDialogue;
-                    if (workWithJurnalFile.filePath != null) { // TODO ???
+                    if (workWithJournalFile.filePath != null) { // TODO ???
                         bookDialogue = new Dialogues(new Book(), new Librarian(workWithBookFile, new ServerHandler(in, out)), out, in);
-                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJurnalFile, new ServerHandler(in, out)), out, in);
+                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJournalFile, new ServerHandler(in, out)), out, in);
                         newspaperDialogue = new Dialogues(new Newspaper(), new Librarian(workWithNewspaperFile, new ServerHandler(in, out)), out, in);
                     } else {
                         bookDialogue = new Dialogues(new Book(), librarian, out, in);
@@ -128,7 +128,7 @@ public class ServerHandler {
 
     public void fewFilesChoice(User user) {
         workWithBookFile = new WorkWithFiles("books_" + user.userName);
-        workWithJurnalFile = new WorkWithFiles("journals_" + user.userName);
+        workWithJournalFile = new WorkWithFiles("journals_" + user.userName);
         workWithNewspaperFile = new WorkWithFiles("newspaper_" + user.userName);
         writeLineMessage("Your items will be saved in different files");
     }
