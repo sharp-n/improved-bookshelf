@@ -26,7 +26,7 @@ public class Dialogues {
 
     ServerHandler serverHandler; // FIXME delete serverHandler later
 
-    private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)";
+    private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)"; // FIXME print twice
 
     private static final String NEW_LINE = System.lineSeparator();
     private static final String NEW_LINE_WITH_TAB = System.lineSeparator();

@@ -52,7 +52,7 @@ public class WorkWithFiles {
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
+    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException { // FIXME method have to delete borrowed item
         List<Item> items = readToItemsList();
         for (Item item : items) {
             if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID && !forBorrow) {
