@@ -3,6 +3,7 @@ package com.company.convertors;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
@@ -39,6 +40,10 @@ public class ItemsConvertor {
             } else if (item instanceof Journal){
                 ItemConvertor journalConvertor = new JournalConvertor(((Journal)item));
                 containersAsStringList.add(journalConvertor.itemToString());
+            }
+            else if (item instanceof Newspaper){
+                ItemConvertor newspaperConvertor = new NewspaperConvertor((Newspaper)item);
+                containersAsStringList.add(newspaperConvertor.itemToString());
             }
         }
         return containersAsStringList;

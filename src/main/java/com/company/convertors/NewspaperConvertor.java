@@ -1,10 +1,10 @@
 package com.company.convertors;
 
-import com.company.items.Journal;
+import com.company.items.Newspaper;
 
 public class NewspaperConvertor extends ItemConvertor {
 
-    public NewspaperConvertor(Journal journal) {
-        super(journal);
+    public NewspaperConvertor(Newspaper newspaper) {
+        super(newspaper);
     }
 }
