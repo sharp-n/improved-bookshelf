@@ -15,8 +15,8 @@ public class ServerHandler {
     public Scanner in;
     public PrintWriter out;
 
-    public WorkWithFiles workWithFirstFile = new WorkWithFiles();
-    public WorkWithFiles workWithSecondFile = new WorkWithFiles();
+    public WorkWithFiles workWithBookFile = new WorkWithFiles();
+    public WorkWithFiles workWithJurnalFile = new WorkWithFiles();
 
     Librarian librarian = new Librarian();
 
@@ -59,8 +59,8 @@ public class ServerHandler {
                     case ONE_FILE:
                         oneFileChoice(user);
                         break;
-                    case TWO_FILES:
-                        twoFilesChoice(user);
+                    case FEW_FILES:
+                        fewFilesChoice(user);
                         break;
                     case CHANGE_USER:
                         mainProcValue = false;
@@ -79,9 +79,9 @@ public class ServerHandler {
 
                     Dialogues bookDialogue;
                     Dialogues journalDialogue;
-                    if (workWithSecondFile.filePath != null) {
-                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in, out)), out, in);
-                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in, out)), out, in);
+                    if (workWithJurnalFile.filePath != null) {
+                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithBookFile, new ServerHandler(in, out)), out, in);
+                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJurnalFile, new ServerHandler(in, out)), out, in);
                     } else {
                         bookDialogue = new Dialogues(new Book(), librarian, out, in);
                         journalDialogue = new Dialogues(new Journal(), librarian, out, in);
@@ -110,20 +110,20 @@ public class ServerHandler {
 
     public Integer usersFilesMenuChoice(Dialogues dialogue){
         writeLineMessage(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE  + FilesMenu.ONE_FILE +
-                NEW_LINE + FilesMenu.TWO_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
+                NEW_LINE + FilesMenu.FEW_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
     public void oneFileChoice(User user){
-        workWithFirstFile = new WorkWithFiles(user.userName);
-        librarian = new Librarian(workWithFirstFile, new ServerHandler(in,out));
+        workWithBookFile = new WorkWithFiles(user.userName);
+        librarian = new Librarian(workWithBookFile, new ServerHandler(in,out));
         writeLineMessage("Your items will be saved in one file");
     }
 
-    public void twoFilesChoice(User user){
-        workWithFirstFile = new WorkWithFiles("books_" + user.userName);
-        workWithSecondFile = new WorkWithFiles("journals_" + user.userName);
+    public void fewFilesChoice(User user){
+        workWithBookFile = new WorkWithFiles("books_" + user.userName);
+        workWithJurnalFile = new WorkWithFiles("journals_" + user.userName);
         writeLineMessage("Your items will be saved in different files");
     }
 

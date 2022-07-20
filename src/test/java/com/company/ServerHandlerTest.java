@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.server.Server;
 import com.company.server.ServerHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -148,8 +147,8 @@ public class ServerHandlerTest {
     void oneFileChoice(String input, String expected){
         ServerHandler serverHandler = getServerHandler(input);
         serverHandler.oneFileChoice(new User(input));
-        assertEquals(expected,serverHandler.workWithFirstFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithSecondFile.filePath.toString());
+        assertEquals(expected,serverHandler.workWithBookFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithJurnalFile.filePath.toString());
     }
 
     private static Stream<Arguments> provideFilesForOneFileChoice(){
@@ -160,18 +159,20 @@ public class ServerHandlerTest {
         );
     }
 
-    // TWO FILES CHOICE
+    // FEW FILES CHOICE
 
     @ParameterizedTest
-    @MethodSource("provideFilesForTwoFilesChoice")
-    void twoFilesChoice(String input){
+    @MethodSource("provideFilesForFewFilesChoice")
+    void fewFilesChoice(String input){
         ServerHandler serverHandler = getServerHandler(input);
-        serverHandler.twoFilesChoice(new User(input));
-        assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithFirstFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithSecondFile.filePath.toString());
+        serverHandler.fewFilesChoice(new User(input));
+        assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithBookFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJurnalFile.filePath.toString());
+
+        // FIXME add for newspaper
     }
 
-    private static Stream<Arguments> provideFilesForTwoFilesChoice(){
+    private static Stream<Arguments> provideFilesForFewFilesChoice(){
         return Stream.of(
                 Arguments.of("user"),
                 Arguments.of("user_name"),
