@@ -8,6 +8,7 @@ import com.google.gson.*;
 import lombok.NoArgsConstructor;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,14 +20,18 @@ public class WorkWithFiles {
 
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
+    private final String pathToDirectoryAsString = System.getProperty("user.home") + "/book_shelf";
 
     public WorkWithFiles(String filePath) {
-        this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
+        createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
+        this.filePath = Paths.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
     }
 
     {
         if (filePath == null) {
-            filePath = Paths.get(System.getProperty("user.home") + "/items_default.txt");
+            createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
+            filePath = Paths.get(pathToDirectoryAsString + "/book_shelf/items_default.txt");
+
         }
     }
 
@@ -49,12 +54,11 @@ public class WorkWithFiles {
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException { // FIXME method have to delete borrowed item
+    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
         List<Item> items = readToItemsList();
         for (Item item : items) {
-            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID && !forBorrow) {
-
-                if (item.isBorrowed()) {
+            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID) {
+                if (!forBorrow && item.isBorrowed()) {
                     return false;
                 }
                 items.remove(item);
@@ -147,6 +151,16 @@ public class WorkWithFiles {
             file.createNewFile();
         }
         return file;
+    }
+
+    void createDirectoryIfNotExists(Path path) {
+        try{
+            if (!Files.exists(path)) {
+                Files.createDirectory(path);
+            }
+        } catch (IOException ioe){
+
+        }
     }
 
     List<Container<? extends Item>> convertToContainer(List<Item> items) {
