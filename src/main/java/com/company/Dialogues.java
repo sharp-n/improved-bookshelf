@@ -6,7 +6,6 @@ import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
-import com.company.server.ServerHandler;
 import com.company.table.TableUtil;
 
 import java.io.IOException;
@@ -24,8 +23,6 @@ public class Dialogues {
 
     PrintWriter out;
 
-    ServerHandler serverHandler; // FIXME delete serverHandler later
-
     private static final String BAD_NUMBER_VALIDATION_MESSAGE = "ID. It should be a number (>0)"; // FIXME print twice
 
     private static final String NEW_LINE = System.lineSeparator();
@@ -34,7 +31,6 @@ public class Dialogues {
     public Dialogues(PrintWriter out, Scanner scan) {
         this.out = out;
         this.scan = scan;
-        this.serverHandler = new ServerHandler(out);
     }
 
     public Dialogues(Item item, Librarian librarian, PrintWriter out, Scanner scan) {
@@ -42,11 +38,10 @@ public class Dialogues {
         this.librarian = librarian;
         this.out = out;
         this.scan = scan;
-        this.serverHandler = new ServerHandler(out);
     }
 
     public String titleUserInput() {
-        serverHandler.writeLineMessage("Input title:");
+        out.println("Input title:");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
@@ -61,7 +56,7 @@ public class Dialogues {
     }
 
     public String usernameInput() {
-        serverHandler.writeLineMessage(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
+        out.println(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
@@ -79,7 +74,7 @@ public class Dialogues {
 
     public Integer idUserInput() {
         try {
-            serverHandler.writeLineMessage("Item ID:");
+            out.println("Item ID:");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -99,7 +94,7 @@ public class Dialogues {
     }
 
     public String authorUserInput() {
-        serverHandler.writeLineMessage("Author:");
+        out.println("Author:");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
@@ -116,8 +111,8 @@ public class Dialogues {
 
     public Integer yearUserInput() {
         try {
-            serverHandler.writeLineMessage("");
-            serverHandler.writeLineMessage("Date of publish:" + NEW_LINE_WITH_TAB + "Year: ");
+            out.println();
+            out.println("Date of publish:" + NEW_LINE_WITH_TAB + "Year: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -127,7 +122,7 @@ public class Dialogues {
 
     public Integer dayUserInput() {
         try {
-            serverHandler.writeLineMessage("\tDay: ");
+            out.println("\tDay: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -137,7 +132,7 @@ public class Dialogues {
 
     public Integer monthUserInput() {
         try {
-            serverHandler.writeLineMessage("\tMonth: ");
+            out.println("\tMonth: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -183,7 +178,7 @@ public class Dialogues {
 
     public Integer pagesUsersInput() {
         try {
-            serverHandler.writeLineMessage("Pages: ");
+            out.println("Pages: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
@@ -215,7 +210,7 @@ public class Dialogues {
             }
             publishingDate = validateDate(yearUserInput(), monthUserInput(), dayUserInput());
             if (publishingDate == null) {
-                serverHandler.writeLineMessage("Try again");
+                out.println("Try again");
                 return false;
             }
 
@@ -258,7 +253,7 @@ public class Dialogues {
             typeOfItem = Librarian.TYPE_OF_ITEM_NEWSPAPER;
         }
         if (!librarian.checkIDForExistence(itemID, typeOfItem)) {
-            serverHandler.writeLineMessage("There`s no item with such ID");
+            out.println("There`s no item with such ID");
             return null;
         }
         return itemID;
@@ -295,7 +290,7 @@ public class Dialogues {
     }
 
     public void printListOfItems(List<? extends Item> items) {
-        if (items.isEmpty()) serverHandler.writeLineMessage("There`s no items here");
+        if (items.isEmpty()) out.println("There`s no items here");
         else {
             List<String> options = new ArrayList<>();
             boolean isBook = false;
@@ -327,14 +322,14 @@ public class Dialogues {
     private Integer getSortingVar() {
         try {
             if (item instanceof Book || item instanceof Journal || item instanceof Newspaper) {
-                serverHandler.writeLineMessage("Sort by:" + NEW_LINE_WITH_TAB
+                out.println("Sort by:" + NEW_LINE_WITH_TAB
                         + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB
                         + SortingMenu.TITLE + NEW_LINE_WITH_TAB
                         + SortingMenu.PAGES);
                 if (item instanceof Book) {
-                    serverHandler.writeMessage(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
+                    out.print(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
                 }
-                serverHandler.writeLineMessage(SortingMenu.RETURN_VALUE.toString());
+                out.println(SortingMenu.RETURN_VALUE.toString());
                 printWaitingForReplyMessage();
             }
             return Integer.parseInt(scan.nextLine().trim());
@@ -424,19 +419,19 @@ public class Dialogues {
     }
 
     public void printBadValidationMessage(String item) {
-        serverHandler.writeLineMessage("Please, input valid " + item);
+        out.println("Please, input valid " + item);
     }
 
     public void printSuccessMessage(String item) {
-        serverHandler.writeLineMessage("The item is successfully " + item);
+        out.println("The item is successfully " + item);
     }
 
     public void printDefaultMessage() {
-        serverHandler.writeLineMessage("Input the proposed option");
+        out.println("Input the proposed option");
     }
 
     public void printWaitingForReplyMessage() {
-        serverHandler.writeLineMessage("Waiting for reply...");
+        out.println("Waiting for reply...");
     }
 
 }
