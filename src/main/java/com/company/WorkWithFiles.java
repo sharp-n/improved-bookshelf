@@ -20,7 +20,7 @@ public class WorkWithFiles {
 
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
-    private final String pathToDirectoryAsString = System.getProperty("user.home") + "/book_shelf";
+    private final String pathToDirectoryAsString = System.getProperty("user.home") + "/book_shelf"; //TODO fix files
 
     public WorkWithFiles(String filePath) {
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
@@ -30,7 +30,7 @@ public class WorkWithFiles {
     {
         if (filePath == null) {
             createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-            filePath = Paths.get(pathToDirectoryAsString + "/book_shelf/items_default.txt");
+            filePath = Paths.get(pathToDirectoryAsString + "/items_default.txt");
 
         }
     }
@@ -154,13 +154,9 @@ public class WorkWithFiles {
     }
 
     void createDirectoryIfNotExists(Path path) {
-        try{
             if (!Files.exists(path)) {
-                Files.createDirectory(path);
+                new File(pathToDirectoryAsString).mkdir();
             }
-        } catch (IOException ioe){
-
-        }
     }
 
     List<Container<? extends Item>> convertToContainer(List<Item> items) {

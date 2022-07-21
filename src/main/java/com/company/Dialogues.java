@@ -244,14 +244,7 @@ public class Dialogues {
             printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
             return null;
         }
-        String typeOfItem = "";
-        if (item instanceof Book) {
-            typeOfItem = Librarian.TYPE_OF_ITEM_BOOK;
-        } else if (item instanceof Journal) {
-            typeOfItem = Librarian.TYPE_OF_ITEM_JOURNAL;
-        } else if (item instanceof Newspaper) {
-            typeOfItem = Librarian.TYPE_OF_ITEM_NEWSPAPER;
-        }
+        String typeOfItem =  item.getClass().getSimpleName();
         if (!librarian.checkIDForExistence(itemID, typeOfItem)) {
             out.println("There`s no item with such ID");
             return null;
@@ -262,14 +255,7 @@ public class Dialogues {
     public void deletingDialogue() throws IOException {
         Integer itemID = validateIdToBorrow();
         if (itemID != null) {
-            boolean deleted = false;
-            if (item instanceof Book) {
-                deleted = librarian.deleteItem(itemID, false, "Book");
-            } else if (item instanceof Journal) {
-                deleted = librarian.deleteItem(itemID, false, "Journal");
-            } else if (item instanceof Newspaper) {
-                deleted = librarian.deleteItem(itemID, false, "Newspaper");
-            }
+            boolean deleted = librarian.deleteItem(itemID, false, item.getClass().getSimpleName());
             if (deleted) {
                 printSuccessMessage("deleted");
             }
@@ -279,13 +265,7 @@ public class Dialogues {
     public void borrowingDialogue(boolean borrow) throws IOException {
         Integer itemID = validateIdToBorrow();
         if (itemID != null) {
-            if (item instanceof Book) {
-                librarian.borrowItem(itemID, "Book", borrow);
-            } else if (item instanceof Journal) {
-                librarian.borrowItem(itemID, "Journal", borrow);
-            } else if (item instanceof Newspaper) {
-                librarian.borrowItem(itemID, "Newspaper", borrow);
-            }
+            librarian.borrowItem(itemID, item.getClass().getSimpleName(), borrow);
         }
     }
 
