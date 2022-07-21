@@ -41,17 +41,8 @@ public class Librarian {
     }
 
     public void borrowItem(int itemID, String typeOfItem, boolean borrow) throws IOException {
-        Item item = new Item();
-        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)) {
-            List<Book> items = workWithFiles.readToBooksList();
-            item = findItemByID(itemID, items);
-        } else if (typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)) {
-            List<Journal> items = workWithFiles.readToJournalsList();
-            item = findItemByID(itemID, items);
-        } else if (typeOfItem.equals(TYPE_OF_ITEM_NEWSPAPER)) {
-            List<Newspaper> items = workWithFiles.readToNewspapersList();
-            item = findItemByID(itemID, items);
-        }
+        List<Item> items = workWithFiles.readToItemsList();
+        Item item = findItemByID(itemID, items);
         if (item != null) {
             if (item.isBorrowed() != borrow) {
                 deleteItem(itemID, true, typeOfItem);
