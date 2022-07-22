@@ -12,7 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 
@@ -71,16 +73,11 @@ public class WorkWithFiles {
 
     public List<Journal> readToJournalsList() throws IOException {
         createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Journal> journals = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Journal")) {
-                journals.add(gson.fromJson(itemObject, Journal.class));
+        for(Item item:items){
+            if(item instanceof Journal){
+                journals.add((Journal) item);
             }
         }
         return journals;
@@ -88,33 +85,22 @@ public class WorkWithFiles {
 
     public List<Book> readToBooksList() throws IOException {
         createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Book> books = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Book")) {
-                books.add(gson.fromJson(itemObject, Book.class));
+        for(Item item:items){
+            if(item instanceof Book){
+                books.add((Book) item);
             }
         }
         return books;
     }
 
     public List<Newspaper> readToNewspapersList() throws IOException {
-        createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Newspaper> newspapers = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Newspaper")) {
-                newspapers.add(gson.fromJson(itemObject, Newspaper.class));
+        for(Item item:items){
+            if(item instanceof Newspaper){
+                newspapers.add((Newspaper) item);
             }
         }
         return newspapers;
