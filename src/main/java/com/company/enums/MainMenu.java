@@ -8,7 +8,7 @@ public enum MainMenu {
     ADD_BOOK(1, "Add book"),
     DELETE_BOOK(2, "Delete book"),
     TAKE_BOOK(3, "Take book"),
-    RETURN_BOOK(4, "Return boo"),
+    RETURN_BOOK(4, "Return book"),
     SHOW_BOOKS(5, "Show books"),
     ADD_JOURNAL(6, "Add journal"),
     DELETE_JOURNAL(7, "Delete journal"),

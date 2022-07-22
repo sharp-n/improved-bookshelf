@@ -8,6 +8,7 @@ import com.google.gson.*;
 import lombok.NoArgsConstructor;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,16 +18,23 @@ import java.util.List;
 
 public class WorkWithFiles {
 
+    public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
+    private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
+            //= System.getProperty("user.home") + "/book_shelf"; //TODO fix files
 
     public WorkWithFiles(String filePath) {
-        this.filePath = Paths.get(System.getProperty("user.home") + "/items_" + filePath + ".txt");
+        createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
+        this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
+                //.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
     }
 
     {
         if (filePath == null) {
-            filePath = Paths.get(System.getProperty("user.home") + "/items_default.txt");
+            createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
+            filePath = Paths.get(pathToDirectoryAsString, "items_default.txt");
+
         }
     }
 
@@ -49,12 +57,11 @@ public class WorkWithFiles {
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException { // FIXME method have to delete borrowed item
+    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
         List<Item> items = readToItemsList();
         for (Item item : items) {
-            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID && !forBorrow) {
-
-                if (item.isBorrowed()) {
+            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID) {
+                if (!forBorrow && item.isBorrowed()) {
                     return false;
                 }
                 items.remove(item);
@@ -67,16 +74,11 @@ public class WorkWithFiles {
 
     public List<Journal> readToJournalsList() throws IOException {
         createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Journal> journals = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Journal")) {
-                journals.add(gson.fromJson(itemObject, Journal.class));
+        for(Item item:items){
+            if(item instanceof Journal){
+                journals.add((Journal) item);
             }
         }
         return journals;
@@ -84,33 +86,22 @@ public class WorkWithFiles {
 
     public List<Book> readToBooksList() throws IOException {
         createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Book> books = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Book")) {
-                books.add(gson.fromJson(itemObject, Book.class));
+        for(Item item:items){
+            if(item instanceof Book){
+                books.add((Book) item);
             }
         }
         return books;
     }
 
     public List<Newspaper> readToNewspapersList() throws IOException {
-        createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        if (jsonArray == null) {
-            return new ArrayList<>();
-        }
+        List<? extends Item> items = readToItemsList();
         List<Newspaper> newspapers = new ArrayList<>();
-        for (JsonElement element : jsonArray) {
-            JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
-            String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-            if (typeOfClass.equals("Newspaper")) {
-                newspapers.add(gson.fromJson(itemObject, Newspaper.class));
+        for(Item item:items){
+            if(item instanceof Newspaper){
+                newspapers.add((Newspaper) item);
             }
         }
         return newspapers;
@@ -147,6 +138,12 @@ public class WorkWithFiles {
             file.createNewFile();
         }
         return file;
+    }
+
+    void createDirectoryIfNotExists(Path path) {
+            if (!Files.exists(path)) {
+                new File(pathToDirectoryAsString).mkdir();
+            }
     }
 
     List<Container<? extends Item>> convertToContainer(List<Item> items) {

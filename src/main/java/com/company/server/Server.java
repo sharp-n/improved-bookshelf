@@ -22,7 +22,7 @@ public class Server {
                     Thread connectionThread = new Thread(() -> {
                         try {
                             Scanner in = new Scanner(input.getInputStream());
-                            PrintWriter out = new PrintWriter(input.getOutputStream());
+                            PrintWriter out = new PrintWriter(input.getOutputStream(),true);
                             ServerHandler serverHandler = new ServerHandler(in, out);
 
                             serverHandler.handle();
