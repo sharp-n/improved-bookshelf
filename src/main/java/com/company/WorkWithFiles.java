@@ -12,27 +12,28 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 
 public class WorkWithFiles {
 
+    public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
-    private final String pathToDirectoryAsString = System.getProperty("user.home") + "/book_shelf"; //TODO fix files
+    private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
+            //= System.getProperty("user.home") + "/book_shelf"; //TODO fix files
 
     public WorkWithFiles(String filePath) {
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-        this.filePath = Paths.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
+        this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
+                //.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
     }
 
     {
         if (filePath == null) {
             createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-            filePath = Paths.get(pathToDirectoryAsString + "/items_default.txt");
+            filePath = Paths.get(pathToDirectoryAsString, "items_default.txt");
 
         }
     }
