@@ -198,7 +198,6 @@ public class ServerHandler {
                     journalDialogue.sortingDialogue();
                     break;
 
-                    // TODO
                 case ADD_NEWSPAPER:
                     boolean newspaperSuccess = newspaperDialogue.addingDialogue();
                     if (newspaperSuccess) newspaperDialogue.printSuccessMessage("added");
