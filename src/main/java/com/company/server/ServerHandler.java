@@ -103,7 +103,7 @@ public class ServerHandler {
 
     public Integer getUsersMainMenuChoice(Dialogues dialogue) {
         writeLineMessage(NEW_LINE + "\t\t" + MainMenu.EXIT_VALUE +
-                NEW_LINE + MainMenu.ADD_BOOK + "\t" + MainMenu.ADD_JOURNAL + "\t" + MainMenu.ADD_NEWSPAPER +
+                NEW_LINE + MainMenu.ADD_BOOK + "\t" + MainMenu.ADD_JOURNAL + "\t\t" + MainMenu.ADD_NEWSPAPER +
                 NEW_LINE + MainMenu.DELETE_BOOK + "\t" + MainMenu.DELETE_JOURNAL + "\t" + MainMenu.DELETE_NEWSPAPER +
                 NEW_LINE + MainMenu.TAKE_BOOK + "\t" + MainMenu.TAKE_JOURNAL + "\t" + MainMenu.TAKE_NEWSPAPER +
                 NEW_LINE + MainMenu.RETURN_BOOK + "\t" + MainMenu.RETURN_JOURNAL + "\t" + MainMenu.RETURN_NEWSPAPER +

@@ -2,8 +2,6 @@ package com.company;
 
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Journal;
-import com.company.items.Newspaper;
 import com.company.server.ServerHandler;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
