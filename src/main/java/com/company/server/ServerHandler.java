@@ -5,6 +5,7 @@ import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.items.Book;
 import com.company.items.Journal;
+import com.company.items.Newspaper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +16,9 @@ public class ServerHandler {
     public Scanner in;
     public PrintWriter out;
 
-    public WorkWithFiles workWithFirstFile = new WorkWithFiles();
-    public WorkWithFiles workWithSecondFile = new WorkWithFiles();
+    public WorkWithFiles workWithBookFile = new WorkWithFiles();
+    public WorkWithFiles workWithJournalFile = new WorkWithFiles();
+    public WorkWithFiles  workWithNewspaperFile = new WorkWithFiles();
 
     Librarian librarian = new Librarian();
 
@@ -59,8 +61,8 @@ public class ServerHandler {
                     case ONE_FILE:
                         oneFileChoice(user);
                         break;
-                    case TWO_FILES:
-                        twoFilesChoice(user);
+                    case FEW_FILES:
+                        fewFilesChoice(user);
                         break;
                     case CHANGE_USER:
                         mainProcValue = false;
@@ -79,55 +81,59 @@ public class ServerHandler {
 
                     Dialogues bookDialogue;
                     Dialogues journalDialogue;
-                    if (workWithSecondFile.filePath != null) {
-                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithFirstFile, new ServerHandler(in, out)), out, in);
-                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithSecondFile, new ServerHandler(in, out)), out, in);
+                    Dialogues newspaperDialogue;
+                    if (workWithJournalFile.filePath != null) { // TODO ???
+                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithBookFile, new ServerHandler(in, out)), out, in);
+                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJournalFile, new ServerHandler(in, out)), out, in);
+                        newspaperDialogue = new Dialogues(new Newspaper(), new Librarian(workWithNewspaperFile, new ServerHandler(in, out)), out, in);
                     } else {
                         bookDialogue = new Dialogues(new Book(), librarian, out, in);
                         journalDialogue = new Dialogues(new Journal(), librarian, out, in);
+                        newspaperDialogue = new Dialogues(new Newspaper(), librarian, out, in);
                     }
 
                     Integer usersChoice = getUsersMainMenuChoice(dialogue);
                     if (usersChoice == null) usersChoice = -1;
                     MainMenu mainMenuOption = MainMenu.getByIndex(usersChoice);
-                    mainMenuVariants(mainMenuOption, bookDialogue, journalDialogue);
-
+                    mainMenuVariants(mainMenuOption, bookDialogue, journalDialogue, newspaperDialogue);
                 }
             }
         }
     }
 
-    public Integer getUsersMainMenuChoice(Dialogues dialogue){
-        writeLineMessage(NEW_LINE +"\t\t" + MainMenu.EXIT_VALUE +
-                NEW_LINE + MainMenu.ADD_BOOK + "\t" + MainMenu.ADD_JOURNAL +
-                NEW_LINE + MainMenu.DELETE_BOOK + "\t" + MainMenu.DELETE_JOURNAL +
-                NEW_LINE + MainMenu.TAKE_BOOK + "\t" + MainMenu.TAKE_JOURNAL +
-                NEW_LINE + MainMenu.RETURN_BOOK + "\t" + MainMenu.RETURN_JOURNAL +
-                NEW_LINE + MainMenu.SHOW_BOOKS + "\t" + MainMenu.SHOW_JOURNALS);
+    public Integer getUsersMainMenuChoice(Dialogues dialogue) {
+        writeLineMessage(NEW_LINE + "\t\t" + MainMenu.EXIT_VALUE +
+                NEW_LINE + MainMenu.ADD_BOOK + "\t" + MainMenu.ADD_JOURNAL + "\t\t" + MainMenu.ADD_NEWSPAPER +
+                NEW_LINE + MainMenu.DELETE_BOOK + "\t" + MainMenu.DELETE_JOURNAL + "\t" + MainMenu.DELETE_NEWSPAPER +
+                NEW_LINE + MainMenu.TAKE_BOOK + "\t" + MainMenu.TAKE_JOURNAL + "\t" + MainMenu.TAKE_NEWSPAPER +
+                NEW_LINE + MainMenu.RETURN_BOOK + "\t" + MainMenu.RETURN_JOURNAL + "\t" + MainMenu.RETURN_NEWSPAPER +
+                NEW_LINE + MainMenu.SHOW_BOOKS + "\t" + MainMenu.SHOW_JOURNALS + "\t" + MainMenu.SHOW_NEWSPAPERS
+        );
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
-    public Integer usersFilesMenuChoice(Dialogues dialogue){
-        writeLineMessage(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE  + FilesMenu.ONE_FILE +
-                NEW_LINE + FilesMenu.TWO_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
+    public Integer usersFilesMenuChoice(Dialogues dialogue) {
+        writeLineMessage(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE + FilesMenu.ONE_FILE +
+                NEW_LINE + FilesMenu.FEW_FILES + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
 
-    public void oneFileChoice(User user){
-        workWithFirstFile = new WorkWithFiles(user.userName);
-        librarian = new Librarian(workWithFirstFile, new ServerHandler(in,out));
+    public void oneFileChoice(User user) {
+        workWithBookFile = new WorkWithFiles(user.userName);
+        librarian = new Librarian(workWithBookFile, new ServerHandler(in, out));
         writeLineMessage("Your items will be saved in one file");
     }
 
-    public void twoFilesChoice(User user){
-        workWithFirstFile = new WorkWithFiles("books_" + user.userName);
-        workWithSecondFile = new WorkWithFiles("journals_" + user.userName);
+    public void fewFilesChoice(User user) {
+        workWithBookFile = new WorkWithFiles("books_" + user.userName);
+        workWithJournalFile = new WorkWithFiles("journals_" + user.userName);
+        workWithNewspaperFile = new WorkWithFiles("newspaper_" + user.userName);
         writeLineMessage("Your items will be saved in different files");
     }
 
-    public User createUser(Dialogues dialogue, boolean validUserName){
+    public User createUser(Dialogues dialogue, boolean validUserName) {
         String userName = "";
         while (!validUserName) {
             userName = dialogue.usernameValidation(dialogue.usernameInput());
@@ -136,17 +142,17 @@ public class ServerHandler {
         return new User(userName);
     }
 
-    public void writeLineMessage(String msg){
+    public void writeLineMessage(String msg) {
         out.println(msg);
         out.flush();
     }
 
-    public void writeMessage(String msg){
+    public void writeMessage(String msg) {
         out.print(msg);
         out.flush();
     }
 
-    private void mainMenuVariants(MainMenu mainMenuOption, Dialogues bookDialogue, Dialogues journalDialogue){
+    private void mainMenuVariants(MainMenu mainMenuOption, Dialogues bookDialogue, Dialogues journalDialogue, Dialogues newspaperDialogue) {
         try {
             switch (mainMenuOption) {
 
@@ -192,22 +198,44 @@ public class ServerHandler {
                     journalDialogue.sortingDialogue();
                     break;
 
+                case ADD_NEWSPAPER:
+                    boolean newspaperSuccess = newspaperDialogue.addingDialogue();
+                    if (newspaperSuccess) newspaperDialogue.printSuccessMessage("added");
+                    break;
+
+                case DELETE_NEWSPAPER:
+                    newspaperDialogue.deletingDialogue();
+                    break;
+
+                case TAKE_NEWSPAPER:
+                    newspaperDialogue.borrowingDialogue(true);
+                    break;
+
+                case RETURN_NEWSPAPER:
+                    newspaperDialogue.borrowingDialogue(false);
+                    break;
+
+                case SHOW_NEWSPAPERS:
+                    newspaperDialogue.sortingDialogue();
+                    break;
+
                 case EXIT_VALUE:
                     mainProcValue = false;
                     break;
 
                 default:
-                    if (bookDialogue!=null) {
+                    if (bookDialogue != null) {
                         bookDialogue.printDefaultMessage();
-                    } else if (journalDialogue!=null){
+                    } else if (journalDialogue != null) {
                         journalDialogue.printDefaultMessage();
+                    }
+                    else if (newspaperDialogue != null) {
+                        newspaperDialogue.printDefaultMessage();
                     }
                     break;
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             out.println(e);
         }
     }
-
-
 }
