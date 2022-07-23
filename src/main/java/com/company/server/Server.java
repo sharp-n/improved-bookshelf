@@ -19,24 +19,7 @@ public class Server {
                 Socket input = runInputSocket();
                 if (input!=null) {
                     connections++;
-                    Thread connectionThread = new Thread(() -> {
-                        try {
-                            Scanner in = new Scanner(input.getInputStream());
-                            PrintWriter out = new PrintWriter(input.getOutputStream(),true);
-                            ServerHandler serverHandler = new ServerHandler(in, out);
-
-                            serverHandler.handle();
-
-                            in.close();
-                            out.close();
-
-                            input.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    });
-
+                    Thread connectionThread = new Thread(() -> initiateInstruments(input));
                     connectionThread.start();
                     connectionThreads.add(connectionThread);
                 }
@@ -81,6 +64,23 @@ public class Server {
             serverSocket.close();
         } catch (IOException ignored){
 
+        }
+    }
+
+    private static void initiateInstruments(Socket input){
+        try {
+            Scanner in = new Scanner(input.getInputStream());
+            PrintWriter out = new PrintWriter(input.getOutputStream(),true);
+            ServerHandler serverHandler = new ServerHandler(in, out);
+
+            serverHandler.handle();
+
+            in.close();
+            out.close();
+
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

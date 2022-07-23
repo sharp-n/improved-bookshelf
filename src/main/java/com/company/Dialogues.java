@@ -1,18 +1,19 @@
 package com.company;
 
-import com.company.convertors.ItemsConvertor;
 import com.company.enums.SortingMenu;
+import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
-import com.company.table.TableUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.company.ConstantsForSorting.*;
 
 public class Dialogues {
 
@@ -33,10 +34,10 @@ public class Dialogues {
         this.scan = scan;
     }
 
-    public Dialogues(Item item, Librarian librarian, PrintWriter out, Scanner scan) {
+    public Dialogues(Item item, Librarian librarian, Scanner scan) {
         this.item = item;
         this.librarian = librarian;
-        this.out = out;
+        this.out = librarian.out;
         this.scan = scan;
     }
 
@@ -187,7 +188,6 @@ public class Dialogues {
     }
 
     public boolean addingDialogue() throws IOException {
-        String typeOfItem = item.getClass().getSimpleName();
         String author = "";
         GregorianCalendar publishingDate = null;
         Integer itemID = validateID(idUserInput());
@@ -195,7 +195,7 @@ public class Dialogues {
             printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
             return false;
         }
-        if (librarian.checkIDForExistence(itemID, typeOfItem)) {
+        if (librarian.checkIDForExistence(itemID)) {
             out.println("Item with this ID exists. Please change ID and try again");
             return false;
         }
@@ -213,10 +213,10 @@ public class Dialogues {
                 out.println("Try again");
                 return false;
             }
-
         }
 
         Integer numOfPages = validatePages(pagesUsersInput());
+
         if (numOfPages != null) {
 
             if (item instanceof Book) {
@@ -244,8 +244,7 @@ public class Dialogues {
             printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
             return null;
         }
-        String typeOfItem =  item.getClass().getSimpleName();
-        if (!librarian.checkIDForExistence(itemID, typeOfItem)) {
+        if (!librarian.checkIDForExistence(itemID)) {
             out.println("There`s no item with such ID");
             return null;
         }
@@ -255,7 +254,7 @@ public class Dialogues {
     public void deletingDialogue() throws IOException {
         Integer itemID = validateIdToBorrow();
         if (itemID != null) {
-            boolean deleted = librarian.deleteItem(itemID, false, item.getClass().getSimpleName());
+            boolean deleted = librarian.deleteItem(itemID, false);
             if (deleted) {
                 printSuccessMessage("deleted");
             }
@@ -265,41 +264,11 @@ public class Dialogues {
     public void borrowingDialogue(boolean borrow) throws IOException {
         Integer itemID = validateIdToBorrow();
         if (itemID != null) {
-            librarian.borrowItem(itemID, item.getClass().getSimpleName(), borrow);
+            librarian.borrowItem(itemID, borrow);
         }
     }
 
-    public void printListOfItems(List<? extends Item> items) {
-        if (items.isEmpty()) out.println("There`s no items here");
-        else {
-            List<String> options = new ArrayList<>();
-            boolean isBook = false;
-            boolean isJournal = false;
-            boolean isNewspaper = false;
-            for (Item someItem : items) {
-                if (someItem instanceof Book) {
-                    isBook = true;
-                } else if (someItem instanceof Journal) {
-                    isJournal = true;
-                } else if (someItem instanceof Newspaper) {
-                    isNewspaper = true;
-                }
-            }
-            if (isBook) {
-                options = new ArrayList<>(Arrays.asList("item id", "title", "author", "publishing date", "pages", "borrowed"));
-            } else if (isJournal) {
-                options = new ArrayList<>(Arrays.asList("item id", "title", "pages", "borrowed"));
-            } else if (isNewspaper) {
-                options = new ArrayList<>(Arrays.asList("item id", "title", "pages", "borrowed"));
-            }
-            ItemsConvertor itemsConvertor = new ItemsConvertor();
-            List<List<String>> strItems = itemsConvertor.itemsToString(items);
-            TableUtil tableUtil = new TableUtil(options, strItems, out);
-            tableUtil.printTable();
-        }
-    }
-
-    private Integer getSortingVar() {
+    private Integer getSortingVar() { // TODO enum
         try {
             if (item instanceof Book || item instanceof Journal || item instanceof Newspaper) {
                 out.println("Sort by:" + NEW_LINE_WITH_TAB
@@ -307,9 +276,9 @@ public class Dialogues {
                         + SortingMenu.TITLE + NEW_LINE_WITH_TAB
                         + SortingMenu.PAGES);
                 if (item instanceof Book) {
-                    out.print(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
+                    out.println(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
                 }
-                out.println(SortingMenu.RETURN_VALUE.toString());
+                out.println(SortingMenu.RETURN_VALUE);
                 printWaitingForReplyMessage();
             }
             return Integer.parseInt(scan.nextLine().trim());
@@ -333,69 +302,35 @@ public class Dialogues {
         Integer usersChoice = getSortingVar();
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-            List<? extends Item> items = new ArrayList<>();
-            if (item instanceof Book)
-                switch (sortingParameter) {
-                    case RETURN_VALUE:
-                        break;
-                    case ITEM_ID:
-                        items = librarian.sortingItemsByID(workWithFiles.readToBooksList());
-                        break;
-                    case TITLE:
-                        items = librarian.sortingItemsByTitle(workWithFiles.readToBooksList());
-                        break;
-                    case PAGES:
-                        items = librarian.sortingItemsByPages(workWithFiles.readToBooksList());
-                        break;
-                    case AUTHOR:
-                        items = librarian.sortingBooksByAuthor(workWithFiles.readToBooksList());
-                        break;
-                    case PUBLISHING_DATE:
-                        items = librarian.sortingBooksByPublishingDate(workWithFiles.readToBooksList());
-                        break;
-                    default:
-                        printDefaultMessage();
-                        break;
-                }
-            else if (item instanceof Journal) {
-                switch (sortingParameter) {
-                    case RETURN_VALUE:
-                        break;
-                    case ITEM_ID:
-                        items = librarian.sortingItemsByID(workWithFiles.readToJournalsList());
-                        break;
-                    case TITLE:
-                        items = librarian.sortingItemsByTitle(workWithFiles.readToJournalsList());
-                        break;
-                    case PAGES:
-                        items = librarian.sortingItemsByPages(workWithFiles.readToJournalsList());
-                        break;
-                    default:
-                        printDefaultMessage();
-                        break;
-                }
+            List<Item> sortedItemsByComparator = getSortedItemsByComparator(workWithFiles, sortingParameter);
+            if(!sortedItemsByComparator.isEmpty()){
+                librarian.printItems(sortedItemsByComparator);
             }
-            else if (item instanceof Newspaper) {
-                switch (sortingParameter){
-                    case RETURN_VALUE:
-                        break;
-                    case ITEM_ID:
-                        items = librarian.sortingItemsByID(workWithFiles.readToNewspapersList());
-                        break;
-                    case TITLE:
-                        items = librarian.sortingItemsByTitle(workWithFiles.readToNewspapersList());
-                        break;
-                    case PAGES:
-                        items = librarian.sortingItemsByPages(workWithFiles.readToNewspapersList());
-                        break;
-                    default:
-                        printDefaultMessage();
-                        break;
-                }
+        } else{
+            printDefaultMessage();
+        }
+    }
 
-            }
-            printListOfItems(items);
-        } else printDefaultMessage();
+    private List<Item> getSortedItemsByComparator(WorkWithFiles workWithFiles, SortingMenu sortingParameter) throws IOException {
+        List<Item> items = workWithFiles.readToAnyItemList(item.getClass().getSimpleName());
+        switch (sortingParameter) {
+            case RETURN_VALUE:
+                break;
+            case ITEM_ID:
+                return ItemHandlerProvider.getHandlerByClass(item.getClass()).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_ID);
+            case TITLE:
+                return ItemHandlerProvider.getHandlerByClass(item.getClass()).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_TITLE);
+            case PAGES:
+                return ItemHandlerProvider.getHandlerByClass(item.getClass()).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_PAGES);
+            case AUTHOR:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_AUTHOR);//    librarian.sortingBooksByAuthor(items);
+            case PUBLISHING_DATE:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_DATE);
+            default:
+                printDefaultMessage();
+                break;
+        }
+        return Collections.emptyList();
     }
 
     public void printBadValidationMessage(String item) {

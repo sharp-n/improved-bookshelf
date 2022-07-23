@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.items.Book;
+import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
 import com.company.server.ServerHandler;
@@ -17,10 +18,10 @@ import java.util.*;
 
 public class LibrarianTest {
 
-    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"), new ServerHandler(new Scanner(System.in),new PrintWriter(System.out)));
-    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"), new ServerHandler(new Scanner(System.in),new PrintWriter(System.out)));
-    Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"), new ServerHandler(new Scanner(System.in),new PrintWriter(System.out)));
-    Librarian allItemsLibrarian = new Librarian(new WorkWithFiles("test"), new ServerHandler(new Scanner(System.in),new PrintWriter(System.out)));
+    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"),new PrintWriter(System.out, true));
+    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"),new PrintWriter(System.out, true));
+    Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),new PrintWriter(System.out, true));
+    Librarian allItemsLibrarian = new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out, true));
 
     Book firstBook = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
     Book secondBook = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
@@ -34,9 +35,9 @@ public class LibrarianTest {
     Newspaper secondNewspaper = new Newspaper(105, "Second Newspaper", 96);
     Newspaper thirdNewspaper = new Newspaper(103, "Existing Newspaper", 96);
 
-    List<Book> books = new ArrayList<>();
-    List<Journal> journals = new ArrayList<>();
-    List<Newspaper> newspapers = new ArrayList<>();
+    List<Item> books = new ArrayList<>();
+    List<Item> journals = new ArrayList<>();
+    List<Item> newspapers = new ArrayList<>();
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -96,9 +97,9 @@ public class LibrarianTest {
 
     @Test
     void borrowItemTest() throws IOException {
-        booksLibrarian.borrowItem(102,"Book",true);
-        journalsLibrarian.borrowItem(102,"Journal",true);
-        newspapersLibrarian.borrowItem(102,"Newspaper",true);
+        booksLibrarian.borrowItem(102, true);
+        journalsLibrarian.borrowItem(102, true);
+        newspapersLibrarian.borrowItem(102, true);
     }
 
     @Test
@@ -107,17 +108,17 @@ public class LibrarianTest {
         journalsLibrarian.sortingItemsByID(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         newspapersLibrarian.sortingItemsByID(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         System.out.println();
-        booksLibrarian.sortingItemsByTitle(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        journalsLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        newspapersLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+        //booksLibrarian.sortingItemsByTitle(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+        //journalsLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+        //newspapersLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         System.out.println();
         booksLibrarian.sortingItemsByPages(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         journalsLibrarian.sortingItemsByPages(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         newspapersLibrarian.sortingItemsByPages(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         System.out.println();
-        booksLibrarian.sortingBooksByAuthor(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+        //booksLibrarian.sortingBooksByAuthor(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
         System.out.println();
-        booksLibrarian.sortingBooksByPublishingDate(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+        //booksLibrarian.sortingBooksByPublishingDate(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
     }
 
 

@@ -1,92 +1,74 @@
 package com.company;
 
+import com.company.convertors.ItemsConvertor;
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.server.ServerHandler;
+import com.company.table.TableUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.company.ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class Librarian {
 
     WorkWithFiles workWithFiles;
-    ServerHandler serverHandler;
-
-    public static final String TYPE_OF_ITEM_JOURNAL = "Journal";
-    public static final String TYPE_OF_ITEM_BOOK = "Book";
-    public static final String TYPE_OF_ITEM_NEWSPAPER = "Newspaper";
+    PrintWriter out;
 
     public void addItem(Item item) throws IOException {
-            workWithFiles.addItemToFile(item);
+        workWithFiles.addItemToFile(item);
     }
 
-    public boolean deleteItem(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
+    public boolean deleteItem(int itemID, boolean forBorrow) throws IOException {
         boolean deleted = false;
-        if (checkIDForExistence(itemID, typeOfItem)) {
-            deleted = workWithFiles.removeItemFromFile(itemID, forBorrow, typeOfItem);
+        if (checkIDForExistence(itemID)) {
+            deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
         }
         if (!deleted) {
-            serverHandler.writeLineMessage("This item maybe borrowed or does not exist");
+            out.println("This item maybe borrowed or does not exist");
         }
         return deleted;
     }
 
-    public void borrowItem(int itemID, String typeOfItem, boolean borrow) throws IOException {
+    public void borrowItem(int itemID, boolean borrow) throws IOException {
         List<Item> items = workWithFiles.readToItemsList();
         Item item = findItemByID(itemID, items);
         if (item != null) {
             if (item.isBorrowed() != borrow) {
-                deleteItem(itemID, true, typeOfItem);
+                deleteItem(itemID, true);
                 item.setBorrowed(borrow);
                 addItem(item);
 
-                serverHandler.writeMessage("Success");
+                out.println("Success");
             } else if (borrow) {
-                serverHandler.writeMessage("Item has already been taken by someone else");
+                out.println("Item has already been taken by someone else");
             } else {
-                serverHandler.writeMessage("Item has already been returned");
+                out.println("Item has already been returned");
             }
         } else {
-            serverHandler.writeLineMessage("There`s no such item");
+            out.println("There`s no such item");
         }
     }
 
-    public List<? extends Item> sortingItemsByID(List<? extends Item> list) {
-        return list.stream().sorted(Comparator.comparing(Item::getItemID)).collect(Collectors.toList());
+    public List<Item> sortingItemsByID(List<Item> list) {
+        return list.stream()
+                .sorted(Comparator.comparing(Item::getItemID))
+                .collect(Collectors.toList());
     }
 
-    public List<? extends Item> sortingItemsByTitle(List<? extends Item> list) {
-        return list.stream().sorted(Comparator.comparing(Item::getTitle)).collect(Collectors.toList());
-    }
-
-    public List<? extends Item> sortingItemsByPages(List<? extends Item> list) {
+    public List<Item> sortingItemsByPages(List<Item> list) {
         return list.stream().sorted(Comparator.comparing(Item::getPages)).collect(Collectors.toList());
     }
 
-    public List<Book> sortingBooksByAuthor(List<Book> list) {
-        return list.stream().sorted(Comparator.comparing(Book::getAuthor)).collect(Collectors.toList());
-    }
-
-    public List<Book> sortingBooksByPublishingDate(List<Book> list) {
-        return list.stream().sorted(Comparator.comparing(Book::getPublishingDate)).collect(Collectors.toList());
-    }
-
-    public boolean checkIDForExistence(int itemID, String typeOfItem) throws IOException {
-        List<? extends Item> items = new ArrayList<>();
-        if (typeOfItem.equals(TYPE_OF_ITEM_BOOK)) {
-            items = workWithFiles.readToBooksList();
-        } else if (typeOfItem.equals(TYPE_OF_ITEM_JOURNAL)) {
-            items = workWithFiles.readToJournalsList();
-        } else if (typeOfItem.equals(TYPE_OF_ITEM_NEWSPAPER)) {
-            items = workWithFiles.readToNewspapersList();
-        }
+    public boolean checkIDForExistence(int itemID) throws IOException {
+        List<? extends Item> items = workWithFiles.readToItemsList();
         if (items != null) {
             for (Item item : items) {
                 if (item.getItemID() == itemID) return true;
@@ -111,6 +93,35 @@ public class Librarian {
             }
         }
         return null;
+    }
+
+    public <T extends Item> void printItems(List<T> items) {
+        if (items.isEmpty()) out.println("There`s no items here");
+        else {
+            ItemsConvertor itemsConvertor = new ItemsConvertor();
+            List<List<String>> strItems = itemsConvertor.itemsToString(items);
+            List<String> options = generateOptionsForTable(defineNumberOfColumns(strItems));
+            TableUtil tableUtil = new TableUtil(options, strItems, out);
+            tableUtil.printTable();
+        }
+    }
+
+    public List<String> generateOptionsForTable(int numberOfColumns) {
+        return new ConstantsForItemsTable().allTheColumnsForItems.get(numberOfColumns);
+    }
+
+    public int defineNumberOfColumns(List<List<String>> items) {
+        int maxNumOfColumns = 0;
+        for (List<String> item : items) {
+            int numOfColumns = 0;
+            for (String option : item) {
+                numOfColumns++;
+            }
+            if (numOfColumns > maxNumOfColumns) {
+                maxNumOfColumns = numOfColumns;
+            }
+        }
+        return maxNumOfColumns;
     }
 
 }

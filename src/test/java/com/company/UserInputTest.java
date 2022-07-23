@@ -42,7 +42,7 @@ public class UserInputTest {
     Dialogues getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test"), new ServerHandler(new Scanner(System.in), new PrintWriter(System.out))),new PrintWriter(System.out),scanner);
+        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out)),scanner);
     }
 
     // USERNAME

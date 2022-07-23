@@ -24,10 +24,6 @@ public class ServerHandler {
 
     boolean mainProcValue;
 
-    public ServerHandler(PrintWriter out) {
-        this.out = out;
-    }
-
     public ServerHandler(Scanner in, PrintWriter out) {
         this.in = in;
         this.out = out;
@@ -83,13 +79,13 @@ public class ServerHandler {
                     Dialogues journalDialogue;
                     Dialogues newspaperDialogue;
                     if (workWithJournalFile.filePath != null) { // TODO ???
-                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithBookFile, new ServerHandler(in, out)), out, in);
-                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJournalFile, new ServerHandler(in, out)), out, in);
-                        newspaperDialogue = new Dialogues(new Newspaper(), new Librarian(workWithNewspaperFile, new ServerHandler(in, out)), out, in);
+                        bookDialogue = new Dialogues(new Book(), new Librarian(workWithBookFile,out), in);
+                        journalDialogue = new Dialogues(new Journal(), new Librarian(workWithJournalFile, out), in);
+                        newspaperDialogue = new Dialogues(new Newspaper(), new Librarian(workWithNewspaperFile, out), in);
                     } else {
-                        bookDialogue = new Dialogues(new Book(), librarian, out, in);
-                        journalDialogue = new Dialogues(new Journal(), librarian, out, in);
-                        newspaperDialogue = new Dialogues(new Newspaper(), librarian, out, in);
+                        bookDialogue = new Dialogues(new Book(), librarian, in);
+                        journalDialogue = new Dialogues(new Journal(), librarian, in);
+                        newspaperDialogue = new Dialogues(new Newspaper(), librarian, in);
                     }
 
                     Integer usersChoice = getUsersMainMenuChoice(dialogue);
@@ -122,7 +118,7 @@ public class ServerHandler {
 
     public void oneFileChoice(User user) {
         workWithBookFile = new WorkWithFiles(user.userName);
-        librarian = new Librarian(workWithBookFile, new ServerHandler(in, out));
+        librarian = new Librarian(workWithBookFile, out);
         writeLineMessage("Your items will be saved in one file");
     }
 

@@ -1,9 +1,7 @@
 package com.company;
 
-import com.company.items.Book;
+import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
-import com.company.items.Journal;
-import com.company.items.Newspaper;
 import com.google.gson.*;
 import lombok.NoArgsConstructor;
 
@@ -22,19 +20,18 @@ public class WorkWithFiles {
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
     private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
-            //= System.getProperty("user.home") + "/book_shelf"; //TODO fix files
+    //= System.getProperty("user.home") + "/book_shelf"; //TODO fix files
 
     public WorkWithFiles(String filePath) {
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
         this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
-                //.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
+        //.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
     }
 
     {
         if (filePath == null) {
             createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
             filePath = Paths.get(pathToDirectoryAsString, "items_default.txt");
-
         }
     }
 
@@ -57,10 +54,10 @@ public class WorkWithFiles {
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow, String typeOfItem) throws IOException {
+    boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
         List<Item> items = readToItemsList();
         for (Item item : items) {
-            if (item.getClass().getSimpleName().equals(typeOfItem) && item.getItemID() == itemID) {
+            if (item.getItemID() == itemID) {
                 if (!forBorrow && item.isBorrowed()) {
                     return false;
                 }
@@ -72,62 +69,35 @@ public class WorkWithFiles {
         return false;
     }
 
-    public List<Journal> readToJournalsList() throws IOException {
+    public <T extends Item> List<T> readToAnyItemList(String typeOfCLass) throws IOException {
         createFileIfNotExists();
         List<? extends Item> items = readToItemsList();
-        List<Journal> journals = new ArrayList<>();
-        for(Item item:items){
-            if(item instanceof Journal){
-                journals.add((Journal) item);
+        List<T> filteredItems = new ArrayList<>();
+        for (Item item : items) {
+            if (item.getClass().getSimpleName().equals(typeOfCLass)) {
+                filteredItems.add((T) item);
             }
         }
-        return journals;
-    }
-
-    public List<Book> readToBooksList() throws IOException {
-        createFileIfNotExists();
-        List<? extends Item> items = readToItemsList();
-        List<Book> books = new ArrayList<>();
-        for(Item item:items){
-            if(item instanceof Book){
-                books.add((Book) item);
-            }
-        }
-        return books;
-    }
-
-    public List<Newspaper> readToNewspapersList() throws IOException {
-        List<? extends Item> items = readToItemsList();
-        List<Newspaper> newspapers = new ArrayList<>();
-        for(Item item:items){
-            if(item instanceof Newspaper){
-                newspapers.add((Newspaper) item);
-            }
-        }
-        return newspapers;
+        return filteredItems;
     }
 
     public List<Item> readToItemsList() throws IOException {
         createFileIfNotExists();
-        JsonArray jsonArray = makeJsonArrayFromFile();
-        List<Item> containers = new ArrayList<>();
+        JsonArray jsonArray = readJsonArrayFromFile();
+        List<Item> items = new ArrayList<>();
         if (jsonArray != null) {
             for (JsonElement element : jsonArray) {
                 JsonObject itemObject = element.getAsJsonObject().getAsJsonObject("item");
+                // TODO use options to check for null
                 String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
-                if (typeOfClass.equals("Book")) {
-                    containers.add(gson.fromJson(itemObject, Book.class));
-                } else if (typeOfClass.equals("Journal")) {
-                    containers.add(gson.fromJson(itemObject, Journal.class));
-                } else if (typeOfClass.equals("Newspaper")) {
-                    containers.add(gson.fromJson(itemObject, Newspaper.class));
-                }
+
+                items.add(gson.fromJson(itemObject, ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfClass))); // TODO
             }
         }
-        return containers;
+        return items;
     }
 
-    JsonArray makeJsonArrayFromFile() throws IOException {
+    JsonArray readJsonArrayFromFile() throws IOException {
         createFileIfNotExists();
         return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
@@ -141,9 +111,9 @@ public class WorkWithFiles {
     }
 
     void createDirectoryIfNotExists(Path path) {
-            if (!Files.exists(path)) {
-                new File(pathToDirectoryAsString).mkdir();
-            }
+        if (!Files.exists(path)) {
+            new File(pathToDirectoryAsString).mkdir();
+        }
     }
 
     List<Container<? extends Item>> convertToContainer(List<Item> items) {
