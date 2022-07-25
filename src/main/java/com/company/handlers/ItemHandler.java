@@ -11,7 +11,7 @@ public interface ItemHandler<T extends Item> {
 
     List<T> getSortedItemsByComparator(List<T> items, Comparator<T> comparator);
 
-    T createItem();
+    T createItem(List<String> options);
 
 
 }
