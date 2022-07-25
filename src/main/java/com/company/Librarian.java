@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.convertors.ItemsConvertor;
-import com.company.items.Book;
 import com.company.items.Item;
 import com.company.table.TableUtil;
 import lombok.AllArgsConstructor;
@@ -13,14 +12,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.company.ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE;
-
 @AllArgsConstructor
 @NoArgsConstructor
 public class Librarian {
 
-    WorkWithFiles workWithFiles;
-    PrintWriter out;
+    public WorkWithFiles workWithFiles;
+    public PrintWriter out;
 
     public void addItem(Item item) throws IOException {
         workWithFiles.addItemToFile(item);
