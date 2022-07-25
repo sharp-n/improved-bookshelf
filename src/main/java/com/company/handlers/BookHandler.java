@@ -24,7 +24,9 @@ public class BookHandler implements ItemHandler<Book>{
         String title = options.get(1);
         String author = options.get(2);
         String [] date = options.get(3).split("\\.");
-        GregorianCalendar publishingDate = new GregorianCalendar(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]));
+
+        GregorianCalendar publishingDate = validateDate(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]));
+        if (publishingDate == null) {return null;}
         int pages = Integer.parseInt(options.get(4));
         return new Book(itemID,title, author, publishingDate,pages);
     }

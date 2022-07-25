@@ -2,7 +2,6 @@ package com.company.handlers;
 
 import com.company.items.Newspaper;
 
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
