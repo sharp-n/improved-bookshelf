@@ -39,6 +39,9 @@ public class ItemHandlerProvider {
     public static ItemHandler getNewspaperHandler() {
         return getNewspaperHandler();
     }
+    public static ItemHandler getJournalHandler() {
+        return getJournalHandler();
+    }
     public static ItemHandler getBookHandler() {
         return getBookHandler();
     }
