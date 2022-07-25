@@ -2,14 +2,23 @@ package com.company.handlers;
 
 import com.company.Librarian;
 import com.company.items.Book;
-import com.company.items.Newspaper;
+import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public class BookHandler implements ItemHandler<Book>{
+import static com.company.ConstantsForItemsTable.NEW_LINE;
+import static com.company.enums.ActionsWithBook.*;
+import static com.company.enums.ActionsWithBook.RETURN_BOOK;
+
+@NoArgsConstructor
+public class BookHandler extends ItemHandler<Book>{
+
+    public BookHandler(PrintWriter out, Scanner in) {
+        super(out, in);
+    }
 
     @Override
     public List<Book> getSortedItemsByComparator(List<Book> items, Comparator<Book> comparator) {
@@ -48,4 +57,38 @@ public class BookHandler implements ItemHandler<Book>{
         }
         return null;
     }
+
+    public List<String> getItem() throws IOException {
+        String author = "";
+        List<String> itemOptions = super.getItem();
+
+        author = validator.validateAuthorName(userInput.authorUserInput());
+        if (author == null) {
+            return null;
+        }
+
+        Integer publishingYear = userInput.yearUserInput();
+        Integer publishingMonth = userInput.monthUserInput();
+        Integer publishingDay = userInput.dayUserInput();
+
+        Integer numOfPages = validator.validatePages(userInput.pagesUsersInput());
+
+        if (numOfPages == null) {
+            return null;
+        }
+
+        itemOptions.add(author);
+        itemOptions.add(publishingYear + " . " + publishingMonth + " . " + publishingDay);
+
+        return itemOptions;
+
+    }
+
+    @Override
+    public String initItemsMenuText(){
+        return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
+                NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
+                NEW_LINE + SHOW_BOOKS + NEW_LINE;
+    }
+
 }
