@@ -20,12 +20,10 @@ public class WorkWithFiles {
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
     private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
-    //= System.getProperty("user.home") + "/book_shelf"; //TODO fix files
 
     public WorkWithFiles(String filePath) {
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
         this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
-        //.get(pathToDirectoryAsString + "/items_" + filePath + ".txt");
     }
 
     {
@@ -91,7 +89,7 @@ public class WorkWithFiles {
                 // TODO use options to check for null
                 String typeOfClass = element.getAsJsonObject().get("typeOfClass").getAsString();
 
-                items.add(gson.fromJson(itemObject, ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfClass))); // TODO
+                items.add(gson.fromJson(itemObject, ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfClass)));
             }
         }
         return items;
