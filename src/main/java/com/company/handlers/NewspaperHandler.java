@@ -40,4 +40,5 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
                 NEW_LINE + TAKE_NEWSPAPER + NEW_LINE + RETURN_NEWSPAPER +
                 NEW_LINE + SHOW_NEWSPAPER + NEW_LINE;
     }
+
 }

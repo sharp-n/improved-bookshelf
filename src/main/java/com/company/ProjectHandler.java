@@ -20,7 +20,7 @@ public class ProjectHandler {
     public Scanner in;
     public PrintWriter out;
 
-    ItemHandler< ?extends Item> itemHandler;
+    ItemHandler<? extends Item> itemHandler;
 
     Librarian librarian;
 
@@ -165,20 +165,21 @@ public class ProjectHandler {
 
     public List<Item> getSortedItemsByComparator(WorkWithFiles workWithFiles, SortingMenu sortingParameter) throws IOException {
         String typeOfClass = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
+        ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
         List<Item> items = workWithFiles.readToAnyItemList(typeOfClass);
         switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
             case ITEM_ID:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_ID);
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);
             case TITLE:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_TITLE);
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
             case PAGES:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_PAGES);
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_AUTHOR);
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_DATE);
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
             default:
                 itemHandler.userInput.printDefaultMessage();
                 break;
