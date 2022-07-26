@@ -20,10 +20,9 @@ public class ProjectHandler {
     public Scanner in;
     public PrintWriter out;
 
-    ItemHandler itemHandler;
+    ItemHandler< ?extends Item> itemHandler;
 
-
-    Librarian librarian = new Librarian();
+    Librarian librarian;
 
     boolean mainProcValue;
 
@@ -33,6 +32,7 @@ public class ProjectHandler {
         this.in = in;
         this.out = out;
         this.itemHandler = new ItemHandler<>(out,in);
+        this.librarian = itemHandler.librarian;
         this.pathForFileToWorkWith = new ConstantsForFiles();
     }
 
@@ -200,7 +200,7 @@ public class ProjectHandler {
         }
     }
 
-    private void mainMenuVariants(ActionsWithItem actionsWithItem, ItemHandler handler) {
+    private void mainMenuVariants(ActionsWithItem actionsWithItem, ItemHandler<? extends Item> handler) {
         try {
             switch (actionsWithItem) {
 
