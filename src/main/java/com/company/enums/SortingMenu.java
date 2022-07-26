@@ -30,6 +30,6 @@ public enum SortingMenu {
                 .stream(values())
                 .filter(e -> e.num == index)
                 .findFirst()
-                .orElseGet(() -> DEFAULT);
+                .orElse(DEFAULT);
     }
 }

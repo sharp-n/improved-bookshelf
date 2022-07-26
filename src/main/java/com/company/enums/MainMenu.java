@@ -7,7 +7,7 @@ public enum MainMenu {
     EXIT_VALUE(0, "Exit"),
     BOOK(1, "Book"),
     JOURNAL(2, "Journal"),
-    NEWSPAPER(2, "Newspaper"),
+    NEWSPAPER(3, "Newspaper"),
     DEFAULT(-1,"Default");
 
     private final int num;
@@ -30,7 +30,7 @@ public enum MainMenu {
                 .stream(values())
                 .filter(e -> e.num == index)
                 .findFirst()
-                .orElseGet(() -> DEFAULT);
+                .orElse(DEFAULT);
     }
 
 }
