@@ -1,19 +1,20 @@
 package com.company.handlers;
 
-import com.company.Librarian;
-import com.company.UserInput;
-import com.company.Validator;
-import com.company.WorkWithFiles;
+import com.company.*;
+import com.company.enums.MainMenu;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 
 @NoArgsConstructor
@@ -40,7 +41,7 @@ public class ItemHandler<T extends Item> {
         return null;
     }
 
-    T createItem(List<String> options){
+    public T createItem(List<String> options){
         return null;
     }
 
@@ -49,20 +50,20 @@ public class ItemHandler<T extends Item> {
 
         if (itemID == null) {
             validator.printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
-            return null;
+            return Collections.emptyList();
         }
 
         if (librarian.checkIDForExistence(itemID)) {
             out.println("Item with this ID exists. Please change ID and try again");
-            return null;
+            return Collections.emptyList();
         }
 
         String title = validator.validateTitle(userInput.titleUserInput());
-        if (!Librarian.checkItemForValidity(title)) return null;
+        if (!Librarian.checkItemForValidity(title)) return Collections.emptyList();
 
         Integer numOfPages = validator.validatePages(userInput.pagesUsersInput());
         if (numOfPages == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         return Arrays.asList(itemID.toString(), title, numOfPages.toString());
@@ -85,6 +86,8 @@ public class ItemHandler<T extends Item> {
         }
     }
 
-
+    public String initItemsMenuText(){
+        return NEW_LINE + MainMenu.BOOK + NEW_LINE + MainMenu.JOURNAL + NEW_LINE  + MainMenu.NEWSPAPER + NEW_LINE;
+    }
 
 }
