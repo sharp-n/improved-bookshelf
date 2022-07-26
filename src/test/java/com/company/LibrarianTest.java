@@ -14,9 +14,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-
-public class LibrarianTest {
-
+class LibrarianTest {
+    //TODO create tests
     Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"),new PrintWriter(System.out, true));
     Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"),new PrintWriter(System.out, true));
     Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),new PrintWriter(System.out, true));

@@ -11,6 +11,8 @@ import java.util.GregorianCalendar;
 
 public class WorkWithFilesTest {
 
+    //TODO create tests
+
     Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"), new PrintWriter(System.out));
     Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),  new PrintWriter(System.out));
     Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"), new PrintWriter(System.out));

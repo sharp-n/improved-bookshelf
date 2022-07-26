@@ -16,7 +16,10 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class UserInputTest {
+class UserInputTest {
+
+    Validator validator = new Validator(new PrintWriter(System.out,true));
+
 /*
     public static Object[][] dataprovider(){
         return new Object[][]{
@@ -41,7 +44,7 @@ public class UserInputTest {
     UserInput getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new UserInput(new BookHandler(),new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out)),scanner);
+        return new UserInput(new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out)),scanner);
     }
 
     // USERNAME
@@ -50,14 +53,14 @@ public class UserInputTest {
     @MethodSource("provideNulls")
     void usernameNullInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
+        assertNull(validator.usernameValidation(dialogues.usernameInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideUsernameForGoodInput")
     void usernameGoodInput(String input, String expected){
         UserInput dialogues = getDialogues(input);
-        assertEquals(expected,dialogues.usernameValidation(dialogues.usernameInput()));
+        assertEquals(expected,validator.usernameValidation(dialogues.usernameInput()));
     }
 
     private static Stream<Arguments> provideUsernameForGoodInput(){
@@ -71,7 +74,7 @@ public class UserInputTest {
     @MethodSource("provideUsernameForBadInput")
     void usernameBadInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
+        assertNull(validator.usernameValidation(dialogues.usernameInput()));
     }
 
     private static Stream<Arguments> provideUsernameForBadInput(){
@@ -95,14 +98,14 @@ public class UserInputTest {
     @ValueSource(strings = {"0", "-5", "6000", " 5 000 ", "2304.213"})
     void pagesBadInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
+        assertNull(validator.validatePages(dialogues.pagesUsersInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbersForGoodInput")
     void pagesGoodInput(String input, Integer expected){
         UserInput dialogues = getDialogues(input);
-        assertEquals(expected,dialogues.validatePages(dialogues.pagesUsersInput()));
+        assertEquals(expected,validator.validatePages(dialogues.pagesUsersInput()));
     }
 
     private static Stream<Arguments> provideNumbersForGoodInput(){
@@ -117,7 +120,7 @@ public class UserInputTest {
     @MethodSource("provideNulls")
     void pagesNullInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
+        assertNull(validator.validatePages(dialogues.pagesUsersInput()));
     }
 
     private static Stream<Arguments> provideNulls(){
@@ -133,7 +136,7 @@ public class UserInputTest {
     @ValueSource(strings = {"pages", " string", " author ", "#"})
     void pagesStringInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
+        assertNull(validator.validatePages(dialogues.pagesUsersInput()));
     }
 
     //AUTHOR
@@ -142,14 +145,14 @@ public class UserInputTest {
     @MethodSource("provideNulls")
     void authorNullInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateAuthorName(dialogues.authorUserInput()));
+        assertNull(validator.validateAuthorName(dialogues.authorUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideAuthorsForGoodInput")
     void authorGoodInput(String input, String expected){
         UserInput dialogues = getDialogues(input);
-        assertEquals(expected,dialogues.validateAuthorName(dialogues.authorUserInput()));
+        assertEquals(expected,validator.validateAuthorName(dialogues.authorUserInput()));
     }
 
     private static Stream<Arguments> provideAuthorsForGoodInput(){
@@ -166,7 +169,7 @@ public class UserInputTest {
     @ValueSource(strings = {"author#", "@uthor","auth()r", "a:u;thor", "author%"})
     void authorBadInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateAuthorName(dialogues.authorUserInput()));
+        assertNull(validator.validateAuthorName(dialogues.authorUserInput()));
     }
 
     // ITEM ID
@@ -175,21 +178,21 @@ public class UserInputTest {
     @ValueSource(strings = {"-20", "0", "25.5", "item ID", " ITEM "})
     void idBadInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateID(dialogues.idUserInput()));
+        assertNull(validator.validateID(dialogues.idUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNulls")
     void idNullInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateID(dialogues.idUserInput()));
+        assertNull(validator.validateID(dialogues.idUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbersForGoodInput")
     void idGoodInput(String input, Integer expected){
         UserInput dialogues = getDialogues(input);
-        assertEquals(expected, dialogues.validateID(dialogues.idUserInput()));
+        assertEquals(expected, validator.validateID(dialogues.idUserInput()));
     }
 
     // TITLE
@@ -198,21 +201,21 @@ public class UserInputTest {
     @ValueSource(strings = {"title<>", "title/","tit\\le", "tit\tle", "title~"})
     void titleBadInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateTitle(dialogues.titleUserInput()));
+        assertNull(validator.validateTitle(dialogues.titleUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNulls")
     void titleNullInput(String input){
         UserInput dialogues = getDialogues(input);
-        assertNull(dialogues.validateTitle(dialogues.titleUserInput()));
+        assertNull(validator.validateTitle(dialogues.titleUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideTitlesForGoodInput")
     void titleGoodInput(String input, String expected){
         UserInput dialogues = getDialogues(input);
-        assertEquals(expected,dialogues.validateTitle(dialogues.titleUserInput()));
+        assertEquals(expected,validator.validateTitle(dialogues.titleUserInput()));
     }
 
     private static Stream<Arguments> provideTitlesForGoodInput(){

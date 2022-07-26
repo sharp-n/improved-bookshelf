@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.ItemHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ServerHandlerTest {
+class ProjectHandlerTest {
 
     ProjectHandler getServerHandler(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
@@ -105,7 +106,9 @@ public class ServerHandlerTest {
     @MethodSource("provideVariantsForMainMenuBadInput")
     void mainMenuBadInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
+        assertNull(serverHandler.getUsersMainMenuChoice(
+                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideVariantsForMainMenuBadInput(){
@@ -120,7 +123,9 @@ public class ServerHandlerTest {
     @MethodSource("provideVariantsForMainMenuGoodInput")
     void mainMenuGoodInput(String input, Integer expected){
         ProjectHandler serverHandler = getServerHandler(input);
-        assertEquals(expected, serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
+        assertEquals(expected, serverHandler.getUsersMainMenuChoice(
+                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideVariantsForMainMenuGoodInput(){
@@ -136,7 +141,9 @@ public class ServerHandlerTest {
     @MethodSource("provideNulls")
     void mainMenuNullInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
+        assertNull(serverHandler.getUsersMainMenuChoice(
+                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     // ONE FILE CHOICE
@@ -146,15 +153,16 @@ public class ServerHandlerTest {
     void oneFileChoice(String input, String expected){
         ProjectHandler serverHandler = getServerHandler(input);
         serverHandler.initOneFileWork(new User(input));
-        assertEquals(expected,serverHandler.workWithBookFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithJournalFile.filePath.toString());
+        assertEquals(expected,serverHandler.pathForFileToWorkWith.workWithOneFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",serverHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",serverHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
     }
 
     private static Stream<Arguments> provideFilesForOneFileChoice(){
         return Stream.of(
-                Arguments.of("user", System.getProperty("user.home") + "\\items_user.txt"),
-                Arguments.of("user_name", System.getProperty("user.home") + "\\items_user_name.txt"),
-                Arguments.of("default", System.getProperty("user.home") + "\\items_default.txt")
+                Arguments.of("user", System.getProperty("user.home") + "\\book_shelf\\items_user.txt"),
+                Arguments.of("user_name", System.getProperty("user.home") + "\\book_shelf\\items_user_name.txt"),
+                Arguments.of("default", System.getProperty("user.home") + "\\book_shelf\\items_default.txt")
         );
     }
 
@@ -165,9 +173,9 @@ public class ServerHandlerTest {
     void fewFilesChoice(String input){
         ProjectHandler serverHandler = getServerHandler(input);
         serverHandler.initFilePerItemWork(new User(input));
-        assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithBookFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJournalFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\items_newspaper_" + input + ".txt",serverHandler.workWithNewspaperFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_books_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithBookFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_journals_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
+        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_newspaper_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
     }
 
     private static Stream<Arguments> provideFilesForFewFilesChoice(){
