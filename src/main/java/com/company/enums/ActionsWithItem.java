@@ -2,20 +2,20 @@ package com.company.enums;
 
 import java.util.Arrays;
 
-public enum ActionsWithNewspapers {
+public enum ActionsWithItem {
     EXIT_VALUE(0, "Exit"),
-    ADD_NEWSPAPER(1, "Add newspaper"),
-    DELETE_NEWSPAPER(2, "Delete newspaper"),
-    TAKE_NEWSPAPER(3, "Take newspaper"),
-    RETURN_NEWSPAPER(4, "Return newspaper"),
-    SHOW_NEWSPAPER(5, "Show newspapers"),
+    ADD(1, "Add"),
+    DELETE(2, "Delete"),
+    TAKE(3, "Take"),
+    RETURN(4, "Return"),
+    SHOW(5, "Show"),
     DEFAULT(-1,"Default");
 
     private final int num;
     private final String option;
 
 
-    ActionsWithNewspapers(int num, String option) {
+    ActionsWithItem(int num, String option) {
         this.num = num;
         this.option = option;
     }
@@ -26,7 +26,7 @@ public enum ActionsWithNewspapers {
 
     }
 
-    public static ActionsWithNewspapers getByIndex(int index){
+    public static ActionsWithItem getByIndex(int index){
         return Arrays
                 .stream(values())
                 .filter(e -> e.num == index)

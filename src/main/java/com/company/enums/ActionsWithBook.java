@@ -9,7 +9,7 @@ public enum ActionsWithBook {
     DELETE_BOOK(2, "Delete book"),
     TAKE_BOOK(3, "Take book"),
     RETURN_BOOK(4, "Return book"),
-    SHOW_BOOKS(5, "Show books"),
+    SHOW_BOOK(5, "Show books"),
     DEFAULT(-1,"Default");
 
     private final int num;
