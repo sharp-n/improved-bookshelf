@@ -31,12 +31,13 @@ public class BookHandler extends ItemHandler<Book>{
     public Book createItem(List<String> options){
         int itemID = Integer.parseInt(options.get(0));
         String title = options.get(1);
-        String author = options.get(2);
-        String [] date = options.get(3).split("\\.");
+        int pages = Integer.parseInt(options.get(2));
+        String author = options.get(3);
+        String [] date = options.get(4).split("\\.");
 
-        GregorianCalendar publishingDate = validateDate(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]));
+        GregorianCalendar publishingDate = validateDate(Integer.parseInt(date[0].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[2].trim()));
         if (publishingDate == null) {return null;}
-        int pages = Integer.parseInt(options.get(4));
+
         return new Book(itemID,title, author, publishingDate,pages);
     }
 
@@ -60,7 +61,7 @@ public class BookHandler extends ItemHandler<Book>{
 
     public List<String> getItem() throws IOException {
         String author = "";
-        List<String> itemOptions = super.getItem();
+        List<String> itemOptions = new ArrayList<>(super.getItem());
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {
@@ -70,12 +71,6 @@ public class BookHandler extends ItemHandler<Book>{
         Integer publishingYear = userInput.yearUserInput();
         Integer publishingMonth = userInput.monthUserInput();
         Integer publishingDay = userInput.dayUserInput();
-
-        Integer numOfPages = validator.validatePages(userInput.pagesUsersInput());
-
-        if (numOfPages == null) {
-            return null;
-        }
 
         itemOptions.add(author);
         itemOptions.add(publishingYear + " . " + publishingMonth + " . " + publishingDay);
@@ -88,7 +83,7 @@ public class BookHandler extends ItemHandler<Book>{
     public String initItemsMenuText(){
         return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
                 NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
-                NEW_LINE + SHOW_BOOKS + NEW_LINE;
+                NEW_LINE + SHOW_BOOK + NEW_LINE;
     }
 
 }
