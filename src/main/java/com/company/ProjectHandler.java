@@ -1,10 +1,7 @@
 package com.company;
 
 import com.company.enums.*;
-import com.company.handlers.BookHandler;
-import com.company.handlers.ItemHandler;
-import com.company.handlers.ItemHandlerProvider;
-import com.company.handlers.NewspaperHandler;
+import com.company.handlers.*;
 import com.company.items.Item;
 
 import java.io.IOException;
@@ -15,7 +12,8 @@ import java.util.Scanner;
 
 import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.ConstantsForSorting.*;
-import static com.company.enums.ActionsWithItem.*;
+import static com.company.enums.FilesMenu.*;
+import static com.company.enums.FilesMenu.EXIT_VALUE;
 
 public class ProjectHandler {
 
@@ -47,67 +45,88 @@ public class ProjectHandler {
 
         while (filesValue) {
 
-            UserInput dialogue = new UserInput(out, in);
-
-            User user = createUser(dialogue, validUserName);
+            User user = createUser(itemHandler.userInput, validUserName);
             if (user.userName.equals("exit")) {
                 filesValue = false;
             } else {
-
-                Integer usersFilesMenuChoice = usersFilesMenuChoice(dialogue);
+                Integer usersFilesMenuChoice = usersFilesMenuChoice(itemHandler.userInput);
                 if (usersFilesMenuChoice == null) usersFilesMenuChoice = -1;
 
                 FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
 
                 mainProcValue = true;
 
-                switch (filesMenuOption) {
-                    case ONE_FILE:
-                        initOneFileWork(user);
-                        break;
-                    case FILE_PER_ITEM:
-                        initFilePerItemWork(user);
-                        break;
-                    case CHANGE_USER:
-                        mainProcValue = false;
-                        break;
-                    case EXIT_VALUE:
-                        filesValue = false;
-                        mainProcValue = false;
-                        break;
-                    default:
-                        mainProcValue = false;
-                        dialogue.printDefaultMessage();
-                        break;
-                }
-
-                while (mainProcValue) {
-
-                    out.println(itemHandler.initItemsMenuText());
-
-                    Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
-                    MainMenu mainMenu = MainMenu.getByIndex(itemsChoice);
-
-                    switch(mainMenu) {
-                        case BOOK:
-                            itemHandler = new BookHandler(out,in);
-                            break;
-                        //case JOURNAL:
-                        //    itemHandler = new JournalHandler(out,in); // TODO journalHandler
-                        //    break;
-                        case NEWSPAPER:
-                            itemHandler = new NewspaperHandler(out,in);
-                            break;
-                    }
-
-                    Integer usersChoice = getUsersMainMenuChoice(itemHandler.initItemsMenuText(),dialogue);
-                    if (usersChoice == null) usersChoice = -1;
-                    ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
-                    mainMenuVariants(actionsWithItem, itemHandler);
-                }
+                filesValue = fileSwitch(filesMenuOption, user);
+                initMainProcess();
             }
         }
     }
+
+    public void initMainProcess(){
+        while (mainProcValue) {
+
+            out.println(itemHandler.initItemsMenuText());
+
+            Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
+
+            boolean chosenItem = itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
+
+            if (chosenItem) {
+                Integer usersChoice = getUsersMainMenuChoice(itemHandler.initItemsMenuText(), itemHandler.userInput);
+                if (usersChoice == null) usersChoice = -1;
+                ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
+                mainMenuVariants(actionsWithItem, itemHandler);
+            } else {
+                mainProcValue = false;
+            }
+        }
+    }
+
+    public boolean fileSwitch(FilesMenu filesMenuOption,User user){
+        boolean filesValue = true;
+        switch (filesMenuOption) {
+
+            case ONE_FILE:
+                initOneFileWork(user);
+                break;
+            case FILE_PER_ITEM:
+                initFilePerItemWork(user);
+                break;
+            case CHANGE_USER:
+                mainProcValue = false;
+                break;
+            case EXIT_VALUE:
+                filesValue = false;
+                mainProcValue = false;
+                break;
+            default:
+                mainProcValue = false;
+                itemHandler.userInput.printDefaultMessage();
+                break;
+        }
+        return filesValue;
+    }
+
+    public boolean itemMenuSwitch(MainMenu mainMenu){
+        boolean chosenItem = true;
+        switch(mainMenu) {
+            case BOOK:
+                itemHandler = new BookHandler(out,in);
+                break;
+            case JOURNAL:
+                itemHandler = new JournalHandler(out,in);
+                break;
+            case NEWSPAPER:
+                itemHandler = new NewspaperHandler(out,in);
+                break;
+            default:
+                itemHandler.userInput.printDefaultMessage();
+                chosenItem = false;
+                break;
+        }
+        return chosenItem;
+    }
+
 
     public Integer getUsersMainMenuChoice(String message, UserInput dialogue) {
         out.println(message);
@@ -116,8 +135,8 @@ public class ProjectHandler {
     }
 
     public Integer usersFilesMenuChoice(UserInput dialogue) {
-        out.println(NEW_LINE + FilesMenu.EXIT_VALUE + NEW_LINE + FilesMenu.ONE_FILE +
-                NEW_LINE + FilesMenu.FILE_PER_ITEM + NEW_LINE + FilesMenu.CHANGE_USER);
+        out.println(NEW_LINE + EXIT_VALUE + NEW_LINE + ONE_FILE +
+                NEW_LINE + FILE_PER_ITEM + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
@@ -157,7 +176,7 @@ public class ProjectHandler {
             case PAGES:
                 return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_AUTHOR);//    librarian.sortingBooksByAuthor(items);
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
                 return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, COMPARATOR_ITEM_BY_DATE);
             default:
@@ -186,22 +205,16 @@ public class ProjectHandler {
             switch (actionsWithItem) {
 
                 case ADD:
-
                     Item item = handler.createItem(handler.getItem());
                     if (item == null) {
                         out.println("Try again");
                         break;
-                    //    return false;
                     }
-
                     librarian.addItem(item);
-                   // return true;
-
                     itemHandler.userInput.printSuccessMessage("added");
                     break;
 
                 case DELETE:
-
                     itemHandler.deleteItem();
                     break;
 
