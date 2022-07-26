@@ -1,5 +1,7 @@
 package com.company.server;
 
+import com.company.ProjectHandler;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -71,7 +73,7 @@ public class Server {
         try {
             Scanner in = new Scanner(input.getInputStream());
             PrintWriter out = new PrintWriter(input.getOutputStream(),true);
-            ServerHandler serverHandler = new ServerHandler(in, out);
+            ProjectHandler serverHandler = new ProjectHandler(in, out);
 
             serverHandler.handle();
 

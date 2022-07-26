@@ -4,7 +4,6 @@ import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
-import com.company.server.ServerHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;

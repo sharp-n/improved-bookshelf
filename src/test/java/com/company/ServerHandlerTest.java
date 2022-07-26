@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.server.ServerHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class ServerHandlerTest {
 
-    ServerHandler getServerHandler(String x) {
+    ProjectHandler getServerHandler(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new ServerHandler(scanner, new PrintWriter(System.out));
+        return new ProjectHandler(scanner, new PrintWriter(System.out));
     }
 
     // NUMBER OF FILES INPUT
@@ -25,8 +24,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideNulls")
     void numberOfFilesNullInput(String input){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.usersFilesMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertNull(serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideNulls(){
@@ -41,8 +40,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideNumberOfFilesForGoodInput")
     void numberOfFilesGoodInput(String input, Integer expected){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertEquals(expected,serverHandler.usersFilesMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertEquals(expected,serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideNumberOfFilesForGoodInput(){
@@ -55,8 +54,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideNumberOfFilesForBadInput")
     void numberOfFilesBadInput(String input){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.usersFilesMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertNull(serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideNumberOfFilesForBadInput(){
@@ -72,9 +71,9 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideUsersForGoodInput")
     void userCreationGoodInput(String input, User expected){
-        ServerHandler serverHandler = getServerHandler(input);
+        ProjectHandler serverHandler = getServerHandler(input);
         boolean validUserName = false;
-        assertEquals(expected.userName,serverHandler.createUser(new Dialogues(serverHandler.out,serverHandler.in),validUserName).userName);
+        assertEquals(expected.userName,serverHandler.createUser(new UserInput(serverHandler.out,serverHandler.in),validUserName).userName);
     }
 
     private static Stream<Arguments> provideUsersForGoodInput(){
@@ -88,9 +87,9 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideUsersForExitInput")
     void userCreationBadInput(String input, User expected){
-        ServerHandler serverHandler = getServerHandler(input);
+        ProjectHandler serverHandler = getServerHandler(input);
         boolean validUserName = false;
-        assertEquals(expected.userName,serverHandler.createUser(new Dialogues(serverHandler.out,serverHandler.in),validUserName).userName);
+        assertEquals(expected.userName,serverHandler.createUser(new UserInput(serverHandler.out,serverHandler.in),validUserName).userName);
     }
 
     private static Stream<Arguments> provideUsersForExitInput(){
@@ -105,8 +104,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideVariantsForMainMenuBadInput")
     void mainMenuBadInput(String input){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.getUsersMainMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertNull(serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideVariantsForMainMenuBadInput(){
@@ -120,8 +119,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideVariantsForMainMenuGoodInput")
     void mainMenuGoodInput(String input, Integer expected){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertEquals(expected, serverHandler.getUsersMainMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertEquals(expected, serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideVariantsForMainMenuGoodInput(){
@@ -136,8 +135,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideNulls")
     void mainMenuNullInput(String input){
-        ServerHandler serverHandler = getServerHandler(input);
-        assertNull(serverHandler.getUsersMainMenuChoice(new Dialogues(serverHandler.out,serverHandler.in)));
+        ProjectHandler serverHandler = getServerHandler(input);
+        assertNull(serverHandler.getUsersMainMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     // ONE FILE CHOICE
@@ -145,8 +144,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideFilesForOneFileChoice")
     void oneFileChoice(String input, String expected){
-        ServerHandler serverHandler = getServerHandler(input);
-        serverHandler.oneFileChoice(new User(input));
+        ProjectHandler serverHandler = getServerHandler(input);
+        serverHandler.initOneFileWork(new User(input));
         assertEquals(expected,serverHandler.workWithBookFile.filePath.toString());
         assertEquals(System.getProperty("user.home") + "\\items_default.txt",serverHandler.workWithJournalFile.filePath.toString());
     }
@@ -164,8 +163,8 @@ public class ServerHandlerTest {
     @ParameterizedTest
     @MethodSource("provideFilesForFewFilesChoice")
     void fewFilesChoice(String input){
-        ServerHandler serverHandler = getServerHandler(input);
-        serverHandler.fewFilesChoice(new User(input));
+        ProjectHandler serverHandler = getServerHandler(input);
+        serverHandler.initFilePerItemWork(new User(input));
         assertEquals(System.getProperty("user.home") + "\\items_books_" + input + ".txt",serverHandler.workWithBookFile.filePath.toString());
         assertEquals(System.getProperty("user.home") + "\\items_journals_" + input + ".txt",serverHandler.workWithJournalFile.filePath.toString());
         assertEquals(System.getProperty("user.home") + "\\items_newspaper_" + input + ".txt",serverHandler.workWithNewspaperFile.filePath.toString());

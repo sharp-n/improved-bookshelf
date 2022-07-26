@@ -134,6 +134,15 @@ public class UserInput {
         }
     }
 
+    public Integer getItemMenuVar() {
+        try {
+            return Integer.parseInt(scan.nextLine().trim());
+        } catch (NumberFormatException e) {
+            printDefaultMessage();
+            return null;
+        }
+    }
+
     public void printSuccessMessage(String item) {
         out.println("The item is successfully " + item);
     }

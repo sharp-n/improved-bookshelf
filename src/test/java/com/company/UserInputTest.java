@@ -1,7 +1,6 @@
 package com.company;
 
-import com.company.items.Book;
-import com.company.server.ServerHandler;
+import com.company.handlers.BookHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,10 +38,10 @@ public class UserInputTest {
     }
 */
 
-    Dialogues getDialogues(String x) {
+    UserInput getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new Dialogues(new Book(),new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out)),scanner);
+        return new UserInput(new BookHandler(),new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out)),scanner);
     }
 
     // USERNAME
@@ -50,14 +49,14 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideNulls")
     void usernameNullInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideUsernameForGoodInput")
     void usernameGoodInput(String input, String expected){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertEquals(expected,dialogues.usernameValidation(dialogues.usernameInput()));
     }
 
@@ -71,7 +70,7 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideUsernameForBadInput")
     void usernameBadInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.usernameValidation(dialogues.usernameInput()));
     }
 
@@ -95,14 +94,14 @@ public class UserInputTest {
     @ParameterizedTest
     @ValueSource(strings = {"0", "-5", "6000", " 5 000 ", "2304.213"})
     void pagesBadInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbersForGoodInput")
     void pagesGoodInput(String input, Integer expected){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertEquals(expected,dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
@@ -117,7 +116,7 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideNulls")
     void pagesNullInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
@@ -133,7 +132,7 @@ public class UserInputTest {
     @ParameterizedTest
     @ValueSource(strings = {"pages", " string", " author ", "#"})
     void pagesStringInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validatePages(dialogues.pagesUsersInput()));
     }
 
@@ -142,14 +141,14 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideNulls")
     void authorNullInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateAuthorName(dialogues.authorUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideAuthorsForGoodInput")
     void authorGoodInput(String input, String expected){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertEquals(expected,dialogues.validateAuthorName(dialogues.authorUserInput()));
     }
 
@@ -166,7 +165,7 @@ public class UserInputTest {
     @ParameterizedTest
     @ValueSource(strings = {"author#", "@uthor","auth()r", "a:u;thor", "author%"})
     void authorBadInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateAuthorName(dialogues.authorUserInput()));
     }
 
@@ -175,21 +174,21 @@ public class UserInputTest {
     @ParameterizedTest
     @ValueSource(strings = {"-20", "0", "25.5", "item ID", " ITEM "})
     void idBadInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateID(dialogues.idUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNulls")
     void idNullInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateID(dialogues.idUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNumbersForGoodInput")
     void idGoodInput(String input, Integer expected){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertEquals(expected, dialogues.validateID(dialogues.idUserInput()));
     }
 
@@ -198,21 +197,21 @@ public class UserInputTest {
     @ParameterizedTest
     @ValueSource(strings = {"title<>", "title/","tit\\le", "tit\tle", "title~"})
     void titleBadInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateTitle(dialogues.titleUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideNulls")
     void titleNullInput(String input){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertNull(dialogues.validateTitle(dialogues.titleUserInput()));
     }
 
     @ParameterizedTest
     @MethodSource("provideTitlesForGoodInput")
     void titleGoodInput(String input, String expected){
-        Dialogues dialogues = getDialogues(input);
+        UserInput dialogues = getDialogues(input);
         assertEquals(expected,dialogues.validateTitle(dialogues.titleUserInput()));
     }
 
@@ -235,13 +234,13 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideDateForNullInput")
     void dateNullInput(String inputYear, String inputMonth, String inputDay){
-        Dialogues dialoguesYear = getDialogues(inputYear);
+        UserInput dialoguesYear = getDialogues(inputYear);
         Integer year = dialoguesYear.yearUserInput();
-        Dialogues dialoguesMonth = getDialogues(inputMonth);
+        UserInput dialoguesMonth = getDialogues(inputMonth);
         Integer month = dialoguesMonth.monthUserInput();
-        Dialogues dialoguesDay = getDialogues(inputDay);
+        UserInput dialoguesDay = getDialogues(inputDay);
         Integer day = dialoguesDay.dayUserInput();
-        assertNull(dialoguesYear.validateDate(year,month,day));
+        assertNull(new BookHandler().validateDate(year,month,day));
     }
 
     private static Stream<Arguments> provideDateForNullInput(){
@@ -257,13 +256,13 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideDateForBadInput")
     void dateBadInput(String inputYear, String inputMonth, String inputDay){
-        Dialogues dialoguesYear = getDialogues(inputYear);
+        UserInput dialoguesYear = getDialogues(inputYear);
         Integer year = dialoguesYear.yearUserInput();
-        Dialogues dialoguesMonth = getDialogues(inputMonth);
+        UserInput dialoguesMonth = getDialogues(inputMonth);
         Integer month = dialoguesMonth.monthUserInput();
-        Dialogues dialoguesDay = getDialogues(inputDay);
+        UserInput dialoguesDay = getDialogues(inputDay);
         Integer day = dialoguesDay.dayUserInput();
-        assertNull(dialoguesYear.validateDate(year,month,day));
+        assertNull(new BookHandler().validateDate(year,month,day));
     }
 
     private static Stream<Arguments> provideDateForBadInput(){
@@ -282,14 +281,14 @@ public class UserInputTest {
     @ParameterizedTest
     @MethodSource("provideDateForGoodInput")
     void dateGoodInput(String inputYear, String inputMonth, String inputDay, String expected){
-        Dialogues dialoguesYear = getDialogues(inputYear);
+        UserInput dialoguesYear = getDialogues(inputYear);
         Integer year = dialoguesYear.yearUserInput();
-        Dialogues dialoguesMonth = getDialogues(inputMonth);
+        UserInput dialoguesMonth = getDialogues(inputMonth);
         Integer month = dialoguesMonth.monthUserInput();
-        Dialogues dialoguesDay = getDialogues(inputDay);
+        UserInput dialoguesDay = getDialogues(inputDay);
         Integer day = dialoguesDay.dayUserInput();
         DateFormat df = new SimpleDateFormat("dd.M.y");
-        assertEquals(expected,df.format(dialoguesYear.validateDate(year,month,day).getTime()));
+        assertEquals(expected,df.format(new BookHandler().validateDate(year,month,day).getTime()));
     }
 
     private static Stream<Arguments> provideDateForGoodInput(){
