@@ -100,12 +100,17 @@ public class WorkWithFiles {
         return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
-    File createFileIfNotExists() throws IOException {
-        File file = filePath.toFile();
-        if (!file.exists()) {
-            file.createNewFile();
+    File createFileIfNotExists() {
+        try {
+            File file = filePath.toFile();
+
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            return file;
+        } catch (IOException e){
+            return null;
         }
-        return file;
     }
 
     void createDirectoryIfNotExists(Path path) {

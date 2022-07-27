@@ -35,10 +35,10 @@ class ItemHandlersTest {
     static Journal journal3 = new Journal(1005,"title",2736);
     static Journal journal4 = new Journal(1,"Title",666);
 
-    static Journal newspaper1 = new Journal(5,"Some title",824);
-    static Journal newspaper2 = new Journal(666,"Any title",500);
-    static Journal newspaper3 = new Journal(1005,"title",2736);
-    static Journal newspaper4 = new Journal(1,"Title",666);
+    static Newspaper newspaper1 = new Newspaper(5,"Some title",824);
+    static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
+    static Newspaper newspaper3 = new Newspaper(1005,"title",2736);
+    static Newspaper newspaper4 = new Newspaper(1,"Title",666);
 
     @ParameterizedTest
     @MethodSource("provideNewspapers")

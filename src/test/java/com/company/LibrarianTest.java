@@ -12,49 +12,33 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class LibrarianTest {
     //TODO create tests
 
-    static Book book1 = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
-    static Book book2 = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
-    static Book book3 = new Book(103,"Third Book", "Third Author", new GregorianCalendar(2002,Calendar.MAY,10),783);
+    static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
+    static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
+    static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
 
-    static Journal journal1 = new Journal(101,"First Journal",95);
-    static Journal journal2 = new Journal(105, "Second Journal", 96);
-    static Journal journal3 = new Journal(103, "Existing Journal", 96);
+    static Journal journal1 = new Journal(5,"Some title",824);
+    static Journal journal2 = new Journal(666,"Any title",500);
+    static Journal journal3 = new Journal(1005,"title",2736);
 
-    static Newspaper newspaper1 = new Newspaper(101,"First Newspaper",95);
-    static Newspaper newspaper2 = new Newspaper(105, "Second Newspaper", 96);
-    static Newspaper newspaper3 = new Newspaper(103, "Existing Newspaper", 96);
-
-    List<Item> books = new ArrayList<>();
-    List<Item> journals = new ArrayList<>();
-    List<Item> newspapers = new ArrayList<>();
+    static Newspaper newspaper1 = new Newspaper(5,"Some title",824);
+    static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
+    static Newspaper newspaper3 = new Newspaper(1005,"title",2736);
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
 
     PrintWriter printWriter = new PrintWriter(printStream, true);
-
-
-    {
-        books.add(book1);
-        books.add(book2);
-        books.add(book3);
-
-        journals.add(journal1);
-        journals.add(journal2);
-
-        newspapers.add(newspaper1);
-        newspapers.add(newspaper2);
-        newspapers.add(newspaper3);
-
-    }
 
     @ParameterizedTest
     @MethodSource("provideTable")
@@ -144,10 +128,38 @@ class LibrarianTest {
 
     private static Stream<Arguments> provideIDToFind(){
         return Stream.of(
-                Arguments.of(101,book1),
-                Arguments.of(105,newspaper2),
-                Arguments.of(103,journal3),
+                Arguments.of(5,book1),
+                Arguments.of(666,newspaper2),
+                Arguments.of(1005,journal3),
                 Arguments.of(21,null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideIDToDelete")
+    void deleteItemTest(int providedID) throws IOException {
+        Librarian librarian = new Librarian(new WorkWithFiles("test_deleting"),printWriter);
+        librarian.workWithFiles.addItemToFile(book1);
+        librarian.workWithFiles.addItemToFile(newspaper2);
+        librarian.workWithFiles.addItemToFile(journal3);
+        assertTrue(librarian.deleteItem(providedID,false));
+
+    }
+
+    private static Stream<Arguments> provideIDToDelete(){
+        return Stream.of(
+                Arguments.of(5,book1),
+                Arguments.of(666,newspaper2),
+                Arguments.of(1005,journal3));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideIDToDelete")
+    void borrowItemTest(int providedID,Item item) throws IOException {
+        Librarian librarian = new Librarian(new WorkWithFiles("test_borrowing"),printWriter);
+        librarian.workWithFiles.addItemToFile(item);
+        librarian.borrowItem(providedID,true);
+        item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);
+        assertTrue(item.isBorrowed());
     }
 
 }
