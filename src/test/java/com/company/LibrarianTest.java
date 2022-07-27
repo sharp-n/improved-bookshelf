@@ -12,8 +12,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,7 +19,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LibrarianTest {
-    //TODO create tests
 
     static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
     static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
@@ -107,11 +104,11 @@ class LibrarianTest {
                 Arguments.of(new ArrayList<>(Collections.emptyList()), "There`s no items here" + System.lineSeparator()),
 
                 Arguments.of(new ArrayList<>(Arrays.asList(book1, book2, journal1)),
-                        " =ITEM ID= | =TITLE=       | =AUTHOR=      | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + System.lineSeparator() +
-                        "-----------+---------------+---------------+-------------------+---------+------------" + System.lineSeparator() +
-                        " 101       | First Book    | First Author  | 10.12.2020        | 510     | false      " + System.lineSeparator() +
-                        " 102       | Second Book   | Second Author | 21.4.2021         | 924     | false      " + System.lineSeparator() +
-                        " 101       | First Journal | 95            | false             | NULL    | NULL       " + System.lineSeparator())
+                        " =ITEM ID= | =TITLE=    | =AUTHOR= | =PUBLISHING DATE= | =PAGES= | =BORROWED= " +
+                                "-----------+------------+----------+-------------------+---------+------------" + System.lineSeparator() +
+                                " 5         | Some title | Author   | 02.5.2002         | 824     | false      " +System.lineSeparator() +
+                                " 666       | Any title  | unknown  | 02.4.2002         | 500     | false      " + System.lineSeparator() +
+                                " 5         | Some title | 824      | false             | NULL    | NULL       " + System.lineSeparator())
         );
     }
 
