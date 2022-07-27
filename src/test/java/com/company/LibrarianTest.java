@@ -14,10 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -46,6 +43,13 @@ class LibrarianTest {
     List<Item> books = new ArrayList<>();
     List<Item> journals = new ArrayList<>();
     List<Item> newspapers = new ArrayList<>();
+
+
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    PrintStream printStream = new PrintStream(outputStream);
+
+    PrintWriter printWriter = new PrintWriter(printStream, true);
+
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -148,4 +152,40 @@ class LibrarianTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("provideNumberOfColumns")
+    void generateOptionsForTableTest(int provided, int expected){
+        Librarian librarian = new Librarian();
+        int size = librarian.generateOptionsForTable(provided).size();
+        assertEquals(expected,size);
+    }
+
+    private static Stream<Arguments> provideNumberOfColumns(){
+        return Stream.of(
+                Arguments.of(6, new ConstantsForItemsTable().columnsForBooks.size()),
+                Arguments.of(4, new ConstantsForItemsTable().columnsForJournals.size()),
+                Arguments.of(6, new ConstantsForItemsTable().columnsForAllItems.size())
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideTablesForPrinting")
+    void printItemsTest(List<Item> provided, String expected){
+        Librarian librarian = new Librarian(new WorkWithFiles("test"),printWriter);
+        librarian.printItems(provided);
+        assertEquals(expected,outputStream.toString());
+    }
+
+    private static Stream<Arguments> provideTablesForPrinting(){
+        return Stream.of(
+                Arguments.of(new ArrayList<>(Collections.emptyList()), "There`s no items here" + System.lineSeparator()),
+
+                Arguments.of(new ArrayList<>(Arrays.asList(book1, book2, journal1)),
+                        " =ITEM ID= | =TITLE=       | =AUTHOR=      | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + System.lineSeparator() +
+                        "-----------+---------------+---------------+-------------------+---------+------------" + System.lineSeparator() +
+                        " 101       | First Book    | First Author  | 10.12.2020        | 510     | false      " + System.lineSeparator() +
+                        " 102       | Second Book   | Second Author | 21.4.2021         | 924     | false      " + System.lineSeparator() +
+                        " 101       | First Journal | 95            | false             | NULL    | NULL       " + System.lineSeparator())
+        );
+    }
 }
