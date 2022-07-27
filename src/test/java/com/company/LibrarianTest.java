@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.convertors.BookConvertor;
+import com.company.convertors.JournalConvertor;
+import com.company.convertors.NewspaperConvertor;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -7,31 +10,38 @@ import com.company.items.Newspaper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class LibrarianTest {
     //TODO create tests
-    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"),new PrintWriter(System.out, true));
-    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"),new PrintWriter(System.out, true));
-    Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),new PrintWriter(System.out, true));
-    Librarian allItemsLibrarian = new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out, true));
+    static Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"),new PrintWriter(System.out, true));
+    static Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"),new PrintWriter(System.out, true));
+    static Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),new PrintWriter(System.out, true));
+    static Librarian allItemsLibrarian = new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out, true));
 
-    Book firstBook = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
-    Book secondBook = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
-    Book thirdBook = new Book(103,"Third Book", "Third Author", new GregorianCalendar(2002,Calendar.MAY,10),783);
+    static Book book1 = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
+    static Book book2 = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
+    static Book book3 = new Book(103,"Third Book", "Third Author", new GregorianCalendar(2002,Calendar.MAY,10),783);
 
-    Journal firstJournal = new Journal(101,"First Journal",95);
-    Journal secondJournal = new Journal(105, "Second Journal", 96);
-    Journal thirdJournal = new Journal(103, "Existing Journal", 96);
+    static Journal journal1 = new Journal(101,"First Journal",95);
+    static Journal journal2 = new Journal(105, "Second Journal", 96);
+    static Journal journal3 = new Journal(103, "Existing Journal", 96);
 
-    Newspaper firstNewspaper = new Newspaper(101,"First Newspaper",95);
-    Newspaper secondNewspaper = new Newspaper(105, "Second Newspaper", 96);
-    Newspaper thirdNewspaper = new Newspaper(103, "Existing Newspaper", 96);
+    static Newspaper newspaper1 = new Newspaper(101,"First Newspaper",95);
+    static Newspaper newspaper2 = new Newspaper(105, "Second Newspaper", 96);
+    static Newspaper newspaper3 = new Newspaper(103, "Existing Newspaper", 96);
 
     List<Item> books = new ArrayList<>();
     List<Item> journals = new ArrayList<>();
@@ -40,16 +50,16 @@ class LibrarianTest {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     {
-        books.add(firstBook);
-        books.add(secondBook);
-        books.add(thirdBook);
+        books.add(book1);
+        books.add(book2);
+        books.add(book3);
 
-        journals.add(firstJournal);
-        journals.add(secondJournal);
+        journals.add(journal1);
+        journals.add(journal2);
 
-        newspapers.add(firstNewspaper);
-        newspapers.add(secondNewspaper);
-        newspapers.add(thirdNewspaper);
+        newspapers.add(newspaper1);
+        newspapers.add(newspaper2);
+        newspapers.add(newspaper3);
 
     }
 
@@ -57,9 +67,9 @@ class LibrarianTest {
     void writeToList() {
         try {
             List<Container> containers = new ArrayList<>();
-            containers.add(new Container<>(firstBook));
-            containers.add(new Container<>(secondBook));
-            containers.add(new Container<>(firstJournal));
+            containers.add(new Container<>(book1));
+            containers.add(new Container<>(book2));
+            containers.add(new Container<>(journal1));
             FileWriter fw = new FileWriter(System.getProperty("user.home") + "\\testItems.txt", false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
@@ -72,26 +82,26 @@ class LibrarianTest {
     @Test
     void addItemsToAllFilesTest() throws IOException {
 
-        booksLibrarian.addItem(firstBook);
-        booksLibrarian.addItem(secondBook);
-        allItemsLibrarian.addItem(thirdBook);
+        booksLibrarian.addItem(book1);
+        booksLibrarian.addItem(book2);
+        allItemsLibrarian.addItem(book3);
 
-        journalsLibrarian.addItem(firstJournal);
-        journalsLibrarian.addItem(secondJournal);
-        allItemsLibrarian.addItem(thirdJournal);
+        journalsLibrarian.addItem(journal1);
+        journalsLibrarian.addItem(journal2);
+        allItemsLibrarian.addItem(journal3);
 
-        newspapersLibrarian.addItem(firstNewspaper);
-        newspapersLibrarian.addItem(secondNewspaper);
-        allItemsLibrarian.addItem(thirdNewspaper);
+        newspapersLibrarian.addItem(newspaper1);
+        newspapersLibrarian.addItem(newspaper2);
+        allItemsLibrarian.addItem(newspaper3);
     }
 
-//    @Test
-//    void deleteItemsTest() throws IOException {
-//        assertFalse(bothItemsLibrarian.deleteItem(105, false,"Book"));
-//        assertFalse(bothItemsLibrarian.deleteItem(103, false,"Journal"));
-//        assertFalse(booksLibrarian.deleteItem(102,false, "Book"));
-//        assertFalse(journalsLibrarian.deleteItem(101,false, "Journal"));
-//    }
+    @Test
+    void deleteItemsTest() throws IOException {
+    //    assertFalse(bothItemsLibrarian.deleteItem(105, false));
+    //    assertFalse(bothItemsLibrarian.deleteItem(103, false));
+        assertFalse(booksLibrarian.deleteItem(102,false));
+        assertFalse(journalsLibrarian.deleteItem(101,false));
+    }
 
     @Test
     void borrowItemTest() throws IOException {
@@ -100,25 +110,42 @@ class LibrarianTest {
         newspapersLibrarian.borrowItem(102, true);
     }
 
-    @Test
-    void sortingItemsTest(){
-        booksLibrarian.sortingItemsByID(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        journalsLibrarian.sortingItemsByID(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        newspapersLibrarian.sortingItemsByID(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        System.out.println();
-        //booksLibrarian.sortingItemsByTitle(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        //journalsLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        //newspapersLibrarian.sortingItemsByTitle(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        System.out.println();
-        booksLibrarian.sortingItemsByPages(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        journalsLibrarian.sortingItemsByPages(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        newspapersLibrarian.sortingItemsByPages(journals).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        System.out.println();
-        //booksLibrarian.sortingBooksByAuthor(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
-        System.out.println();
-        //booksLibrarian.sortingBooksByPublishingDate(books).forEach(i->System.out.println(i.getItemID() + " - " + i.getTitle() + " - " + i.getPages()));
+    @ParameterizedTest
+    @MethodSource("provideTable")
+    void defineNumberOfColumnsTest(List<List<String>> table, int expected){
+        Librarian librarian = new Librarian();
+        int provided = librarian.defineNumberOfColumns(table);
+        assertEquals(expected,provided);
     }
 
+    private static Stream<Arguments> provideTable(){
 
+        List<List<String>> table1 = new ArrayList<>(Arrays.asList(
+                new BookConvertor(book1).itemToString(),
+                new BookConvertor(book2).itemToString(),
+                new JournalConvertor(journal1).itemToString()));
+        List<List<String>> table2 = new ArrayList<>(Arrays.asList(
+                new NewspaperConvertor(newspaper2).itemToString(),
+                new JournalConvertor(journal1).itemToString()));
+
+        List<List<String>> table3 = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Arrays.asList("1", "2","3","4")),
+                new ArrayList<>(Arrays.asList("1", "2")),
+                new ArrayList<>(Arrays.asList("1", "2","3","4","5")),
+                new ArrayList<>(Arrays.asList("1", "2","3","4"))
+        ));
+
+        List<List<String>> table4 = new ArrayList<>(Arrays.asList(
+                new ArrayList<>(Collections.emptyList()),
+                new ArrayList<>(Collections.singletonList("1"))
+        ));
+
+        return Stream.of(
+                Arguments.of(table1,6),
+                Arguments.of(table2,4),
+                Arguments.of(table3,5),
+                Arguments.of(table4,1)
+        );
+    }
 
 }

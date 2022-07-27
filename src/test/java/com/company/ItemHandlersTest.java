@@ -21,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ItemHandlersTest {
 
-    //TODO crate tests
-
     ConstantsForSorting<Book> constantForBook = new ConstantsForSorting<>();
     ConstantsForSorting<Journal> constantForJournal = new ConstantsForSorting<>();
     ConstantsForSorting<Newspaper> constantForNewspaper = new ConstantsForSorting<>();

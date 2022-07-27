@@ -54,16 +54,6 @@ public class Librarian {
         }
     }
 
-    public List<Item> sortingItemsByID(List<Item> list) {
-        return list.stream()
-                .sorted(Comparator.comparing(Item::getItemID))
-                .collect(Collectors.toList());
-    }
-
-    public List<Item> sortingItemsByPages(List<Item> list) {
-        return list.stream().sorted(Comparator.comparing(Item::getPages)).collect(Collectors.toList());
-    }
-
     public boolean checkIDForExistence(int itemID) throws IOException {
         List<? extends Item> items = workWithFiles.readToItemsList();
         if (items != null) {
