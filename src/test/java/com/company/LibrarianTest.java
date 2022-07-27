@@ -7,9 +7,6 @@ import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,14 +16,9 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class LibrarianTest {
     //TODO create tests
-    static Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"),new PrintWriter(System.out, true));
-    static Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"),new PrintWriter(System.out, true));
-    static Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),new PrintWriter(System.out, true));
-    static Librarian allItemsLibrarian = new Librarian(new WorkWithFiles("test"),new PrintWriter(System.out, true));
 
     static Book book1 = new Book(101, "First Book", "First Author", new GregorianCalendar(2020, Calendar.DECEMBER,10),510);
     static Book book2 = new Book(102, "Second Book", "Second Author", new GregorianCalendar(2021,Calendar.APRIL,21),924);
@@ -44,14 +36,11 @@ class LibrarianTest {
     List<Item> journals = new ArrayList<>();
     List<Item> newspapers = new ArrayList<>();
 
-
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
 
     PrintWriter printWriter = new PrintWriter(printStream, true);
 
-
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     {
         books.add(book1);
@@ -65,53 +54,6 @@ class LibrarianTest {
         newspapers.add(newspaper2);
         newspapers.add(newspaper3);
 
-    }
-
-    @Test
-    void writeToList() {
-        try {
-            List<Container> containers = new ArrayList<>();
-            containers.add(new Container<>(book1));
-            containers.add(new Container<>(book2));
-            containers.add(new Container<>(journal1));
-            FileWriter fw = new FileWriter(System.getProperty("user.home") + "\\testItems.txt", false);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(gson.toJson(containers));
-            bw.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    @Test
-    void addItemsToAllFilesTest() throws IOException {
-
-        booksLibrarian.addItem(book1);
-        booksLibrarian.addItem(book2);
-        allItemsLibrarian.addItem(book3);
-
-        journalsLibrarian.addItem(journal1);
-        journalsLibrarian.addItem(journal2);
-        allItemsLibrarian.addItem(journal3);
-
-        newspapersLibrarian.addItem(newspaper1);
-        newspapersLibrarian.addItem(newspaper2);
-        allItemsLibrarian.addItem(newspaper3);
-    }
-
-    @Test
-    void deleteItemsTest() throws IOException {
-    //    assertFalse(bothItemsLibrarian.deleteItem(105, false));
-    //    assertFalse(bothItemsLibrarian.deleteItem(103, false));
-        assertFalse(booksLibrarian.deleteItem(102,false));
-        assertFalse(journalsLibrarian.deleteItem(101,false));
-    }
-
-    @Test
-    void borrowItemTest() throws IOException {
-        booksLibrarian.borrowItem(102, true);
-        journalsLibrarian.borrowItem(102, true);
-        newspapersLibrarian.borrowItem(102, true);
     }
 
     @ParameterizedTest
@@ -188,4 +130,24 @@ class LibrarianTest {
                         " 101       | First Journal | 95            | false             | NULL    | NULL       " + System.lineSeparator())
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("provideIDToFind")
+    void findItemByIDTest(int providedID, Item expected){
+        List<Item> items = new ArrayList<>();
+        items.add(book1);
+        items.add(newspaper2);
+        items.add(journal3);
+        Item item = Librarian.findItemByID(providedID,items);
+        assertEquals(expected,item);
+    }
+
+    private static Stream<Arguments> provideIDToFind(){
+        return Stream.of(
+                Arguments.of(101,book1),
+                Arguments.of(105,newspaper2),
+                Arguments.of(103,journal3),
+                Arguments.of(21,null));
+    }
+
 }

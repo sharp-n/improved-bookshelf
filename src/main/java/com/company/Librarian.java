@@ -71,7 +71,7 @@ public class Librarian {
         return item > 0;
     }
 
-    private static Item findItemByID(int itemID, List<? extends Item> items) {
+    public static Item findItemByID(int itemID, List<? extends Item> items) {
         for (Item item : items) {
             if (item.getItemID() == itemID) {
                 return item;
