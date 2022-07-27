@@ -30,7 +30,7 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
     public Newspaper createItem(List<String> options){
         int itemID = Integer.parseInt(options.get(0));
         String title = options.get(1);
-        int pages = Integer.parseInt(options.get(4));
+        int pages = Integer.parseInt(options.get(2));
         return new Newspaper(itemID,title,pages);
     }
 
@@ -40,4 +40,5 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
                 NEW_LINE + TAKE_NEWSPAPER + NEW_LINE + RETURN_NEWSPAPER +
                 NEW_LINE + SHOW_NEWSPAPER + NEW_LINE;
     }
+
 }

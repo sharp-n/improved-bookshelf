@@ -20,13 +20,13 @@ public class ItemHandlerProvider {
 
     static {
         classItemHandlerMap.put(Newspaper.class, new NewspaperHandler());
-        classItemHandlerMap.put(Journal.class, new NewspaperHandler()); // TODO handlers
-        classItemHandlerMap.put(Book.class, new BookHandler()); // TODO handlers
+        classItemHandlerMap.put(Journal.class, new JournalHandler());
+        classItemHandlerMap.put(Book.class, new BookHandler());
 
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
     }
 
-    public static Class<? extends Item> getClassByHandler(ItemHandler itemHandler) {
+    public static Class<? extends Item> getClassByHandler(ItemHandler<? extends Item> itemHandler) {
         for (Map.Entry<Class<? extends Item>, ItemHandler<? extends Item>> classItemHandlerEntry : classItemHandlerMap.entrySet()) {
             if (classItemHandlerEntry.getValue().getClass().getSimpleName().equals(itemHandler.getClass().getSimpleName())) {
                 return classItemHandlerEntry.getKey();

@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -54,16 +52,6 @@ public class Librarian {
         }
     }
 
-    public List<Item> sortingItemsByID(List<Item> list) {
-        return list.stream()
-                .sorted(Comparator.comparing(Item::getItemID))
-                .collect(Collectors.toList());
-    }
-
-    public List<Item> sortingItemsByPages(List<Item> list) {
-        return list.stream().sorted(Comparator.comparing(Item::getPages)).collect(Collectors.toList());
-    }
-
     public boolean checkIDForExistence(int itemID) throws IOException {
         List<? extends Item> items = workWithFiles.readToItemsList();
         if (items != null) {
@@ -83,7 +71,7 @@ public class Librarian {
         return item > 0;
     }
 
-    private static Item findItemByID(int itemID, List<? extends Item> items) {
+    public static Item findItemByID(int itemID, List<? extends Item> items) {
         for (Item item : items) {
             if (item.getItemID() == itemID) {
                 return item;
