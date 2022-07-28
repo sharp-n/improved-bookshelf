@@ -16,7 +16,7 @@ import static com.company.enums.ActionsWithJournals.*;
 public class JournalHandler extends ItemHandler<Journal> {
 
     public JournalHandler(PrintWriter out, Scanner in) {
-        super(out, in);
+        super(out,in);
     }
 
     @Override
@@ -34,8 +34,7 @@ public class JournalHandler extends ItemHandler<Journal> {
         return new Journal(itemID,title,pages);
     }
 
-    @Override
-    public String initItemsMenuText(){
+    public String initActionsWithItemsMenuText(){
         return NEW_LINE + ADD_JOURNAL + NEW_LINE + DELETE_JOURNAL +
                 NEW_LINE + TAKE_JOURNAL + NEW_LINE + RETURN_JOURNAL +
                 NEW_LINE + SHOW_JOURNAL + NEW_LINE;

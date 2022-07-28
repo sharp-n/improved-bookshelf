@@ -1,6 +1,9 @@
 package com.company;
 
 import com.company.convertors.ItemsConvertor;
+import com.company.enums.SortingMenu;
+import com.company.handlers.ItemHandler;
+import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.TableUtil;
 import com.company.work_with_files.WorkWithFiles;
@@ -9,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -41,7 +45,6 @@ public class Librarian {
                 deleteItem(itemID, true);
                 item.setBorrowed(borrow);
                 addItem(item);
-
                 out.println("Success");
             } else if (borrow) {
                 out.println("Item has already been taken by someone else");
@@ -81,6 +84,7 @@ public class Librarian {
         return null;
     }
 
+
     public <T extends Item> void printItems(List<T> items) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
@@ -108,6 +112,43 @@ public class Librarian {
             }
         }
         return maxNumOfColumns;
+    }
+
+    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
+        Integer usersChoice = itemHandler.userInput.getSortingVar();
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
+            List<Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
+            if(!sortedItemsByComparator.isEmpty()){
+                printItems(sortedItemsByComparator);
+            }
+        } else{
+            itemHandler.userInput.printDefaultMessage();
+        }
+    }
+
+    public List<Item> initSortingItemsByComparator(WorkWithFiles workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+        String typeOfClass = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
+        ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
+        List<Item> items = workWithFiles.readToAnyItemList(typeOfClass);
+        switch (sortingParameter) { // TODO optimize items and comparators
+            case RETURN_VALUE:
+                break;
+            case ITEM_ID:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);//TODO remove redundant methods
+            case TITLE:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
+            case PAGES:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
+            case AUTHOR:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
+            case PUBLISHING_DATE:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
+            default:
+                itemHandler.userInput.printDefaultMessage();
+                break;
+        }
+        return Collections.emptyList();
     }
 
 }

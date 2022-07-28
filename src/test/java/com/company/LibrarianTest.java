@@ -8,6 +8,7 @@ import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
 import com.company.work_with_files.WorkWithFiles;
+import com.company.work_with_files.WorkWithOneFile;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -95,7 +96,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideTablesForPrinting")
     void printItemsTest(List<Item> provided, String expected){
-        Librarian librarian = new Librarian(new WorkWithFiles("test"),printWriter);
+        Librarian librarian = new Librarian(new WorkWithOneFile("test"),printWriter);
         librarian.printItems(provided);
         assertEquals(expected,outputStream.toString());
     }
@@ -135,7 +136,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void deleteItemTest(int providedID) throws IOException {
-        Librarian librarian = new Librarian(new WorkWithFiles("test_deleting"),printWriter);
+        Librarian librarian = new Librarian(new WorkWithOneFile("test_deleting"),printWriter);
         librarian.workWithFiles.addItemToFile(book1);
         librarian.workWithFiles.addItemToFile(newspaper2);
         librarian.workWithFiles.addItemToFile(journal3);
@@ -153,7 +154,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void borrowItemTest(int providedID,Item item) throws IOException {
-        Librarian librarian = new Librarian(new WorkWithFiles("test_borrowing"),printWriter);
+        Librarian librarian = new Librarian(new WorkWithOneFile("test_borrowing"),printWriter);
         librarian.workWithFiles.addItemToFile(item);
         librarian.borrowItem(providedID,true);
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);

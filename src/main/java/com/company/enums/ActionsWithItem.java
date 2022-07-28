@@ -2,7 +2,7 @@ package com.company.enums;
 
 import java.util.Arrays;
 
-public enum ActionsWithItem {
+public enum ActionsWithItem { // TODO remove actions with each file
     EXIT_VALUE(0, "Exit"),
     ADD(1, "Add"),
     DELETE(2, "Delete"),

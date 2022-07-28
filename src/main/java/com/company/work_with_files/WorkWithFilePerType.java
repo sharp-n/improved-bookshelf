@@ -12,7 +12,7 @@ public class WorkWithFilePerType extends WorkWithFiles {
     }
 
     public void genFilePath(){
-        filePath = Paths.get(pathToDirectoryAsString, ( userName +"_" + typeOfClass.toLowerCase() + ".txt"));
+        filePath = Paths.get(pathToDirectoryAsString, (userName + "_" + typeOfClass.toLowerCase() + ".txt"));
     }
 
 }

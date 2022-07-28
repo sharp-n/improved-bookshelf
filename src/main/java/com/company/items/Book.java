@@ -2,6 +2,7 @@ package com.company.items;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.GregorianCalendar;
 
@@ -12,7 +13,7 @@ public class Book extends Item {
     private String author;
     private GregorianCalendar publishingDate;
 
-    public Book(int bookID, String title, String author, GregorianCalendar publishingDate, int pages ) {
+    public Book(int bookID, String title, String author, GregorianCalendar publishingDate, int pages) {
         super.itemID = bookID;
         super.title = title;
         this.author = author;

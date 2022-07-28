@@ -17,7 +17,7 @@ import static com.company.enums.ActionsWithBook.RETURN_BOOK;
 public class BookHandler extends ItemHandler<Book>{
 
     public BookHandler(PrintWriter out, Scanner in) {
-        super(out, in);
+        super(out,in);
     }
 
     @Override
@@ -59,9 +59,9 @@ public class BookHandler extends ItemHandler<Book>{
         return null;
     }
 
-    public List<String> getItem() throws IOException {
+    public List<String> getItem(Librarian librarian) throws IOException {
         String author = "";
-        List<String> itemOptions = new ArrayList<>(super.getItem());
+        List<String> itemOptions = new ArrayList<>(super.getItem(librarian));
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {
@@ -79,8 +79,7 @@ public class BookHandler extends ItemHandler<Book>{
 
     }
 
-    @Override
-    public String initItemsMenuText(){
+    public String initActionsWithItemsMenuText(){
         return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
                 NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
                 NEW_LINE + SHOW_BOOK + NEW_LINE;

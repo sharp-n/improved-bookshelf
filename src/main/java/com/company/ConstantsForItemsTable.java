@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ConstantsForItemsTable {
 
-    Map<Integer,List<String>> allTheColumnsForItems = new HashMap<>();
+    public Map<Integer,List<String>> allTheColumnsForItems = new HashMap<>();
 
     List<String> columnsForAllItems = new ArrayList<>(Arrays.asList("item id", "title", "author", "publishing date", "pages", "borrowed"));
 
