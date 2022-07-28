@@ -148,15 +148,15 @@ class ProjectHandlerTest {
 
     // ONE FILE CHOICE
 
-    @ParameterizedTest
-    @MethodSource("provideFilesForOneFileChoice")
-    void oneFileChoice(String input, String expected){
-        ProjectHandler serverHandler = getServerHandler(input);
-        serverHandler.initOneFileWork(new User(input));
-        assertEquals(expected,serverHandler.pathForFileToWorkWith.workWithOneFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",serverHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",serverHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
-    }
+    //@ParameterizedTest
+    //@MethodSource("provideFilesForOneFileChoice")
+    //void oneFileChoice(String input, String expected){
+    //    ProjectHandler projectHandler = getServerHandler(input);
+    //    projectHandler.initOneFileWork(new User(input));
+    //    assertEquals(expected,projectHandler.pathForFileToWorkWith.workWithOneFile.filePath.toString());
+    //    assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",projectHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
+    //    assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_default.txt",projectHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
+    //}
 
     private static Stream<Arguments> provideFilesForOneFileChoice(){
         return Stream.of(
@@ -168,15 +168,15 @@ class ProjectHandlerTest {
 
     // FEW FILES CHOICE
 
-    @ParameterizedTest
-    @MethodSource("provideFilesForFewFilesChoice")
-    void fewFilesChoice(String input){
-        ProjectHandler serverHandler = getServerHandler(input);
-        serverHandler.initFilePerItemWork(new User(input));
-        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_books_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithBookFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_journals_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
-        assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_newspaper_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
-    }
+    //@ParameterizedTest
+    //@MethodSource("provideFilesForFewFilesChoice")
+    //void fewFilesChoice(String input){
+    //    ProjectHandler serverHandler = getServerHandler(input);
+    //    serverHandler.initFilePerItemWork(new User(input));
+    //    assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_books_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithBookFile.filePath.toString());
+    //    assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_journals_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithJournalFile.filePath.toString());
+    //    assertEquals(System.getProperty("user.home") + "\\book_shelf\\items_newspaper_" + input + ".txt",serverHandler.pathForFileToWorkWith.workWithNewspaperFile.filePath.toString());
+    //}
 
     private static Stream<Arguments> provideFilesForFewFilesChoice(){
         return Stream.of(
