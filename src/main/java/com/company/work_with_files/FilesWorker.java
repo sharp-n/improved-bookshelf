@@ -24,11 +24,11 @@ public abstract class FilesWorker {
 
     protected FilesWorker(String root, String userName) {
         this.userName = userName;
-        pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser(userName)));
+        pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser()));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
     }
 
-    private String generateDirectoryForUser(String directoryName) {
+    private String generateDirectoryForUser() {
         return userName + "_directory";
     }
 
