@@ -139,13 +139,13 @@ public class ProjectHandler {
     }
 
     public void initOneFileWork(User user) {
-        WorkWithFiles workWithOneFile = new WorkWithOneFile(user.userName);
+        WorkWithFiles workWithOneFile = new WorkWithOneFile(user.userName,user.userName);
         workWithOneFile.genFilePath();
         librarian = new Librarian(workWithOneFile, out);
     }
 
-    public void initFilePerItemWork(User user) {// TODO unite files in work with file per item
-        WorkWithFiles workWithFilePerType = new WorkWithFilePerType(user.userName,typeOfItem);
+    public void initFilePerItemWork(User user) {
+        WorkWithFiles workWithFilePerType = new WorkWithFilePerType(user.userName,user.userName,typeOfItem);
         workWithFilePerType.genFilePath();
         librarian = new Librarian(workWithFilePerType,out);
     }

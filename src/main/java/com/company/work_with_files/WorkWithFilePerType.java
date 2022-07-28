@@ -6,8 +6,8 @@ public class WorkWithFilePerType extends WorkWithFiles {
 
     String typeOfClass;
 
-    public WorkWithFilePerType(String userName, String typeOfItem){
-        super(userName);
+    public WorkWithFilePerType(String userName, String directoryName, String typeOfItem){
+        super(userName, directoryName);
         this.typeOfClass = typeOfItem;
     }
 

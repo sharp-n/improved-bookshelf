@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 
 public class WorkWithOneFile extends WorkWithFiles {
 
-    public WorkWithOneFile(String userName){
-        super(userName);
+    public WorkWithOneFile(String userName, String directoryName){
+        super(userName, directoryName);
     }
 
     public void genFilePath(){

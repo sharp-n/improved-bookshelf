@@ -1,11 +1,9 @@
 package com.company.work_with_files;
 
 import com.company.Container;
-import com.company.handlers.ItemHandler;
 import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.google.gson.*;
-import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,23 +12,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
 public abstract class WorkWithFiles {
-
-    // FIXME WORK WITH FILES
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
     public String userName;
-    protected final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
+    protected String pathToDirectoryAsString;
 
     public abstract void genFilePath();
 
-    protected WorkWithFiles(String userName) {
+    protected WorkWithFiles(String userName, String directoryName) {
         this.userName = userName;
+        pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS,directoryName));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-        //this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + userName + ".txt"));
     }
 
     public synchronized void addItemToFile(Item itemToAdd) throws IOException {

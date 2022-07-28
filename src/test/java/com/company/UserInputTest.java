@@ -46,7 +46,7 @@ class UserInputTest {
     UserInput getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new UserInput(new Librarian(new WorkWithOneFile("test"),new PrintWriter(System.out)),scanner);
+        return new UserInput(new Librarian(new WorkWithOneFile("test","userInputTest"),new PrintWriter(System.out)),scanner);
     }
 
     // USERNAME
