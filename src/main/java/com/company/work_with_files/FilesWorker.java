@@ -22,10 +22,14 @@ public abstract class FilesWorker {
 
     public abstract void genFilePath();
 
-    protected FilesWorker(String userName, String directoryName) {
+    protected FilesWorker(String root, String userName) {
         this.userName = userName;
-        pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS,directoryName));
+        pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser(userName)));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
+    }
+
+    private String generateDirectoryForUser(String directoryName) {
+        return userName + "_directory";
     }
 
     public synchronized void addItemToFile(Item itemToAdd) throws IOException {
@@ -103,7 +107,7 @@ public abstract class FilesWorker {
                 file.createNewFile();
             }
             return file;
-        } catch (IOException e){
+        } catch (IOException e) {
             return null;
         }
     }
