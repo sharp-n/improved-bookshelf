@@ -55,7 +55,7 @@ public class WorkWithFiles { // FIXME WORK WITH FILES
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
+    public boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
         List<Item> items = readToItemsList();
         for (Item item : items) {
             if (item.getItemID() == itemID) {
