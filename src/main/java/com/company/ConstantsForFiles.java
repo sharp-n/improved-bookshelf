@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.work_with_files.WorkWithFiles;
+
 public class ConstantsForFiles {
 
     public WorkWithFiles workWithBookFile = new WorkWithFiles();

@@ -7,6 +7,7 @@ import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
+import com.company.work_with_files.WorkWithFiles;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

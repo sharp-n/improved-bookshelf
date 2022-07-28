@@ -3,12 +3,12 @@ package com.company.handlers;
 import com.company.*;
 import com.company.enums.MainMenu;
 import com.company.items.Item;
+import com.company.work_with_files.WorkWithFiles;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -20,7 +20,7 @@ import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 @NoArgsConstructor
 public class ItemHandler<T extends Item> {
 
-    Scanner in;
+    Scanner in; // TODO fix input/output
     PrintWriter out;
 
     public Librarian librarian;

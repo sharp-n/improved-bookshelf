@@ -3,6 +3,7 @@ package com.company;
 import com.company.enums.*;
 import com.company.handlers.*;
 import com.company.items.Item;
+import com.company.work_with_files.WorkWithFiles;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,11 +12,12 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.company.ConstantsForItemsTable.NEW_LINE;
-import static com.company.ConstantsForSorting.*;
 import static com.company.enums.FilesMenu.*;
 import static com.company.enums.FilesMenu.EXIT_VALUE;
 
 public class ProjectHandler {
+
+    //TODO fix input/output -> extract it to one class
 
     public Scanner in;
     public PrintWriter out;
@@ -147,7 +149,7 @@ public class ProjectHandler {
         out.println("Your items will be saved in one file");
     }
 
-    public void initFilePerItemWork(User user) {// todo 
+    public void initFilePerItemWork(User user) {// TODO unite files in work with file per item
         pathForFileToWorkWith.workWithBookFile = new WorkWithFiles("books_" + user.userName);
         pathForFileToWorkWith.workWithJournalFile = new WorkWithFiles("journals_" + user.userName);
         pathForFileToWorkWith.workWithNewspaperFile = new WorkWithFiles("newspaper_" + user.userName);

@@ -1,5 +1,7 @@
-package com.company;
+package com.company.work_with_files;
 
+import com.company.Container;
+import com.company.handlers.ItemHandler;
 import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.google.gson.*;
@@ -14,7 +16,8 @@ import java.util.List;
 
 @NoArgsConstructor
 
-public class WorkWithFiles {
+public class WorkWithFiles { // FIXME WORK WITH FILES
+
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -126,6 +129,5 @@ public class WorkWithFiles {
         }
         return containers;
     }
-
 
 }

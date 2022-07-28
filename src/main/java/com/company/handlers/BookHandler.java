@@ -13,7 +13,7 @@ import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.enums.ActionsWithBook.*;
 import static com.company.enums.ActionsWithBook.RETURN_BOOK;
 
-@NoArgsConstructor
+@NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
 
     public BookHandler(PrintWriter out, Scanner in) {
