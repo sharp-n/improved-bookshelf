@@ -15,25 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
+public abstract class WorkWithFiles {
 
-public class WorkWithFiles { // FIXME WORK WITH FILES
-
+    // FIXME WORK WITH FILES
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
-    private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
+    public String userName;
+    protected final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
 
-    public WorkWithFiles(String filePath) {
+    public abstract void genFilePath();
+
+    protected WorkWithFiles(String userName) {
+        this.userName = userName;
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-        this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
-    }
-
-    {
-        if (filePath == null) {
-            createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-            filePath = Paths.get(pathToDirectoryAsString, "items_default.txt");
-        }
+        //this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + userName + ".txt"));
     }
 
     public synchronized void addItemToFile(Item itemToAdd) throws IOException {
