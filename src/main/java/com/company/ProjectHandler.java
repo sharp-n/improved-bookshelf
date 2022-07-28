@@ -17,6 +17,8 @@ import static com.company.enums.FilesMenu.EXIT_VALUE;
 
 public class ProjectHandler {
 
+    String rootFolder = System.getProperty("user.home");
+
     //TODO fix input/output -> extract it to one class
 
     public Scanner in;
@@ -82,10 +84,10 @@ public class ProjectHandler {
         switch (filesMenuOption) {
 
             case ONE_FILE:
-                initOneFileWork(user);
+                initFileWork(genOneFileWorker(user));
                 break;
             case FILE_PER_ITEM:
-                initFilePerItemWork(user);
+                initFileWork(genFilePerTypeWorker(user));
                 break;
             case CHANGE_USER:
                 mainProcValue = false;
@@ -138,16 +140,17 @@ public class ProjectHandler {
         return dialogue.getMainMenuVar();
     }
 
-    public void initOneFileWork(User user) {
-        FilesWorker workWithOneFile = new OneFileWorker(user.userName,user.userName);
-        workWithOneFile.genFilePath();
-        librarian = new Librarian(workWithOneFile, out);
+    public FilePerTypeWorker genFilePerTypeWorker(User user){
+        return new FilePerTypeWorker(rootFolder,user.userName,typeOfItem);
     }
 
-    public void initFilePerItemWork(User user) {
-        FilesWorker workWithFilePerType = new FilePerTypeWorker(user.userName,user.userName,typeOfItem);
-        workWithFilePerType.genFilePath();
-        librarian = new Librarian(workWithFilePerType,out);
+    public OneFileWorker genOneFileWorker(User user){
+        return new OneFileWorker(rootFolder,user.userName);
+    }
+
+    public void initFileWork(FilesWorker filesWorker) {
+        filesWorker.genFilePath();
+        librarian = new Librarian(filesWorker, out);
     }
 
     public User createUser(UserInput dialogue, boolean validUserName) {
