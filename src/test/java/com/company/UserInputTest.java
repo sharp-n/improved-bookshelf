@@ -1,8 +1,7 @@
 package com.company;
 
 import com.company.handlers.BookHandler;
-import com.company.work_with_files.WorkWithFiles;
-import com.company.work_with_files.WorkWithOneFile;
+import com.company.work_with_files.OneFileWorker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,7 +45,7 @@ class UserInputTest {
     UserInput getDialogues(String x) {
         ByteArrayInputStream in = new ByteArrayInputStream(x.getBytes());
         Scanner scanner = new Scanner(in);
-        return new UserInput(new Librarian(new WorkWithOneFile("test","userInputTest"),new PrintWriter(System.out)),scanner);
+        return new UserInput(new Librarian(new OneFileWorker("test","userInputTest"),new PrintWriter(System.out)),scanner);
     }
 
     // USERNAME

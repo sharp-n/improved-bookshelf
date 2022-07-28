@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class WorkWithFiles {
+public abstract class FilesWorker {
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -22,7 +22,7 @@ public abstract class WorkWithFiles {
 
     public abstract void genFilePath();
 
-    protected WorkWithFiles(String userName, String directoryName) {
+    protected FilesWorker(String userName, String directoryName) {
         this.userName = userName;
         pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS,directoryName));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));

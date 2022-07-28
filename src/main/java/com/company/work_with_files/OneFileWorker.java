@@ -5,9 +5,9 @@ import com.company.items.Item;
 import java.io.IOException;
 import java.nio.file.Paths;
 
-public class WorkWithOneFile extends WorkWithFiles {
+public class OneFileWorker extends FilesWorker {
 
-    public WorkWithOneFile(String userName, String directoryName){
+    public OneFileWorker(String userName, String directoryName){
         super(userName, directoryName);
     }
 

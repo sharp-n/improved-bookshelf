@@ -3,9 +3,9 @@ package com.company;
 import com.company.enums.*;
 import com.company.handlers.*;
 import com.company.items.Item;
-import com.company.work_with_files.WorkWithFilePerType;
-import com.company.work_with_files.WorkWithFiles;
-import com.company.work_with_files.WorkWithOneFile;
+import com.company.work_with_files.FilePerTypeWorker;
+import com.company.work_with_files.FilesWorker;
+import com.company.work_with_files.OneFileWorker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -139,13 +139,13 @@ public class ProjectHandler {
     }
 
     public void initOneFileWork(User user) {
-        WorkWithFiles workWithOneFile = new WorkWithOneFile(user.userName,user.userName);
+        FilesWorker workWithOneFile = new OneFileWorker(user.userName,user.userName);
         workWithOneFile.genFilePath();
         librarian = new Librarian(workWithOneFile, out);
     }
 
     public void initFilePerItemWork(User user) {
-        WorkWithFiles workWithFilePerType = new WorkWithFilePerType(user.userName,user.userName,typeOfItem);
+        FilesWorker workWithFilePerType = new FilePerTypeWorker(user.userName,user.userName,typeOfItem);
         workWithFilePerType.genFilePath();
         librarian = new Librarian(workWithFilePerType,out);
     }

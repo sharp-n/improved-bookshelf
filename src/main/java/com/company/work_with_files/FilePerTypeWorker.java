@@ -2,11 +2,11 @@ package com.company.work_with_files;
 
 import java.nio.file.Paths;
 
-public class WorkWithFilePerType extends WorkWithFiles {
+public class FilePerTypeWorker extends FilesWorker {
 
     String typeOfClass;
 
-    public WorkWithFilePerType(String userName, String directoryName, String typeOfItem){
+    public FilePerTypeWorker(String userName, String directoryName, String typeOfItem){
         super(userName, directoryName);
         this.typeOfClass = typeOfItem;
     }

@@ -6,7 +6,7 @@ import com.company.handlers.ItemHandler;
 import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.TableUtil;
-import com.company.work_with_files.WorkWithFiles;
+import com.company.work_with_files.FilesWorker;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Librarian {
 
-    public WorkWithFiles workWithFiles;
+    public FilesWorker workWithFiles;
     public PrintWriter out;
 
     public void addItem(Item item) throws IOException {
@@ -127,7 +127,7 @@ public class Librarian {
         }
     }
 
-    public List<Item> initSortingItemsByComparator(WorkWithFiles workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfClass = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
         ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
         List<Item> items = workWithFiles.readToAnyItemList(typeOfClass);
