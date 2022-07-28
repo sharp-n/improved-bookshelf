@@ -128,9 +128,9 @@ public class Librarian {
     }
 
     public List<Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
-        String typeOfClass = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
         ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
-        List<Item> items = workWithFiles.readToAnyItemList(typeOfClass);
+        List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
         switch (sortingParameter) { // TODO optimize items and comparators
             case RETURN_VALUE:
                 break;
