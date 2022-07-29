@@ -1,9 +1,13 @@
 package com.company.handlers;
 
 import com.company.Librarian;
+import com.company.convertors.BookConvertor;
+import com.company.convertors.ItemConvertor;
+import com.company.convertors.JournalConvertor;
 import com.company.enums.SortingMenu;
 import com.company.items.Book;
 import com.company.items.Item;
+import com.company.items.Journal;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
@@ -76,6 +80,16 @@ public class BookHandler extends ItemHandler<Book>{
 
         return itemOptions;
 
+    }
+
+    @Override
+    public List<List<String>> anyItemsToString(List<Book> books) {
+        List<List<String>> booksAsStringList = new ArrayList<>();
+        for (Book book: books) {
+            ItemConvertor itemConvertor = new BookConvertor(book);
+            booksAsStringList.add(itemConvertor.itemToString());
+        }
+        return booksAsStringList;
     }
 
     public List<Book> cast(List<Item> items) {

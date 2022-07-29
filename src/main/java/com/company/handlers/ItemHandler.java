@@ -1,17 +1,20 @@
 package com.company.handlers;
 
 import com.company.*;
+import com.company.convertors.BookConvertor;
+import com.company.convertors.ItemConvertor;
+import com.company.convertors.JournalConvertor;
+import com.company.convertors.NewspaperConvertor;
 import com.company.enums.MainMenu;
+import com.company.items.Book;
 import com.company.items.Item;
+import com.company.items.Journal;
+import com.company.items.Newspaper;
 import lombok.NoArgsConstructor;
 
 import javax.security.sasl.AuthorizeCallback;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
@@ -74,5 +77,29 @@ public abstract class ItemHandler<T extends Item> {
                 + NEW_LINE + TITLE
                 + NEW_LINE + PAGES + NEW_LINE;
     }
+
+
+    public List<List<String>> itemsToString(List<? extends Item> items){ // TODO remove instanceof
+        List<List<String>> containersAsStringList = new ArrayList<>();
+        ItemConvertor itemConvertor;
+        for (Item item: items){
+            if (item instanceof Book){
+                itemConvertor = new BookConvertor(((Book)item));
+                containersAsStringList.add(itemConvertor.itemToString());
+            } else if (item instanceof Journal){
+                itemConvertor = new JournalConvertor(((Journal)item));
+                containersAsStringList.add(itemConvertor.itemToString());
+            }
+            else if (item instanceof Newspaper){
+                itemConvertor = new NewspaperConvertor((Newspaper)item);
+                containersAsStringList.add(itemConvertor.itemToString());
+            }
+        }
+        return containersAsStringList;
+    }
+
+    public abstract List<List<String>> anyItemsToString(List<T> items);
+
+
 
 }

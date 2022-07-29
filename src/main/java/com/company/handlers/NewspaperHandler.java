@@ -1,5 +1,7 @@
 package com.company.handlers;
 
+import com.company.convertors.ItemConvertor;
+import com.company.convertors.NewspaperConvertor;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
@@ -38,6 +40,16 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
         List<Newspaper> newspapers = new ArrayList<>();
         items.forEach(i->newspapers.add((Newspaper) i));
         return newspapers;
+    }
+
+    @Override
+    public List<List<String>> anyItemsToString(List<Newspaper> newspapers) {
+        List<List<String>> newspapersAsStringList = new ArrayList<>();
+        for (Newspaper newspaper: newspapers) {
+            ItemConvertor newspaperConvertor = new NewspaperConvertor(newspaper);
+            newspapersAsStringList.add(newspaperConvertor.itemToString());
+        }
+        return newspapersAsStringList;
     }
 
 }

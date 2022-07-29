@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.convertors.ItemsConvertor;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ItemHandler;
 import com.company.handlers.ItemHandlerProvider;
@@ -108,11 +107,10 @@ public class Librarian {
     }
 
 
-    public <T extends Item> void printItems(List<T> items) {
+    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
-            ItemsConvertor itemsConvertor = new ItemsConvertor();
-            List<List<String>> strItems = itemsConvertor.itemsToString(items);
+            List<List<String>> strItems = itemHandler.itemsToString(items);
             List<String> options = generateOptionsForTable(defineNumberOfColumns(strItems));
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
@@ -143,7 +141,7 @@ public class Librarian {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
             List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
             if(!sortedItemsByComparator.isEmpty()){
-                printItems(sortedItemsByComparator);
+                printItems(sortedItemsByComparator, itemHandler);
             }
         } else{
             itemHandler.userInput.printDefaultMessage();
