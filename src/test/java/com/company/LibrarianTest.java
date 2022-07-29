@@ -3,6 +3,7 @@ package com.company;
 import com.company.convertors.BookConvertor;
 import com.company.convertors.JournalConvertor;
 import com.company.convertors.NewspaperConvertor;
+import com.company.handlers.ItemHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -140,7 +141,6 @@ class LibrarianTest {
         librarian.workWithFiles.addItemToFile(newspaper2);
         librarian.workWithFiles.addItemToFile(journal3);
         assertTrue(librarian.deleteItem(providedID,false));
-
     }
 
     private static Stream<Arguments> provideIDToDelete(){
@@ -155,7 +155,7 @@ class LibrarianTest {
     void borrowItemTest(int providedID,Item item) throws IOException {
         Librarian librarian = new Librarian(new OneFileWorker("test_borrowing","test"),printWriter);
         librarian.workWithFiles.addItemToFile(item);
-        librarian.borrowItem(providedID,true);
+        librarian.borrowItem(providedID,true,new ItemHandler<>());
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);
         assertTrue(item.isBorrowed());
     }
