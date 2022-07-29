@@ -51,35 +51,34 @@ public class ProjectHandler {
             if (user.userName.equals("exit")) {
                 filesValue = false;
             } else {
-
                 mainProcValue = true;
-
-                Integer usersFilesMenuChoice = usersFilesMenuChoice(itemHandler.userInput);
-                if (usersFilesMenuChoice == null) usersFilesMenuChoice = -1;
-                FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
-
-                while (mainProcValue) {
-
-                    out.println(itemHandler.initItemsMenuText());
-                    Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
-                    boolean chosenItem = itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
-
-                    filesValue = fileSwitch(filesMenuOption, user);
-
-                    if (chosenItem) {
-
-                        Integer usersChoice = getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
-                        if (usersChoice == null) usersChoice = -1;
-                        ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
-                        mainMenuVariants(actionsWithItem);
-                    } else {
-                        mainProcValue = false;
-                    }
-                }
+                int usersFilesMenuChoice = usersFilesMenuChoice(itemHandler.userInput);
+                filesValue = initProcessWithItemsChoosingAndActions(usersFilesMenuChoice, user);
             }
         }
     }
 
+    public boolean initProcessWithItemsChoosingAndActions(Integer usersFilesMenuChoice, User user){
+        boolean filesValue = false;
+        while (mainProcValue) {
+            out.println(itemHandler.initItemsMenuText());
+            Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
+            boolean chosenItem = itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
+            FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
+            filesValue = fileSwitch(filesMenuOption, user);
+
+            if (chosenItem) {
+
+                Integer usersChoice = getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
+                if (usersChoice == null) usersChoice = -1;
+                ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
+                mainMenuVariants(actionsWithItem);
+            } else {
+                mainProcValue = false;
+            }
+        }
+        return filesValue;
+    }
 
     public boolean fileSwitch(FilesMenu filesMenuOption,User user){
         boolean filesValue = true;

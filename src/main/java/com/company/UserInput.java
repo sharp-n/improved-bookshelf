@@ -103,12 +103,12 @@ public class UserInput {
         }
     }
 
-    public Integer getMainMenuVar() {
+    public int getMainMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
             printDefaultMessage();
-            return null;
+            return -1;
         }
     }
 
