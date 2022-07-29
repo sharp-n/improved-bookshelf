@@ -59,9 +59,9 @@ public class BookHandler extends ItemHandler<Book>{
         return null;
     }
 
-    public List<String> getItem(Librarian librarian) throws IOException {
+    public List<String> getItem() {
         String author = "";
-        List<String> itemOptions = new ArrayList<>(super.getItem(librarian));
+        List<String> itemOptions = new ArrayList<>(super.getItem());
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {

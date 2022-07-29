@@ -7,7 +7,6 @@ import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.TableUtil;
 import com.company.work_with_files.FilesWorker;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
@@ -15,44 +14,68 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 public class Librarian {
 
     public FilesWorker workWithFiles;
     public PrintWriter out;
 
-    public void addItem(Item item) throws IOException {
+    Validator validator;
+
+    public Librarian(FilesWorker workWithFiles, PrintWriter out) {
+        this.workWithFiles = workWithFiles;
+        this.out = out;
+        this.validator = new Validator(out);
+    }
+
+    public boolean addItem(ItemHandler<? extends Item> itemHandler) throws IOException {
+        Item item = itemHandler.createItem(itemHandler.getItem());
+        if (checkIDForExistence(item.getItemID())) {
+            out.println("Item with this ID exists. Please change ID and try again");
+            return false;
+        }
         workWithFiles.addItemToFile(item);
+        out.println("Item was successful added");
+        return true;
     }
 
-    public boolean deleteItem(int itemID, boolean forBorrow) throws IOException {
-        boolean deleted = false;
-        if (checkIDForExistence(itemID)) {
-            deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
-        }
-        if (!deleted) {
-            out.println("This item maybe borrowed or does not exist");
-        }
-        return deleted;
-    }
-
-    public void borrowItem(int itemID, boolean borrow) throws IOException {
-        List<Item> items = workWithFiles.readToItemsList();
-        Item item = findItemByID(itemID, items);
-        if (item != null) {
-            if (item.isBorrowed() != borrow) {
-                deleteItem(itemID, true);
-                item.setBorrowed(borrow);
-                addItem(item);
-                out.println("Success");
-            } else if (borrow) {
-                out.println("Item has already been taken by someone else");
-            } else {
-                out.println("Item has already been returned");
+    public boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException {
+        itemID = validator.validateIdToBorrow(itemID);
+        if (itemID != null) {
+            boolean deleted = false;
+            if (checkIDForExistence(itemID)) {
+                deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
             }
-        } else {
-            out.println("There`s no such item");
+            if (!deleted) {
+                out.println("This item maybe borrowed or does not exist");
+            }else {
+                out.println("Item was successful deleted");
+            }
+            return deleted;
+        }
+        return false;
+    }
+
+    public void borrowItem(Integer itemID, boolean borrow, ItemHandler<? extends Item> itemHandler) throws IOException {
+        itemID = validator.validateIdToBorrow(itemID);
+        if (itemID != null) {
+            List<Item> items = workWithFiles.readToItemsList();
+            Item item = findItemByID(itemID, items);
+            if (item != null) {
+                if (item.isBorrowed() != borrow) {
+                    deleteItem(itemID,true);
+                    item.setBorrowed(borrow);
+                    addItem(itemHandler);
+                    out.println("Success");
+                } else if (borrow) {
+                    out.println("Item has already been taken by someone else");
+                } else {
+                    out.println("Item has already been returned");
+                }
+            } else {
+                out.println("There`s no such item");
+            }
         }
     }
 

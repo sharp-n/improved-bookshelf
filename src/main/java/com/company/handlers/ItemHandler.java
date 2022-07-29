@@ -23,8 +23,6 @@ public class ItemHandler<T extends Item> {
 
     Scanner in; // TODO fix input/output
     PrintWriter out;
-
-    //public Librarian librarian;
     public Validator validator;
     public UserInput userInput;
 
@@ -39,30 +37,25 @@ public class ItemHandler<T extends Item> {
         return null;
     }
 
-    public void addItem(Librarian librarian) throws IOException {
-        Item item = createItem(getItem(librarian));
-        if (item == null) {
-            out.println("Try again");
-        } else {
-            librarian.addItem(item);
-            userInput.printSuccessMessage("added");
-        }
-    }
+    //public void addItem(Librarian librarian) throws IOException { // TODO
+    //    Item item = createItem(getItem(librarian));
+    //    if (item == null) {
+    //        out.println("Try again");
+    //    } else {
+    //        librarian.addItem(item);
+    //        userInput.printSuccessMessage("added");
+    //    }
+    //}
 
     public T createItem(List<String> options){
         return null;
     }
 
-    public List<String> getItem(Librarian librarian) throws IOException {
+    public List<String> getItem() {
         Integer itemID = validator.validateID(userInput.idUserInput());
 
         if (itemID == null) {
             validator.printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
-            return Collections.emptyList();
-        }
-
-        if (librarian.checkIDForExistence(itemID)) {
-            out.println("Item with this ID exists. Please change ID and try again");
             return Collections.emptyList();
         }
 
@@ -77,22 +70,22 @@ public class ItemHandler<T extends Item> {
         return Arrays.asList(itemID.toString(), title, numOfPages.toString());
     }
 
-    public void deleteItem(Librarian librarian) throws IOException {
-        Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
-        if (itemID != null) {
-            boolean deleted = librarian.deleteItem(itemID, false);
-            if (deleted) {
-                userInput.printSuccessMessage("deleted");
-            }
-        }
-    }
+    //public void deleteItem(Librarian librarian) throws IOException { //TODO
+    //    Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
+    //    if (itemID != null) {
+    //        boolean deleted = librarian.deleteItem(itemID, false);
+    //        if (deleted) {
+    //            userInput.printSuccessMessage("deleted");
+    //        }
+    //    }
+    //}
 
-    public void initItemBorrowing(boolean borrow, Librarian librarian) throws IOException {
-        Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
-        if (itemID != null) {
-            librarian.borrowItem(itemID, borrow);
-        }
-    }
+    //public void initItemBorrowing(boolean borrow, Librarian librarian) throws IOException {
+    //    Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
+    //    if (itemID != null) {
+    //        librarian.borrowItem(itemID, borrow);
+    //    }
+    //}
 
     public String initItemsMenuText(){
         return NEW_LINE + MainMenu.BOOK + NEW_LINE + MainMenu.JOURNAL + NEW_LINE  + MainMenu.NEWSPAPER + NEW_LINE;

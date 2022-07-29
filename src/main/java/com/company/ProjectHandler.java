@@ -29,6 +29,7 @@ public class ProjectHandler {
     boolean mainProcValue;
 
     Librarian librarian;
+    UserInput userInput;
     String typeOfItem;
 
     public ProjectHandler(Scanner in, PrintWriter out) {
@@ -36,6 +37,7 @@ public class ProjectHandler {
         this.out = out;
         this.librarian = new Librarian();
         this.itemHandler = new ItemHandler<>(out,in);
+        this.userInput = new UserInput(out,in);
     }
 
     public void handle() {
@@ -167,19 +169,19 @@ public class ProjectHandler {
             switch (actionsWithItem) {
 
                 case ADD:
-                    itemHandler.addItem(librarian);
+                    librarian.addItem(itemHandler);
                     break;
 
                 case DELETE:
-                    itemHandler.deleteItem(librarian);
+                    librarian.deleteItem(userInput.idUserInput(),false);
                     break;
 
                 case TAKE:
-                    itemHandler.initItemBorrowing(true,librarian);
+                    librarian.borrowItem(userInput.idUserInput(),true,itemHandler);
                     break;
 
                 case RETURN:
-                    itemHandler.initItemBorrowing(false,librarian);
+                    librarian.borrowItem(userInput.idUserInput(),false,itemHandler);
                     break;
 
                 case SHOW:
