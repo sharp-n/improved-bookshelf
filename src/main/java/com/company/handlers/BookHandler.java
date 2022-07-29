@@ -59,13 +59,14 @@ public class BookHandler extends ItemHandler<Book>{
         return null;
     }
 
+    @Override
     public List<String> getItem() {
         String author = "";
         List<String> itemOptions = new ArrayList<>(super.getItem());
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         Integer publishingYear = userInput.yearUserInput();
