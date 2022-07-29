@@ -22,10 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ItemHandlersTest {
 
-    ConstantsForSorting<Book> constantForBook = new ConstantsForSorting<>();
-    ConstantsForSorting<Journal> constantForJournal = new ConstantsForSorting<>();
-    ConstantsForSorting<Newspaper> constantForNewspaper = new ConstantsForSorting<>();
-
     static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
     static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
     static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
@@ -95,7 +91,7 @@ class ItemHandlersTest {
     @MethodSource("provideBooksForSortingByID")
     void booksGetSortedItemsByIDTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_ID);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_ID);
         assertEquals(expected,providedBooks);
     }
 
@@ -117,7 +113,7 @@ class ItemHandlersTest {
     @MethodSource("provideBooksForSortingByAuthor")
     void booksGetSortedItemsByAuthorTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_AUTHOR);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_AUTHOR);
         assertEquals(expected,providedBooks);
     }
 
@@ -139,7 +135,7 @@ class ItemHandlersTest {
     @MethodSource("provideBooksForSortingByTitle")
     void booksGetSortedItemsByTitleTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_TITLE);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE);
         assertEquals(expected,providedBooks);
     }
 
@@ -162,7 +158,7 @@ class ItemHandlersTest {
     @MethodSource("provideBooksForSortingByPublishingDate")
     void booksGetSortedItemsByPublishingDateTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_DATE);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_DATE);
         assertEquals(expected,providedBooks);
     }
 
@@ -185,7 +181,7 @@ class ItemHandlersTest {
     @MethodSource("provideBooksForSortingByPages")
     void booksGetSortedItemsByPagesTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_PAGES);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_PAGES);
         assertEquals(expected,providedBooks);
     }
 
@@ -208,7 +204,7 @@ class ItemHandlersTest {
     @MethodSource("provideJournalsForSortingByPages")
     void journalsGetSortedItemsByPagesTest(List<Item> provided, List<Journal> expected){
         JournalHandler journalHandler = new JournalHandler();
-        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_PAGES);
+        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_PAGES);
         assertEquals(expected,providedJournals);
     }
 
@@ -231,7 +227,7 @@ class ItemHandlersTest {
     @MethodSource("provideJournalsForSortingByTitle")
     void journalsGetSortedItemsByTitleTest(List<Item> provided, List<Journal> expected){
         JournalHandler journalHandler = new JournalHandler();
-        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_TITLE);
+        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE);
         assertEquals(expected,providedJournals);
     }
 
@@ -254,7 +250,7 @@ class ItemHandlersTest {
     @MethodSource("provideNewspapersForSortingByID")
     void newspapersGetSortedItemsByIDTest(List<Item> provided, List<Newspaper> expected){
         NewspaperHandler newspaperHandler = new NewspaperHandler();
-        List<Newspaper> providedNewspapers = newspaperHandler.getSortedItemsByComparator(provided,constantForNewspaper.COMPARATOR_ITEM_BY_ID);
+        List<Newspaper> providedNewspapers = newspaperHandler.getSortedItemsByComparator(provided,ConstantsForSorting.COMPARATOR_ITEM_BY_ID);
         assertEquals(expected,providedNewspapers);
     }
 
