@@ -11,6 +11,7 @@ import com.company.items.Journal;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -102,5 +103,28 @@ public class BookHandler extends ItemHandler<Book>{
     public String genSortingMenuText() {
         return super.genSortingMenuText() + SortingMenu.AUTHOR
                 + NEW_LINE + SortingMenu.PUBLISHING_DATE + NEW_LINE;
+    }
+
+    public String authorToString(Book book){
+        if(book.getAuthor()==null) return "NULL";
+        return book.getAuthor();
+    }
+
+    public String publishingDateToString(Book book){
+        SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
+        if(book.getPublishingDate()==null) return "NULL";
+        return df.format(book.getPublishingDate().getTime());
+    }
+
+    @Override
+    public List<String> itemToString(Item item){
+        List<String> bookAsList = new ArrayList<>();
+        bookAsList.add(idToString(item));
+        bookAsList.add(titleToString(item));
+        bookAsList.add(authorToString((Book)item));
+        bookAsList.add(publishingDateToString((Book)item));
+        bookAsList.add(pagesToString(item));
+        bookAsList.add(borrowedToString(item));
+        return bookAsList;
     }
 }
