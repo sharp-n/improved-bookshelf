@@ -5,6 +5,7 @@ import com.company.enums.MainMenu;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
+import javax.security.sasl.AuthorizeCallback;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import java.util.Scanner;
 import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
+import static com.company.enums.SortingMenu.*;
 
 @NoArgsConstructor
 public abstract class ItemHandler<T extends Item> {
@@ -65,4 +67,12 @@ public abstract class ItemHandler<T extends Item> {
                 NEW_LINE + TAKE + NEW_LINE + RETURN +
                 NEW_LINE + SHOW + NEW_LINE;
     }
+
+    public String genSortingMenuText(){
+        return NEW_LINE + EXIT_VALUE
+                + NEW_LINE + ITEM_ID
+                + NEW_LINE + TITLE
+                + NEW_LINE + PAGES + NEW_LINE;
+    }
+
 }
