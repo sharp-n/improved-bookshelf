@@ -36,7 +36,7 @@ public class ProjectHandler {
         this.in = in;
         this.out = out;
         this.librarian = new Librarian();
-        this.itemHandler = new ItemHandler<>(out,in);
+        this.itemHandler = new JournalHandler(out,in);
         this.userInput = new UserInput(out,in);
     }
 

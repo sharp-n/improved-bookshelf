@@ -1,9 +1,12 @@
 package com.company.handlers;
 
+import com.company.items.Item;
+import com.company.items.Journal;
 import com.company.items.Newspaper;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -17,8 +20,8 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
     }
 
     @Override
-    public List<Newspaper> getSortedItemsByComparator(List<Newspaper> items, Comparator<Newspaper> comparator) {
-        return items.stream()
+    public List<Newspaper> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator) {
+        return cast(items).stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
     }
@@ -29,6 +32,12 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
         String title = options.get(1);
         int pages = Integer.parseInt(options.get(2));
         return new Newspaper(itemID,title,pages);
+    }
+
+    public List<Newspaper> cast(List<Item> items) {
+        List<Newspaper> newspapers = new ArrayList<>();
+        items.forEach(i->newspapers.add((Newspaper) i));
+        return newspapers;
     }
 
 }

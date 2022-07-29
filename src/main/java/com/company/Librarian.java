@@ -141,7 +141,7 @@ public class Librarian {
         Integer usersChoice = itemHandler.userInput.getSortingVar();
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-            List<Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
+            List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
             if(!sortedItemsByComparator.isEmpty()){
                 printItems(sortedItemsByComparator);
             }
@@ -150,23 +150,23 @@ public class Librarian {
         }
     }
 
-    public List<Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<? extends Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
         ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
-        switch (sortingParameter) { // TODO optimize items and comparators
+        switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
             case ITEM_ID:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);//TODO remove redundant methods
+                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);
             case TITLE:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
+                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
             case PAGES:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
+                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
+                return itemHandler.getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
+                return itemHandler.getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
             default:
                 itemHandler.userInput.printDefaultMessage();
                 break;

@@ -28,7 +28,8 @@ public class ItemHandlerProvider {
 
     public static Class<? extends Item> getClassByHandler(ItemHandler<? extends Item> itemHandler) {
         for (Map.Entry<Class<? extends Item>, ItemHandler<? extends Item>> classItemHandlerEntry : classItemHandlerMap.entrySet()) {
-            if (classItemHandlerEntry.getValue().getClass().getSimpleName().equals(itemHandler.getClass().getSimpleName())) {
+            if (classItemHandlerEntry.getValue().getClass().isAssignableFrom(itemHandler.getClass())){
+                    //classItemHandlerEntry.getValue().getClass().getSimpleName().equals(itemHandler.getClass().getSimpleName()))
                 return classItemHandlerEntry.getKey();
             }
         }
@@ -45,13 +46,13 @@ public class ItemHandlerProvider {
     }
 
     public static ItemHandler getNewspaperHandler() {
-        return getNewspaperHandler();
+        return new NewspaperHandler();
     }
     public static ItemHandler getJournalHandler() {
-        return getJournalHandler();
+        return new JournalHandler();
     }
     public static ItemHandler getBookHandler() {
-        return getBookHandler();
+        return new BookHandler();
     }
 
     public static Class<? extends Item> getClassBySimpleNameOfClass(String simpleClassName) {

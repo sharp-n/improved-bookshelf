@@ -2,6 +2,7 @@ package com.company.handlers;
 
 import com.company.Librarian;
 import com.company.items.Book;
+import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
@@ -16,8 +17,8 @@ public class BookHandler extends ItemHandler<Book>{
     }
 
     @Override
-    public List<Book> getSortedItemsByComparator(List<Book> items, Comparator<Book> comparator) {
-        return items.stream()
+    public List<Book> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator) {
+        return cast(items).stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
     }
@@ -72,6 +73,12 @@ public class BookHandler extends ItemHandler<Book>{
 
         return itemOptions;
 
+    }
+
+    public List<Book> cast(List<Item> items) {
+        List<Book> books = new ArrayList<>();
+        items.forEach(i->books.add((Book)i));
+        return books;
     }
 
 }

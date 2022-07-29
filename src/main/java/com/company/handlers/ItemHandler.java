@@ -17,7 +17,7 @@ import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
 
 @NoArgsConstructor
-public class ItemHandler<T extends Item> {
+public abstract class ItemHandler<T extends Item> {
 
     Scanner in; // TODO fix input/output
     PrintWriter out;
@@ -31,9 +31,7 @@ public class ItemHandler<T extends Item> {
         this.userInput = new UserInput(out,in);
     }
 
-    public List<T> getSortedItemsByComparator(List<T> items, Comparator<T> comparator){
-        return null;
-    }
+    public abstract List<T> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator);
 
     public T createItem(List<String> options){
         return null;
