@@ -157,15 +157,15 @@ public class Librarian {
             case RETURN_VALUE:
                 break;
             case ITEM_ID:
-                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_ID);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
             case TITLE:
-                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_TITLE);
             case PAGES:
-                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_PAGES);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return itemHandler.getSortedItemsByComparator(items, ConstantsForSorting.COMPARATOR_ITEM_BY_AUTHOR);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
-                return itemHandler.getSortedItemsByComparator(items, ConstantsForSorting.COMPARATOR_ITEM_BY_DATE);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_DATE);
             default:
                 itemHandler.userInput.printDefaultMessage();
                 break;

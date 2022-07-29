@@ -5,7 +5,7 @@ import com.company.items.Item;
 
 import java.util.Comparator;
 
-public class ConstantsForSorting{
+public class ComparatorsForSorting {
 
     public static final Comparator<Item> COMPARATOR_ITEM_BY_ID = Comparator.comparing(Item::getItemID);
     public static final Comparator<Item> COMPARATOR_ITEM_BY_PAGES = Comparator.comparing(Item::getPages);
