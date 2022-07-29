@@ -1,8 +1,5 @@
 package com.company.handlers;
 
-import com.company.convertors.ItemConvertor;
-import com.company.convertors.JournalConvertor;
-import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import lombok.NoArgsConstructor;
@@ -46,8 +43,7 @@ public class JournalHandler extends ItemHandler<Journal> {
     public List<List<String>> anyItemsToString(List<Journal> journals) {
         List<List<String>> journalsAsStringList = new ArrayList<>();
         for (Journal journal: journals) {
-            ItemConvertor journalConvertor = new JournalConvertor(journal);
-            journalsAsStringList.add(journalConvertor.itemToString());
+            journalsAsStringList.add(itemToString(journal));
         }
         return journalsAsStringList;
     }
