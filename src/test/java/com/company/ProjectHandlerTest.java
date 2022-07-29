@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.BookHandler;
 import com.company.handlers.ItemHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -107,7 +108,7 @@ class ProjectHandlerTest {
     void mainMenuBadInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
         assertNull(serverHandler.getUsersMainMenuChoice(
-                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new BookHandler(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
                 new UserInput(serverHandler.out,serverHandler.in)));
     }
 
@@ -124,7 +125,7 @@ class ProjectHandlerTest {
     void mainMenuGoodInput(String input, Integer expected){
         ProjectHandler serverHandler = getServerHandler(input);
         assertEquals(expected, serverHandler.getUsersMainMenuChoice(
-                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new BookHandler(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
                 new UserInput(serverHandler.out,serverHandler.in)));
     }
 
@@ -142,7 +143,7 @@ class ProjectHandlerTest {
     void mainMenuNullInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
         assertNull(serverHandler.getUsersMainMenuChoice(
-                new ItemHandler<>(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
+                new BookHandler(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
                 new UserInput(serverHandler.out,serverHandler.in)));
     }
 

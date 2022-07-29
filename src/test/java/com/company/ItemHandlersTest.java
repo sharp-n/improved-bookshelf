@@ -4,6 +4,7 @@ import com.company.handlers.BookHandler;
 import com.company.handlers.JournalHandler;
 import com.company.handlers.NewspaperHandler;
 import com.company.items.Book;
+import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
 import org.junit.jupiter.api.Assertions;
@@ -92,10 +93,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByID")
-    void booksGetSortedItemsByIDTest(List<Book> provided, List<Book> expected){
+    void booksGetSortedItemsByIDTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        provided = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_ID);
-        assertEquals(expected,provided);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_ID);
+        assertEquals(expected,providedBooks);
     }
 
     private static Stream<Arguments> provideBooksForSortingByID(){
@@ -114,10 +115,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByAuthor")
-    void booksGetSortedItemsByAuthorTest(List<Book> provided, List<Book> expected){
+    void booksGetSortedItemsByAuthorTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        provided = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_AUTHOR);
-        assertEquals(expected,provided);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_AUTHOR);
+        assertEquals(expected,providedBooks);
     }
 
     private static Stream<Arguments> provideBooksForSortingByAuthor(){
@@ -136,10 +137,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByTitle")
-    void booksGetSortedItemsByTitleTest(List<Book> provided, List<Book> expected){
+    void booksGetSortedItemsByTitleTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        provided = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_TITLE);
-        assertEquals(expected,provided);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_TITLE);
+        assertEquals(expected,providedBooks);
     }
 
 
@@ -159,10 +160,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByPublishingDate")
-    void booksGetSortedItemsByPublishingDateTest(List<Book> provided, List<Book> expected){
+    void booksGetSortedItemsByPublishingDateTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        provided = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_DATE);
-        assertEquals(expected,provided);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_DATE);
+        assertEquals(expected,providedBooks);
     }
 
 
@@ -182,10 +183,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByPages")
-    void booksGetSortedItemsByPagesTest(List<Book> provided, List<Book> expected){
+    void booksGetSortedItemsByPagesTest(List<Item> provided, List<Book> expected){
         BookHandler bookHandler = new BookHandler();
-        provided = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_PAGES);
-        assertEquals(expected,provided);
+        List<Book> providedBooks = bookHandler.getSortedItemsByComparator(provided,constantForBook.COMPARATOR_ITEM_BY_PAGES);
+        assertEquals(expected,providedBooks);
     }
 
 
@@ -205,10 +206,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideJournalsForSortingByPages")
-    void journalsGetSortedItemsByPagesTest(List<Journal> provided, List<Journal> expected){
+    void journalsGetSortedItemsByPagesTest(List<Item> provided, List<Journal> expected){
         JournalHandler journalHandler = new JournalHandler();
-        provided = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_PAGES);
-        assertEquals(expected,provided);
+        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_PAGES);
+        assertEquals(expected,providedJournals);
     }
 
 
@@ -228,10 +229,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideJournalsForSortingByTitle")
-    void journalsGetSortedItemsByTitleTest(List<Journal> provided, List<Journal> expected){
+    void journalsGetSortedItemsByTitleTest(List<Item> provided, List<Journal> expected){
         JournalHandler journalHandler = new JournalHandler();
-        provided = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_TITLE);
-        assertEquals(expected,provided);
+        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided,constantForJournal.COMPARATOR_ITEM_BY_TITLE);
+        assertEquals(expected,providedJournals);
     }
 
 
@@ -251,10 +252,10 @@ class ItemHandlersTest {
 
     @ParameterizedTest
     @MethodSource("provideNewspapersForSortingByID")
-    void newspapersGetSortedItemsByIDTest(List<Newspaper> provided, List<Newspaper> expected){
+    void newspapersGetSortedItemsByIDTest(List<Item> provided, List<Newspaper> expected){
         NewspaperHandler newspaperHandler = new NewspaperHandler();
-        provided = newspaperHandler.getSortedItemsByComparator(provided,constantForNewspaper.COMPARATOR_ITEM_BY_ID);
-        assertEquals(expected,provided);
+        List<Newspaper> providedNewspapers = newspaperHandler.getSortedItemsByComparator(provided,constantForNewspaper.COMPARATOR_ITEM_BY_ID);
+        assertEquals(expected,providedNewspapers);
     }
 
     private static Stream<Arguments> provideNewspapersForSortingByID(){

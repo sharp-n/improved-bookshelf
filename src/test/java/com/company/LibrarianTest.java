@@ -4,6 +4,7 @@ import com.company.convertors.BookConvertor;
 import com.company.convertors.JournalConvertor;
 import com.company.convertors.NewspaperConvertor;
 import com.company.handlers.ItemHandler;
+import com.company.handlers.JournalHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -155,7 +156,7 @@ class LibrarianTest {
     void borrowItemTest(int providedID,Item item) throws IOException {
         Librarian librarian = new Librarian(new OneFileWorker("test_borrowing","test"),printWriter);
         librarian.workWithFiles.addItemToFile(item);
-        librarian.borrowItem(providedID,true,new ItemHandler<>());
+        librarian.borrowItem(providedID,true,new JournalHandler());
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);
         assertTrue(item.isBorrowed());
     }
