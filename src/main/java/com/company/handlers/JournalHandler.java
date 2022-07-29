@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
-import static com.company.enums.ActionsWithJournals.*;
-
 @NoArgsConstructor
 public class JournalHandler extends ItemHandler<Journal> {
 
@@ -34,9 +31,4 @@ public class JournalHandler extends ItemHandler<Journal> {
         return new Journal(itemID,title,pages);
     }
 
-    public String initActionsWithItemsMenuText(){
-        return NEW_LINE + ADD_JOURNAL + NEW_LINE + DELETE_JOURNAL +
-                NEW_LINE + TAKE_JOURNAL + NEW_LINE + RETURN_JOURNAL +
-                NEW_LINE + SHOW_JOURNAL + NEW_LINE;
-    }
 }

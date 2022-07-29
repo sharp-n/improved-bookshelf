@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
-import static com.company.enums.ActionsWithNewspapers.*;
-
 @NoArgsConstructor
 public class NewspaperHandler extends ItemHandler<Newspaper>{
 
@@ -32,12 +29,6 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
         String title = options.get(1);
         int pages = Integer.parseInt(options.get(2));
         return new Newspaper(itemID,title,pages);
-    }
-
-    public String initActionsWithItemsMenuText(){
-        return NEW_LINE + ADD_NEWSPAPER + NEW_LINE + DELETE_NEWSPAPER +
-                NEW_LINE + TAKE_NEWSPAPER + NEW_LINE + RETURN_NEWSPAPER +
-                NEW_LINE + SHOW_NEWSPAPER + NEW_LINE;
     }
 
 }

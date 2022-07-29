@@ -4,14 +4,9 @@ import com.company.Librarian;
 import com.company.items.Book;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.company.ConstantsForItemsTable.NEW_LINE;
-import static com.company.enums.ActionsWithBook.*;
-import static com.company.enums.ActionsWithBook.RETURN_BOOK;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
@@ -77,12 +72,6 @@ public class BookHandler extends ItemHandler<Book>{
 
         return itemOptions;
 
-    }
-
-    public String initActionsWithItemsMenuText(){
-        return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
-                NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
-                NEW_LINE + SHOW_BOOK + NEW_LINE;
     }
 
 }

@@ -5,7 +5,6 @@ import com.company.enums.MainMenu;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,7 +14,6 @@ import java.util.Scanner;
 
 import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
-import static com.company.enums.ActionsWithBook.*;
 import static com.company.enums.ActionsWithItem.*;
 
 @NoArgsConstructor
@@ -36,16 +34,6 @@ public class ItemHandler<T extends Item> {
     public List<T> getSortedItemsByComparator(List<T> items, Comparator<T> comparator){
         return null;
     }
-
-    //public void addItem(Librarian librarian) throws IOException { // TODO
-    //    Item item = createItem(getItem(librarian));
-    //    if (item == null) {
-    //        out.println("Try again");
-    //    } else {
-    //        librarian.addItem(item);
-    //        userInput.printSuccessMessage("added");
-    //    }
-    //}
 
     public T createItem(List<String> options){
         return null;
@@ -69,23 +57,6 @@ public class ItemHandler<T extends Item> {
 
         return Arrays.asList(itemID.toString(), title, numOfPages.toString());
     }
-
-    //public void deleteItem(Librarian librarian) throws IOException { //TODO
-    //    Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
-    //    if (itemID != null) {
-    //        boolean deleted = librarian.deleteItem(itemID, false);
-    //        if (deleted) {
-    //            userInput.printSuccessMessage("deleted");
-    //        }
-    //    }
-    //}
-
-    //public void initItemBorrowing(boolean borrow, Librarian librarian) throws IOException {
-    //    Integer itemID = validator.validateIdToBorrow(userInput.idUserInput());
-    //    if (itemID != null) {
-    //        librarian.borrowItem(itemID, borrow);
-    //    }
-    //}
 
     public String initItemsMenuText(){
         return NEW_LINE + MainMenu.BOOK + NEW_LINE + MainMenu.JOURNAL + NEW_LINE  + MainMenu.NEWSPAPER + NEW_LINE;
