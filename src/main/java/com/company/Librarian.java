@@ -110,7 +110,7 @@ public class Librarian {
     public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
-            List<List<String>> strItems = itemHandler.itemsToString(items);
+            List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
             List<String> options = generateOptionsForTable(defineNumberOfColumns(strItems));
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
