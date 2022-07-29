@@ -152,21 +152,20 @@ public class Librarian {
 
     public List<? extends Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
-        ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
         switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
             case ITEM_ID:
-                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);
+                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_ID);
             case TITLE:
-                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
+                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_TITLE);
             case PAGES:
-                return itemHandler.getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
+                return itemHandler.getSortedItemsByComparator(items,ConstantsForSorting.COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return itemHandler.getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
+                return itemHandler.getSortedItemsByComparator(items, ConstantsForSorting.COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
-                return itemHandler.getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
+                return itemHandler.getSortedItemsByComparator(items, ConstantsForSorting.COMPARATOR_ITEM_BY_DATE);
             default:
                 itemHandler.userInput.printDefaultMessage();
                 break;
