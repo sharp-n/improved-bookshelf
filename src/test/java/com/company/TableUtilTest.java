@@ -8,7 +8,6 @@ import com.company.items.Journal;
 import com.company.items.Newspaper;
 import com.company.table.TableUtil;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +35,7 @@ class TableUtilTest {
     @MethodSource("provideItemsForTablePrint")
     void testItemsInTable_1(List<Item> provided, String expected) {
         ItemHandler<? extends Item> itemHandler = new BookHandler();
-        List<List<String>> items = itemHandler.itemsToString(provided);
+        List<List<String>> items = itemHandler.itemsToString(provided,itemHandler);
         TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
         tableUtil.printBody();
 
@@ -65,26 +64,6 @@ class TableUtilTest {
                                 " 2    | title2  | 2           | false             | NULL    | NULL       " + System.lineSeparator() +
                                 " 3    | title3  | some author | 02.11.2022        | 932     | false      " + System.lineSeparator())
         );
-    }
-
-    @Test
-    void tesAllTypesOfItemsInTable() {
-        String expectedString = "" +
-                " 1    | title1  | 1           | false             | NULL    | NULL       " + System.lineSeparator() +
-                " 2    | title2  | 2           | false             | NULL    | NULL       " + System.lineSeparator() +
-                " 3    | title3  | some author | 02.11.2022        | 932     | false      " + System.lineSeparator();
-        ItemHandler<? extends Item> itemHandler = new BookHandler();
-        List<List<String>> items = itemHandler.itemsToString(new ArrayList<>(
-                Arrays.asList(
-                        new Newspaper(1, "title1", 1),
-                        new Journal(2, "title2", 2),
-                        new Book(3, "title3", "some author", new GregorianCalendar(2022, 10, 2), 932)
-                )
-        ));
-        TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
-        tableUtil.printBody();
-
-        assertEquals(expectedString, outputStream.toString());
     }
 
     @ParameterizedTest

@@ -1,10 +1,8 @@
 package com.company;
 
-import com.company.convertors.BookConvertor;
-import com.company.convertors.JournalConvertor;
-import com.company.convertors.NewspaperConvertor;
-import com.company.handlers.ItemHandler;
+import com.company.handlers.BookHandler;
 import com.company.handlers.JournalHandler;
+import com.company.handlers.NewspaperHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -51,12 +49,12 @@ class LibrarianTest {
     private static Stream<Arguments> provideTable(){
 
         List<List<String>> table1 = new ArrayList<>(Arrays.asList(
-                new BookConvertor(book1).itemToString(),
-                new BookConvertor(book2).itemToString(),
-                new JournalConvertor(journal1).itemToString()));
-        List<List<String>> table2 = new ArrayList<>(Arrays.asList(
-                new NewspaperConvertor(newspaper2).itemToString(),
-                new JournalConvertor(journal1).itemToString()));
+                new BookHandler().itemToString(book1),
+                new BookHandler().itemToString(book2),
+                new JournalHandler().itemToString(journal1)));
+        List<List<String>> table2 = new ArrayList<>();
+        table2.add(new NewspaperHandler().itemToString(newspaper2));
+        table2.add(new JournalHandler().itemToString(journal1));
 
         List<List<String>> table3 = new ArrayList<>(Arrays.asList(
                 new ArrayList<>(Arrays.asList("1", "2","3","4")),
@@ -98,7 +96,7 @@ class LibrarianTest {
     @MethodSource("provideTablesForPrinting")
     void printItemsTest(List<Item> provided, String expected){
         Librarian librarian = new Librarian(new OneFileWorker("test", "test"),printWriter);
-        librarian.printItems(provided);
+        librarian.printItems(provided, new BookHandler());
         assertEquals(expected,outputStream.toString());
     }
 
