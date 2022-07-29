@@ -16,8 +16,12 @@ import static com.company.ConstantsForItemsTable.NEW_LINE;
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
 
+    List<String> columnTitles;
     public BookHandler(PrintWriter out, Scanner in) {
         super(out,in);
+        this.columnTitles = super.columnTitles;
+        columnTitles.add("author");
+        columnTitles.add("publishing date");
     }
 
     @Override
@@ -114,13 +118,9 @@ public class BookHandler extends ItemHandler<Book>{
 
     @Override
     public List<String> itemToString(Item item){
-        List<String> bookAsList = new ArrayList<>();
-        bookAsList.add(idToString(item));
-        bookAsList.add(titleToString(item));
+        List<String> bookAsList = super.itemToString(item);
         bookAsList.add(authorToString((Book)item));
         bookAsList.add(publishingDateToString((Book)item));
-        bookAsList.add(pagesToString(item));
-        bookAsList.add(borrowedToString(item));
         return bookAsList;
     }
 }

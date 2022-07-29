@@ -25,6 +25,8 @@ public abstract class ItemHandler<T extends Item> {
     public Validator validator;
     public UserInput userInput;
 
+    List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
+
     public ItemHandler(PrintWriter out, Scanner in) {
         this.out = out;
         this.in = in;
