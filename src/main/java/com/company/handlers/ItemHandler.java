@@ -1,10 +1,6 @@
 package com.company.handlers;
 
 import com.company.*;
-import com.company.convertors.BookConvertor;
-import com.company.convertors.ItemConvertor;
-import com.company.convertors.JournalConvertor;
-import com.company.convertors.NewspaperConvertor;
 import com.company.enums.MainMenu;
 import com.company.items.Book;
 import com.company.items.Item;
@@ -80,24 +76,8 @@ public abstract class ItemHandler<T extends Item> {
 
 
     public List<List<String>> itemsToString(List<? extends Item> items, ItemHandler<? extends Item> itemHandler){
-        List<List<String>> containersAsStringList = new ArrayList<>();// TODO remove instanceof
-        ItemConvertor itemConvertor;
-        for (Item item: items){
-
-
-
-            if (item instanceof Book){
-                itemConvertor = new BookConvertor(((Book)item));
-                containersAsStringList.add(itemConvertor.itemToString());
-            } else if (item instanceof Journal){
-                itemConvertor = new JournalConvertor(((Journal)item));
-                containersAsStringList.add(itemConvertor.itemToString());
-            }
-            else if (item instanceof Newspaper){
-                itemConvertor = new NewspaperConvertor((Newspaper)item);
-                containersAsStringList.add(itemConvertor.itemToString());
-            }
-        }
+        List<List<String>> containersAsStringList = new ArrayList<>();
+        items.forEach(i->containersAsStringList.add(itemHandler.itemToString(i)));
         return containersAsStringList;
     }
 
