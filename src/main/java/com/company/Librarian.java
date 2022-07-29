@@ -138,7 +138,7 @@ public class Librarian {
     }
 
     public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
-        Integer usersChoice = itemHandler.userInput.getSortingVar();
+        Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
             List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
