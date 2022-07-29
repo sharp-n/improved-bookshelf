@@ -2,13 +2,11 @@ package com.company.convertors;
 
 import com.company.items.Item;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
 public class ItemConvertor {
 
     Item item;
