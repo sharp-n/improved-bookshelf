@@ -16,7 +16,7 @@ import static com.company.enums.ActionsWithNewspapers.*;
 public class NewspaperHandler extends ItemHandler<Newspaper>{
 
     public NewspaperHandler(PrintWriter out, Scanner in) {
-        super(out, in);
+        super(out,in);
     }
 
     @Override
@@ -34,8 +34,7 @@ public class NewspaperHandler extends ItemHandler<Newspaper>{
         return new Newspaper(itemID,title,pages);
     }
 
-    @Override
-    public String initItemsMenuText(){
+    public String initActionsWithItemsMenuText(){
         return NEW_LINE + ADD_NEWSPAPER + NEW_LINE + DELETE_NEWSPAPER +
                 NEW_LINE + TAKE_NEWSPAPER + NEW_LINE + RETURN_NEWSPAPER +
                 NEW_LINE + SHOW_NEWSPAPER + NEW_LINE;

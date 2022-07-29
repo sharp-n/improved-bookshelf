@@ -3,10 +3,12 @@ package com.company;
 import com.company.convertors.BookConvertor;
 import com.company.convertors.JournalConvertor;
 import com.company.convertors.NewspaperConvertor;
+import com.company.handlers.ItemHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
+import com.company.work_with_files.OneFileWorker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -94,7 +96,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideTablesForPrinting")
     void printItemsTest(List<Item> provided, String expected){
-        Librarian librarian = new Librarian(new WorkWithFiles("test"),printWriter);
+        Librarian librarian = new Librarian(new OneFileWorker("test", "test"),printWriter);
         librarian.printItems(provided);
         assertEquals(expected,outputStream.toString());
     }
@@ -134,12 +136,11 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void deleteItemTest(int providedID) throws IOException {
-        Librarian librarian = new Librarian(new WorkWithFiles("test_deleting"),printWriter);
+        Librarian librarian = new Librarian(new OneFileWorker("test_deleting", "test"),printWriter);
         librarian.workWithFiles.addItemToFile(book1);
         librarian.workWithFiles.addItemToFile(newspaper2);
         librarian.workWithFiles.addItemToFile(journal3);
         assertTrue(librarian.deleteItem(providedID,false));
-
     }
 
     private static Stream<Arguments> provideIDToDelete(){
@@ -152,9 +153,9 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void borrowItemTest(int providedID,Item item) throws IOException {
-        Librarian librarian = new Librarian(new WorkWithFiles("test_borrowing"),printWriter);
+        Librarian librarian = new Librarian(new OneFileWorker("test_borrowing","test"),printWriter);
         librarian.workWithFiles.addItemToFile(item);
-        librarian.borrowItem(providedID,true);
+        librarian.borrowItem(providedID,true,new ItemHandler<>());
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);
         assertTrue(item.isBorrowed());
     }

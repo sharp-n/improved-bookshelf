@@ -1,9 +1,9 @@
-package com.company;
+package com.company.work_with_files;
 
+import com.company.Container;
 import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.google.gson.*;
-import lombok.NoArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,25 +12,24 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-
-public class WorkWithFiles {
+public abstract class FilesWorker {
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public Path filePath;
-    private final String pathToDirectoryAsString = String.valueOf(Paths.get(System.getProperty("user.home"), PROGRAM_DIR_NAME_FOR_ITEMS));
+    public String userName;
+    protected String pathToDirectoryAsString;
 
-    public WorkWithFiles(String filePath) {
+    public abstract void genFilePath();
+
+    protected FilesWorker(String root, String userName) {
+        this.userName = userName;
+        pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser()));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-        this.filePath = Paths.get(pathToDirectoryAsString, ("items_" + filePath + ".txt"));
     }
 
-    {
-        if (filePath == null) {
-            createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
-            filePath = Paths.get(pathToDirectoryAsString, "items_default.txt");
-        }
+    private String generateDirectoryForUser() {
+        return userName + "_directory";
     }
 
     public synchronized void addItemToFile(Item itemToAdd) throws IOException {
@@ -52,7 +51,7 @@ public class WorkWithFiles {
         }
     }
 
-    boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
+    public boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
         List<Item> items = readToItemsList();
         for (Item item : items) {
             if (item.getItemID() == itemID) {
@@ -108,7 +107,7 @@ public class WorkWithFiles {
                 file.createNewFile();
             }
             return file;
-        } catch (IOException e){
+        } catch (IOException e) {
             return null;
         }
     }
@@ -126,6 +125,5 @@ public class WorkWithFiles {
         }
         return containers;
     }
-
 
 }

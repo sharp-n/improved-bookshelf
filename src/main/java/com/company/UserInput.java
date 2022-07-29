@@ -8,9 +8,6 @@ import java.util.*;
 public class UserInput {
 
     Scanner scan;
-
-    Librarian librarian;
-
     PrintWriter out;
 
     Validator validator;
@@ -20,13 +17,6 @@ public class UserInput {
 
     public UserInput(PrintWriter out, Scanner scan) {
         this.out = out;
-        this.scan = scan;
-        this.validator = new Validator(out);
-    }
-
-    public UserInput(Librarian librarian, Scanner scan) {
-        this.librarian = librarian;
-        this.out = librarian.out;
         this.scan = scan;
         this.validator = new Validator(out);
     }

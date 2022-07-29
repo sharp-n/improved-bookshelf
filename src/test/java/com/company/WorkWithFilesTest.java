@@ -1,6 +1,8 @@
 package com.company;
 
 import com.company.items.Book;
+import com.company.work_with_files.FilesWorker;
+import com.company.work_with_files.OneFileWorker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,14 +11,12 @@ import java.io.PrintWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class WorkWithFilesTest {
+class WorkWithFilesTest {
 
     //TODO create tests
 
-    Librarian booksLibrarian = new Librarian(new WorkWithFiles("books_test"), new PrintWriter(System.out));
-    Librarian newspapersLibrarian = new Librarian(new WorkWithFiles("newspapers_test"),  new PrintWriter(System.out));
-    Librarian journalsLibrarian = new Librarian(new WorkWithFiles("journals_test"), new PrintWriter(System.out));
-    WorkWithFiles workWithFiles = new WorkWithFiles("test");
+    Librarian booksLibrarian = new Librarian(new OneFileWorker("books_test", "books_test"), new PrintWriter(System.out));
+    FilesWorker workWithFiles = new OneFileWorker("test", "workWithFilesTest");
 
     // TODO add tests for newspapersLibrarian and journalsLibrarian
     Book secondBook = new Book(101, "Second Book", "Second Author", new GregorianCalendar(2021, Calendar.APRIL,21),924);

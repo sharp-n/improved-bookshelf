@@ -1,54 +1,81 @@
 package com.company;
 
 import com.company.convertors.ItemsConvertor;
+import com.company.enums.SortingMenu;
+import com.company.handlers.ItemHandler;
+import com.company.handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.TableUtil;
-import lombok.AllArgsConstructor;
+import com.company.work_with_files.FilesWorker;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 public class Librarian {
 
-    public WorkWithFiles workWithFiles;
+    public FilesWorker workWithFiles;
     public PrintWriter out;
 
-    public void addItem(Item item) throws IOException {
+    Validator validator;
+
+    public Librarian(FilesWorker workWithFiles, PrintWriter out) {
+        this.workWithFiles = workWithFiles;
+        this.out = out;
+        this.validator = new Validator(out);
+    }
+
+    public boolean addItem(ItemHandler<? extends Item> itemHandler) throws IOException {
+        Item item = itemHandler.createItem(itemHandler.getItem());
+        if (checkIDForExistence(item.getItemID())) {
+            out.println("Item with this ID exists. Please change ID and try again");
+            return false;
+        }
         workWithFiles.addItemToFile(item);
+        out.println("Item was successful added");
+        return true;
     }
 
-    public boolean deleteItem(int itemID, boolean forBorrow) throws IOException {
-        boolean deleted = false;
-        if (checkIDForExistence(itemID)) {
-            deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
-        }
-        if (!deleted) {
-            out.println("This item maybe borrowed or does not exist");
-        }
-        return deleted;
-    }
-
-    public void borrowItem(int itemID, boolean borrow) throws IOException {
-        List<Item> items = workWithFiles.readToItemsList();
-        Item item = findItemByID(itemID, items);
-        if (item != null) {
-            if (item.isBorrowed() != borrow) {
-                deleteItem(itemID, true);
-                item.setBorrowed(borrow);
-                addItem(item);
-
-                out.println("Success");
-            } else if (borrow) {
-                out.println("Item has already been taken by someone else");
-            } else {
-                out.println("Item has already been returned");
+    public boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException {
+        itemID = validator.validateIdToBorrow(itemID);
+        if (itemID != null) {
+            boolean deleted = false;
+            if (checkIDForExistence(itemID)) {
+                deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
             }
-        } else {
-            out.println("There`s no such item");
+            if (!deleted) {
+                out.println("This item maybe borrowed or does not exist");
+            }else {
+                out.println("Item was successful deleted");
+            }
+            return deleted;
+        }
+        return false;
+    }
+
+    public void borrowItem(Integer itemID, boolean borrow, ItemHandler<? extends Item> itemHandler) throws IOException {
+        itemID = validator.validateIdToBorrow(itemID);
+        if (itemID != null) {
+            List<Item> items = workWithFiles.readToItemsList();
+            Item item = findItemByID(itemID, items);
+            if (item != null) {
+                if (item.isBorrowed() != borrow) {
+                    deleteItem(itemID,true);
+                    item.setBorrowed(borrow);
+                    addItem(itemHandler);
+                    out.println("Success");
+                } else if (borrow) {
+                    out.println("Item has already been taken by someone else");
+                } else {
+                    out.println("Item has already been returned");
+                }
+            } else {
+                out.println("There`s no such item");
+            }
         }
     }
 
@@ -80,6 +107,7 @@ public class Librarian {
         return null;
     }
 
+
     public <T extends Item> void printItems(List<T> items) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
@@ -107,6 +135,43 @@ public class Librarian {
             }
         }
         return maxNumOfColumns;
+    }
+
+    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
+        Integer usersChoice = itemHandler.userInput.getSortingVar();
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
+            List<Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
+            if(!sortedItemsByComparator.isEmpty()){
+                printItems(sortedItemsByComparator);
+            }
+        } else{
+            itemHandler.userInput.printDefaultMessage();
+        }
+    }
+
+    public List<Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
+        ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
+        List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
+        switch (sortingParameter) { // TODO optimize items and comparators
+            case RETURN_VALUE:
+                break;
+            case ITEM_ID:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);//TODO remove redundant methods
+            case TITLE:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
+            case PAGES:
+                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
+            case AUTHOR:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
+            case PUBLISHING_DATE:
+                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
+            default:
+                itemHandler.userInput.printDefaultMessage();
+                break;
+        }
+        return Collections.emptyList();
     }
 
 }

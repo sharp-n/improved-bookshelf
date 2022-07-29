@@ -13,11 +13,11 @@ import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.enums.ActionsWithBook.*;
 import static com.company.enums.ActionsWithBook.RETURN_BOOK;
 
-@NoArgsConstructor
+@NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
 
     public BookHandler(PrintWriter out, Scanner in) {
-        super(out, in);
+        super(out,in);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BookHandler extends ItemHandler<Book>{
         return null;
     }
 
-    public List<String> getItem() throws IOException {
+    public List<String> getItem() {
         String author = "";
         List<String> itemOptions = new ArrayList<>(super.getItem());
 
@@ -79,8 +79,7 @@ public class BookHandler extends ItemHandler<Book>{
 
     }
 
-    @Override
-    public String initItemsMenuText(){
+    public String initActionsWithItemsMenuText(){
         return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
                 NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
                 NEW_LINE + SHOW_BOOK + NEW_LINE;
