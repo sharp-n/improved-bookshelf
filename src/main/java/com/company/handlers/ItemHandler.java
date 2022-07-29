@@ -79,10 +79,13 @@ public abstract class ItemHandler<T extends Item> {
     }
 
 
-    public List<List<String>> itemsToString(List<? extends Item> items){ // TODO remove instanceof
-        List<List<String>> containersAsStringList = new ArrayList<>();
+    public List<List<String>> itemsToString(List<? extends Item> items, ItemHandler<? extends Item> itemHandler){
+        List<List<String>> containersAsStringList = new ArrayList<>();// TODO remove instanceof
         ItemConvertor itemConvertor;
         for (Item item: items){
+
+
+
             if (item instanceof Book){
                 itemConvertor = new BookConvertor(((Book)item));
                 containersAsStringList.add(itemConvertor.itemToString());
@@ -100,6 +103,31 @@ public abstract class ItemHandler<T extends Item> {
 
     public abstract List<List<String>> anyItemsToString(List<T> items);
 
+
+    public String idToString(Item item){
+        return Integer.toString(item.getItemID());
+    }
+
+    public String titleToString(Item item){
+        return item.getTitle().trim();
+    }
+
+    public String pagesToString(Item item){
+        return Integer.toString(item.getPages());
+    }
+
+    public String borrowedToString(Item item){
+        return Boolean.toString(item.isBorrowed());
+    }
+
+    public List<String> itemToString(Item item){
+        List<String> itemAsList = new ArrayList<>();
+        itemAsList.add(idToString(item));
+        itemAsList.add(titleToString(item));
+        itemAsList.add(pagesToString(item));
+        itemAsList.add(borrowedToString(item));
+        return itemAsList;
+    }
 
 
 }
