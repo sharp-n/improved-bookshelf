@@ -1,6 +1,7 @@
 package com.company;
 
-import com.company.convertors.ItemsConvertor;
+import com.company.handlers.BookHandler;
+import com.company.handlers.ItemHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -34,8 +35,8 @@ class TableUtilTest {
     @ParameterizedTest
     @MethodSource("provideItemsForTablePrint")
     void testItemsInTable_1(List<Item> provided, String expected) {
-        ItemsConvertor itemsConvertor = new ItemsConvertor();
-        List<List<String>> items = itemsConvertor.itemsToString(provided);
+        ItemHandler<? extends Item> itemHandler = new BookHandler();
+        List<List<String>> items = itemHandler.itemsToString(provided);
         TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
         tableUtil.printBody();
 
@@ -72,8 +73,8 @@ class TableUtilTest {
                 " 1    | title1  | 1           | false             | NULL    | NULL       " + System.lineSeparator() +
                 " 2    | title2  | 2           | false             | NULL    | NULL       " + System.lineSeparator() +
                 " 3    | title3  | some author | 02.11.2022        | 932     | false      " + System.lineSeparator();
-        ItemsConvertor itemsConvertor = new ItemsConvertor();
-        List<List<String>> items = itemsConvertor.itemsToString(new ArrayList<>(
+        ItemHandler<? extends Item> itemHandler = new BookHandler();
+        List<List<String>> items = itemHandler.itemsToString(new ArrayList<>(
                 Arrays.asList(
                         new Newspaper(1, "title1", 1),
                         new Journal(2, "title2", 2),
@@ -89,8 +90,8 @@ class TableUtilTest {
     @ParameterizedTest
     @MethodSource("provideBooks")
     void bodyBooksTest(List<Book> provided, String expected) {
-        ItemsConvertor itemsConvertor = new ItemsConvertor();
-        List<List<String>> items = itemsConvertor.booksToString(provided);
+        ItemHandler<Book> itemHandler = new BookHandler();
+        List<List<String>> items = itemHandler.anyItemsToString(provided);
         TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
         tableUtil.printBody();
         Assertions.assertEquals(expected, outputStream.toString());
@@ -114,8 +115,8 @@ class TableUtilTest {
     @ParameterizedTest
     @MethodSource("provideBooksForTablePrint")
     void tableBooksTest(List<Book> provided, String expected, List<String> options) {
-        ItemsConvertor itemsConvertor = new ItemsConvertor();
-        List<List<String>> items = itemsConvertor.booksToString(provided);
+        ItemHandler<Book> itemHandler = new BookHandler();
+        List<List<String>> items = itemHandler.anyItemsToString(provided);
         TableUtil tableUtil = new TableUtil(options, items, printWriter);
         tableUtil.printTable();
         Assertions.assertEquals(expected, outputStream.toString());

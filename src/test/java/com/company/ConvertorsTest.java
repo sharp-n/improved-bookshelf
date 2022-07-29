@@ -67,20 +67,6 @@ class ConvertorsTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideItems")
-    void itemsConverterTest(List<Item> provided, List<List<String>> expected) throws IOException {
-        ItemsConvertor itemsConvertor = new ItemsConvertor();
-        Assertions.assertEquals(expected,itemsConvertor.itemsToString(provided));
-    }
-
-    private static Stream<Arguments> provideItems(){
-        return Stream.of(
-                Arguments.of(Arrays.asList(new Journal(1,"some title", 932), new Book(1,"some title", "some author", new GregorianCalendar(2022,10,2),932)),
-                        Arrays.asList(Arrays.asList("1","some title","932","false"),Arrays.asList("1","some title","some author","02.11.2022","932","false")))
-        );
-    }
-
-    @ParameterizedTest
     @MethodSource("provideNewspapers")
     void newspaperConvertorTest(Newspaper provided, List<String> expected){
         ItemConvertor itemConvertor = new NewspaperConvertor(provided);
