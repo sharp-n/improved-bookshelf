@@ -1,6 +1,7 @@
 package com.company.handlers;
 
 import com.company.Librarian;
+import com.company.enums.SortingMenu;
 import com.company.items.Book;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.company.ConstantsForItemsTable.NEW_LINE;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
@@ -81,4 +84,9 @@ public class BookHandler extends ItemHandler<Book>{
         return books;
     }
 
+    @Override
+    public String genSortingMenuText() {
+        return super.genSortingMenuText() + SortingMenu.AUTHOR
+                + NEW_LINE + SortingMenu.PUBLISHING_DATE + NEW_LINE;
+    }
 }
