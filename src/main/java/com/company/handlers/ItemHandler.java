@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 import java.io.PrintWriter;
 import java.util.*;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
 import static com.company.enums.SortingMenu.*;
+import static com.company.table.TableUtil.NEW_LINE;
 
 @NoArgsConstructor
 public abstract class ItemHandler<T extends Item> {

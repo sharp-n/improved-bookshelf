@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
+import static com.company.table.TableUtil.NEW_LINE;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{

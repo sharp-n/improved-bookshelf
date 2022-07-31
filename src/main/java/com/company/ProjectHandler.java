@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
 import static com.company.enums.FilesMenu.*;
 import static com.company.enums.FilesMenu.EXIT_VALUE;
+import static com.company.table.TableUtil.NEW_LINE;
 
 public class ProjectHandler {
 
