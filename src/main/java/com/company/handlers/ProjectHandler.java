@@ -1,7 +1,9 @@
-package com.company;
+package com.company.handlers;
 
+import com.company.User;
+import com.company.UserInput;
 import com.company.enums.*;
-import com.company.handlers.*;
+import com.company.handlers.item_handlers.*;
 import com.company.items.Item;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;

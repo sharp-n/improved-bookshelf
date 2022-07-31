@@ -1,7 +1,6 @@
 package com.company;
 
-import com.company.handlers.BookHandler;
-import com.company.work_with_files.OneFileWorker;
+import com.company.handlers.item_handlers.BookHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

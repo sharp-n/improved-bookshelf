@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.Librarian;
 import com.company.items.Book;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
@@ -18,7 +19,6 @@ class WorkWithFilesTest {
     Librarian booksLibrarian = new Librarian(new OneFileWorker("books_test", "books_test"), new PrintWriter(System.out));
     FilesWorker workWithFiles = new OneFileWorker("test", "workWithFilesTest");
 
-    // TODO add tests for newspapersLibrarian and journalsLibrarian
     Book secondBook = new Book(101, "Second Book", "Second Author", new GregorianCalendar(2021, Calendar.APRIL,21),924);
 
     @Test

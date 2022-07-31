@@ -1,7 +1,8 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.enums.MainMenu;
+import com.company.handlers.Librarian;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ public abstract class ItemHandler<T extends Item> {
     public Validator validator;
     public UserInput userInput;
 
-    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed","author", "publishing date"));// FIXME columns output
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed","author", "publishing date"));
 
     public List<String> getColumnTitles() {
         return columnTitles;

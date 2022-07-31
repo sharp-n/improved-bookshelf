@@ -1,4 +1,4 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
 import com.company.items.Book;
 import com.company.items.Item;

@@ -1,7 +1,7 @@
 package com.company;
 
-import com.company.handlers.BookHandler;
-import com.company.handlers.ItemHandler;
+import com.company.handlers.item_handlers.BookHandler;
+import com.company.handlers.ProjectHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

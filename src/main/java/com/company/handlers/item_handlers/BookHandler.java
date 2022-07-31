@@ -1,7 +1,7 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
-import com.company.Librarian;
 import com.company.enums.SortingMenu;
+import com.company.handlers.Librarian;
 import com.company.items.Book;
 import com.company.items.Item;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import static com.company.table.TableUtil.NEW_LINE;
 
 @NoArgsConstructor // TODO
-public class BookHandler extends ItemHandler<Book>{
+public class BookHandler extends ItemHandler<Book> {
 
     public BookHandler(PrintWriter out, Scanner in) {
         super(out,in);

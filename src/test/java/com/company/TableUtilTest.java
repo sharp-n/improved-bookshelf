@@ -1,7 +1,7 @@
 package com.company;
 
-import com.company.handlers.BookHandler;
-import com.company.handlers.ItemHandler;
+import com.company.handlers.item_handlers.BookHandler;
+import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;

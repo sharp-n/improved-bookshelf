@@ -1,5 +1,6 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
+import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
 import com.company.items.Newspaper;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
-public class NewspaperHandler extends ItemHandler<Newspaper>{
+public class NewspaperHandler extends ItemHandler<Newspaper> {
 
     public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
 

@@ -1,6 +1,6 @@
 package com.company.server;
 
-import com.company.ProjectHandler;
+import com.company.handlers.ProjectHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,5 +1,6 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
+import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
 import com.company.items.Journal;
 import lombok.NoArgsConstructor;
