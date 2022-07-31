@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
 
-
 @NoArgsConstructor
 public class Librarian {
 
@@ -106,33 +105,14 @@ public class Librarian {
         return null;
     }
 
-
     public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
             List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
-            List<String> options = generateOptionsForTable(defineNumberOfColumns(strItems));
+            List<String> options = itemHandler.getColumnTitles();
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
         }
-    }
-
-    public List<String> generateOptionsForTable(int numberOfColumns) {
-        return new ConstantsForItemsTable().allTheColumnsForItems.get(numberOfColumns);
-    }
-
-    public int defineNumberOfColumns(List<List<String>> items) {
-        int maxNumOfColumns = 0;
-        for (List<String> item : items) {
-            int numOfColumns = 0;
-            for (String option : item) {
-                numOfColumns++;
-            }
-            if (numOfColumns > maxNumOfColumns) {
-                maxNumOfColumns = numOfColumns;
-            }
-        }
-        return maxNumOfColumns;
     }
 
     public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {

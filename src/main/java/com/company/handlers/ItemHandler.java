@@ -2,13 +2,9 @@ package com.company.handlers;
 
 import com.company.*;
 import com.company.enums.MainMenu;
-import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Journal;
-import com.company.items.Newspaper;
 import lombok.NoArgsConstructor;
 
-import javax.security.sasl.AuthorizeCallback;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -25,9 +21,13 @@ public abstract class ItemHandler<T extends Item> {
     public Validator validator;
     public UserInput userInput;
 
-    List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed","author", "publishing date"));// FIXME columns output
 
-    public ItemHandler(PrintWriter out, Scanner in) {
+    public List<String> getColumnTitles() {
+        return columnTitles;
+    }
+
+    protected ItemHandler(PrintWriter out, Scanner in) {
         this.out = out;
         this.in = in;
         this.validator = new Validator(out);

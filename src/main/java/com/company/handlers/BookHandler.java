@@ -16,12 +16,12 @@ import static com.company.ConstantsForItemsTable.NEW_LINE;
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book>{
 
-    List<String> columnTitles;
     public BookHandler(PrintWriter out, Scanner in) {
         super(out,in);
-        this.columnTitles = super.columnTitles;
-        columnTitles.add("author");
-        columnTitles.add("publishing date");
+    }
+
+    public List<String> getColumnTitles() {
+        return columnTitles;
     }
 
     @Override

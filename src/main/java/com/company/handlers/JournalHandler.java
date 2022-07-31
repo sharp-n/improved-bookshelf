@@ -5,14 +5,17 @@ import com.company.items.Journal;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class JournalHandler extends ItemHandler<Journal> {
+
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
+
+    public List<String> getColumnTitles() {
+        return columnTitles;
+    }
 
     public JournalHandler(PrintWriter out, Scanner in) {
         super(out,in);
