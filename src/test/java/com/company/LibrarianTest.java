@@ -2,7 +2,6 @@ package com.company;
 
 import com.company.handlers.BookHandler;
 import com.company.handlers.JournalHandler;
-import com.company.handlers.NewspaperHandler;
 import com.company.items.Book;
 import com.company.items.Item;
 import com.company.items.Journal;
@@ -23,74 +22,17 @@ class LibrarianTest {
 
     static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
     static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
-    static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
 
     static Journal journal1 = new Journal(5,"Some title",824);
-    static Journal journal2 = new Journal(666,"Any title",500);
     static Journal journal3 = new Journal(1005,"title",2736);
 
-    static Newspaper newspaper1 = new Newspaper(5,"Some title",824);
-    static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
-    static Newspaper newspaper3 = new Newspaper(1005,"title",2736);
+     static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
 
     PrintWriter printWriter = new PrintWriter(printStream, true);
 
-    @ParameterizedTest
-    @MethodSource("provideTable")
-    void defineNumberOfColumnsTest(List<List<String>> table, int expected){
-        Librarian librarian = new Librarian();
-        int provided = librarian.defineNumberOfColumns(table);
-        assertEquals(expected,provided);
-    }
-
-    private static Stream<Arguments> provideTable(){
-
-        List<List<String>> table1 = new ArrayList<>(Arrays.asList(
-                new BookHandler().itemToString(book1),
-                new BookHandler().itemToString(book2),
-                new JournalHandler().itemToString(journal1)));
-        List<List<String>> table2 = new ArrayList<>();
-        table2.add(new NewspaperHandler().itemToString(newspaper2));
-        table2.add(new JournalHandler().itemToString(journal1));
-
-        List<List<String>> table3 = new ArrayList<>(Arrays.asList(
-                new ArrayList<>(Arrays.asList("1", "2","3","4")),
-                new ArrayList<>(Arrays.asList("1", "2")),
-                new ArrayList<>(Arrays.asList("1", "2","3","4","5")),
-                new ArrayList<>(Arrays.asList("1", "2","3","4"))
-        ));
-
-        List<List<String>> table4 = new ArrayList<>(Arrays.asList(
-                new ArrayList<>(Collections.emptyList()),
-                new ArrayList<>(Collections.singletonList("1"))
-        ));
-
-        return Stream.of(
-                Arguments.of(table1,6),
-                Arguments.of(table2,4),
-                Arguments.of(table3,5),
-                Arguments.of(table4,1)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("provideNumberOfColumns")
-    void generateOptionsForTableTest(int provided, int expected){
-        Librarian librarian = new Librarian();
-        int size = librarian.generateOptionsForTable(provided).size();
-        assertEquals(expected,size);
-    }
-
-    private static Stream<Arguments> provideNumberOfColumns(){
-        return Stream.of(
-                Arguments.of(6, new ConstantsForItemsTable().columnsForBooks.size()),
-                Arguments.of(4, new ConstantsForItemsTable().columnsForJournals.size()),
-                Arguments.of(6, new ConstantsForItemsTable().columnsForAllItems.size())
-        );
-    }
 
     @ParameterizedTest
     @MethodSource("provideTablesForPrinting")
