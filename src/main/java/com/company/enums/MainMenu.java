@@ -8,6 +8,7 @@ public enum MainMenu {
     BOOK(1, "Book"),
     NEWSPAPER(2, "Newspaper"),
     COMICS(3, "Comics"),
+    JOURNAL(4, "Journal"),
     DEFAULT(-1,"Default");
 
     private final int num;

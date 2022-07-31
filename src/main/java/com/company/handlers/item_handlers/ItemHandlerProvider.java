@@ -1,9 +1,6 @@
 package com.company.handlers.item_handlers;
 
-import com.company.items.Book;
-import com.company.items.Comics;
-import com.company.items.Item;
-import com.company.items.Newspaper;
+import com.company.items.*;
 
 
 import java.util.HashMap;
@@ -22,6 +19,7 @@ public class ItemHandlerProvider {
         classItemHandlerMap.put(Newspaper.class, new NewspaperHandler());
         classItemHandlerMap.put(Book.class, new BookHandler());
         classItemHandlerMap.put(Comics.class, new ComicsHandler());
+        classItemHandlerMap.put(Journal.class, new JournalHandler());
 
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
     }
@@ -53,6 +51,9 @@ public class ItemHandlerProvider {
     }
     public static ItemHandler getComicsHandler() {
         return new ComicsHandler();
+    }
+    public static ItemHandler getJournalHandler() {
+        return new JournalHandler();
     }
 
     public static Class<? extends Item> getClassBySimpleNameOfClass(String simpleClassName) {

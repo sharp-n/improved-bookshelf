@@ -19,6 +19,8 @@ public abstract class ItemHandler<T extends Item> {
 
     //
     // journals deleting - 3.40 - with tests, 1.4- without
+    // adding comics - 15.0
+    // adding journals - 3.31
     //
 
     Scanner in; // TODO fix input/output
@@ -67,7 +69,8 @@ public abstract class ItemHandler<T extends Item> {
     public String initItemsMenuText(){
         return NEW_LINE + MainMenu.BOOK + NEW_LINE
                 + MainMenu.NEWSPAPER + NEW_LINE
-                + MainMenu.COMICS + NEW_LINE;
+                + MainMenu.COMICS + NEW_LINE
+                + MainMenu.JOURNAL + NEW_LINE;
     }
 
     public String initActionsWithItemsMenuText(){
