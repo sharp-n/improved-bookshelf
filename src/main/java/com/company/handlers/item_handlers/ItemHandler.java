@@ -61,7 +61,8 @@ public abstract class ItemHandler<T extends Item> {
     }
 
     public String initItemsMenuText(){
-        return NEW_LINE + MainMenu.BOOK + NEW_LINE + MainMenu.JOURNAL + NEW_LINE  + MainMenu.NEWSPAPER + NEW_LINE;
+        return NEW_LINE + MainMenu.BOOK + NEW_LINE
+                + MainMenu.NEWSPAPER + NEW_LINE;
     }
 
     public String initActionsWithItemsMenuText(){

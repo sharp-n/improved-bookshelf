@@ -38,7 +38,7 @@ public class ProjectHandler {
         this.in = in;
         this.out = out;
         this.librarian = new Librarian();
-        this.itemHandler = new JournalHandler(out,in);
+        this.itemHandler = new BookHandler(out,in);
         this.userInput = new UserInput(out,in);
     }
 
@@ -112,9 +112,6 @@ public class ProjectHandler {
         switch(mainMenu) {
             case BOOK:
                 itemHandler = new BookHandler(out,in);
-                break;
-            case JOURNAL:
-                itemHandler = new JournalHandler(out,in);
                 break;
             case NEWSPAPER:
                 itemHandler = new NewspaperHandler(out,in);

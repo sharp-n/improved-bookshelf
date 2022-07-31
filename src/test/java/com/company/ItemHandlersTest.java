@@ -1,11 +1,9 @@
 package com.company;
 
 import com.company.handlers.item_handlers.BookHandler;
-import com.company.handlers.item_handlers.JournalHandler;
 import com.company.handlers.item_handlers.NewspaperHandler;
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Journal;
 import com.company.items.Newspaper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,10 +25,6 @@ class ItemHandlersTest {
     static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
     static Book book4 = new Book(1,"Title","same author",new GregorianCalendar(2002,Calendar.MAY,25),666);
 
-    static Journal journal1 = new Journal(5,"Some title",824);
-    static Journal journal2 = new Journal(666,"Any title",500);
-    static Journal journal3 = new Journal(1005,"title",2736);
-    static Journal journal4 = new Journal(1,"Title",666);
 
     static Newspaper newspaper1 = new Newspaper(5,"Some title",824);
     static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
@@ -78,14 +72,14 @@ class ItemHandlersTest {
         );
     }
 
-    @Test
-    void journalAddingItemHandlerTest(){
-        JournalHandler journalHandler = new JournalHandler();
-        Journal journal  = journalHandler.createItem(Arrays.asList("1","title","63"));
-        String expected = "1 - title - 63 - false";
-        Assertions.assertEquals(expected,
-                journal.getItemID() + " - " + journal.getTitle() + " - " + journal.getPages() + " - " + journal.isBorrowed());
-    }
+    //@Test
+    //void journalAddingItemHandlerTest(){
+    //    JournalHandler journalHandler = new JournalHandler();
+    //    Journal journal  = journalHandler.createItem(Arrays.asList("1","title","63"));
+    //    String expected = "1 - title - 63 - false";
+    //    Assertions.assertEquals(expected,
+    //            journal.getItemID() + " - " + journal.getTitle() + " - " + journal.getPages() + " - " + journal.isBorrowed());
+    //}
 
     @ParameterizedTest
     @MethodSource("provideBooksForSortingByID")
@@ -200,51 +194,51 @@ class ItemHandlersTest {
         );
     }
 
-    @ParameterizedTest
-    @MethodSource("provideJournalsForSortingByPages")
-    void journalsGetSortedItemsByPagesTest(List<Item> provided, List<Journal> expected){
-        JournalHandler journalHandler = new JournalHandler();
-        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided, ComparatorsForSorting.COMPARATOR_ITEM_BY_PAGES);
-        assertEquals(expected,providedJournals);
-    }
+    //@ParameterizedTest
+    //@MethodSource("provideJournalsForSortingByPages")
+    //void journalsGetSortedItemsByPagesTest(List<Item> provided, List<Journal> expected){
+    //    JournalHandler journalHandler = new JournalHandler();
+    //    List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided, ComparatorsForSorting.COMPARATOR_ITEM_BY_PAGES);
+    //    assertEquals(expected,providedJournals);
+    //}
 
 
-    private static Stream<Arguments> provideJournalsForSortingByPages(){
-        return Stream.of(
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal1,journal2,journal3,journal4)),
-                        new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3))),
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal2,journal3,journal4,journal1)),
-                        new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3))),
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal4,journal1,journal3,journal2)),
-                        new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3)))
-        );
-    }
+    //private static Stream<Arguments> provideJournalsForSortingByPages(){
+    //    return Stream.of(
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal1,journal2,journal3,journal4)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3))),
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal2,journal3,journal4,journal1)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3))),
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal4,journal1,journal3,journal2)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal4,journal1,journal3)))
+    //    );
+    //}
 
-    @ParameterizedTest
-    @MethodSource("provideJournalsForSortingByTitle")
-    void journalsGetSortedItemsByTitleTest(List<Item> provided, List<Journal> expected){
-        JournalHandler journalHandler = new JournalHandler();
-        List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided, ComparatorsForSorting.COMPARATOR_ITEM_BY_TITLE);
-        assertEquals(expected,providedJournals);
-    }
+    //@ParameterizedTest
+    //@MethodSource("provideJournalsForSortingByTitle")
+    //void journalsGetSortedItemsByTitleTest(List<Item> provided, List<Journal> expected){
+    //    JournalHandler journalHandler = new JournalHandler();
+    //    List<Journal> providedJournals = journalHandler.getSortedItemsByComparator(provided, ComparatorsForSorting.COMPARATOR_ITEM_BY_TITLE);
+    //    assertEquals(expected,providedJournals);
+    //}
 
 
-    private static Stream<Arguments> provideJournalsForSortingByTitle(){
-        return Stream.of(
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal1,journal2,journal3,journal4)),
-                        new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3))),
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal2,journal3,journal4,journal1)),
-                        new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3))),
-                Arguments.of(
-                        new ArrayList<>(Arrays.asList(journal4,journal1,journal3,journal2)),
-                        new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3)))
-        );
-    }
+    //private static Stream<Arguments> provideJournalsForSortingByTitle(){
+    //    return Stream.of(
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal1,journal2,journal3,journal4)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3))),
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal2,journal3,journal4,journal1)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3))),
+    //            Arguments.of(
+    //                    new ArrayList<>(Arrays.asList(journal4,journal1,journal3,journal2)),
+    //                    new ArrayList<>(Arrays.asList(journal2,journal1,journal4,journal3)))
+    //    );
+    //}
 
     @ParameterizedTest
     @MethodSource("provideNewspapersForSortingByID")

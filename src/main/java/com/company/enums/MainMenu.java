@@ -6,8 +6,7 @@ public enum MainMenu {
 
     EXIT_VALUE(0, "Exit"),
     BOOK(1, "Book"),
-    JOURNAL(2, "Journal"),
-    NEWSPAPER(3, "Newspaper"),
+    NEWSPAPER(2, "Newspaper"),
     DEFAULT(-1,"Default");
 
     private final int num;

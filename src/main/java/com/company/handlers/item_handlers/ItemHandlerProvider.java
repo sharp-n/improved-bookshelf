@@ -2,7 +2,6 @@ package com.company.handlers.item_handlers;
 
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Journal;
 import com.company.items.Newspaper;
 
 
@@ -20,7 +19,6 @@ public class ItemHandlerProvider {
 
     static {
         classItemHandlerMap.put(Newspaper.class, new NewspaperHandler());
-        classItemHandlerMap.put(Journal.class, new JournalHandler());
         classItemHandlerMap.put(Book.class, new BookHandler());
 
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
@@ -47,9 +45,6 @@ public class ItemHandlerProvider {
 
     public static ItemHandler getNewspaperHandler() {
         return new NewspaperHandler();
-    }
-    public static ItemHandler getJournalHandler() {
-        return new JournalHandler();
     }
     public static ItemHandler getBookHandler() {
         return new BookHandler();

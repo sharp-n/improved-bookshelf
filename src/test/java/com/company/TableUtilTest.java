@@ -4,7 +4,6 @@ import com.company.handlers.item_handlers.BookHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Journal;
 import com.company.items.Newspaper;
 import com.company.table.TableUtil;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +56,7 @@ class TableUtilTest {
                 ),
                 Arguments.of(Arrays.asList(
                                 new Newspaper(1, "title1", 1),
-                                new Journal(2, "title2", 2),
+                                //new Journal(2, "title2", 2),
                                 new Book(3, "title3", "some author", new GregorianCalendar(2022, 10, 2), 932)),
                         "" +
                                 " 1    | title1  | 1           | false             | NULL    | NULL       " + System.lineSeparator() +
