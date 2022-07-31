@@ -17,6 +17,10 @@ import static com.company.table.TableUtil.NEW_LINE;
 @NoArgsConstructor
 public abstract class ItemHandler<T extends Item> {
 
+    //
+    // journals deleting - 3.40 - with tests, 1.4- without
+    //
+
     Scanner in; // TODO fix input/output
     PrintWriter out;
     public Validator validator;
@@ -62,7 +66,8 @@ public abstract class ItemHandler<T extends Item> {
 
     public String initItemsMenuText(){
         return NEW_LINE + MainMenu.BOOK + NEW_LINE
-                + MainMenu.NEWSPAPER + NEW_LINE;
+                + MainMenu.NEWSPAPER + NEW_LINE
+                + MainMenu.COMICS + NEW_LINE;
     }
 
     public String initActionsWithItemsMenuText(){

@@ -116,6 +116,9 @@ public class ProjectHandler {
             case NEWSPAPER:
                 itemHandler = new NewspaperHandler(out,in);
                 break;
+            case COMICS:
+                itemHandler = new ComicsHandler(out,in);
+                break;
             default:
                 itemHandler.userInput.printDefaultMessage();
                 chosenItem = false;

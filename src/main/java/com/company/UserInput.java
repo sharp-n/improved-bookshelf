@@ -26,6 +26,12 @@ public class UserInput {
         return scan.nextLine().trim();
     }
 
+    public String publishingUserInput() {
+        out.println("Input publishing:");
+        printWaitingForReplyMessage();
+        return scan.nextLine().trim();
+    }
+
     public String usernameInput() {
         out.println(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
         printWaitingForReplyMessage();
