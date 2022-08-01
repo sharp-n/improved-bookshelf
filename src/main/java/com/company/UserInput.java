@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.enums.SortingMenu;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -23,6 +22,12 @@ public class UserInput {
 
     public String titleUserInput() {
         out.println("Input title:");
+        printWaitingForReplyMessage();
+        return scan.nextLine().trim();
+    }
+
+    public String publishingUserInput() {
+        out.println("Input publishing:");
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
@@ -92,22 +97,10 @@ public class UserInput {
     }
 
 
-    public Integer getSortingVar() { // TODO enum
+    public Integer getSortingVar(String sortingMenuText) {
         try {
-
-            //TODO create getMenuText method in handlers
-
-            //if (item instanceof Book || item instanceof Journal || item instanceof Newspaper) {
-                out.println("Sort by:" + NEW_LINE_WITH_TAB
-                        + SortingMenu.ITEM_ID + NEW_LINE_WITH_TAB
-                        + SortingMenu.TITLE + NEW_LINE_WITH_TAB
-                        + SortingMenu.PAGES);
-                //if (item instanceof Book) {
-                    out.println(SortingMenu.AUTHOR + NEW_LINE_WITH_TAB + SortingMenu.PUBLISHING_DATE);
-                //}
-                out.println(SortingMenu.RETURN_VALUE);
-                printWaitingForReplyMessage();
-            //}
+            out.print(sortingMenuText);
+            printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
             printDefaultMessage();
@@ -115,12 +108,12 @@ public class UserInput {
         }
     }
 
-    public Integer getMainMenuVar() {
+    public int getMainMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
             printDefaultMessage();
-            return null;
+            return -1;
         }
     }
 

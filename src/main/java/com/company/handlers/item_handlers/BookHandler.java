@@ -1,28 +1,32 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
-import com.company.Librarian;
+import com.company.enums.SortingMenu;
+import com.company.handlers.Librarian;
 import com.company.items.Book;
+import com.company.items.Item;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.company.ConstantsForItemsTable.NEW_LINE;
-import static com.company.enums.ActionsWithBook.*;
-import static com.company.enums.ActionsWithBook.RETURN_BOOK;
+import static com.company.table.TableUtil.NEW_LINE;
 
 @NoArgsConstructor // TODO
-public class BookHandler extends ItemHandler<Book>{
+public class BookHandler extends ItemHandler<Book> {
 
     public BookHandler(PrintWriter out, Scanner in) {
         super(out,in);
     }
 
+    public List<String> getColumnTitles() {
+        return columnTitles;
+    }
+
     @Override
-    public List<Book> getSortedItemsByComparator(List<Book> items, Comparator<Book> comparator) {
-        return items.stream()
+    public List<Book> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator) {
+        return cast(items).stream()
                 .sorted(comparator)
                 .collect(Collectors.toList());
     }
@@ -59,13 +63,14 @@ public class BookHandler extends ItemHandler<Book>{
         return null;
     }
 
+    @Override
     public List<String> getItem() {
         String author = "";
         List<String> itemOptions = new ArrayList<>(super.getItem());
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {
-            return null;
+            return Collections.emptyList();
         }
 
         Integer publishingYear = userInput.yearUserInput();
@@ -79,10 +84,43 @@ public class BookHandler extends ItemHandler<Book>{
 
     }
 
-    public String initActionsWithItemsMenuText(){
-        return NEW_LINE + ADD_BOOK + NEW_LINE + DELETE_BOOK +
-                NEW_LINE + TAKE_BOOK + NEW_LINE + RETURN_BOOK +
-                NEW_LINE + SHOW_BOOK + NEW_LINE;
+    @Override
+    public List<List<String>> anyItemsToString(List<Book> books) {
+        List<List<String>> booksAsStringList = new ArrayList<>();
+        for (Book book: books) {
+            booksAsStringList.add(itemToString(book));
+        }
+        return booksAsStringList;
     }
 
+    public List<Book> cast(List<Item> items) {
+        List<Book> books = new ArrayList<>();
+        items.forEach(i->books.add((Book)i));
+        return books;
+    }
+
+    @Override
+    public String genSortingMenuText() {
+        return super.genSortingMenuText() + SortingMenu.AUTHOR
+                + NEW_LINE + SortingMenu.PUBLISHING_DATE + NEW_LINE;
+    }
+
+    public String authorToString(Book book){
+        if(book.getAuthor()==null) return "NULL";
+        return book.getAuthor();
+    }
+
+    public String publishingDateToString(Book book){
+        SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
+        if(book.getPublishingDate()==null) return "NULL";
+        return df.format(book.getPublishingDate().getTime());
+    }
+
+    @Override
+    public List<String> itemToString(Item item){
+        List<String> bookAsList = super.itemToString(item);
+        bookAsList.add(authorToString((Book)item));
+        bookAsList.add(publishingDateToString((Book)item));
+        return bookAsList;
+    }
 }

@@ -10,6 +10,7 @@ public enum SortingMenu {
     PAGES(3, "Pages"),
     AUTHOR(4, "Author"),
     PUBLISHING_DATE(5, "Publishing date"),
+    PUBLISHING(6, "Publishing"),
     DEFAULT(-1, "DEFAULT");
 
     private final int num;

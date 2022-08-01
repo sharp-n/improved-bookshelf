@@ -1,9 +1,6 @@
-package com.company.handlers;
+package com.company.handlers.item_handlers;
 
-import com.company.items.Book;
-import com.company.items.Item;
-import com.company.items.Journal;
-import com.company.items.Newspaper;
+import com.company.items.*;
 
 
 import java.util.HashMap;
@@ -20,15 +17,17 @@ public class ItemHandlerProvider {
 
     static {
         classItemHandlerMap.put(Newspaper.class, new NewspaperHandler());
-        classItemHandlerMap.put(Journal.class, new JournalHandler());
         classItemHandlerMap.put(Book.class, new BookHandler());
+        classItemHandlerMap.put(Comics.class, new ComicsHandler());
+        classItemHandlerMap.put(Journal.class, new JournalHandler());
 
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
     }
 
     public static Class<? extends Item> getClassByHandler(ItemHandler<? extends Item> itemHandler) {
         for (Map.Entry<Class<? extends Item>, ItemHandler<? extends Item>> classItemHandlerEntry : classItemHandlerMap.entrySet()) {
-            if (classItemHandlerEntry.getValue().getClass().getSimpleName().equals(itemHandler.getClass().getSimpleName())) {
+            if (classItemHandlerEntry.getValue().getClass().isAssignableFrom(itemHandler.getClass())){
+                    //classItemHandlerEntry.getValue().getClass().getSimpleName().equals(itemHandler.getClass().getSimpleName()))
                 return classItemHandlerEntry.getKey();
             }
         }
@@ -45,13 +44,16 @@ public class ItemHandlerProvider {
     }
 
     public static ItemHandler getNewspaperHandler() {
-        return getNewspaperHandler();
-    }
-    public static ItemHandler getJournalHandler() {
-        return getJournalHandler();
+        return new NewspaperHandler();
     }
     public static ItemHandler getBookHandler() {
-        return getBookHandler();
+        return new BookHandler();
+    }
+    public static ItemHandler getComicsHandler() {
+        return new ComicsHandler();
+    }
+    public static ItemHandler getJournalHandler() {
+        return new JournalHandler();
     }
 
     public static Class<? extends Item> getClassBySimpleNameOfClass(String simpleClassName) {

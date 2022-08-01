@@ -2,7 +2,7 @@ package com.company.enums;
 
 import java.util.Arrays;
 
-public enum ActionsWithItem { // TODO remove actions with each file
+public enum ActionsWithItem {
     EXIT_VALUE(0, "Exit"),
     ADD(1, "Add"),
     DELETE(2, "Delete"),
@@ -31,6 +31,6 @@ public enum ActionsWithItem { // TODO remove actions with each file
                 .stream(values())
                 .filter(e -> e.num == index)
                 .findFirst()
-                .orElseGet(() -> DEFAULT);
+                .orElse(DEFAULT);
     }
 }

@@ -1,7 +1,7 @@
 package com.company.work_with_files;
 
 import com.company.Container;
-import com.company.handlers.ItemHandlerProvider;
+import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.google.gson.*;
 

@@ -1,9 +1,10 @@
-package com.company;
+package com.company.handlers;
 
-import com.company.convertors.ItemsConvertor;
+import com.company.ComparatorsForSorting;
+import com.company.Validator;
 import com.company.enums.SortingMenu;
-import com.company.handlers.ItemHandler;
-import com.company.handlers.ItemHandlerProvider;
+import com.company.handlers.item_handlers.ItemHandler;
+import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.TableUtil;
 import com.company.work_with_files.FilesWorker;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.List;
-
 
 @NoArgsConstructor
 public class Librarian {
@@ -107,66 +107,45 @@ public class Librarian {
         return null;
     }
 
-
-    public <T extends Item> void printItems(List<T> items) {
+    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
-            ItemsConvertor itemsConvertor = new ItemsConvertor();
-            List<List<String>> strItems = itemsConvertor.itemsToString(items);
-            List<String> options = generateOptionsForTable(defineNumberOfColumns(strItems));
+            List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
+            List<String> options = itemHandler.getColumnTitles();
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
         }
     }
 
-    public List<String> generateOptionsForTable(int numberOfColumns) {
-        return new ConstantsForItemsTable().allTheColumnsForItems.get(numberOfColumns);
-    }
-
-    public int defineNumberOfColumns(List<List<String>> items) {
-        int maxNumOfColumns = 0;
-        for (List<String> item : items) {
-            int numOfColumns = 0;
-            for (String option : item) {
-                numOfColumns++;
-            }
-            if (numOfColumns > maxNumOfColumns) {
-                maxNumOfColumns = numOfColumns;
-            }
-        }
-        return maxNumOfColumns;
-    }
-
     public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
-        Integer usersChoice = itemHandler.userInput.getSortingVar();
+        Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-            List<Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
+            List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(workWithFiles, sortingParameter,itemHandler);
             if(!sortedItemsByComparator.isEmpty()){
-                printItems(sortedItemsByComparator);
+                printItems(sortedItemsByComparator, itemHandler);
             }
         } else{
             itemHandler.userInput.printDefaultMessage();
         }
     }
 
-    public List<Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<? extends Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
-        ConstantsForSorting<Item> constant = new ConstantsForSorting<>();
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
-        switch (sortingParameter) { // TODO optimize items and comparators
+        switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
             case ITEM_ID:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_ID);//TODO remove redundant methods
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
             case TITLE:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_TITLE);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_TITLE);
             case PAGES:
-                return ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassByHandler(itemHandler)).getSortedItemsByComparator(items,constant.COMPARATOR_ITEM_BY_PAGES);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_PAGES);
             case AUTHOR:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_AUTHOR);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_AUTHOR);
             case PUBLISHING_DATE:
-                return ItemHandlerProvider.getBookHandler().getSortedItemsByComparator(items, constant.COMPARATOR_ITEM_BY_DATE);
+                return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_DATE);
             default:
                 itemHandler.userInput.printDefaultMessage();
                 break;
