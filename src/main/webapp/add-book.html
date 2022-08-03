@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add book</title>
+    <base href="http://localhost:8080">
+</head>
+<body topmargin="100">
+<div align="center">
+  <form method="post" action="/main">
+    <!--        {{FORM_CONTENT}}-->
+    <label for="title">Title: </label>
+    <input id="title" type="text" name="title"><br><br>
+
+    <label for="author">Author: </label>
+    <input id="author" type="text" name="author"><br><br>
+
+    <label for="publishing-date">Publishing date: </label>
+    <input id="publishing-date" type="text" name="publishing-date"><br><br>
+
+    <label for="pages">Pages: </label>
+    <input id="pages" type="text" name="pages"><br><br>
+
+    <input type="submit" value="Add book" />
+  </form>
+</div>
+</body>
+</html>
