@@ -1,5 +1,7 @@
 package com.company.tomcat_server;
 
+import com.company.User;
+import com.company.Validator;
 import com.company.tomcat_server.servlet_service.ServletService;
 
 import javax.servlet.ServletException;
@@ -42,17 +44,12 @@ public class UserLoginServlet extends HttpServlet {
         System.out.println(login);
         System.out.println("UserLoginServlet.doGet");
 
-        if (login.equals("yana")){
-            File file = new File("src/main/webapp/main.html");
+        if (User.checkUserNameForValidity(login)){
+            ServletService servletService =  new ServletService();
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"main.html"));
             ServletOutputStream out = resp.getOutputStream();
-            String htmlCode = "";
-            Scanner in = new Scanner (file);
-            while(in.hasNext()){
-                htmlCode +=in.nextLine() + " " + "\n";
-            }
             out.write(htmlCode.getBytes());
             out.flush();
-            in.close();
         }
 
         else doGet(req,resp);
