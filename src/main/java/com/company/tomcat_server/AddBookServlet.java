@@ -8,11 +8,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 @WebServlet(
         name = "AddBookServlet",
@@ -25,7 +23,6 @@ public class AddBookServlet extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("AddBookServlet.doGet");
         ServletOutputStream out = resp.getOutputStream();
-        File file = new File("src/main/webapp/add-book.html");
 
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"add-book.html"));
@@ -34,10 +31,6 @@ public class AddBookServlet extends HttpServlet {
         out.flush();
 
         out.close();
-        //String title = req.getParameter("title");
-        //System.out.println(title);
-        //PrintWriter printWriter = resp.getWriter();
-        //printWriter.println(title);
 
     }
 

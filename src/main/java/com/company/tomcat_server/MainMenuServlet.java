@@ -22,7 +22,12 @@ public class MainMenuServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        resp.setContentType("text/html");
+        ServletOutputStream out = resp.getOutputStream();
+
+        ServletService servletService = new ServletService();
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"main.html"));
+        out.write(htmlCode.getBytes());
+        out.flush();
 
         System.out.println("MainServlet.doGet");
 
@@ -30,17 +35,8 @@ public class MainMenuServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         String login = request.getParameter("login");
         System.out.println(login);
-
-        ServletOutputStream out = response.getOutputStream();
-
-        ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"main.html"));
-
-        out.write(htmlCode.getBytes());
-        out.flush();
 
         response.setContentType("text/html");
         System.out.println("MainServlet.doPost");
