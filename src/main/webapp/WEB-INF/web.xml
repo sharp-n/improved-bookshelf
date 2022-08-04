@@ -22,6 +22,14 @@
         <servlet-name>ChooseItemServlet</servlet-name>
         <servlet-class>com.company.tomcat_server.ChooseItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ChooseActionServlet</servlet-name>
+        <servlet-class>com.company.tomcat_server.ChooseActionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowAllTheItemsServlet</servlet-name>
+        <servlet-class>com.company.tomcat_server.ShowAllTheItemsServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>AddBookServlet</servlet-name>
@@ -42,6 +50,14 @@
     <servlet-mapping>
         <servlet-name>ChooseItemServlet</servlet-name>
         <url-pattern>/choose-item</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChooseActionServlet</servlet-name>
+        <url-pattern>/choose-item/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowAllTheItemsServlet</servlet-name>
+        <url-pattern>/show-all-the-items</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
