@@ -34,6 +34,14 @@ public class ProjectHandler {
     UserInput userInput;
     String typeOfItem;
 
+    public Librarian getLibrarian() {
+        return librarian;
+    }
+
+    public ItemHandler<? extends Item> getItemHandler() {
+        return itemHandler;
+    }
+
     public ProjectHandler(Scanner in, PrintWriter out) {
         this.in = in;
         this.out = out;
