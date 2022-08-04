@@ -34,6 +34,14 @@ public enum MainMenu {
                 .orElse(DEFAULT);
     }
 
+    public static MainMenu getByOption(String option){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.option.equals(option))
+                .findFirst()
+                .orElse(DEFAULT);
+    }
+
 }
 
 
