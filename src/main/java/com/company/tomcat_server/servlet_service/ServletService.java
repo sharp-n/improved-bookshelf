@@ -10,7 +10,7 @@ public class ServletService {
 
     public final Path pathToHTMLFilesDir = Paths.get("src/main/webapp");
 
-    public String getTextFromFile(Path filePath) { // TODO refactor usage
+    public String getTextFromFile(Path filePath) {
         try {
             File file = filePath.toFile();
             String htmlCode = "";
