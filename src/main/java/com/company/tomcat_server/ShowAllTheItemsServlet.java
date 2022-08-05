@@ -3,7 +3,6 @@ package com.company.tomcat_server;
 import com.company.ComparatorsForSorting;
 import com.company.User;
 import com.company.enums.FilesMenu;
-import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.DefaultItemHandler;
@@ -56,7 +55,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
         items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
         List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));;
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));
         htmlCode = htmlCode.replace("{{TABLE_CONTENT}}",new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
         htmlCode = htmlCode.replace("{{URL}}",
                 new URIBuilder().setPath("/choose-item")

@@ -3,8 +3,8 @@
     <display-name>MyServlet</display-name>
 
     <servlet>
-        <servlet-name>AddBookServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.AddBookServlet</servlet-class>
+        <servlet-name>AddItemServlet</servlet-name>
+        <servlet-class>com.company.tomcat_server.AddItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MainMenuServlet</servlet-name>
@@ -32,12 +32,8 @@
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>AddBookServlet</servlet-name>
-        <url-pattern>/add-book</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MainMenuServlet</servlet-name>
-        <url-pattern>/main</url-pattern>
+        <servlet-name>AddItemServlet</servlet-name>
+        <url-pattern>/add</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserLoginServlet</servlet-name>
@@ -53,7 +49,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChooseActionServlet</servlet-name>
-        <url-pattern>/choose-item/*</url-pattern>
+        <url-pattern>/actions/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShowAllTheItemsServlet</servlet-name>
