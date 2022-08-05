@@ -181,7 +181,7 @@ public class ProjectHandler {
             switch (actionsWithItem) {
 
                 case ADD:
-                    librarian.addItem(itemHandler);
+                    librarian.addItem(itemHandler,itemHandler.getItem());
                     break;
 
                 case DELETE:

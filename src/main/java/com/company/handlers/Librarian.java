@@ -29,8 +29,8 @@ public class Librarian {
         this.validator = new Validator(out);
     }
 
-    public boolean addItem(ItemHandler<? extends Item> itemHandler) throws IOException {
-        Item item = itemHandler.createItem(itemHandler.getItem());
+    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException {
+        Item item = itemHandler.createItem(itemOptions);
         if (checkIDForExistence(item.getItemID())) {
             out.println("Item with this ID exists. Please change ID and try again");
             return false;
@@ -66,7 +66,7 @@ public class Librarian {
                 if (item.isBorrowed() != borrow) {
                     deleteItem(itemID,true);
                     item.setBorrowed(borrow);
-                    addItem(itemHandler);
+                    addItem(itemHandler,itemHandler.getItem());
                     out.println("Success");
                 } else if (borrow) {
                     out.println("Item has already been taken by someone else");
