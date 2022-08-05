@@ -3,6 +3,7 @@ package com.company.handlers.item_handlers;
 import com.company.enums.SortingMenu;
 import com.company.items.Comics;
 import com.company.items.Item;
+import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
@@ -10,6 +11,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
+import static com.company.tomcat_server.servlet_service.FormConstants.*;
+import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor
 public class ComicsHandler extends ItemHandler<Comics> {
@@ -85,6 +88,17 @@ public class ComicsHandler extends ItemHandler<Comics> {
         List<String> bookAsList = super.itemToString(item);
         bookAsList.add(publishingToString((Comics)item));
         return bookAsList;
+    }
+
+    @Override
+    public String genFormContent() {
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        String form = super.genFormContent();
+        return form.substring(0,form.lastIndexOf("<"))
+                + formBuild.genLabel("Publishing: ",PUBLISHING_PARAM)
+                + formBuild.genTextField(PUBLISHING_PARAM,PUBLISHING_PARAM)
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Add book");
     }
 
 }
