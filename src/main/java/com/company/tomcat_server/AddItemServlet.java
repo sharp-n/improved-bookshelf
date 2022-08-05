@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 @WebServlet(
-        name = "AddBookServlet",
+        name = "AddItemServlet",
         urlPatterns = {"/add"}
 )
 public class AddItemServlet extends HttpServlet {
@@ -41,7 +41,7 @@ public class AddItemServlet extends HttpServlet {
 
         System.out.println(typeOfItem);
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"add-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
 
         String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormContent(),"add");
 
