@@ -1,10 +1,12 @@
 package com.company.tomcat_server.servlet_service;
 
+import org.apache.http.client.utils.URIBuilder;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.*;
 
 public class ServletService {
 
@@ -26,5 +28,11 @@ public class ServletService {
 
     }
 
+    public URIBuilder addParams(String name, String typeOfFileWork, String typeOfItem){
+        return new URIBuilder()
+                .addParameter(ParametersConstants.NAME, name)
+                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, typeOfFileWork)
+                .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem);
+    }
 
 }
