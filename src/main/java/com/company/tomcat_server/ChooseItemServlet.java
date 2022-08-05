@@ -46,7 +46,7 @@ public class ChooseItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
         resp.sendRedirect( new URIBuilder()
-                .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE,typeOfItem)
+                .setPathSegments(URLConstants.CHOOSE_ACTION.replace("/","").replace("*",""),typeOfItem.toLowerCase()) // todo refactor setting path
                 .addParameter(ParametersConstants.NAME,name)
                 .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
                 .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
