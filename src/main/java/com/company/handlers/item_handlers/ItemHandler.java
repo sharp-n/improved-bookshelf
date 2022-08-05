@@ -4,7 +4,8 @@ import com.company.*;
 import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
-import com.company.table.TableUtil;
+
+import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
@@ -14,6 +15,8 @@ import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
 import static com.company.enums.SortingMenu.*;
 import static com.company.table.TableUtil.NEW_LINE;
+import static com.company.tomcat_server.servlet_service.FormConstants.*;
+import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor
 public abstract class ItemHandler<T extends Item> {
@@ -45,7 +48,7 @@ public abstract class ItemHandler<T extends Item> {
     public abstract List<T> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator);
 
     public T createItem(List<String> options){
-        return null;
+        return null; // todo refactor -> make abstract
     }
 
     public List<String> getItem() {
@@ -63,7 +66,6 @@ public abstract class ItemHandler<T extends Item> {
         if (numOfPages == null) {
             return Collections.emptyList();
         }
-
         return Arrays.asList(itemID.toString(), title, numOfPages.toString());
     }
 
@@ -122,5 +124,26 @@ public abstract class ItemHandler<T extends Item> {
         return itemAsList;
     }
 
+    public String genFormContent(){
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        return formBuild.genLabel("Item ID: ", ITEM_ID_PARAM)
+                        + formBuild.genTextField(ITEM_ID_PARAM, ITEM_ID_PARAM)
+                        + NEW_LINE_TAG + NEW_LINE_TAG
+                        + formBuild.genLabel("Title: ",TITLE_PARAM)
+                        + formBuild.genTextField(TITLE_PARAM, TITLE_PARAM)
+                        + NEW_LINE_TAG + NEW_LINE_TAG
+                        + formBuild.genLabel("Pages: ",PAGES_PARAM)
+                        + formBuild.genTextField(PAGES_PARAM, PAGES_PARAM)
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Add item");
+    }
+
+    public List<String> convertItemParametersMapToList(Map<String, String[]> params){
+        List<String> paramsStr = new ArrayList<>();
+        for(Map.Entry<String, String[]> param : params.entrySet()){
+            paramsStr.addAll(Arrays.asList(param.getValue()));
+        }
+        return paramsStr;
+    }
 
 }
