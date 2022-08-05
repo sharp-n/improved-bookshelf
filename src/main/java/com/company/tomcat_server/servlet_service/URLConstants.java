@@ -7,7 +7,7 @@ public class URLConstants {
 
     public static final String MAIN_MENU_PAGE = "/main";
     public static final String CHOOSE_ITEM_PAGE = "/choose-item";
-    public static final String CHOOSE_ACTION = "/choose-item/*";
+    public static final String CHOOSE_ACTION = "/actions/*";
 
     public static final String ADD_BOOK_PAGE = "/add-book";
 
