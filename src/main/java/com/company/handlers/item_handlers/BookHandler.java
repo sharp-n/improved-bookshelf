@@ -4,6 +4,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Book;
 import com.company.items.Item;
+import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
@@ -12,6 +13,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
+import static com.company.tomcat_server.servlet_service.FormConstants.AUTHOR_PARAM;
+import static com.company.tomcat_server.servlet_service.FormConstants.PUBLISHING_DATE_PARAM;
+import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book> {
@@ -122,5 +126,38 @@ public class BookHandler extends ItemHandler<Book> {
         bookAsList.add(authorToString((Book)item));
         bookAsList.add(publishingDateToString((Book)item));
         return bookAsList;
+    }
+
+    @Override
+    public String genFormContent() {
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        String form = super.genFormContent();
+        return form.substring(0,form.lastIndexOf("<"))
+                + formBuild.genLabel("Author: ",AUTHOR_PARAM)
+                + formBuild.genTextField(AUTHOR_PARAM,AUTHOR_PARAM)
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genLabel("Publishing date: ",PUBLISHING_DATE_PARAM)
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genLabel("Day: ","day")
+                + formBuild.genTextField("day", "day")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genLabel("Month: ","month")
+                + formBuild.genTextField("month", "month")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genLabel("Year: ","year")
+                + formBuild.genTextField("year", "year")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Add book");
+    }
+
+    @Override
+    public List<String> convertItemParametersMapToList(Map<String, String[]> params){
+        List<String> paramsList = super.convertItemParametersMapToList(params);
+        String date = paramsList.get(6) + "." + paramsList.get(5) + "." + paramsList.get(4);
+        for (int i = 3; i>0; i--){
+            paramsList.remove(paramsList.size()-1);
+        }
+        paramsList.add(date);
+        return paramsList;
     }
 }
