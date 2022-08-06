@@ -67,7 +67,6 @@ public class BorrowItemServlet extends HttpServlet {
 
         String message = "O-ops! Something goes wrong...";
         if (itemID!=null){
-            // todo implement this case
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
             projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
             projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
