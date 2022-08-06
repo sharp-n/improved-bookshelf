@@ -75,22 +75,7 @@ public class AddItemServlet extends HttpServlet {
             htmlCode = htmlCode.replace("{{MESSAGE}}", MessageConstants.FAIL_MESSAGE);
         }
 
-        htmlCode = htmlCode.replace(
-                    "{{URL-ITEMS-MENU}}",
-                    new URIBuilder()
-                        .setPath(URLConstants.CHOOSE_ITEM_PAGE)
-                        .addParameter(ParametersConstants.NAME,name)
-                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
-                        .toString())
-                .replace(
-                    "{{URL-ACTIONS}}",
-                    new URIBuilder()
-                            .setPath(URLConstants.CHOOSE_ACTION)
-                            .addParameter(ParametersConstants.NAME,name)
-                            .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
-                            .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
-                            .toString()
-                );
+        htmlCode = servletService.replaceURLTemplatesInInformPage(htmlCode,name,typeOfFileWork,typeOfItem);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();

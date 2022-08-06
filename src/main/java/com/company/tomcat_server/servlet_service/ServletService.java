@@ -35,4 +35,47 @@ public class ServletService {
                 .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem);
     }
 
+    public Map<String,String> initURLTemplatesMap(){
+        Map<String, String> paths = new HashMap<>();
+        paths.put("{{URL-ADD}}","add");
+        paths.put("{{URL-DELETE}}","delete");
+        paths.put("{{URL-TAKE}}","borrow");
+        paths.put("{{URL-RETURN}}","return");
+        paths.put("{{URL-SHOW}}","show");
+        return paths;
+    }
+
+    public String replaceURLInTemplate(String htmlCode, Map<String, String> paths){
+        for (Map.Entry<String, String> path : paths.entrySet()) {
+            htmlCode = htmlCode.replace(path.getKey(),path.getValue());
+        }
+        return htmlCode;
+    }
+
+    public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, String nameParam, String typeOfFileWorkParam, String typeOfItemParam){
+        for(Map.Entry<String,String> path : paths.entrySet()){
+            path.setValue(new ServletService().addParams(nameParam,typeOfFileWorkParam,typeOfItemParam).setPathSegments(path.getValue()).toString());
+        }
+        return paths;
+    }
+
+    public String replaceURLTemplatesInInformPage(String htmlCode, String name, String typeOfFileWork, String typeOfItem){
+        return htmlCode.replace(
+                        "{{URL-ITEMS-MENU}}",
+                        new URIBuilder()
+                                .setPath(URLConstants.CHOOSE_ITEM_PAGE)
+                                .addParameter(ParametersConstants.NAME,name)
+                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                                .toString())
+                .replace(
+                        "{{URL-ACTIONS}}",
+                        new URIBuilder()
+                                .setPath(URLConstants.CHOOSE_ACTION)
+                                .addParameter(ParametersConstants.NAME,name)
+                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                                .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
+                                .toString()
+                );
+    }
+
 }

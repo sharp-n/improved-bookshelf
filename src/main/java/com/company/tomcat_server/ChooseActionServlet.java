@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(
@@ -34,14 +33,8 @@ public class ChooseActionServlet extends HttpServlet {
         typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
         typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
 
-        Map<String, String> paths = new HashMap<>();
-        paths.put("{{URL-ADD}}","add");
-        paths.put("{{URL-DELETE}}","delete");
-        paths.put("{{URL-TAKE}}","take");
-        paths.put("{{URL-RETURN}}","return");
-        paths.put("{{URL-SHOW}}","show");
-        Map<String,String> pathsWithParameters = addParamsToParametersMapValues(paths);
-        htmlCode = replaceURLInTemplate(htmlCode, pathsWithParameters);
+        Map<String,String> pathsWithParameters = servletService.addParamsToParametersMapValues(servletService.initURLTemplatesMap(),name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLInTemplate(htmlCode, pathsWithParameters);
 
         ServletOutputStream out = resp.getOutputStream();
         out.print(htmlCode);
@@ -57,18 +50,6 @@ public class ChooseActionServlet extends HttpServlet {
                 .toString());
     }
 
-    private String replaceURLInTemplate(String htmlCode, Map<String, String> paths){
-        for (Map.Entry<String, String> path : paths.entrySet()) {
-            htmlCode = htmlCode.replace(path.getKey(),path.getValue());
-        }
-        return htmlCode;
-    }
 
-    private Map<String, String> addParamsToParametersMapValues(Map<String,String> paths){
-        for(Map.Entry<String,String> path : paths.entrySet()){
-            path.setValue(new ServletService().addParams(name,typeOfFileWork,typeOfItem).setPathSegments(path.getValue()).toString());
-        }
-        return paths;
-    }
 
 }
