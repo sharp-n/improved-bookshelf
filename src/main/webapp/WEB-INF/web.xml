@@ -34,6 +34,10 @@
         <servlet-name>DeleteItemServlet</servlet-name>
         <servlet-class>com.company.tomcat_server.DeleteItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BorrowItemServlet</servlet-name>
+        <servlet-class>com.company.tomcat_server.BorrowItemServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>AddItemServlet</servlet-name>
@@ -62,6 +66,10 @@
     <servlet-mapping>
         <servlet-name>DeleteItemServlet</servlet-name>
         <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BorrowItemServlet</servlet-name>
+        <url-pattern>/borrow</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

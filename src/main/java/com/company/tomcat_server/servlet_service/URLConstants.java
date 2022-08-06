@@ -9,7 +9,8 @@ public class URLConstants {
     public static final String CHOOSE_ITEM_PAGE = "/choose-item";
     public static final String CHOOSE_ACTION = "/actions/*";
 
-    public static final String ADD_BOOK_PAGE = "/add-book";
+    public static final String ADD_PAGE = "/add";
+    public static final String DELETE_PAGE = "/delete";
 
     public static final String SHOW_ALL_THE_ITEMS = "/show-all-the-items";
 }
