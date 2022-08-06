@@ -91,9 +91,9 @@ public class ComicsHandler extends ItemHandler<Comics> {
     }
 
     @Override
-    public String genFormContent() {
+    public String genAddFormContent() {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
-        String form = super.genFormContent();
+        String form = super.genAddFormContent();
         return form.substring(0,form.lastIndexOf("<"))
                 + formBuild.genLabel("Publishing: ",PUBLISHING_PARAM)
                 + formBuild.genTextField(PUBLISHING_PARAM,PUBLISHING_PARAM)

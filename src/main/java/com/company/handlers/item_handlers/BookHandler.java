@@ -129,9 +129,9 @@ public class BookHandler extends ItemHandler<Book> {
     }
 
     @Override
-    public String genFormContent() {
+    public String genAddFormContent() {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
-        String form = super.genFormContent();
+        String form = super.genAddFormContent();
         return form.substring(0,form.lastIndexOf("<"))
                 + formBuild.genLabel("Author: ",AUTHOR_PARAM)
                 + formBuild.genTextField(AUTHOR_PARAM,AUTHOR_PARAM)

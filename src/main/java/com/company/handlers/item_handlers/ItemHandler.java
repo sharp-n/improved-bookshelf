@@ -124,7 +124,7 @@ public abstract class ItemHandler<T extends Item> {
         return itemAsList;
     }
 
-    public String genFormContent(){
+    public String genAddFormContent(){
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         return formBuild.genLabel("Item ID: ", ITEM_ID_PARAM)
                         + formBuild.genTextField(ITEM_ID_PARAM, ITEM_ID_PARAM)
@@ -136,6 +136,15 @@ public abstract class ItemHandler<T extends Item> {
                         + formBuild.genTextField(PAGES_PARAM, PAGES_PARAM)
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Add item");
+    }
+
+    public String genFormForGettingID(String action){
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        return formBuild.genForm(
+                formBuild.genLabel("Item ID: ", ITEM_ID_PARAM)
+                        + formBuild.genTextField(ITEM_ID_PARAM, ITEM_ID_PARAM)
+                        + NEW_LINE_TAG + NEW_LINE_TAG
+                        + formBuild.genButton(action.toUpperCase()),action);
     }
 
     public List<String> convertItemParametersMapToList(Map<String, String[]> params){
