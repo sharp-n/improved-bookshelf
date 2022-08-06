@@ -57,7 +57,7 @@ public class Librarian {
         return false;
     }
 
-    public void borrowItem(Integer itemID, boolean borrow, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public boolean borrowItem(Integer itemID, boolean borrow, ItemHandler<? extends Item> itemHandler) throws IOException {
         itemID = validator.validateIdToBorrow(itemID);
         if (itemID != null) {
             List<Item> items = workWithFiles.readToItemsList();
@@ -67,16 +67,12 @@ public class Librarian {
                     deleteItem(itemID,true);
                     item.setBorrowed(borrow);
                     addItem(itemHandler,itemHandler.getItem());
-                    out.println("Success");
-                } else if (borrow) {
-                    out.println("Item has already been taken by someone else");
-                } else {
-                    out.println("Item has already been returned");
+                    return true;
                 }
-            } else {
-                out.println("There`s no such item");
             }
+            return false;
         }
+        return false;
     }
 
     public boolean checkIDForExistence(int itemID) throws IOException {
