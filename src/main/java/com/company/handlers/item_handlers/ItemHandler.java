@@ -15,7 +15,7 @@ import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
 import static com.company.enums.SortingMenu.*;
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.servlet_service.FormConstants.*;
+import static com.company.tomcat_server.constants.FormConstants.*;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor

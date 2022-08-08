@@ -1,5 +1,8 @@
 package com.company.tomcat_server.servlet_service;
 
+import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.TemplatesConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.File;

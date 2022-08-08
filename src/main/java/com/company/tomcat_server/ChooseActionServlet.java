@@ -1,8 +1,8 @@
 package com.company.tomcat_server;
 
-import com.company.tomcat_server.servlet_service.ParametersConstants;
+import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.servlet_service.URLConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletOutputStream;

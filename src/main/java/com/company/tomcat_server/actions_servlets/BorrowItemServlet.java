@@ -6,10 +6,10 @@ import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.tomcat_server.servlet_service.FormConstants;
-import com.company.tomcat_server.servlet_service.ParametersConstants;
+import com.company.tomcat_server.constants.FormConstants;
+import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.servlet_service.TemplatesConstants;
+import com.company.tomcat_server.constants.TemplatesConstants;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;

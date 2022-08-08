@@ -11,9 +11,9 @@ import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
-import com.company.tomcat_server.servlet_service.ParametersConstants;
+import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.servlet_service.TemplatesConstants;
+import com.company.tomcat_server.constants.TemplatesConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -27,7 +27,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.company.tomcat_server.servlet_service.FormConstants.COMPARATOR_PARAM;
+import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM;
 
 @WebServlet(
         name = "ShowSortedItemsServlet",

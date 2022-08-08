@@ -1,24 +1,18 @@
 package com.company.tomcat_server;
 
 import com.company.User;
-import com.company.Validator;
-import com.company.tomcat_server.servlet_service.ParametersConstants;
+import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.servlet_service.URLConstants;
-import com.sun.javafx.fxml.builder.URLBuilder;
+import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Paths;
-import java.util.Scanner;
 
 @WebServlet(
         name = "UserLoginServlet",

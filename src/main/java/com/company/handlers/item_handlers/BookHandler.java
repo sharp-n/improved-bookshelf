@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.servlet_service.FormConstants.*;
+import static com.company.tomcat_server.constants.FormConstants.*;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor // TODO

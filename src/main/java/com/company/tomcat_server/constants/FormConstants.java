@@ -1,4 +1,4 @@
-package com.company.tomcat_server.servlet_service;
+package com.company.tomcat_server.constants;
 
 public class FormConstants {
 
