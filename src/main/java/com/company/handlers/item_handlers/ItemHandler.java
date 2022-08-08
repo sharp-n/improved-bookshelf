@@ -168,4 +168,22 @@ public abstract class ItemHandler<T extends Item> {
                 + formBuild.genButton("Sort");
     }
 
+    public String genItemChoosingForm(){
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+
+        String radioButtons = "";
+
+        for (Map.Entry<Class<? extends Item>, String> classStringEntry : ItemHandlerProvider.classSimpleNameOfClassMap.entrySet()){
+            radioButtons+= formBuild.genRadioButton("type-of-item",classStringEntry.getValue(),classStringEntry.getValue()) + NEW_LINE_TAG + NEW_LINE_TAG;
+        }
+        return formBuild.genForm(
+                formBuild.genLabel("Choose item:","type-of-item")
+                        + NEW_LINE_TAG + NEW_LINE_TAG
+                        + radioButtons
+                        + NEW_LINE_TAG + NEW_LINE_TAG
+                        + formBuild.genButton("Choose"),
+                "choose-item"
+        );
+    }
+
 }
