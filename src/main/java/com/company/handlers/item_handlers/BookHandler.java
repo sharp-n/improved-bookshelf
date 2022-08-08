@@ -13,8 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.servlet_service.FormConstants.AUTHOR_PARAM;
-import static com.company.tomcat_server.servlet_service.FormConstants.PUBLISHING_DATE_PARAM;
+import static com.company.tomcat_server.servlet_service.FormConstants.*;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor // TODO
@@ -159,5 +158,17 @@ public class BookHandler extends ItemHandler<Book> {
         }
         paramsList.add(date);
         return paramsList;
+    }
+
+    @Override
+    public String genSortFormContent() {
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        String form = super.genSortFormContent();
+        return form.substring(0,form.lastIndexOf("<"))
+                + formBuild.genRadioButton(COMPARATOR_PARAM,"author","Author")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genRadioButton(COMPARATOR_PARAM,"date","Publishing date")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Sort");
     }
 }

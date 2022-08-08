@@ -155,4 +155,17 @@ public abstract class ItemHandler<T extends Item> {
         return paramsStr;
     }
 
+    public String genSortFormContent() {
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        return formBuild.genLabel("Choose parameter for sorting", COMPARATOR_PARAM)
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genRadioButton(COMPARATOR_PARAM, "id","Item ID")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genRadioButton(COMPARATOR_PARAM, "title","Title")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genRadioButton(COMPARATOR_PARAM, "pages","Pages")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Sort");
+    }
+
 }
