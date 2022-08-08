@@ -22,9 +22,11 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "ReturnItemServlet",
-        urlPatterns = {"/" + URLConstants.RETURN_PAGE}
+        urlPatterns = {SLASH + URLConstants.RETURN_PAGE}
 )
 public class ReturnItemServlet extends HttpServlet {
 
@@ -59,13 +61,7 @@ public class ReturnItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Integer itemID;
-        try{
-            itemID = Integer.parseInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
-
-        } catch (NumberFormatException nfe){
-            itemID = -1;
-        }
+        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
         itemID = Validator.staticValidateID(itemID);
 
         String message = "O-ops! Something goes wrong...";

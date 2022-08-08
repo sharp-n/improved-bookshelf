@@ -22,9 +22,11 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "AddItemServlet",
-        urlPatterns = {"/" + URLConstants.ADD_PAGE}
+        urlPatterns = {SLASH + URLConstants.ADD_PAGE}
 )
 public class AddItemServlet extends HttpServlet {
 

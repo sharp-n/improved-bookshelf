@@ -27,10 +27,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.ParametersConstants.NAME;
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
 @WebServlet(
         name = "ShowAllTheItemsServlet",
-        urlPatterns = {"/" + URLConstants.SHOW_ALL_THE_ITEMS}
+        urlPatterns = {SLASH + URLConstants.SHOW_ALL_THE_ITEMS}
 )
 public class ShowAllTheItemsServlet extends HttpServlet {
 

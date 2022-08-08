@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "ChooseActionServlet",
-        urlPatterns = {"/" + URLConstants.CHOOSE_ACTION}
+        urlPatterns = {SLASH + URLConstants.CHOOSE_ACTION}
 )
 public class ChooseActionServlet extends HttpServlet {
 

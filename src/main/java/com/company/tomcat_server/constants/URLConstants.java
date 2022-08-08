@@ -17,5 +17,7 @@ public class URLConstants {
     public static final String SHOW_ALL_THE_ITEMS = "show-all-the-items";
     public static final String SHOW_ITEMS = "show";
 
+    public static final String SLASH = "/";
+
 
 }

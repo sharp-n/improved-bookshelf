@@ -30,10 +30,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM;
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
 @WebServlet(
         name = "ShowSortedItemsServlet",
-        urlPatterns = {"/" + URLConstants.SHOW_ITEMS}
+        urlPatterns = {SLASH + URLConstants.SHOW_ITEMS}
 )
 public class ShowSortedItemsServlet extends HttpServlet {
 

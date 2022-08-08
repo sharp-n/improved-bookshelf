@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "UserLoginServlet",
-        urlPatterns = {"/" + URLConstants.LOGIN_PAGE}
+        urlPatterns = {SLASH + URLConstants.LOGIN_PAGE}
 )
 public class UserLoginServlet extends HttpServlet {
 
@@ -24,7 +26,7 @@ public class UserLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"login.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"login.html")); // todo create constants
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();
@@ -36,8 +38,8 @@ public class UserLoginServlet extends HttpServlet {
         String login = req.getParameter(ParametersConstants.NAME);
 
         if (User.checkUserNameForValidity(login)){
-            resp.sendRedirect( new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME,login).toString());
+            resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME,login).toString());
         }
-        else resp.sendRedirect( new URIBuilder().setPath(URLConstants.LOGIN_PAGE).toString());
+        else resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.LOGIN_PAGE).toString());
     }
 }

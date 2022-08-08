@@ -15,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "ChooseItemServlet",
-        urlPatterns = {"/" + URLConstants.CHOOSE_ITEM_PAGE}
+        urlPatterns = {SLASH + URLConstants.CHOOSE_ITEM_PAGE}
 )
 public class ChooseItemServlet extends HttpServlet {
 
@@ -36,11 +38,13 @@ public class ChooseItemServlet extends HttpServlet {
 
         htmlCode = htmlCode
                 .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm())
-                .replace(TemplatesConstants.URL_SHOW_TEMPLATE, new URIBuilder().setPath(URLConstants.SHOW_ALL_THE_ITEMS)
+                .replace(TemplatesConstants.URL_SHOW_TEMPLATE, new URIBuilder()
+                        .setPathSegments(URLConstants.SHOW_ALL_THE_ITEMS)
                         .addParameter(ParametersConstants.NAME,name)
                         .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
                         .toString())
-                .replace(TemplatesConstants.ERL_TYPE_OF_FILE_WORK_TEMPLATE,new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE)
+                .replace(TemplatesConstants.ERL_TYPE_OF_FILE_WORK_TEMPLATE,new URIBuilder()
+                        .setPathSegments(URLConstants.FILE_WORK_PAGE)
                         .addParameter(ParametersConstants.NAME,name)
                         .toString());
         ServletOutputStream out = resp.getOutputStream();

@@ -1,5 +1,6 @@
 package com.company.tomcat_server.servlet_service;
 
+import com.company.tomcat_server.constants.FormConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
@@ -81,4 +82,13 @@ public class ServletService {
                 );
     }
 
+
+    public Integer parseParamToInt(String itemIDParam){
+        try{
+            return Integer.parseInt(itemIDParam);
+        } catch (NumberFormatException nfe){
+            return -1;
+        }
+
+    }
 }

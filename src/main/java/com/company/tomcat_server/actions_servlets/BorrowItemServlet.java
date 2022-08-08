@@ -22,9 +22,11 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "BorrowItemServlet",
-        urlPatterns = {"/" + URLConstants.BORROW_PAGE}
+        urlPatterns = {SLASH + URLConstants.BORROW_PAGE}
 )
 public class BorrowItemServlet extends HttpServlet {
 
@@ -59,13 +61,7 @@ public class BorrowItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Integer itemID;
-        try{
-            itemID = Integer.parseInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
-
-        } catch (NumberFormatException nfe){
-            itemID = -1;
-        }
+        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
         itemID = Validator.staticValidateID(itemID);
 
         String message = "O-ops! Something goes wrong...";
@@ -78,7 +74,7 @@ public class BorrowItemServlet extends HttpServlet {
                 message = "Item is successfully borrowed";
             }
         }
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html")); // todo optimize usage
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());

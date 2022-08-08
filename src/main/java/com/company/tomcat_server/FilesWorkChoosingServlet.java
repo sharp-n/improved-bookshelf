@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import static com.company.tomcat_server.constants.URLConstants.SLASH;
+
 @WebServlet(
         name = "FilesWorkChoosingServlet",
-        urlPatterns = {"/" + URLConstants.FILE_WORK_PAGE}
+        urlPatterns = {SLASH + URLConstants.FILE_WORK_PAGE}
 )
 public class FilesWorkChoosingServlet extends HttpServlet {
 
@@ -42,11 +44,11 @@ public class FilesWorkChoosingServlet extends HttpServlet {
         } else if (workWithOneFile.equals(ParametersConstants.FILE_PER_TYPE)){
             typeOfWorkParam = ParametersConstants.FILE_PER_TYPE;
         } else {
-            resp.sendRedirect( new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE).toString());
+            resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString());
         }
 
         resp.sendRedirect( new URIBuilder()
-                .setPath(URLConstants.CHOOSE_ITEM_PAGE)
+                .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
                 .addParameter(ParametersConstants.NAME, name)
                 .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfWorkParam)
                 .toString());
