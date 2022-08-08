@@ -6,14 +6,16 @@
 </head>
 <body topmargin="150">
 <div align="center">
-    <form method="post" action="choose-item">
-        <label >Choose with which item you want to work:</label><br><br>
-        <input type="radio" name="type-of-item" value="Book" />Book<br><br>
-        <input type="radio" name="type-of-item" value="Journal" />Journal<br><br>
-        <input type="radio" name="type-of-item" value="Newspaper" />Newspaper<br><br>
-        <input type="submit" value="Choose"><br><br><br>
-    </form>
-        <a href="{{URL}}" style="font-size: 130%; text-decoration: none">Show all the items</a>
+    {{FORM}}
+    <br><br>
+    <a href="{{URL-SHOW}}" style="font-size: 130%; text-decoration: none">Show all the items</a>
 </div>
+
+<div style="text-align: center">
+    <br><br>
+    <a href="login" style="font-size: 120%">Change user</a><br>
+    <a href="{{URL-TYPE-OF-FILE-WORK}}" style="font-size: 120%">Change type of work with files</a>
+</div>
+
 </body>
 </html>
