@@ -42,6 +42,10 @@
         <servlet-name>ReturnItemServlet</servlet-name>
         <servlet-class>com.company.tomcat_server.actions_servlets.ReturnItemServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowSortedItemsServlet</servlet-name>
+        <servlet-class>com.company.tomcat_server.actions_servlets.ShowSortedItemsServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>AddItemServlet</servlet-name>
@@ -78,6 +82,10 @@
     <servlet-mapping>
         <servlet-name>ReturnItemServlet</servlet-name>
         <url-pattern>/return</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowSortedItemsServlet</servlet-name>
+        <url-pattern>/show</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

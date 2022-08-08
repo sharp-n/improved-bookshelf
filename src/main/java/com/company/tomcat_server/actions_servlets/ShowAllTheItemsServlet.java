@@ -38,7 +38,6 @@ public class ShowAllTheItemsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        System.out.println("UserLoginServlet.doGet");
 
         ServletService servletService = new ServletService();
         name = req.getParameter(ParametersConstants.NAME);
