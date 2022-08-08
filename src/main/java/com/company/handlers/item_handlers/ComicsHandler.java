@@ -98,7 +98,17 @@ public class ComicsHandler extends ItemHandler<Comics> {
                 + formBuild.genLabel("Publishing: ",PUBLISHING_PARAM)
                 + formBuild.genTextField(PUBLISHING_PARAM,PUBLISHING_PARAM)
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genButton("Add book");
+                + formBuild.genButton("Add comics");
+    }
+
+    @Override
+    public String genSortFormContent() {
+        HTMLFormBuilder formBuild = new HTMLFormBuilder();
+        String form = super.genSortFormContent();
+        return form.substring(0,form.lastIndexOf("<"))
+                + formBuild.genRadioButton(PUBLISHING_PARAM,PUBLISHING_PARAM,"Publisher")
+                + NEW_LINE_TAG + NEW_LINE_TAG
+                + formBuild.genButton("Sort");
     }
 
 }
