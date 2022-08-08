@@ -5,6 +5,8 @@ import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
 
+import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
@@ -174,15 +176,15 @@ public abstract class ItemHandler<T extends Item> {
         String radioButtons = "";
 
         for (Map.Entry<Class<? extends Item>, String> classStringEntry : ItemHandlerProvider.classSimpleNameOfClassMap.entrySet()){
-            radioButtons+= formBuild.genRadioButton("type-of-item",classStringEntry.getValue(),classStringEntry.getValue()) + NEW_LINE_TAG + NEW_LINE_TAG;
+            radioButtons+= formBuild.genRadioButton(ParametersConstants.TYPE_OF_ITEM,classStringEntry.getValue(),classStringEntry.getValue()) + NEW_LINE_TAG + NEW_LINE_TAG;
         }
         return formBuild.genForm(
-                formBuild.genLabel("Choose item:","type-of-item")
+                formBuild.genLabel("Choose item:", ParametersConstants.TYPE_OF_ITEM)
                         + NEW_LINE_TAG + NEW_LINE_TAG
                         + radioButtons
                         + NEW_LINE_TAG + NEW_LINE_TAG
                         + formBuild.genButton("Choose"),
-                "choose-item"
+                URLConstants.CHOOSE_ITEM_PAGE
         );
     }
 

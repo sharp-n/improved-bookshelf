@@ -30,7 +30,7 @@ import static com.company.tomcat_server.constants.ParametersConstants.NAME;
 
 @WebServlet(
         name = "ShowAllTheItemsServlet",
-        urlPatterns = {URLConstants.SHOW_ALL_THE_ITEMS}
+        urlPatterns = {"/" + URLConstants.SHOW_ALL_THE_ITEMS}
 )
 public class ShowAllTheItemsServlet extends HttpServlet {
 
@@ -48,7 +48,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
 
         if(typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
 
-            resp.sendRedirect(new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE).addParameter(NAME,NAME).toString());
+            resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME,NAME).toString());
         } else{
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in),new PrintWriter(System.out));
             projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
@@ -63,7 +63,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
             htmlCode = htmlCode.replace(TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
-                    new URIBuilder().setPath("/choose-item") // todo add constants
+                    new URIBuilder().setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
                             .addParameter(NAME,name)
                             .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
                             .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)

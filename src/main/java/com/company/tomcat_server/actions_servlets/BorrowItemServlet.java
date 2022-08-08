@@ -8,6 +8,7 @@ import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.FormConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 
@@ -23,7 +24,7 @@ import java.util.Scanner;
 
 @WebServlet(
         name = "BorrowItemServlet",
-        urlPatterns = {"/borrow"}
+        urlPatterns = {"/" + URLConstants.BORROW_PAGE}
 )
 public class BorrowItemServlet extends HttpServlet {
 
@@ -44,7 +45,7 @@ public class BorrowItemServlet extends HttpServlet {
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID("borrow");
+        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.BORROW_PAGE);
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
@@ -78,7 +79,7 @@ public class BorrowItemServlet extends HttpServlet {
             }
         }
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace("{{MESSAGE}}",message);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();

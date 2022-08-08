@@ -8,6 +8,7 @@ import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.FormConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 
@@ -23,7 +24,7 @@ import java.util.Scanner;
 
 @WebServlet(
         name = "ReturnItemServlet",
-        urlPatterns = {"/return"}
+        urlPatterns = {"/" + URLConstants.RETURN_PAGE}
 )
 public class ReturnItemServlet extends HttpServlet {
 
@@ -79,7 +80,7 @@ public class ReturnItemServlet extends HttpServlet {
         }
         // todo optimize
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace("{{MESSAGE}}",message);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();

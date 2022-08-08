@@ -16,7 +16,7 @@ import java.util.Map;
 
 @WebServlet(
         name = "ChooseActionServlet",
-        urlPatterns = {URLConstants.CHOOSE_ACTION}
+        urlPatterns = {"/" + URLConstants.CHOOSE_ACTION}
 )
 public class ChooseActionServlet extends HttpServlet {
 

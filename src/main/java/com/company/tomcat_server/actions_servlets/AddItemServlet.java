@@ -9,6 +9,7 @@ import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.MessageConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.*;
 
 import javax.servlet.ServletOutputStream;
@@ -23,7 +24,7 @@ import java.util.*;
 
 @WebServlet(
         name = "AddItemServlet",
-        urlPatterns = {"/add"}
+        urlPatterns = {"/" + URLConstants.ADD_PAGE}
 )
 public class AddItemServlet extends HttpServlet {
 
@@ -45,9 +46,9 @@ public class AddItemServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
 
-        String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genAddFormContent(),"add");
+        String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
 
-        htmlCode = htmlCode.replace("{{FORM-CONTENT}}", formContent);
+        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
 
         out.write(htmlCode.getBytes());
         out.flush();

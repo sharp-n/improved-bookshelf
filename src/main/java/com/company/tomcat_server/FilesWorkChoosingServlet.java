@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 @WebServlet(
         name = "FilesWorkChoosingServlet",
-        urlPatterns = {URLConstants.FILE_WORK_PAGE}
+        urlPatterns = {"/" + URLConstants.FILE_WORK_PAGE}
 )
 public class FilesWorkChoosingServlet extends HttpServlet {
 

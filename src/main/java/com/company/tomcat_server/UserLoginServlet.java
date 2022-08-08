@@ -16,15 +16,13 @@ import java.nio.file.Paths;
 
 @WebServlet(
         name = "UserLoginServlet",
-        urlPatterns = {"/login"}
+        urlPatterns = {"/" + URLConstants.LOGIN_PAGE}
 )
 public class UserLoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        System.out.println("UserLoginServlet.doGet");
-
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"login.html"));
         ServletOutputStream out = resp.getOutputStream();
@@ -35,12 +33,10 @@ public class UserLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        System.out.println("UserLoginServlet.doPost");
-        String login = req.getParameter("login");
-        System.out.println("UserLoginServlet.doGet");
+        String login = req.getParameter(ParametersConstants.NAME);
 
         if (User.checkUserNameForValidity(login)){
-            resp.sendRedirect( new URIBuilder().setPath("/file-work-choose").addParameter(ParametersConstants.NAME,login).toString());
+            resp.sendRedirect( new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME,login).toString());
         }
         else resp.sendRedirect( new URIBuilder().setPath(URLConstants.LOGIN_PAGE).toString());
     }

@@ -3,6 +3,7 @@ package com.company.tomcat_server.actions_servlets;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.*;
 
 import javax.servlet.ServletOutputStream;
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 
 @WebServlet(
         name = "DeleteItemServlet",
-        urlPatterns = {"/delete"}
+        urlPatterns = {"/" + URLConstants.DELETE_PAGE}
 )
 public class DeleteItemServlet extends HttpServlet {
 
@@ -35,8 +36,7 @@ public class DeleteItemServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID("delete");
-
+        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
 

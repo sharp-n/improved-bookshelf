@@ -10,10 +10,12 @@ import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
+import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
+import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -31,7 +33,7 @@ import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM
 
 @WebServlet(
         name = "ShowSortedItemsServlet",
-        urlPatterns = {"/show"}
+        urlPatterns = {"/" + URLConstants.SHOW_ITEMS}
 )
 public class ShowSortedItemsServlet extends HttpServlet {
 

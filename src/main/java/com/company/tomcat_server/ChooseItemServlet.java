@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 
 @WebServlet(
         name = "ChooseItemServlet",
-        urlPatterns = {URLConstants.CHOOSE_ITEM_PAGE}
+        urlPatterns = {"/" + URLConstants.CHOOSE_ITEM_PAGE}
 )
 public class ChooseItemServlet extends HttpServlet {
 
@@ -51,7 +51,7 @@ public class ChooseItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
         resp.sendRedirect( new URIBuilder()
-                .setPathSegments(URLConstants.CHOOSE_ACTION.replace("/","").replace("*",""),typeOfItem.toLowerCase()) // todo refactor setting path
+                .setPathSegments(URLConstants.CHOOSE_ACTION,typeOfItem.toLowerCase()) // todo optimize
                 .addParameter(ParametersConstants.NAME,name)
                 .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
                 .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
