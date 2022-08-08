@@ -8,6 +8,7 @@ public class HTMLFormBuilder {
     public static final String LABEL_TAG_CLOSE = "</label>";
     public static final String INPUT_TEXT_TAG = "<input id=\"{{ID}}\" type=\"text\" name=\"{{NAME}}\">";
     public static final String INPUT_BUTTON_TAG = "<input type=\"submit\" value=\"{{VALUE}}\"/>";
+    public static final String RADIO_BUTTON_TAG = "<input type=\"radio\" name=\"{{NAME}}\" value=\"{{VALUE}}\"/>";
     public static final String NEW_LINE_TAG = "<br>";
 
 
@@ -49,6 +50,13 @@ public class HTMLFormBuilder {
         return FORM_TAG.replace("{{ACTION}}", action)
                 + formContent
                 + FORM_TAG_CLOSE;
+    }
+
+    public String genRadioButton(String name, String value, String label){
+        return RADIO_BUTTON_TAG
+                .replace("{{NAME}}",name)
+                .replace("{{VALUE}}", value)
+                + label;
     }
 
 }
