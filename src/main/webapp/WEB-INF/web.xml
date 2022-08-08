@@ -4,7 +4,7 @@
 
     <servlet>
         <servlet-name>AddItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.AddItemServlet</servlet-class>
+        <servlet-class>com.company.tomcat_server.actions_servlets.AddItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MainMenuServlet</servlet-name>
@@ -28,19 +28,19 @@
     </servlet>
     <servlet>
         <servlet-name>ShowAllTheItemsServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.ShowAllTheItemsServlet</servlet-class>
+        <servlet-class>com.company.tomcat_server.actions_servlets.ShowAllTheItemsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.DeleteItemServlet</servlet-class>
+        <servlet-class>com.company.tomcat_server.actions_servlets.DeleteItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BorrowItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.BorrowItemServlet</servlet-class>
+        <servlet-class>com.company.tomcat_server.actions_servlets.BorrowItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ReturnItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.ReturnItemServlet</servlet-class>
+        <servlet-class>com.company.tomcat_server.actions_servlets.ReturnItemServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

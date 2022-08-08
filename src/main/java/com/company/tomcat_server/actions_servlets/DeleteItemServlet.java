@@ -1,4 +1,4 @@
-package com.company.tomcat_server;
+package com.company.tomcat_server.actions_servlets;
 
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.servlet_service.*;
@@ -44,7 +44,7 @@ public class DeleteItemServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) // todo implement this method
             throws IOException {
 
     }

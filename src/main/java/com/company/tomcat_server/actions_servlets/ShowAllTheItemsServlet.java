@@ -1,4 +1,4 @@
-package com.company.tomcat_server;
+package com.company.tomcat_server.actions_servlets;
 
 import com.company.ComparatorsForSorting;
 import com.company.User;
