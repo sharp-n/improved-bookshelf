@@ -9,6 +9,7 @@ import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.servlet_service.FormConstants;
 import com.company.tomcat_server.servlet_service.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
+import com.company.tomcat_server.servlet_service.TemplatesConstants;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -45,7 +46,8 @@ public class BorrowItemServlet extends HttpServlet {
 
         String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID("borrow");
 
-        htmlCode = htmlCode.replace("{{FORM-CONTENT}}", formContent);
+        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
 
         out.write(htmlCode.getBytes());
         out.flush();
@@ -76,7 +78,7 @@ public class BorrowItemServlet extends HttpServlet {
             }
         }
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
-        htmlCode = servletService.replaceURLTemplatesInInformPage(htmlCode,name,typeOfFileWork,typeOfItem).replace("{{MESSAGE}}",message);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace("{{MESSAGE}}",message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();

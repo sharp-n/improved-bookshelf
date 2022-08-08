@@ -37,11 +37,11 @@ public class ServletService {
 
     public Map<String,String> initURLTemplatesMap(){
         Map<String, String> paths = new HashMap<>();
-        paths.put("{{URL-ADD}}","add");
-        paths.put("{{URL-DELETE}}","delete");
-        paths.put("{{URL-TAKE}}","borrow");
-        paths.put("{{URL-RETURN}}","return");
-        paths.put("{{URL-SHOW}}","show");
+        paths.put(TemplatesConstants.URL_ADD_TEMPLATE,"add");
+        paths.put(TemplatesConstants.URL_DELETE_TEMPLATE,"delete");
+        paths.put(TemplatesConstants.URL_TAKE_TEMPLATE,"borrow");
+        paths.put(TemplatesConstants.URL_RETURN_TEMPLATE,"return");
+        paths.put(TemplatesConstants.URL_SHOW_TEMPLATE,"show");
         return paths;
     }
 
@@ -59,16 +59,16 @@ public class ServletService {
         return paths;
     }
 
-    public String replaceURLTemplatesInInformPage(String htmlCode, String name, String typeOfFileWork, String typeOfItem){
+    public String replaceURLTemplatesInActionsPage(String htmlCode, String name, String typeOfFileWork, String typeOfItem){
         return htmlCode.replace(
-                        "{{URL-ITEMS-MENU}}",
+                        TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
                         new URIBuilder()
                                 .setPath(URLConstants.CHOOSE_ITEM_PAGE)
                                 .addParameter(ParametersConstants.NAME,name)
                                 .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
                                 .toString())
                 .replace(
-                        "{{URL-ACTIONS}}",
+                        TemplatesConstants.URL_ACTIONS_TEMPLATE,
                         new URIBuilder()
                                 .setPath(URLConstants.CHOOSE_ACTION)
                                 .addParameter(ParametersConstants.NAME,name)

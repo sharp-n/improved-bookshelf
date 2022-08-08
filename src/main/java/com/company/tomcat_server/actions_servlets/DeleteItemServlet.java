@@ -35,7 +35,8 @@ public class DeleteItemServlet extends HttpServlet {
 
         String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID("delete");
 
-        htmlCode = htmlCode.replace("{{FORM-CONTENT}}", formContent);
+        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
 
         out.write(htmlCode.getBytes());
         out.flush();

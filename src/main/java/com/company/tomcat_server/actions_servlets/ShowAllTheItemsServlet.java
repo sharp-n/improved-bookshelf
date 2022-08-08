@@ -11,6 +11,7 @@ import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.servlet_service.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
+import com.company.tomcat_server.servlet_service.TemplatesConstants;
 import com.company.tomcat_server.servlet_service.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -25,6 +26,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
+import static com.company.tomcat_server.servlet_service.ParametersConstants.NAME;
+
 @WebServlet(
         name = "ShowAllTheItemsServlet",
         urlPatterns = {URLConstants.SHOW_ALL_THE_ITEMS}
@@ -38,34 +41,38 @@ public class ShowAllTheItemsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-
         ServletService servletService = new ServletService();
-        name = req.getParameter(ParametersConstants.NAME);
+        name = req.getParameter(NAME);
         typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
         typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
 
-        ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in),new PrintWriter(System.out));
-        projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
+        if(typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
 
-        Librarian librarian = projectHandler.getLibrarian();
+            resp.sendRedirect(new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE).addParameter(NAME,NAME).toString());
+        } else{
+            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in),new PrintWriter(System.out));
+            projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
 
-        ItemHandler<Item> itemHandler = new DefaultItemHandler();
-        List<Item> items = librarian.workWithFiles.readToItemsList();
-        items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
-        List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
+            Librarian librarian = projectHandler.getLibrarian();
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));
-        htmlCode = htmlCode.replace("{{TABLE_CONTENT}}",new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
-        htmlCode = htmlCode.replace("{{URL}}",
-                new URIBuilder().setPath("/choose-item")
-                        .addParameter(ParametersConstants.NAME,name)
-                        .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
-                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
-                        .toString());
+            ItemHandler<Item> itemHandler = new DefaultItemHandler();
+            List<Item> items = librarian.workWithFiles.readToItemsList();
+            items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
+            List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));
+            htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
+            htmlCode = htmlCode.replace(TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
+                    new URIBuilder().setPath("/choose-item") // todo add constants
+                            .addParameter(NAME,name)
+                            .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
+                            .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                            .toString());
+
+            ServletOutputStream out = resp.getOutputStream();
+            out.write(htmlCode.getBytes());
+            out.flush();
+        }
     }
 
 }

@@ -1,13 +1,11 @@
 package com.company.tomcat_server.actions_servlets;
 
-import com.company.ComparatorsForSorting;
 import com.company.User;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
-import com.company.handlers.item_handlers.DefaultItemHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
@@ -15,6 +13,7 @@ import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import com.company.tomcat_server.servlet_service.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
+import com.company.tomcat_server.servlet_service.TemplatesConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
@@ -59,8 +57,9 @@ public class ShowSortedItemsServlet extends HttpServlet {
                         genSortFormContent(),
                 "show");
 
-        htmlCode = htmlCode.replace("{{FORM-CONTENT}}", form);
+        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, form);
 
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
         out.write(htmlCode.getBytes());
         out.flush();
 
@@ -68,10 +67,8 @@ public class ShowSortedItemsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // todo solve problem with parameters
         String comparator = req.getParameter(COMPARATOR_PARAM);
-
 
         ServletOutputStream out = resp.getOutputStream();
 
@@ -85,7 +82,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
         List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam,itemHandler);
         List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
-        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr);
+        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(),itemsAsStr);
 
         String table = tableBuilder.generateTable();
         resp.setContentType("text/html");

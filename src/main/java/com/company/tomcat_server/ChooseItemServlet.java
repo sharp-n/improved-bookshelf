@@ -1,7 +1,9 @@
 package com.company.tomcat_server;
 
+import com.company.handlers.item_handlers.DefaultItemHandler;
 import com.company.tomcat_server.servlet_service.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
+import com.company.tomcat_server.servlet_service.TemplatesConstants;
 import com.company.tomcat_server.servlet_service.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -32,12 +34,15 @@ public class ChooseItemServlet extends HttpServlet {
         name = req.getParameter(ParametersConstants.NAME);
         typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
 
-        htmlCode = htmlCode.replace("{{URL}}",
-                new URIBuilder().setPath(URLConstants.SHOW_ALL_THE_ITEMS)
+        htmlCode = htmlCode
+                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm())
+                .replace(TemplatesConstants.URL_SHOW_TEMPLATE, new URIBuilder().setPath(URLConstants.SHOW_ALL_THE_ITEMS)
                         .addParameter(ParametersConstants.NAME,name)
                         .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                        .toString())
+                .replace(TemplatesConstants.ERL_TYPE_OF_FILE_WORK_TEMPLATE,new URIBuilder().setPath(URLConstants.FILE_WORK_PAGE)
+                        .addParameter(ParametersConstants.NAME,name)
                         .toString());
-
         ServletOutputStream out = resp.getOutputStream();
         out.print(htmlCode);
     }

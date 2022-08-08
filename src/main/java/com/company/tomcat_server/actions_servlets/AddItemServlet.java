@@ -7,7 +7,6 @@ import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.servlet_service.*;
-import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -70,12 +69,12 @@ public class AddItemServlet extends HttpServlet {
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
 
         if (projectHandler.getLibrarian().addItem(itemHandler,params)){
-            htmlCode = htmlCode.replace("{{MESSAGE}}", MessageConstants.SUCCESS_MESSAGE);
+            htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.SUCCESS_MESSAGE);
         } else {
-            htmlCode = htmlCode.replace("{{MESSAGE}}", MessageConstants.FAIL_MESSAGE);
+            htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.FAIL_MESSAGE);
         }
 
-        htmlCode = servletService.replaceURLTemplatesInInformPage(htmlCode,name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();
