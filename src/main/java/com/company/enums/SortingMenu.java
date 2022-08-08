@@ -33,4 +33,13 @@ public enum SortingMenu {
                 .findFirst()
                 .orElse(DEFAULT);
     }
+
+
+    public static SortingMenu getByOption(String option){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.option.equalsIgnoreCase(option))
+                .findFirst()
+                .orElse(DEFAULT);
+    }
 }
