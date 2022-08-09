@@ -13,12 +13,10 @@ import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
-import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

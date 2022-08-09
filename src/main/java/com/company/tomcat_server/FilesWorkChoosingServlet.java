@@ -25,7 +25,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
     final ParametersFromURL param = new ParametersFromURL();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         param.getParametersFromURL(req);
@@ -34,7 +34,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String workWithOneFile = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
 

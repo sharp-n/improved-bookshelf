@@ -67,22 +67,20 @@ public class ServletService {
     }
 
     public String replaceURLTemplatesInActionsPage(String htmlCode, ParametersFromURL param){
+        htmlCode = replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
+        htmlCode = replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ACTIONS_TEMPLATE,URLConstants.CHOOSE_ACTION,param);
+        return htmlCode;
+    }
+
+    public String replaceTemplateByURL(String htmlCode, String template, String path, ParametersFromURL param){
         return htmlCode.replace(
-                        TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
-                        new URIBuilder()
-                                .setPath(URLConstants.CHOOSE_ITEM_PAGE)
-                                .addParameter(ParametersConstants.NAME,param.name)
-                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
-                                .toString())
-                .replace(
-                        TemplatesConstants.URL_ACTIONS_TEMPLATE,
-                        new URIBuilder()
-                                .setPath(URLConstants.CHOOSE_ACTION)
-                                .addParameter(ParametersConstants.NAME,param.name)
-                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
-                                .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
-                                .toString()
-                );
+                template,
+                new URIBuilder()
+                        .setPathSegments(path)
+                        .addParameter(ParametersConstants.NAME,param.name)
+                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
+                        .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
+                        .toString());
     }
 
     public Integer parseParamToInt(String itemIDParam){

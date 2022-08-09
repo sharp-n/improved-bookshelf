@@ -54,19 +54,14 @@ public class ShowAllTheItemsServlet extends HttpServlet {
 
                 Librarian librarian = projectHandler.getLibrarian();
 
-                ItemHandler<Item> itemHandler = new DefaultItemHandler();
+                ItemHandler<Item> itemHandler = new DefaultItemHandler(); // todo optimize handlers
                 List<Item> items = librarian.workWithFiles.readToItemsList();
                 items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
                 List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
                 String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
                 htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, new HtmlTableBuilder(itemHandler.columnTitles, itemsAsStr).generateTable());
-                htmlCode = htmlCode.replace(TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
-                        new URIBuilder().setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
-                                .addParameter(NAME, param.name)
-                                .addParameter(ParametersConstants.TYPE_OF_ITEM, param.typeOfItem)
-                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, param.typeOfFileWork)
-                                .toString());
+                htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
 
                 servletService.printHtmlCode(resp, htmlCode);
             }

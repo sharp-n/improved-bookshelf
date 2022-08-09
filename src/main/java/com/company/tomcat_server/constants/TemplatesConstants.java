@@ -4,7 +4,7 @@ public class TemplatesConstants {
 
     public static final String FORM_TEMPLATE = "{{FORM}}";
 
-    public static final String ERL_TYPE_OF_FILE_WORK_TEMPLATE = "{{URL-TYPE-OF-FILE-WORK}}";
+    public static final String URL_TYPE_OF_FILE_WORK_TEMPLATE = "{{URL-TYPE-OF-FILE-WORK}}";
     public static final String TABLE_TEMPLATE = "{{TABLE}}";
     public static final String URL_ITEMS_MENU_TEMPLATE = "{{URL-ITEMS-MENU}}";
     public static final String MESSAGE_TEMPLATE = "{{MESSAGE}}";

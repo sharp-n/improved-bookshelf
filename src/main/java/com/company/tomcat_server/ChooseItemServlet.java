@@ -27,7 +27,7 @@ public class ChooseItemServlet extends HttpServlet {
     final ParametersFromURL param = new ParametersFromURL();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp){
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         ServletService servletService = new ServletService();
@@ -35,22 +35,14 @@ public class ChooseItemServlet extends HttpServlet {
 
         param.getParametersFromURL(req);
 
-        htmlCode = htmlCode
-                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm()) // todo optimize
-                .replace(TemplatesConstants.URL_SHOW_TEMPLATE, new URIBuilder()
-                        .setPathSegments(URLConstants.SHOW_ALL_THE_ITEMS)
-                        .addParameter(ParametersConstants.NAME,param.name)
-                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
-                        .toString())
-                .replace(TemplatesConstants.ERL_TYPE_OF_FILE_WORK_TEMPLATE,new URIBuilder()
-                        .setPathSegments(URLConstants.FILE_WORK_PAGE)
-                        .addParameter(ParametersConstants.NAME,param.name)
-                        .toString());
+        htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_SHOW_TEMPLATE,URLConstants.SHOW_ALL_THE_ITEMS,param)
+                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm());
+        htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_TYPE_OF_FILE_WORK_TEMPLATE,URLConstants.FILE_WORK_PAGE,param);
         servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
             resp.sendRedirect(new URIBuilder()

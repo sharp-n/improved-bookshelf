@@ -9,7 +9,6 @@ import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.*;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

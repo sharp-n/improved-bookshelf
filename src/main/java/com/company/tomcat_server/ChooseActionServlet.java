@@ -38,7 +38,7 @@ public class ChooseActionServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
         try {
             resp.sendRedirect(new URIBuilder()
                     .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE, param.typeOfItem)
