@@ -1,11 +1,8 @@
 package com.company.tomcat_server.actions_servlets;
 
-import com.company.tomcat_server.constants.FileNameConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.constants.TemplatesConstants;
-import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +35,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME, NAME).toString());
             } else {
                 String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
-                String table1 = servletService.genTableOfSortedItems("itemID",param);
+                String table1 = servletService.genTableOfSortedItems(FormConstants.ITEM_ID_PARAM,param);
                 htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table1);
                 htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
                 servletService.printHtmlCode(resp, htmlCode);

@@ -54,10 +54,9 @@ public class BorrowItemServlet extends HttpServlet {
         try {
             Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
             itemID = Validator.staticValidateID(itemID);
-
             String message = MessageConstants.FAIL_MESSAGE;
             if (itemID != null) {
-                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // optimize handlers
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
                 projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
                 boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, true);

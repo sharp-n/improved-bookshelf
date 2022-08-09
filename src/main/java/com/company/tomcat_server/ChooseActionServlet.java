@@ -2,6 +2,7 @@ package com.company.tomcat_server;
 
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
@@ -26,14 +27,14 @@ public class ChooseActionServlet extends HttpServlet {
     final ParametersFromURL param = new ParametersFromURL();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException { // todo check url everywhere (here`s ok)
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_FILE));
         param.getParametersFromURL(req);
         Map<String,String> pathsWithParameters = servletService.addParamsToParametersMapValues(servletService.initURLTemplatesMap(),param);
         htmlCode = servletService.replaceURLInTemplate(htmlCode, pathsWithParameters);
-
+        htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
         servletService.printHtmlCode(resp, htmlCode);
     }
 

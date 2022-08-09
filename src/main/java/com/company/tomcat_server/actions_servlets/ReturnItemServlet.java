@@ -32,21 +32,26 @@ public class ReturnItemServlet extends HttpServlet {
     final ServletService servletService = new ServletService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) // todo show all borrowed items
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        param.getParametersFromURL(req);
+        try {
+            param.getParametersFromURL(req);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).genFormForGettingID(URLConstants.RETURN_PAGE);
+            String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)))
+                    .genFormForGettingID(URLConstants.RETURN_PAGE);
 
+            String table = servletService.genTableOfSortedItems("itemID", param);
+            htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+            htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
+            htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
 
-        String table= servletService.genTableOfSortedItems("itemID",param);
-        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
-        htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
-
-        servletService.printHtmlCode(resp, htmlCode);
+            servletService.printHtmlCode(resp, htmlCode);
+        } catch(IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
+        }
     }
 
     @Override
@@ -56,7 +61,7 @@ public class ReturnItemServlet extends HttpServlet {
             itemID = Validator.staticValidateID(itemID);
             String message = MessageConstants.FAIL_MESSAGE;
             if (itemID != null) {
-                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
                 projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
                 boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false);
@@ -70,7 +75,5 @@ public class ReturnItemServlet extends HttpServlet {
             new ServletService().printErrorPage(resp);
         }
     }
-
-
 
 }
