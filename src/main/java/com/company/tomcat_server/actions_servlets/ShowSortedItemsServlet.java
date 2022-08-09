@@ -14,6 +14,7 @@ import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 
@@ -38,31 +39,26 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class ShowSortedItemsServlet extends HttpServlet {
 
-    String name = "";
-    String typeOfFileWork = "";
-    String typeOfItem = "";
-    String htmlCode = "";
+    final ParametersFromURL param = new ParametersFromURL();
+    private String htmlCode = "";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ServletOutputStream out = resp.getOutputStream();
-
-        name = req.getParameter(ParametersConstants.NAME);
-        typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-        typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+        param.getParametersFromURL(req);
 
         ServletService servletService = new ServletService();
         htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
         HTMLFormBuilder htmlFormBuilder = new HTMLFormBuilder();
         String form = htmlFormBuilder.genForm(
                 ItemHandlerProvider.getHandlerByClass(
-                        ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).
+                        ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).
                         genSortFormContent(),
                 "show");
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, form);
 
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
         out.write(htmlCode.getBytes());
         out.flush();
 
@@ -76,9 +72,9 @@ public class ShowSortedItemsServlet extends HttpServlet {
         ServletOutputStream out = resp.getOutputStream();
 
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-        projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
-        projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
+        projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
         SortingMenu sortingParam = SortingMenu.getByOption(comparator);
         ItemHandler itemHandler = projectHandler.getItemHandler();
         Librarian librarian = projectHandler.getLibrarian();

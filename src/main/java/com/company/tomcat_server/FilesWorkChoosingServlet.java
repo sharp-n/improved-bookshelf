@@ -2,6 +2,7 @@ package com.company.tomcat_server;
 
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
@@ -22,14 +23,14 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class FilesWorkChoosingServlet extends HttpServlet {
 
-    String name = "";
+    final ParametersFromURL param = new ParametersFromURL();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
-        name = req.getParameter(ParametersConstants.NAME);
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE));
+        param.getParametersFromURL(req);
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE)); // todo wrap try-catch
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();
@@ -50,7 +51,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
 
         resp.sendRedirect( new URIBuilder()
                 .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
-                .addParameter(ParametersConstants.NAME, name)
+                .addParameter(ParametersConstants.NAME, param.name)
                 .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfWorkParam)
                 .toString());
     }

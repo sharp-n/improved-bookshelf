@@ -11,6 +11,7 @@ import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
+import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
@@ -36,24 +37,20 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class ShowAllTheItemsServlet extends HttpServlet {
 
-    String name = "";
-    String typeOfFileWork = "";
-    String typeOfItem = "";
+    final ParametersFromURL param = new ParametersFromURL();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletService servletService = new ServletService();
-        name = req.getParameter(NAME);
-        typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-        typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+        param.getParametersFromURL(req);
 
-        if(typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
+        if(param.typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
 
             resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME,NAME).toString());
         } else{
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in),new PrintWriter(System.out));
-            projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
+            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
 
             Librarian librarian = projectHandler.getLibrarian();
 
@@ -66,9 +63,9 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
             htmlCode = htmlCode.replace(TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
                     new URIBuilder().setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
-                            .addParameter(NAME,name)
-                            .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
-                            .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                            .addParameter(NAME,param.name)
+                            .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
+                            .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
                             .toString());
 
             ServletOutputStream out = resp.getOutputStream();

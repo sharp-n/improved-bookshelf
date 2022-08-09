@@ -27,24 +27,20 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class AddItemServlet extends HttpServlet {
 
-    String name = "";
-    String typeOfFileWork = "";
-    String typeOfItem = "";
+    final ParametersFromURL param = new ParametersFromURL();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletOutputStream out = resp.getOutputStream();
 
-        name = req.getParameter(ParametersConstants.NAME);
-        typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-        typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+        param.getParametersFromURL(req);
 
-        System.out.println(typeOfItem);
+        System.out.println(param.typeOfItem);
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
+        String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
 
@@ -61,12 +57,11 @@ public class AddItemServlet extends HttpServlet {
 
 
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-        projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
+        projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
         ItemHandler itemHandler = projectHandler.getItemHandler();
 
         List<String> params = itemHandler.convertItemParametersMapToList(req.getParameterMap());
-        params.forEach(o->System.out.println(o));
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_FILE));
 
@@ -76,13 +71,11 @@ public class AddItemServlet extends HttpServlet {
             htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.FAIL_MESSAGE);
         }
 
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();
 
     }
-
-
 
 }

@@ -1,6 +1,5 @@
 package com.company.tomcat_server.servlet_service;
 
-import com.company.tomcat_server.constants.FormConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
@@ -56,32 +55,31 @@ public class ServletService {
         return htmlCode;
     }
 
-    public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, String nameParam, String typeOfFileWorkParam, String typeOfItemParam){
+    public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, ParametersFromURL param){
         for(Map.Entry<String,String> path : paths.entrySet()){
-            path.setValue(new ServletService().addParams(nameParam,typeOfFileWorkParam,typeOfItemParam).setPathSegments(path.getValue()).toString());
+            path.setValue(new ServletService().addParams(param.name,param.typeOfFileWork,param.typeOfItem).setPathSegments(path.getValue()).toString());
         }
         return paths;
     }
 
-    public String replaceURLTemplatesInActionsPage(String htmlCode, String name, String typeOfFileWork, String typeOfItem){
+    public String replaceURLTemplatesInActionsPage(String htmlCode, ParametersFromURL param){
         return htmlCode.replace(
                         TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
                         new URIBuilder()
                                 .setPath(URLConstants.CHOOSE_ITEM_PAGE)
-                                .addParameter(ParametersConstants.NAME,name)
-                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
+                                .addParameter(ParametersConstants.NAME,param.name)
+                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
                                 .toString())
                 .replace(
                         TemplatesConstants.URL_ACTIONS_TEMPLATE,
                         new URIBuilder()
                                 .setPath(URLConstants.CHOOSE_ACTION)
-                                .addParameter(ParametersConstants.NAME,name)
-                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfFileWork)
-                                .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
+                                .addParameter(ParametersConstants.NAME,param.name)
+                                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
+                                .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
                                 .toString()
                 );
     }
-
 
     public Integer parseParamToInt(String itemIDParam){
         try{

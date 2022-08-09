@@ -22,25 +22,21 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class DeleteItemServlet extends HttpServlet {
 
-    String name = "";
-    String typeOfFileWork = "";
-    String typeOfItem = "";
-    ServletService servletService = new ServletService();
+    final ParametersFromURL param = new ParametersFromURL();
+    final ServletService servletService = new ServletService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletOutputStream out = resp.getOutputStream(); // todo optimize
 
-        name = req.getParameter(ParametersConstants.NAME);
-        typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-        typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+        param.getParametersFromURL(req);
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
+        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
 
         out.write(htmlCode.getBytes());
         out.flush();

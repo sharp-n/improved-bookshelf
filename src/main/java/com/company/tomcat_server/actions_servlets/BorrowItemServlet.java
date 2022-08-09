@@ -7,6 +7,7 @@ import com.company.enums.MainMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.*;
+import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 
 import javax.servlet.ServletOutputStream;
@@ -27,9 +28,7 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
 )
 public class BorrowItemServlet extends HttpServlet {
 
-    String name = "";
-    String typeOfFileWork = "";
-    String typeOfItem = "";
+    final ParametersFromURL param = new ParametersFromURL();
 
     ServletService servletService = new ServletService();
 
@@ -38,16 +37,14 @@ public class BorrowItemServlet extends HttpServlet {
             throws IOException {
         ServletOutputStream out = resp.getOutputStream(); // todo optimize usage
 
-        name = req.getParameter(ParametersConstants.NAME);
-        typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-        typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+        param.getParametersFromURL(req);
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.BORROW_PAGE);
+        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.BORROW_PAGE);
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
 
         out.write(htmlCode.getBytes());
         out.flush();
@@ -64,15 +61,15 @@ public class BorrowItemServlet extends HttpServlet {
         String message = "O-ops! Something goes wrong...";
         if (itemID!=null){
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-            projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
-            projectHandler.fileSwitch(FilesMenu.getByOption(typeOfFileWork), new User(name));
+            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
             boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID,true,projectHandler.getItemHandler());
             if (borrowed) {
                 message = "Item is successfully borrowed";
             }
         }
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.INFORM_PAGE_FILE)); // todo optimize usage
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();
