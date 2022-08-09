@@ -22,13 +22,13 @@ public class ServletService {
     public String getTextFromFile(Path filePath) {
         try {
             File file = filePath.toFile();
-            String htmlCode = "";
+            StringBuilder htmlCode = new StringBuilder();
             Scanner in = new Scanner(file);
             while (in.hasNext()) {
-                htmlCode += in.nextLine() + " " + "\n"; // TODO fix concatenation
+                htmlCode.append(in.nextLine()).append(" ").append("\n");
             }
             in.close();
-            return htmlCode;
+            return htmlCode.toString();
         } catch (FileNotFoundException fileNotFoundException){
             return null; // TODO FIX null
         }
