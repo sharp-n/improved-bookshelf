@@ -1,61 +1,42 @@
 package com.company.tomcat_server.servlet_service;
 
+import com.company.tomcat_server.constants.TemplatesConstants;
+
 public class HTMLFormBuilder {
 
-    public static final String FORM_TAG = "<form method=\"post\" action=\"{{ACTION}}\">";
+    public static final String FORM_TAG = "<form method=\"post\" action=\"" + TemplatesConstants.ACTION_TEMPLATE + "\">";
     public static final String FORM_TAG_CLOSE = "</form>";
-    public static final String LABEL_TAG = "<label for=\"{{NAME}}\">";
+    public static final String LABEL_TAG = "<label for=\"" + TemplatesConstants.NAME_TEMPLATE +"\">";
     public static final String LABEL_TAG_CLOSE = "</label>";
-    public static final String INPUT_TEXT_TAG = "<input id=\"{{ID}}\" type=\"text\" name=\"{{NAME}}\">";
-    public static final String INPUT_BUTTON_TAG = "<input type=\"submit\" value=\"{{VALUE}}\"/>";
-    public static final String RADIO_BUTTON_TAG = "<input type=\"radio\" name=\"{{NAME}}\" value=\"{{VALUE}}\"/>";
+    public static final String INPUT_TEXT_TAG = "<input id=\"" + TemplatesConstants.ID_TEMPLATE + "\" type=\"text\" name=\"" + TemplatesConstants.NAME_TEMPLATE + "\">";
+    public static final String INPUT_BUTTON_TAG = "<input type=\"submit\" value=\"" + TemplatesConstants.VALUE_TEMPLATE + "\"/>";
+    public static final String RADIO_BUTTON_TAG = "<input type=\"radio\" name=\"" + TemplatesConstants.NAME_TEMPLATE + "\" value=\"" + TemplatesConstants.VALUE_TEMPLATE + "\"/>";
     public static final String NEW_LINE_TAG = "<br>";
 
-
-
-    /*
-    <form method="post" action="/main">
-        <label for="title">Title: </label>
-        <input id="title" type="text" name="title"><br><br>
-
-        <label for="author">Author: </label>
-        <input id="author" type="text" name="author"><br><br>
-
-        <label for="publishing-date">Publishing date: </label>
-        <input id="publishing-date" type="text" name="publishing-date"><br><br>
-
-        <label for="pages">Pages: </label>
-        <input id="pages" type="text" name="pages"><br><br>
-
-        <input type="submit" value="Add book" />
-    </form>
-
-    */
-
     public String genLabel(String label, String inputNameParam){
-        return LABEL_TAG.replace("{{NAME}}", inputNameParam) +
+        return LABEL_TAG.replace(TemplatesConstants.NAME_TEMPLATE, inputNameParam) +
                 label +
                 LABEL_TAG_CLOSE;
     }
 
     public String genButton(String label){
-        return INPUT_BUTTON_TAG.replace("{{VALUE}}", label);
+        return INPUT_BUTTON_TAG.replace(TemplatesConstants.VALUE_TEMPLATE, label);
     }
 
     public String genTextField(String id, String name){
-        return INPUT_TEXT_TAG.replace("{{ID}}", id).replace("{{NAME}}",name);
+        return INPUT_TEXT_TAG.replace(TemplatesConstants.ID_TEMPLATE, id).replace(TemplatesConstants.NAME_TEMPLATE,name);
     }
 
     public String genForm(String formContent, String action){
-        return FORM_TAG.replace("{{ACTION}}", action)
+        return FORM_TAG.replace(TemplatesConstants.ACTION_TEMPLATE, action)
                 + formContent
                 + FORM_TAG_CLOSE;
     }
 
     public String genRadioButton(String name, String value, String label){
         return RADIO_BUTTON_TAG
-                .replace("{{NAME}}",name)
-                .replace("{{VALUE}}", value)
+                .replace(TemplatesConstants.NAME_TEMPLATE,name)
+                .replace(TemplatesConstants.VALUE_TEMPLATE, value)
                 + label;
     }
 

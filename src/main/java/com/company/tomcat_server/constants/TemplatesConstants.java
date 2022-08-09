@@ -2,6 +2,9 @@ package com.company.tomcat_server.constants;
 
 public class TemplatesConstants {
 
+    private TemplatesConstants() {
+    }
+
     public static final String FORM_TEMPLATE = "{{FORM}}";
 
     public static final String URL_TYPE_OF_FILE_WORK_TEMPLATE = "{{URL-TYPE-OF-FILE-WORK}}";
@@ -15,5 +18,10 @@ public class TemplatesConstants {
     public static final String URL_RETURN_TEMPLATE = "{{URL-RETURN}}";
     public static final String URL_DELETE_TEMPLATE = "{{URL-DELETE}}";
     public static final String URL_TAKE_TEMPLATE = "{{URL-TAKE}}";
+
+    public static final String NAME_TEMPLATE = "{{NAME}}";
+    public static final String VALUE_TEMPLATE = "{{VALUE}}";
+    public static final String ACTION_TEMPLATE = "{{ACTION}}";
+    public static final String ID_TEMPLATE = "{{ID}}";
 
 }
