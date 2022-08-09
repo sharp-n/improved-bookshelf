@@ -40,7 +40,10 @@ public class ReturnItemServlet extends HttpServlet {
 
         String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).genFormForGettingID(URLConstants.RETURN_PAGE);
 
+
+        String table= servletService.genTableOfSortedItems("itemID",param);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+        htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
 
         servletService.printHtmlCode(resp, htmlCode);
@@ -51,15 +54,14 @@ public class ReturnItemServlet extends HttpServlet {
         try {
             Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
             itemID = Validator.staticValidateID(itemID);
-
-            String message = "O-ops! Something goes wrong...";
+            String message = MessageConstants.FAIL_MESSAGE;
             if (itemID != null) {
                 ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
                 projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false, projectHandler.getItemHandler());
+                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false);
                 if (borrowed) {
-                    message = "Item is successfully borrowed";
+                    message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "returned";
                 }
             }
             servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);

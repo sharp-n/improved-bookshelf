@@ -112,7 +112,9 @@ public abstract class ItemHandler<T extends Item> {
     }
 
     public String borrowedToString(Item item){
-        return Boolean.toString(item.isBorrowed());
+        if(item.isBorrowed()){
+            return "yes";
+        } else return "no";
     }
 
     public List<String> itemToString(Item item){

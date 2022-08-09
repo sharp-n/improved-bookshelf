@@ -40,8 +40,10 @@ public class BorrowItemServlet extends HttpServlet {
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
         String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).genFormForGettingID(URLConstants.BORROW_PAGE);
-
+        String table = servletService.genTableOfSortedItems("itemID",param);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+        htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
+
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
 
         servletService.printHtmlCode(resp, htmlCode);
@@ -50,17 +52,17 @@ public class BorrowItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM)); // todo show all the items
+            Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
             itemID = Validator.staticValidateID(itemID);
 
-            String message = "O-ops! Something goes wrong...";
+            String message = MessageConstants.FAIL_MESSAGE;
             if (itemID != null) {
                 ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
                 projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, true, projectHandler.getItemHandler());
+                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, true);
                 if (borrowed) {
-                    message = "Item is successfully borrowed";
+                    message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "borrowed";
                 }
             }
             servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);

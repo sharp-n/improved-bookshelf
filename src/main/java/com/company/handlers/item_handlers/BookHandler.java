@@ -42,12 +42,11 @@ public class BookHandler extends ItemHandler<Book> {
         String author = options.get(3);
         String [] date = options.get(4).split("\\.");
 
-        GregorianCalendar publishingDate = validateDate(Integer.parseInt(date[0].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[2].trim()));
+        GregorianCalendar publishingDate = validateDate(Integer.parseInt(date[2].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[0].trim()));
         if (publishingDate == null) {return null;}
 
         return new Book(itemID,title, author, publishingDate,pages);
     }
-
 
     public GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
         if (day == null || month == null || year == null) {
@@ -81,7 +80,7 @@ public class BookHandler extends ItemHandler<Book> {
         Integer publishingDay = userInput.dayUserInput();
 
         itemOptions.add(author);
-        itemOptions.add(publishingYear + " . " + publishingMonth + " . " + publishingDay);
+        itemOptions.add(publishingDay + " . " + publishingMonth + " . " + publishingYear);
 
         return itemOptions;
 
@@ -152,7 +151,7 @@ public class BookHandler extends ItemHandler<Book> {
     @Override
     public List<String> convertItemParametersMapToList(Map<String, String[]> params){
         List<String> paramsList = super.convertItemParametersMapToList(params);
-        String date = paramsList.get(6) + "." + paramsList.get(5) + "." + paramsList.get(4);
+        String date = paramsList.get(4) + "." + paramsList.get(5) + "." + paramsList.get(6);
         for (int i = 3; i>0; i--){
             paramsList.remove(paramsList.size()-1);
         }

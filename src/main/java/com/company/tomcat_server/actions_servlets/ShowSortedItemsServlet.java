@@ -1,15 +1,6 @@
 package com.company.tomcat_server.actions_servlets;
 
-import com.company.User;
-import com.company.enums.FilesMenu;
-import com.company.enums.MainMenu;
-import com.company.enums.SortingMenu;
-import com.company.handlers.Librarian;
-import com.company.handlers.ProjectHandler;
-import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.items.Item;
-import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
@@ -23,11 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM;
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
@@ -62,24 +50,11 @@ public class ShowSortedItemsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            // todo optimize tablesff
-
             String comparator = req.getParameter(COMPARATOR_PARAM);
 
             ServletOutputStream out = resp.getOutputStream();
 
-            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-            SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-            ItemHandler itemHandler = projectHandler.getItemHandler();
-            Librarian librarian = projectHandler.getLibrarian();
-            List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
-            List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
-            itemsAsStr.forEach(item->item.forEach(option->option = option.replace("true","yes").replace("false", "no")));
-            HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(), itemsAsStr);
-
-            String table = tableBuilder.generateTable();
+            String table = new ServletService().genTableOfSortedItems(comparator,param);
             resp.setContentType("text/html");
             out.write(htmlCode.getBytes());
             out.println("<br><br><div align=\"center\">" + table + "</div>");
@@ -90,4 +65,6 @@ public class ShowSortedItemsServlet extends HttpServlet {
             new ServletService().printErrorPage(resp);
         }
     }
+
+
 }

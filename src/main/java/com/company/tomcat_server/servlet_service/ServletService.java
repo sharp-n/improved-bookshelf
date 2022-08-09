@@ -1,5 +1,14 @@
 package com.company.tomcat_server.servlet_service;
 
+import com.company.User;
+import com.company.enums.FilesMenu;
+import com.company.enums.MainMenu;
+import com.company.enums.SortingMenu;
+import com.company.handlers.Librarian;
+import com.company.handlers.ProjectHandler;
+import com.company.handlers.item_handlers.ItemHandler;
+import com.company.items.Item;
+import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
@@ -11,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -112,6 +122,20 @@ public class ServletService {
     public void printErrorPage(HttpServletResponse resp){
         String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), FileNameConstants.ERROR_PAGE_FILE));
         printHtmlCode(resp, htmlCode);
+    }
+
+
+    public String genTableOfSortedItems(String comparator, ParametersFromURL param) throws IOException {
+        ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+        projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
+        ItemHandler itemHandler = projectHandler.getItemHandler();
+        Librarian librarian = projectHandler.getLibrarian();
+        List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
+        List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
+        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(), itemsAsStr);
+        return tableBuilder.generateTable();
     }
 
 }

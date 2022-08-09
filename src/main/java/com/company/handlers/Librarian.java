@@ -40,6 +40,16 @@ public class Librarian {
         return true;
     }
 
+    public boolean addItem(Item item) throws IOException {
+        if (checkIDForExistence(item.getItemID())) {
+            out.println("Item with this ID exists. Please change ID and try again");
+            return false;
+        }
+        workWithFiles.addItemToFile(item);
+        out.println("Item was successful added");
+        return true;
+    }
+
     public boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException {
         itemID = validator.validateIdToBorrow(itemID);
         if (itemID != null) {
@@ -57,18 +67,16 @@ public class Librarian {
         return false;
     }
 
-    public boolean borrowItem(Integer itemID, boolean borrow, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public boolean borrowItem(Integer itemID, boolean borrow) throws IOException {
         itemID = validator.validateIdToBorrow(itemID);
         if (itemID != null) {
             List<Item> items = workWithFiles.readToItemsList();
             Item item = findItemByID(itemID, items);
-            if (item != null) {
-                if (item.isBorrowed() != borrow) {
-                    deleteItem(itemID,true);
-                    item.setBorrowed(borrow);
-                    addItem(itemHandler,itemHandler.getItem());
-                    return true;
-                }
+            if (item != null&&item.isBorrowed() != borrow) {
+                deleteItem(itemID, true);
+                item.setBorrowed(borrow);
+                addItem(item);
+                return true;
             }
             return false;
         }
@@ -103,11 +111,10 @@ public class Librarian {
         return null;
     }
 
-    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) { // todo change printing "true/false" by "yes/no"
+    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
             List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
-            strItems.forEach(item->item.forEach(option->option = option.replace("true","yes").replace("false", "no")));
             List<String> options = itemHandler.getColumnTitles();
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
@@ -129,7 +136,7 @@ public class Librarian {
 
     public List<? extends Item> initSortingItemsByComparator(FilesWorker workWithFiles, SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
-        List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
+        List<Item> items =   workWithFiles.readToAnyItemList(typeOfItem);
         switch (sortingParameter) {
             case RETURN_VALUE:
                 break;

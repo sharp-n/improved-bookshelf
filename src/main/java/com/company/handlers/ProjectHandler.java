@@ -189,11 +189,11 @@ public class ProjectHandler {
                     break;
 
                 case TAKE:
-                    librarian.borrowItem(userInput.idUserInput(),true,itemHandler);
+                    librarian.borrowItem(userInput.idUserInput(),true);
                     break;
 
                 case RETURN:
-                    librarian.borrowItem(userInput.idUserInput(),false,itemHandler);
+                    librarian.borrowItem(userInput.idUserInput(),false);
                     break;
 
                 case SHOW:

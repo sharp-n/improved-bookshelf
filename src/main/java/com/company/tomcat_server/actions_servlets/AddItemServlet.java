@@ -57,8 +57,10 @@ public class AddItemServlet extends HttpServlet {
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_FILE));
 
+        params.forEach(o->System.out.println(o));
+
         if (projectHandler.getLibrarian().addItem(itemHandler,params)){
-            htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.SUCCESS_MESSAGE);
+            htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "added");
         } else {
             htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.FAIL_MESSAGE);
         }

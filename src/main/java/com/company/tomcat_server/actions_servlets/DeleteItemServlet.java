@@ -33,24 +33,31 @@ public class DeleteItemServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        param.getParametersFromURL(req);
+        try {
+            param.getParametersFromURL(req);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
-        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
+            String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
+            String table = servletService.genTableOfSortedItems("itemID", param);
+            htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
+            htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
+            htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
 
-        servletService.printHtmlCode(resp, htmlCode);
+            servletService.printHtmlCode(resp, htmlCode);
+        } catch(IOException ioException){
+            ioException.printStackTrace();
+            servletService.printErrorPage(resp);
+        }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {// todo show all the items
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
             itemID = Validator.staticValidateID(itemID);
 
-            String message = "O-ops! Something goes wrong...";
+            String message = MessageConstants.FAIL_MESSAGE;
 
             if (itemID != null) {
                 ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
@@ -58,7 +65,7 @@ public class DeleteItemServlet extends HttpServlet {
                 projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
                 boolean deleted = projectHandler.getLibrarian().deleteItem(itemID, true);
                 if (deleted) {
-                    message = "Item is successfully deleted";
+                    message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "deleted";
                 }
             }
             servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);
