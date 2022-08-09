@@ -9,7 +9,7 @@ public enum SortingMenu {
     TITLE(2, "Title"),
     PAGES(3, "Pages"),
     AUTHOR(4, "Author"),
-    PUBLISHING_DATE(5, "Publishing date"),
+    PUBLISHING_DATE(5, "Publishing Date"),
     PUBLISHING(6, "Publishing"),
     DEFAULT(-1, "DEFAULT");
 
@@ -38,7 +38,7 @@ public enum SortingMenu {
     public static SortingMenu getByOption(String option){
         return Arrays
                 .stream(values())
-                .filter(e -> e.option.equalsIgnoreCase(option))
+                .filter(e -> e.option.replace(" ", "").equalsIgnoreCase(option))
                 .findFirst()
                 .orElse(DEFAULT);
     }

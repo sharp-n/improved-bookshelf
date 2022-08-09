@@ -165,9 +165,9 @@ public class BookHandler extends ItemHandler<Book> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         String form = super.genSortFormContent();
         return form.substring(0,form.lastIndexOf("<"))
-                + formBuild.genRadioButton(COMPARATOR_PARAM,"author","Author")
+                + formBuild.genRadioButton(COMPARATOR_PARAM,AUTHOR_PARAM,"Author")
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM,"date","Publishing date")
+                + formBuild.genRadioButton(COMPARATOR_PARAM,PUBLISHING_DATE_PARAM,"Publishing date")
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Sort");
     }

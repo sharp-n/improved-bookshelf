@@ -53,7 +53,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
                                 ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).
                         genSortFormContent(),
                 "show");
-        htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, form);
+        htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, form);
 
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
         servletService.printHtmlCode(resp, htmlCode);
@@ -62,6 +62,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
+            // todo optimize tablesff
 
             String comparator = req.getParameter(COMPARATOR_PARAM);
 
@@ -70,13 +71,12 @@ public class ShowSortedItemsServlet extends HttpServlet {
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
             projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
             projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
             SortingMenu sortingParam = SortingMenu.getByOption(comparator);
             ItemHandler itemHandler = projectHandler.getItemHandler();
             Librarian librarian = projectHandler.getLibrarian();
             List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
             List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
-
+            itemsAsStr.forEach(item->item.forEach(option->option = option.replace("true","yes").replace("false", "no")));
             HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(), itemsAsStr);
 
             String table = tableBuilder.generateTable();

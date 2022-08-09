@@ -19,6 +19,11 @@ public class DefaultItemHandler extends ItemHandler<Item> {
     }
 
     @Override
+    public Item createItem(List<String> options) {
+        return null;
+    }
+
+    @Override
     public List<List<String>> anyItemsToString(List<Item> items) {
         List<List<String>> itemsAsStringList = new ArrayList<>();
         for (Item item: items) {

@@ -49,9 +49,7 @@ public abstract class ItemHandler<T extends Item> {
 
     public abstract List<T> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator);
 
-    public T createItem(List<String> options){
-        return null; // todo refactor -> make abstract
-    }
+    public abstract T createItem(List<String> options);
 
     public List<String> getItem() {
         Integer itemID = validator.validateID(userInput.idUserInput());
@@ -161,7 +159,7 @@ public abstract class ItemHandler<T extends Item> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         return formBuild.genLabel("Choose parameter for sorting", COMPARATOR_PARAM)
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM, "id","Item ID")
+                + formBuild.genRadioButton(COMPARATOR_PARAM, ITEM_ID_PARAM,"Item ID")
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genRadioButton(COMPARATOR_PARAM, "title","Title")
                 + NEW_LINE_TAG + NEW_LINE_TAG
@@ -173,10 +171,10 @@ public abstract class ItemHandler<T extends Item> {
     public String genItemChoosingForm(){
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
 
-        String radioButtons = "";
+        StringBuilder radioButtons = new StringBuilder();
 
         for (Map.Entry<Class<? extends Item>, String> classStringEntry : ItemHandlerProvider.classSimpleNameOfClassMap.entrySet()){
-            radioButtons+= formBuild.genRadioButton(ParametersConstants.TYPE_OF_ITEM,classStringEntry.getValue(),classStringEntry.getValue()) + NEW_LINE_TAG + NEW_LINE_TAG;
+            radioButtons.append(formBuild.genRadioButton(ParametersConstants.TYPE_OF_ITEM, classStringEntry.getValue(), classStringEntry.getValue())).append(NEW_LINE_TAG).append(NEW_LINE_TAG);
         }
         return formBuild.genForm(
                 formBuild.genLabel("Choose item:", ParametersConstants.TYPE_OF_ITEM)

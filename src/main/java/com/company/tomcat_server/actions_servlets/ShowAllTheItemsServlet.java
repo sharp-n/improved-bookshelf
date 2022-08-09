@@ -58,7 +58,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
                 List<Item> items = librarian.workWithFiles.readToItemsList();
                 items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
                 List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
-
+                itemsAsStr.forEach(item->item.forEach(option->option = option.replace("true","yes").replace("false", "no")));
                 String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
                 htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, new HtmlTableBuilder(itemHandler.columnTitles, itemsAsStr).generateTable());
                 htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);

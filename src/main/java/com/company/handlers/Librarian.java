@@ -107,6 +107,7 @@ public class Librarian {
         if (items.isEmpty()) out.println("There`s no items here");
         else {
             List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
+            strItems.forEach(item->item.forEach(option->option = option.replace("true","yes").replace("false", "no")));
             List<String> options = itemHandler.getColumnTitles();
             TableUtil tableUtil = new TableUtil(options, strItems, out);
             tableUtil.printTable();
