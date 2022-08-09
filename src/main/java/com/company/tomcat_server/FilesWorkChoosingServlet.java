@@ -31,9 +31,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         param.getParametersFromURL(req);
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE)); // todo wrap try-catch
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override

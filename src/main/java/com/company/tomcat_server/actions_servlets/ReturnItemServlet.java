@@ -32,9 +32,9 @@ public class ReturnItemServlet extends HttpServlet {
     final ServletService servletService = new ServletService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) // todo show all borrowed items
             throws IOException {
-        ServletOutputStream out = resp.getOutputStream(); // todo optimize usage
+        // todo optimize usage
 
         param.getParametersFromURL(req);
 
@@ -45,10 +45,7 @@ public class ReturnItemServlet extends HttpServlet {
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
 
-        out.write(htmlCode.getBytes());
-        out.flush();
-
-        out.close();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
@@ -67,13 +64,9 @@ public class ReturnItemServlet extends HttpServlet {
                 message = "Item is successfully borrowed";
             }
         }
-        // todo optimize
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_FILE));
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
-        out.close();
+        servletService.generateAndPrintHTMLCode(resp, message,param, FileNameConstants.INFORM_PAGE_FILE );
     }
+
+
 
 }

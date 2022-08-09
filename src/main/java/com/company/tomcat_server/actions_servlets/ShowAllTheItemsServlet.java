@@ -68,9 +68,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
                             .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
                             .toString());
 
-            ServletOutputStream out = resp.getOutputStream();
-            out.write(htmlCode.getBytes());
-            out.flush();
+            servletService.printHtmlCode(resp, htmlCode);
         }
     }
 

@@ -5,8 +5,11 @@ import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -89,4 +92,18 @@ public class ServletService {
         }
 
     }
+
+    public void generateAndPrintHTMLCode(HttpServletResponse resp, String message, ParametersFromURL param, String fileName) throws IOException {
+        String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), fileName));
+        htmlCode = replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE, message);
+        printHtmlCode(resp,htmlCode);
+    }
+
+    public void printHtmlCode(HttpServletResponse resp,String htmlCode) throws IOException{
+        ServletOutputStream out = resp.getOutputStream();
+        out.write(htmlCode.getBytes());
+        out.flush();
+        out.close();
+    }
+
 }

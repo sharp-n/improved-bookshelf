@@ -47,8 +47,7 @@ public class ChooseItemServlet extends HttpServlet {
                         .setPathSegments(URLConstants.FILE_WORK_PAGE)
                         .addParameter(ParametersConstants.NAME,param.name)
                         .toString());
-        ServletOutputStream out = resp.getOutputStream();
-        out.print(htmlCode);
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override

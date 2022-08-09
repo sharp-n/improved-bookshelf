@@ -32,7 +32,7 @@ public class AddItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        ServletOutputStream out = resp.getOutputStream();
+
 
         param.getParametersFromURL(req);
 
@@ -44,10 +44,7 @@ public class AddItemServlet extends HttpServlet {
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
 
-        out.write(htmlCode.getBytes());
-        out.flush();
-
-        out.close();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
@@ -72,10 +69,7 @@ public class AddItemServlet extends HttpServlet {
         }
 
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
-
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
 }

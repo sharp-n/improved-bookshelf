@@ -35,8 +35,7 @@ public class ChooseActionServlet extends HttpServlet {
         Map<String,String> pathsWithParameters = servletService.addParamsToParametersMapValues(servletService.initURLTemplatesMap(),param);
         htmlCode = servletService.replaceURLInTemplate(htmlCode, pathsWithParameters);
 
-        ServletOutputStream out = resp.getOutputStream();
-        out.print(htmlCode);
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override

@@ -30,12 +30,12 @@ public class BorrowItemServlet extends HttpServlet {
 
     final ParametersFromURL param = new ParametersFromURL();
 
-    ServletService servletService = new ServletService();
+    final ServletService servletService = new ServletService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        ServletOutputStream out = resp.getOutputStream(); // todo optimize usage
+        // todo optimize usage
 
         param.getParametersFromURL(req);
 
@@ -46,16 +46,13 @@ public class BorrowItemServlet extends HttpServlet {
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
 
-        out.write(htmlCode.getBytes());
-        out.flush();
-
-        out.close();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
+        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM)); // todo show all the items
         itemID = Validator.staticValidateID(itemID);
 
         String message = "O-ops! Something goes wrong...";
@@ -68,12 +65,7 @@ public class BorrowItemServlet extends HttpServlet {
                 message = "Item is successfully borrowed";
             }
         }
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.INFORM_PAGE_FILE)); // todo optimize usage
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
-        out.close();
+        servletService.generateAndPrintHTMLCode(resp,message,param,FileNameConstants.INFORM_PAGE_FILE);
     }
 
 }

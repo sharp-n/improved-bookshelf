@@ -28,9 +28,7 @@ public class UserLoginServlet extends HttpServlet {
             throws IOException {
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.LOGIN_FILE));
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override

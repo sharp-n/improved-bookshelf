@@ -44,7 +44,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ServletOutputStream out = resp.getOutputStream();
+
         param.getParametersFromURL(req);
 
         ServletService servletService = new ServletService();
@@ -59,10 +59,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, form);
 
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
-        out.write(htmlCode.getBytes());
-        out.flush();
-
-        out.close();
+        servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override

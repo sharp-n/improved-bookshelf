@@ -103,7 +103,7 @@ public class Librarian {
         return null;
     }
 
-    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) {
+    public <T extends Item> void printItems(List<T> items, ItemHandler<? extends Item> itemHandler) { // todo change printing "true/false" by "yes/no"
         if (items.isEmpty()) out.println("There`s no items here");
         else {
             List<List<String>> strItems = itemHandler.itemsToString(items,itemHandler);
