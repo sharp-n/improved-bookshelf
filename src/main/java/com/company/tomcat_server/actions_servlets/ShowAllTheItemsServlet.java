@@ -9,6 +9,7 @@ import com.company.handlers.item_handlers.DefaultItemHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
+import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
@@ -61,7 +62,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             items = itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
             List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
-            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"show-all-the-items-template.html"));
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,new HtmlTableBuilder(itemHandler.columnTitles,itemsAsStr).generateTable());
             htmlCode = htmlCode.replace(TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,
                     new URIBuilder().setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)

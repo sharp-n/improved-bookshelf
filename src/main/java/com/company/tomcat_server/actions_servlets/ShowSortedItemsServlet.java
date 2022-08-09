@@ -10,12 +10,12 @@ import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
+import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
-import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -52,7 +52,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
         typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
 
         ServletService servletService = new ServletService();
-        htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
+        htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
         HTMLFormBuilder htmlFormBuilder = new HTMLFormBuilder();
         String form = htmlFormBuilder.genForm(
                 ItemHandlerProvider.getHandlerByClass(
@@ -70,7 +70,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { // todo solve problem with parameters
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String comparator = req.getParameter(COMPARATOR_PARAM);
 
         ServletOutputStream out = resp.getOutputStream();

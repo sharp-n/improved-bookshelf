@@ -1,5 +1,6 @@
 package com.company.tomcat_server;
 
+import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
@@ -28,7 +29,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         name = req.getParameter(ParametersConstants.NAME);
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"file-work-choose.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE));
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());
         out.flush();

@@ -6,11 +6,8 @@ import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.tomcat_server.constants.FormConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
-import com.company.tomcat_server.constants.URLConstants;
+import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.ServletService;
-import com.company.tomcat_server.constants.TemplatesConstants;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -45,7 +42,7 @@ public class BorrowItemServlet extends HttpServlet {
         typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
         typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.ACTIONS_REALIZATION_FILE));
 
         String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.BORROW_PAGE);
 
@@ -74,7 +71,7 @@ public class BorrowItemServlet extends HttpServlet {
                 message = "Item is successfully borrowed";
             }
         }
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html")); // todo optimize usage
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.INFORM_PAGE_FILE)); // todo optimize usage
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,name,typeOfFileWork,typeOfItem).replace(TemplatesConstants.MESSAGE_TEMPLATE,message);
         ServletOutputStream out = resp.getOutputStream();
         out.write(htmlCode.getBytes());

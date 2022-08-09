@@ -6,10 +6,7 @@ import com.company.enums.MainMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.tomcat_server.constants.MessageConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
-import com.company.tomcat_server.constants.TemplatesConstants;
-import com.company.tomcat_server.constants.URLConstants;
+import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.*;
 
 import javax.servlet.ServletOutputStream;
@@ -37,7 +34,6 @@ public class AddItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        System.out.println("AddBookServlet.doGet");
         ServletOutputStream out = resp.getOutputStream();
 
         name = req.getParameter(ParametersConstants.NAME);
@@ -46,7 +42,7 @@ public class AddItemServlet extends HttpServlet {
 
         System.out.println(typeOfItem);
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
         String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
 
@@ -72,7 +68,7 @@ public class AddItemServlet extends HttpServlet {
         List<String> params = itemHandler.convertItemParametersMapToList(req.getParameterMap());
         params.forEach(o->System.out.println(o));
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"inform-page-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_FILE));
 
         if (projectHandler.getLibrarian().addItem(itemHandler,params)){
             htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.SUCCESS_MESSAGE);

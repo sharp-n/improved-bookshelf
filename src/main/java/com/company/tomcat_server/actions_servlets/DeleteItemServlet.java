@@ -2,10 +2,7 @@ package com.company.tomcat_server.actions_servlets;
 
 import com.company.Validator;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.tomcat_server.constants.FormConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
-import com.company.tomcat_server.constants.TemplatesConstants;
-import com.company.tomcat_server.constants.URLConstants;
+import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.*;
 
 import javax.servlet.ServletOutputStream;
@@ -33,13 +30,13 @@ public class DeleteItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        ServletOutputStream out = resp.getOutputStream();
+        ServletOutputStream out = resp.getOutputStream(); // todo optimize
 
         name = req.getParameter(ParametersConstants.NAME);
         typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
         typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),"actions-realization-template.html"));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
         String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
