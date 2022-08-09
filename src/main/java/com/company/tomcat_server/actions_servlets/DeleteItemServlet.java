@@ -33,7 +33,6 @@ public class DeleteItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        // todo optimize
 
         param.getParametersFromURL(req);
 
@@ -41,32 +40,34 @@ public class DeleteItemServlet extends HttpServlet {
 
         String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.DELETE_PAGE);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
 
         servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) // todo show all the items
-            throws IOException {// todo implement this method
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {// todo show all the items
+        try {
+            Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
+            itemID = Validator.staticValidateID(itemID);
 
-        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
-        itemID = Validator.staticValidateID(itemID);
+            String message = "O-ops! Something goes wrong...";
 
-        String message = "O-ops! Something goes wrong...";
-
-        if (itemID!=null){
-            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-            boolean deleted = projectHandler.getLibrarian().deleteItem(itemID,true);
-            if (deleted) {
-                message = "Item is successfully deleted";
+            if (itemID != null) {
+                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+                projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+                projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+                boolean deleted = projectHandler.getLibrarian().deleteItem(itemID, true);
+                if (deleted) {
+                    message = "Item is successfully deleted";
+                }
             }
+            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
         }
-        servletService.generateAndPrintHTMLCode(resp,message,param,FileNameConstants.INFORM_PAGE_FILE);
     }
-
 
 
 }

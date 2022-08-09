@@ -32,13 +32,16 @@ public class UserLoginServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-        String login = req.getParameter(ParametersConstants.NAME);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            String login = req.getParameter(ParametersConstants.NAME);
+            if (User.checkUserNameForValidity(login)) {
+                resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME, login).toString());
+            } else resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.LOGIN_PAGE).toString());
 
-        if (User.checkUserNameForValidity(login)){
-            resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME,login).toString());
+        } catch(IOException ioException){
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
         }
-        else resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.LOGIN_PAGE).toString());
     }
 }

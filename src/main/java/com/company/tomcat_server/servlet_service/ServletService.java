@@ -1,5 +1,6 @@
 package com.company.tomcat_server.servlet_service;
 
+import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
@@ -93,17 +94,27 @@ public class ServletService {
 
     }
 
-    public void generateAndPrintHTMLCode(HttpServletResponse resp, String message, ParametersFromURL param, String fileName) throws IOException {
+    public void generateAndPrintHTMLCode(HttpServletResponse resp, String message, ParametersFromURL param, String fileName) {
         String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), fileName));
         htmlCode = replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE, message);
         printHtmlCode(resp,htmlCode);
     }
 
-    public void printHtmlCode(HttpServletResponse resp,String htmlCode) throws IOException{
-        ServletOutputStream out = resp.getOutputStream();
-        out.write(htmlCode.getBytes());
-        out.flush();
-        out.close();
+    public void printHtmlCode(HttpServletResponse resp,String htmlCode) {
+        try {
+            ServletOutputStream out = resp.getOutputStream();
+            out.write(htmlCode.getBytes());
+            out.flush();
+            out.close();
+        } catch (IOException ioException){
+            printErrorPage(resp);
+        }
     }
+
+    public void printErrorPage(HttpServletResponse resp){
+        String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), FileNameConstants.ERROR_PAGE_FILE));
+        printHtmlCode(resp, htmlCode);
+    }
+
 
 }

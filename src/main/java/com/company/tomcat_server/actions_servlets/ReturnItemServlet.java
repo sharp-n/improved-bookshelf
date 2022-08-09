@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
@@ -34,13 +35,11 @@ public class ReturnItemServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) // todo show all borrowed items
             throws IOException {
-        // todo optimize usage
-
         param.getParametersFromURL(req);
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
 
-        String formContent = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genFormForGettingID(URLConstants.RETURN_PAGE);
+        String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).genFormForGettingID(URLConstants.RETURN_PAGE);
 
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
@@ -51,20 +50,25 @@ public class ReturnItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
-        itemID = Validator.staticValidateID(itemID);
+        try {
+            Integer itemID = servletService.parseParamToInt(req.getParameter(FormConstants.ITEM_ID_PARAM));
+            itemID = Validator.staticValidateID(itemID);
 
-        String message = "O-ops! Something goes wrong...";
-        if (itemID!=null){
-            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-            boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID,false,projectHandler.getItemHandler());
-            if (borrowed) {
-                message = "Item is successfully borrowed";
+            String message = "O-ops! Something goes wrong...";
+            if (itemID != null) {
+                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+                projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+                projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false, projectHandler.getItemHandler());
+                if (borrowed) {
+                    message = "Item is successfully borrowed";
+                }
             }
+            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
         }
-        servletService.generateAndPrintHTMLCode(resp, message,param, FileNameConstants.INFORM_PAGE_FILE );
     }
 
 

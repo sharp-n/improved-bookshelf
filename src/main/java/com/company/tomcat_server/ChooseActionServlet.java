@@ -7,7 +7,6 @@ import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,12 +39,17 @@ public class ChooseActionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.sendRedirect( new URIBuilder()
-                .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE,param.typeOfItem)
-                .addParameter(ParametersConstants.NAME, param.name)
-                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
-                .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
-                .toString());
+        try {
+            resp.sendRedirect(new URIBuilder()
+                    .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE, param.typeOfItem)
+                    .addParameter(ParametersConstants.NAME, param.name)
+                    .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, param.typeOfFileWork)
+                    .addParameter(ParametersConstants.TYPE_OF_ITEM, param.typeOfItem)
+                    .toString());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
+        }
     }
 
 

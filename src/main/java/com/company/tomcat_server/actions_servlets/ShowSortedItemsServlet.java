@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM;
@@ -43,48 +44,52 @@ public class ShowSortedItemsServlet extends HttpServlet {
     private String htmlCode = "";
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         param.getParametersFromURL(req);
 
         ServletService servletService = new ServletService();
         htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
         HTMLFormBuilder htmlFormBuilder = new HTMLFormBuilder();
         String form = htmlFormBuilder.genForm(
-                ItemHandlerProvider.getHandlerByClass(
-                        ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).
+                Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(
+                                ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).
                         genSortFormContent(),
                 "show");
-
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, form);
 
-        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode,param);
+        htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
         servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String comparator = req.getParameter(COMPARATOR_PARAM);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        try {
 
-        ServletOutputStream out = resp.getOutputStream();
+            String comparator = req.getParameter(COMPARATOR_PARAM);
 
-        ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-        projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-        ItemHandler itemHandler = projectHandler.getItemHandler();
-        Librarian librarian = projectHandler.getLibrarian();
-        List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam,itemHandler);
-        List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
+            ServletOutputStream out = resp.getOutputStream();
 
-        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(),itemsAsStr);
+            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+            projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+            SortingMenu sortingParam = SortingMenu.getByOption(comparator);
+            ItemHandler itemHandler = projectHandler.getItemHandler();
+            Librarian librarian = projectHandler.getLibrarian();
+            List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
+            List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
 
-        String table = tableBuilder.generateTable();
-        resp.setContentType("text/html");
-        out.write(htmlCode.getBytes());
-        out.println("<br><br><div align=\"center\">" + table + "</div>");
-        out.flush();
-        out.close();
+            HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(), itemsAsStr);
+
+            String table = tableBuilder.generateTable();
+            resp.setContentType("text/html");
+            out.write(htmlCode.getBytes());
+            out.println("<br><br><div align=\"center\">" + table + "</div>");
+            out.flush();
+            out.close();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
+        }
     }
 }

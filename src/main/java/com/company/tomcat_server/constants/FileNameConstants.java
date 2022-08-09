@@ -9,5 +9,6 @@ public class FileNameConstants {
     public static final String CHOOSE_ITEM_FILE = "choose-item.html";
     public static final String ACTIONS_FILE = "actions-template.html";
     public static final String ACTIONS_REALIZATION_FILE = "actions-realization-template.html";
+    public static final String ERROR_PAGE_FILE = "error-page.html";
 
 }

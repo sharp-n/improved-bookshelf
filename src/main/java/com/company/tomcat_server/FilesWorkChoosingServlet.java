@@ -7,7 +7,6 @@ import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,28 +29,33 @@ public class FilesWorkChoosingServlet extends HttpServlet {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         param.getParametersFromURL(req);
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE)); // todo wrap try-catch
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE));
         servletService.printHtmlCode(resp, htmlCode);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String workWithOneFile = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
+        try {
+            String workWithOneFile = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
 
-        String typeOfWorkParam = "";
-        if (workWithOneFile.equals(ParametersConstants.ONE_FILE)){
-            typeOfWorkParam = ParametersConstants.ONE_FILE;
-        } else if (workWithOneFile.equals(ParametersConstants.FILE_PER_TYPE)){
-            typeOfWorkParam = ParametersConstants.FILE_PER_TYPE;
-        } else {
-            resp.sendRedirect( new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString());
+            String typeOfWorkParam = "";
+            if (workWithOneFile.equals(ParametersConstants.ONE_FILE)) {
+                typeOfWorkParam = ParametersConstants.ONE_FILE;
+            } else if (workWithOneFile.equals(ParametersConstants.FILE_PER_TYPE)) {
+                typeOfWorkParam = ParametersConstants.FILE_PER_TYPE;
+            } else {
+                resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString());
+            }
+
+            resp.sendRedirect(new URIBuilder()
+                    .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
+                    .addParameter(ParametersConstants.NAME, param.name)
+                    .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, typeOfWorkParam)
+                    .toString());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
         }
-
-        resp.sendRedirect( new URIBuilder()
-                .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE)
-                .addParameter(ParametersConstants.NAME, param.name)
-                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,typeOfWorkParam)
-                .toString());
     }
 
 }

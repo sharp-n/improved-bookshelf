@@ -9,7 +9,6 @@ import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ public class ChooseItemServlet extends HttpServlet {
         param.getParametersFromURL(req);
 
         htmlCode = htmlCode
-                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm())
+                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm()) // todo optimize
                 .replace(TemplatesConstants.URL_SHOW_TEMPLATE, new URIBuilder()
                         .setPathSegments(URLConstants.SHOW_ALL_THE_ITEMS)
                         .addParameter(ParametersConstants.NAME,param.name)
@@ -52,13 +51,18 @@ public class ChooseItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
-        resp.sendRedirect( new URIBuilder()
-                .setPathSegments(URLConstants.CHOOSE_ACTION,typeOfItem.toLowerCase()) // todo optimize
-                .addParameter(ParametersConstants.NAME,param.name)
-                .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
-                .addParameter(ParametersConstants.TYPE_OF_ITEM,typeOfItem)
-                .toString());
+        try {
+            String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
+            resp.sendRedirect(new URIBuilder()
+                    .setPathSegments(URLConstants.CHOOSE_ACTION, typeOfItem.toLowerCase()) // todo optimize
+                    .addParameter(ParametersConstants.NAME, param.name)
+                    .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, param.typeOfFileWork)
+                    .addParameter(ParametersConstants.TYPE_OF_ITEM, typeOfItem)
+                    .toString());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            new ServletService().printErrorPage(resp);
+        }
     }
 
 }
