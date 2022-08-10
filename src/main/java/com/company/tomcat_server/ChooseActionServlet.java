@@ -1,12 +1,10 @@
 package com.company.tomcat_server;
 
 import com.company.tomcat_server.constants.FileNameConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
-import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +25,7 @@ public class ChooseActionServlet extends HttpServlet {
     final ParametersFromURL param = new ParametersFromURL();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException { // todo check url everywhere (here`s ok)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_FILE));
@@ -41,7 +39,7 @@ public class ChooseActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
         try {
-            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE +"/"+param.typeOfItem,param.name,param.typeOfFileWork,param.typeOfItem);
+            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,param.typeOfFileWork,param.typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
             ioException.printStackTrace();

@@ -7,7 +7,6 @@ import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.TemplatesConstants;
 import com.company.tomcat_server.constants.URLConstants;
-import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Locale;
 
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
@@ -46,7 +44,7 @@ public class ChooseItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
-            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ACTION+"/"+typeOfItem.toLowerCase(),param.name,param.typeOfFileWork,typeOfItem);
+            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ACTION,param.name,param.typeOfFileWork,typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
             ioException.printStackTrace();

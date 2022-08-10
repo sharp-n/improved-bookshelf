@@ -35,8 +35,8 @@ public class ShowAllTheItemsServlet extends HttpServlet {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME, NAME).toString());
             } else {
                 String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
-                String table1 = servletService.genTableOfSortedItems(FormConstants.ITEM_ID_PARAM,param);
-                htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table1);
+                String table = servletService.genTableOfSortedItems(FormConstants.ITEM_ID_PARAM,param);
+                htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
                 htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
                 servletService.printHtmlCode(resp, htmlCode);
             }
