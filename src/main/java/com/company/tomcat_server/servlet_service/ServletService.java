@@ -138,4 +138,18 @@ public class ServletService {
         return tableBuilder.generateTable();
     }
 
+    public String buildURLWithParameters(String url, String name, String typeOfFileWork, String typeOfItem){
+        URIBuilder uri = new URIBuilder().setPathSegments(url);
+        if (name!=null&&!name.trim().equals("")){
+            uri.addParameter(ParametersConstants.NAME, name);
+        }
+        if (typeOfFileWork!=null&&!typeOfFileWork.trim().equals("")){
+            uri.addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, typeOfFileWork);
+        }
+        if (typeOfItem!=null&&!typeOfItem.trim().equals("")){
+            uri.addParameter(ParametersConstants.TYPE_OF_ITEM, typeOfItem);
+        }
+        return uri.toString();
+    }
+
 }

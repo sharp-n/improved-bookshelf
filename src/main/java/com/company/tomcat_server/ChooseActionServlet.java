@@ -41,12 +41,8 @@ public class ChooseActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
         try {
-            resp.sendRedirect(new URIBuilder()
-                    .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE, param.typeOfItem)
-                    .addParameter(ParametersConstants.NAME, param.name)
-                    .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, param.typeOfFileWork)
-                    .addParameter(ParametersConstants.TYPE_OF_ITEM, param.typeOfItem)
-                    .toString());
+            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE +"/"+param.typeOfItem,param.name,param.typeOfFileWork,param.typeOfItem);
+            resp.sendRedirect(strURI);
         } catch (IOException ioException) {
             ioException.printStackTrace();
             new ServletService().printErrorPage(resp);

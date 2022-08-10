@@ -47,11 +47,9 @@ public class FilesWorkChoosingServlet extends HttpServlet {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString());
             }
 
-            resp.sendRedirect(new URIBuilder()
-                    .setPathSegments(URLConstants.CHOOSE_ITEM_PAGE) // todo optimize
-                    .addParameter(ParametersConstants.NAME, param.name)
-                    .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE, typeOfWorkParam)
-                    .toString());
+
+            resp.sendRedirect(new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,typeOfWorkParam,""));
+
         } catch (IOException ioException) {
             ioException.printStackTrace();
             new ServletService().printErrorPage(resp);
