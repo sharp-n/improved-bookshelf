@@ -41,7 +41,7 @@ public abstract class FilesWorker {
 
     void rewriteFile(List<Container<? extends Item>> containers) {
         try {
-            File file = createFileIfNotExists();
+            File file = createFileIfNotExists(filePath);
             FileWriter fw = new FileWriter(file, false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
@@ -67,7 +67,7 @@ public abstract class FilesWorker {
     }
 
     public <T extends Item> List<T> readToAnyItemList(String typeOfCLass) throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         List<? extends Item> items = readToItemsList();
         List<T> filteredItems = new ArrayList<>();
         for (Item item : items) {
@@ -79,7 +79,7 @@ public abstract class FilesWorker {
     }
 
     public List<Item> readToItemsList() throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         JsonArray jsonArray = readJsonArrayFromFile();
         List<Item> items = new ArrayList<>();
         if (jsonArray != null) {
@@ -95,11 +95,11 @@ public abstract class FilesWorker {
     }
 
     JsonArray readJsonArrayFromFile() throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
-    File createFileIfNotExists() {
+    public File createFileIfNotExists(Path filePath) {
         try {
             File file = filePath.toFile();
 
