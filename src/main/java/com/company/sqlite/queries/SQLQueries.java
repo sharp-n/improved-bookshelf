@@ -1,4 +1,4 @@
-package com.company.sqlite;
+package com.company.sqlite.queries;
 
 import com.company.User;
 import com.company.items.Item;

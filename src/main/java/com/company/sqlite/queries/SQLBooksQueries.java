@@ -1,14 +1,15 @@
-package com.company.sqlite;
+package com.company.sqlite.queries;
 
 import com.company.User;
 import com.company.items.Book;
+import com.company.sqlite.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
-public class SQLBooksQueries  extends SQLQueries<Book>{
+public class SQLBooksQueries  extends SQLQueries<Book> {
 
     public SQLBooksQueries(Connection connection) {
         super(connection);

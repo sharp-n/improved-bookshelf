@@ -1,4 +1,4 @@
-package com.company.sqlite;
+package com.company.sqlite.queries;
 
 import com.company.items.Journal;
 

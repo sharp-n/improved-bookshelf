@@ -1,13 +1,14 @@
-package com.company.sqlite;
+package com.company.sqlite.queries;
 
 import com.company.User;
 import com.company.items.Comics;
+import com.company.sqlite.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SQLComicsQueries extends SQLQueries<Comics>{
+public class SQLComicsQueries extends SQLQueries<Comics> {
 
     public SQLComicsQueries(Connection connection) {
         super(connection);

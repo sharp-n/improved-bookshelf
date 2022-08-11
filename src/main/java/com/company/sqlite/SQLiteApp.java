@@ -2,6 +2,7 @@ package com.company.sqlite;
 
 import com.company.User;
 import com.company.items.Journal;
+import com.company.sqlite.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
