@@ -11,6 +11,8 @@ import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
@@ -186,6 +188,29 @@ public abstract class ItemHandler<T extends Item> {
                         + formBuild.genButton("Choose"),
                 URLConstants.CHOOSE_ITEM_PAGE
         );
+    }
+
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<List<String>> itemsStr = new ArrayList<>();
+        List<String> itemStr = new ArrayList<>();
+        while (resultSet.next()) {
+            itemStr = getMainOptions(resultSet,itemStr);
+            itemsStr.add(itemStr);
+        }
+        return itemsStr;
+    }
+
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
+        itemStr.add(Integer.toString(resultSet.getInt("item_id")));
+        itemStr.add(resultSet.getString("title"));
+        itemStr.add(Integer.toString(resultSet.getInt("pages")));
+        String borrowedStr ;
+        int borrowedInt = resultSet.getInt("borrowed");
+        if (borrowedInt==0) {
+            borrowedStr = "true";
+        } else borrowedStr = "false";
+        itemStr.add(borrowedStr);
+        return itemStr;
     }
 
 }

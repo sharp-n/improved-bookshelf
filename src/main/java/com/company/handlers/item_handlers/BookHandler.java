@@ -8,6 +8,8 @@ import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -169,5 +171,18 @@ public class BookHandler extends ItemHandler<Book> {
                 + formBuild.genRadioButton(COMPARATOR_PARAM,PUBLISHING_DATE_PARAM,"Publishing date")
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Sort");
+    }
+
+    @Override
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<List<String>> itemsStr = new ArrayList<>();
+        List<String> itemStr = new ArrayList<>();
+        while (resultSet.next()) {
+            itemStr = getMainOptions(resultSet,itemStr);
+            itemStr.add(Integer.toString(resultSet.getInt("author")));
+            itemStr.add(Integer.toString(resultSet.getInt("publishing_date")));
+            itemsStr.add(itemStr);
+        }
+        return itemsStr;
     }
 }

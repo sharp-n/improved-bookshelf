@@ -2,7 +2,7 @@ package com.company.sqlite.queries;
 
 import com.company.User;
 import com.company.items.Comics;
-import com.company.sqlite.queries.SQLQueries;
+import com.company.items.Item;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,14 +15,15 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
     }
 
     @Override
-    public void insertItemToTable(Comics item, User user){
+    public void insertItemToTable(Item item, User user){
         try{
+            Comics comics = (Comics) item;
             int borrowedSQL ;
-            if(item.isBorrowed()){
+            if(comics.isBorrowed()){
                 borrowedSQL = 1;
             } else borrowedSQL = 0;
-            String query = "INSERT INTO " + user.userName + "_books (title, publisher, pages, borrowed)" +
-                    " VALUES ('" + item.getTitle() +"','" + item.getPublishing() + "'," + item.getPages() + ",'" + borrowedSQL + "');";
+            String query = "INSERT INTO " + user.userName + "_comics (title, publisher, pages, borrowed)" +
+                    " VALUES ('" + comics.getTitle() +"','" + comics.getPublishing() + "'," + comics.getPages() + ",'" + borrowedSQL + "');";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
@@ -33,7 +34,7 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
     @Override
     public void createTable(String typeOfItem, User user) {
         try{
-            String query = "CREATE TABLE IF NOT EXISTS " + user.userName + "_" + typeOfItem + "s" + " (" +
+            String query = "CREATE TABLE IF NOT EXISTS " + user.userName + "_comics" + " (" +
                     typeOfItem + "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                     "title VARCHAR(50) NOT NULL, " +
                     "publisher VARCHAR(50) NOT NULL," +

@@ -7,6 +7,8 @@ import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -111,5 +113,15 @@ public class ComicsHandler extends ItemHandler<Comics> {
                 + formBuild.genButton("Sort");
     }
 
+    @Override
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<List<String>> itemsStr = new ArrayList<>();
+        List<String> itemStr = new ArrayList<>();
+        while (resultSet.next()) {
+            itemStr = getMainOptions(resultSet,itemStr);
+            itemStr.add(Integer.toString(resultSet.getInt("publisher")));
+            itemsStr.add(itemStr);
+        }
+        return itemsStr;
+    }
 }
-

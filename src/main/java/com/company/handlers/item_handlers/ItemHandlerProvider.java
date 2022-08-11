@@ -1,8 +1,10 @@
 package com.company.handlers.item_handlers;
 
 import com.company.items.*;
+import com.company.sqlite.queries.*;
 
 
+import java.sql.Connection;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -11,6 +13,7 @@ public class ItemHandlerProvider {
 
     static Map<Class<? extends Item>, ItemHandler<? extends Item>> classItemHandlerMap = new HashMap<>();
     static Map<Class<? extends Item>, String> classSimpleNameOfClassMap = new HashMap<>();
+
 
     private ItemHandlerProvider() {
     }
@@ -26,6 +29,26 @@ public class ItemHandlerProvider {
 
     public static Map<Class<? extends Item>, String> getClassSimpleNameOfClassMap() {
         return classSimpleNameOfClassMap;
+    }
+
+    public static SQLQueries<? extends Item> getSQLQueryClassByHandler(ItemHandler<? extends Item> itemHandler, Connection connection) {
+        Map<Class<? extends Item>, SQLQueries<? extends Item>> itemHandlerQueriesMap = initClassSQLQueriesMap(connection);
+        Class<? extends Item> classOfItem = getClassByHandler(itemHandler);
+        for (Map.Entry<Class<? extends Item>, SQLQueries<? extends Item>> itemHandlerSQLQueryEntry : itemHandlerQueriesMap.entrySet()) {
+            if (itemHandlerSQLQueryEntry.getKey().isAssignableFrom(classOfItem)){
+                return itemHandlerSQLQueryEntry.getValue();
+            }
+        }
+        return null;// TODO fix null
+    }
+
+    public static Map<Class<? extends Item>, SQLQueries<? extends Item>> initClassSQLQueriesMap(Connection connection){
+        Map<Class<? extends Item>, SQLQueries<? extends Item>> itemHandlerQueriesMap = new HashMap<>();
+        itemHandlerQueriesMap.put(Book.class, new SQLBooksQueries(connection));
+        itemHandlerQueriesMap.put(Journal.class, new SQLJournalQueries(connection));
+        itemHandlerQueriesMap.put(Comics.class, new SQLComicsQueries(connection));
+        itemHandlerQueriesMap.put(Newspaper.class, new SQLNewspaperQueries(connection));
+        return itemHandlerQueriesMap;
     }
 
     public static Class<? extends Item> getClassByHandler(ItemHandler<? extends Item> itemHandler) {
