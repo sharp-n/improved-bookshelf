@@ -9,7 +9,7 @@ import java.io.File;
 
 public class MainServletsRunner {
 
-    public static void main(String[] args) throws LifecycleException, ServletException {
+    public static void main(String[] args) throws LifecycleException, ServletException { // todo  add work with db
         String webappDirLocation = "src/main/webapp";
         Tomcat tomcat = new Tomcat();
 

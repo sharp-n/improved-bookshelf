@@ -100,6 +100,9 @@ public class ProjectHandler {
             case FILE_PER_ITEM:
                 initFileWork(genFilePerTypeWorker(user));
                 break;
+            case DATABASE:
+                initWorkWithDB(user);
+                break;
             case CHANGE_USER:
                 mainProcValue = false;
                 break;
@@ -113,6 +116,11 @@ public class ProjectHandler {
                 break;
         }
         return filesValue;
+    }
+
+    public void initWorkWithDB(User user){
+
+
     }
 
     public boolean itemMenuSwitch(MainMenu mainMenu){
