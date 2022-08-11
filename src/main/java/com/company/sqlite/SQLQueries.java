@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @AllArgsConstructor
-public class SQLQueries {
+public class SQLQueries<T extends Item> {
 
     Connection connection;
 
-    public void insertItemToTable(Item item, User user){
+    public void insertItemToTable(T item, User user){
         try{
             int borrowedSQL ;
             if(item.isBorrowed()){
@@ -29,7 +29,7 @@ public class SQLQueries {
         }
     }
 
-    public void updateBorrowedItem(Item item, boolean borrow, User user){
+    public void updateBorrowedItem(T item, boolean borrow, User user){
         try{
             String typeOfItem = item.getClass().getSimpleName().toLowerCase();
             String query = "UPDATE " + user.userName + "_" + typeOfItem + "s set borrowed = " + borrow + " WHERE title = '" + item.getTitle() + "';";
@@ -40,7 +40,7 @@ public class SQLQueries {
         }
     }
 
-    public void deleteItem(Item item, User user) {
+    public void deleteItem(T item, User user) {
         try{
             String typeOfClass = item.getClass().getSimpleName().toLowerCase();
             String query = "DELETE from " + user.userName + "_" + typeOfClass + "s WHERE title = '" + item.getTitle() + "';";
@@ -66,7 +66,7 @@ public class SQLQueries {
             String userName = user.userName;
             String query = "SELECT * FROM " + userName + "_books FULL OUTER JOIN " +
                     "(SELECT * FROM " + userName + "_comics FULL OUTER JOIN " +
-                        "(SELECT * FROM" + userName + "_journals FULL OUTER JOIN " + userName + "_magazines)) ORDER BY " + comparator + " ASC;";
+                        "(SELECT * FROM" + userName + "_journals FULL OUTER JOIN " + userName + "_newspapers)) ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){

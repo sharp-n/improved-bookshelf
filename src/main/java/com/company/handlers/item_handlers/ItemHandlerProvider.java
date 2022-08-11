@@ -24,6 +24,10 @@ public class ItemHandlerProvider {
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
     }
 
+    public static Map<Class<? extends Item>, String> getClassSimpleNameOfClassMap() {
+        return classSimpleNameOfClassMap;
+    }
+
     public static Class<? extends Item> getClassByHandler(ItemHandler<? extends Item> itemHandler) {
         for (Map.Entry<Class<? extends Item>, ItemHandler<? extends Item>> classItemHandlerEntry : classItemHandlerMap.entrySet()) {
             if (classItemHandlerEntry.getValue().getClass().isAssignableFrom(itemHandler.getClass())){

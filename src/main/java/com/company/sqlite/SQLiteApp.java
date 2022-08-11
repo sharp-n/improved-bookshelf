@@ -1,5 +1,8 @@
 package com.company.sqlite;
 
+import com.company.User;
+import com.company.items.Journal;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,8 +17,10 @@ public class SQLiteApp {
         DBService dbService = new DBService();
         sqLiteApp.open();
         dbService.createDBIfNotExist();
-        sqLiteApp.createTable();
-        sqLiteApp.insertBook();
+
+        SQLQueries sqlQueries = new SQLQueries(sqLiteApp.connection);
+        sqlQueries.createTable("journal", new User("yana"));
+        sqlQueries.insertItemToTable(new Journal(1,"title",43), new User("yana"));
         sqLiteApp.close();
     }
 
@@ -33,9 +38,9 @@ public class SQLiteApp {
         try {
             String query = "CREATE TABLE IF NOT EXISTS books(" +
                     "book_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    "title   VARCHAR(50) NOT NULL , " +
-                    "author   VARCHAR(50) NOT NULL , " +
-                    "pages   VARCHAR(50) NOT NULL CHECK ( pages>0 ), " +
+                    "title   TEXT(50) NOT NULL , " +
+                    "author  TEXT(50) NOT NULL , " +
+                    "pages   TEXT(50) NOT NULL CHECK ( pages>0 ), " +
                     "day     INTEGER NOT NULL CHECK (day>0&day<32), " +
                     "month   INTEGER NOT NULL CHECK (month<12&month>0) , " +
                     "year    INTEGER NOT NULL CHECK (year<2022&year>0) " +
