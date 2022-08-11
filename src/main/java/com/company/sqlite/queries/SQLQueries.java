@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @AllArgsConstructor
-public class SQLQueries<T extends Item> {
+public abstract class SQLQueries<T extends Item> {
 
     Connection connection;
 
