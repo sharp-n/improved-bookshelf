@@ -35,22 +35,4 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
         }
     }
 
-    @Override
-    public void createTable(String typeOfItem, User user) {
-        try{
-            String query = "CREATE TABLE IF NOT EXISTS " + user.userName + "_books" + " (" +
-                    typeOfItem + "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                    "title VARCHAR(50) NOT NULL, " +
-                    "author VARCHAR(50) NOT NULL, " +
-                    "publishing_date varchar(20) NOT NULL, " +
-                    "pages   VARCHAR(50) NOT NULL CHECK ( pages>0 ), " +
-                    "borrowed INTEGER NOT NULL CHECK ( borrowed==0 | borrowed==1 )" +
-                    ")";
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } catch(SQLException sqlException){
-            sqlException.printStackTrace();
-        }
-    }
-
 }

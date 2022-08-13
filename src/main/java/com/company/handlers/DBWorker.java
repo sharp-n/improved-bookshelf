@@ -19,6 +19,7 @@ public class DBWorker extends Librarian{
     @Override
     public boolean addItem(Item item) throws IOException {
 
+        return super.addItem(item);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DBWorker extends Librarian{
 
     void addToDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.createTable(item.getClass().getSimpleName(),user);
+        sqlQueries.createItemsTable();
         sqlQueries.insertItemToTable(item,user);
     }
 
