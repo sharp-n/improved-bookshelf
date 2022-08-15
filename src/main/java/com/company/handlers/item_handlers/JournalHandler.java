@@ -1,11 +1,15 @@
 package com.company.handlers.item_handlers;
 
+import com.company.User;
 import com.company.items.Item;
 import com.company.items.Journal;
 import com.company.items.Newspaper;
+import com.company.sqlite.queries.SQLQueries;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,19 @@ public class JournalHandler extends ItemHandler<Journal> {
             newspapersAsStringList.add(itemToString(newspaper));
         }
         return newspapersAsStringList;
+    }
+
+    @Override
+    public Journal getItem(int itemID, User user, SQLQueries sqlQueries) {
+        try {
+            ResultSet resultSet = sqlQueries.getItem(itemID, "newspaper", user);
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet, itemStr);
+            return new Journal(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
     }
 
 }

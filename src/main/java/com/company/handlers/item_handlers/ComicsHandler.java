@@ -1,8 +1,11 @@
 package com.company.handlers.item_handlers;
 
+import com.company.User;
 import com.company.enums.SortingMenu;
 import com.company.items.Comics;
 import com.company.items.Item;
+import com.company.items.Newspaper;
+import com.company.sqlite.queries.SQLQueries;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
@@ -123,5 +126,30 @@ public class ComicsHandler extends ItemHandler<Comics> {
             itemsStr.add(itemStr);
         }
         return itemsStr;
+    }
+
+    @Override
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
+        itemStr = getMainOptions(resultSet, itemStr);
+        itemStr.add(resultSet.getString("publisher"));
+        return itemStr;
+    }
+
+    @Override
+    public Comics getItem(int itemID, User user, SQLQueries sqlQueries) {
+        try {
+            ResultSet resultSet = sqlQueries.getItem(itemID, "comics", user);
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet, itemStr);
+            return new Comics(
+                    Integer.parseInt(itemStr.get(0)),
+                    itemStr.get(2),
+                    Integer.parseInt(itemStr.get(3)),
+                    itemStr.get(5),
+                    Boolean.parseBoolean(itemStr.get(4)));
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
     }
 }

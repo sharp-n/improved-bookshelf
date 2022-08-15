@@ -1,10 +1,15 @@
 package com.company.handlers.item_handlers;
 
+import com.company.User;
 import com.company.items.Book;
 import com.company.items.Item;
+import com.company.items.Newspaper;
+import com.company.sqlite.queries.SQLQueries;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,5 +38,18 @@ public class DefaultItemHandler extends ItemHandler<Item> {
         TableUtil tableUtil = new TableUtil(columnTitles,itemsAsStringList, out);
         tableUtil.validateRows();
         return tableUtil.getRows();
+    }
+
+    @Override
+    public Item getItem(int itemID, User user, SQLQueries sqlQueries){
+        try {
+            ResultSet resultSet = sqlQueries.getItem(itemID, "newspaper", user);
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet, itemStr);
+            return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
     }
 }
