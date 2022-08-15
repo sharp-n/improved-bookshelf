@@ -26,8 +26,11 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
             } else borrowedSQL = 0;
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.y");
             String publishingDateStr = sdf.format(book.getPublishingDate().getTime());
-            String query = "INSERT INTO " + user.userName + "_books (title, author, publishing_date, pages, borrowed)" +
-                    " VALUES ('" + book.getTitle() +"','" + book.getAuthor() + "','" + publishingDateStr + "',"    + book.getPages() + ",'" + borrowedSQL + "');";
+            String query = "INSERT INTO items (user_id,title, author, publishing_date, pages, borrowed, type_of_item)" +
+                    " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
+                    "'" + book.getTitle() +"','" + book.getAuthor() + "'," +
+                    "'" + publishingDateStr + "',"    + book.getPages() + "," +
+                    "'" + borrowedSQL + "','book');";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){

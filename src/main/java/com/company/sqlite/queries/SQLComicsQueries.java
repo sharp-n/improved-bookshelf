@@ -22,8 +22,10 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
             if(comics.isBorrowed()){
                 borrowedSQL = 1;
             } else borrowedSQL = 0;
-            String query = "INSERT INTO " + user.userName + "_comics (title, publisher, pages, borrowed)" +
-                    " VALUES ('" + comics.getTitle() +"','" + comics.getPublishing() + "'," + comics.getPages() + ",'" + borrowedSQL + "');";
+            String query = "INSERT INTO items (user_id, title, pages, borrowed, publisher, type_of_item)" +
+                    " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
+                    "'" + comics.getTitle() +"',"   + comics.getPages() + "," +
+                    "'" + borrowedSQL + "','" + comics.getPublishing() + "','comics');";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){

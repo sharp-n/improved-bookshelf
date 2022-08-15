@@ -20,7 +20,7 @@ public abstract class SQLQueries<T extends Item> {
         this.connection = connection;
     }
 
-    public void insertItemToTable(Item item, User user){ // todo add implementation foe books and comics
+    public void insertItemToTable(Item item, User user){
         try{
             int borrowedSQL ;
             if(item.isBorrowed()){
