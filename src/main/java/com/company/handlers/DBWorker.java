@@ -43,17 +43,20 @@ public class DBWorker extends Librarian{
         sqlQueries.insertItemToTable(item,user);
     }
 
-    void deleteFromDB(int itemID, String typeOfItem, User user, ItemHandler<Item> itemHandler, Connection connection){
+    void deleteFromDB(int itemID, User user, ItemHandler<Item> itemHandler, Connection connection){
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         sqlQueries.deleteItem(itemID,typeOfItem,user);
     }
 
-    void borrowFromDB(int itemID, String typeOFItem, User user, ItemHandler<Item> itemHandler, Connection connection){
+    void borrowFromDB(int itemID, User user, ItemHandler<Item> itemHandler, Connection connection){
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.updateBorrowedItem(itemID,typeOFItem,true,user);
+        sqlQueries.updateBorrowedItem(itemID,typeOfItem,true,user);
     }
 
-    void returnToDb(int itemID, String typeOfItem, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
+    void returnToDb(int itemID, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         sqlQueries.updateBorrowedItem(itemID,typeOfItem,false,user);
     }
@@ -65,7 +68,8 @@ public class DBWorker extends Librarian{
         return itemsStr;
     }
 
-    public List<List<String>> getAnyTypeFromDB(String typeOfItem, String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
+    public List<List<String>> getAnyTypeFromDB(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         ResultSet resultSet = sqlQueries.showSortedItems(typeOfItem,comparator,user);
         List<List<String>> itemsStr = (itemHandler.getItemsAsStringListFromResultSet(resultSet));
