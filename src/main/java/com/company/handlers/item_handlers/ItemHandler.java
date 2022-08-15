@@ -5,12 +5,15 @@ import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
 
+import com.company.items.Newspaper;
+import com.company.sqlite.queries.SQLQueries;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -192,8 +195,8 @@ public abstract class ItemHandler<T extends Item> {
 
     public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
         List<List<String>> itemsStr = new ArrayList<>();
-        List<String> itemStr = new ArrayList<>();
         while (resultSet.next()) {
+            List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet,itemStr);
             itemsStr.add(itemStr);
         }
@@ -202,6 +205,7 @@ public abstract class ItemHandler<T extends Item> {
 
     List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
         itemStr.add(Integer.toString(resultSet.getInt("item_id")));
+        itemStr.add(resultSet.getString("type_of_item"));
         itemStr.add(resultSet.getString("title"));
         itemStr.add(Integer.toString(resultSet.getInt("pages")));
         String borrowedStr ;
@@ -212,5 +216,7 @@ public abstract class ItemHandler<T extends Item> {
         itemStr.add(borrowedStr);
         return itemStr;
     }
+
+    public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
 
 }
