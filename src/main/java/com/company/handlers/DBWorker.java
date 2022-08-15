@@ -37,26 +37,25 @@ public class DBWorker extends Librarian{
         super.initSorting(itemHandler);
     }
 
-
     void addToDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         sqlQueries.createItemsTable();
         sqlQueries.insertItemToTable(item,user);
     }
 
-    void deleteFromDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
+    void deleteFromDB(int itemID, String typeOfItem, User user, ItemHandler<Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.deleteItem(item,user);
+        sqlQueries.deleteItem(itemID,typeOfItem,user);
     }
 
-    void borrowFromDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
+    void borrowFromDB(int itemID, String typeOFItem, User user, ItemHandler<Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.updateBorrowedItem(item,true,user);
+        sqlQueries.updateBorrowedItem(itemID,typeOFItem,true,user);
     }
 
-    void returnToDb(Item item, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
+    void returnToDb(int itemID, String typeOfItem, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.updateBorrowedItem(item,false,user);
+        sqlQueries.updateBorrowedItem(itemID,typeOfItem,false,user);
     }
 
     public List<List<String>> getAllFromDb(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {

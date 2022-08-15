@@ -50,7 +50,7 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void updateBorrowedItem(Item item, boolean borrow, User user){
+    public void updateBorrowedItem(int itemID, String typeOFItem, boolean borrow, User user){
         try{
             String query = "UPDATE items set borrowed = " + borrow +
                     " WHERE EXISTS" +
@@ -59,8 +59,8 @@ public abstract class SQLQueries<T extends Item> {
                     "CROSS JOIN items " +
                     "WHERE users.user_id = items.user_id " +
                     "AND username = '" + user.userName + "') " +
-                    "AND type_of_item = '" + item.getClass().getSimpleName().toLowerCase() +"' " +
-                    "AND title = '" + item.getTitle() +"'; ";
+                    "AND type_of_item = '" + typeOFItem.toLowerCase() +"' " +
+                    "AND item_id = " + itemID +"; ";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
@@ -68,9 +68,8 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void deleteItem(Item item, User user) {
+    public void deleteItem(int itemId, String typeOfItem, User user) {
         try{
-            String typeOfClass = item.getClass().getSimpleName().toLowerCase();
             String queryDel = "DELETE from items " +
                     "WHERE EXISTS" +
                     "(SELECT * " +
@@ -78,9 +77,8 @@ public abstract class SQLQueries<T extends Item> {
                     "CROSS JOIN items " +
                     "WHERE users.user_id = items.user_id " +
                     "AND username = '" + user.userName + "') " +
-                    "AND type_of_item = '" + typeOfClass + "' " +
-                    "AND title = '" + item.getTitle() + "'" +
-                    ";";
+                    "AND type_of_item = '" + typeOfItem.toLowerCase() + "' " +
+                    "AND item_id = " + itemId + ";";
             Statement statement = connection.createStatement();
             statement.executeUpdate(queryDel);
         } catch(SQLException sqlException){
