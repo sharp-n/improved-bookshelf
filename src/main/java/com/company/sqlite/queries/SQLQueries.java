@@ -20,17 +20,18 @@ public abstract class SQLQueries<T extends Item> {
         this.connection = connection;
     }
 
-    public void insertItemToTable(Item item, User user){ // checked
+    public void insertItemToTable(Item item, User user){ // todo add implementation foe books and comics
         try{
             int borrowedSQL ;
-            if(item.isBorrowed()){ // for journals and newspapers
+            if(item.isBorrowed()){
                 borrowedSQL = 1;
             } else {
                 borrowedSQL = 0;
             }
             String typeOfItem = item.getClass().getSimpleName().toLowerCase();
             String query = "INSERT INTO items (user_id,title, pages, borrowed,type_of_item)" +
-                    " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "'),'" + item.getTitle() +"'," + item.getPages() + ",'" + borrowedSQL + "','" + typeOfItem + "');";
+                    " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
+                    "'" + item.getTitle() +"'," + item.getPages() + ",'" + borrowedSQL + "','" + typeOfItem + "');";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
@@ -38,7 +39,7 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void addUserToTable(User user){ // checked
+    public void addUserToTable(User user){
         try{
             String query = "INSERT INTO users (username) " +
                     "VALUES ('" + user.userName +"');";
@@ -49,11 +50,17 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void updateBorrowedItem(Item item, boolean borrow, User user){ // todo refactor query
+    public void updateBorrowedItem(Item item, boolean borrow, User user){
         try{
             String query = "UPDATE items set borrowed = " + borrow +
-                    " WHERE user_id = items.user_id " +
-                    "AND title = '" + item.getTitle() + "';";
+                    " WHERE EXISTS" +
+                    "(SELECT * " +
+                    "FROM users " +
+                    "CROSS JOIN items " +
+                    "WHERE users.user_id = items.user_id " +
+                    "AND username = '" + user.userName + "') " +
+                    "AND type_of_item = '" + item.getClass().getSimpleName().toLowerCase() +"' " +
+                    "AND title = '" + item.getTitle() +"'; ";
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
@@ -61,26 +68,51 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void deleteItem(Item item, User user) { // todo refactor query
+    public void deleteItem(Item item, User user) {
         try{
             String typeOfClass = item.getClass().getSimpleName().toLowerCase();
-            String query = "DELETE from items " +
-                    "WHERE user_id = items.user_id " +
+            String queryDel = "DELETE from items " +
+                    "WHERE EXISTS" +
+                    "(SELECT * " +
+                    "FROM users " +
+                    "CROSS JOIN items " +
+                    "WHERE users.user_id = items.user_id " +
+                    "AND username = '" + user.userName + "') " +
                     "AND type_of_item = '" + typeOfClass + "' " +
-                    "AND title = '" + item.getTitle() + "'" +";";
+                    "AND title = '" + item.getTitle() + "'" +
+                    ";";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            statement.executeUpdate(queryDel);
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
         }
     }
 
-    public ResultSet showSortedItems(String typeOfItem, String comparator, User user){ // fixme fix query - bad select
+    public ResultSet getItem(int itemID, String typeOfItem, User user){
+        try {
+            String query = "SELECT * " +
+                    "FROM users " +
+                    "CROSS JOIN items " +
+                    "WHERE users.user_id = items.user_id " +
+                    "AND username = '" + user.userName + "' " +
+                    "AND type_of_item = '" + typeOfItem.toLowerCase() + "' " +
+                    "AND item_id = " + itemID + ";";
+            Statement statement = connection.createStatement();
+            return statement.executeQuery(query);
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
+    }
+
+    public ResultSet showSortedItems(String typeOfItem, String comparator, User user){
         try{
             typeOfItem = typeOfItem.toLowerCase();
-            String query = "SELECT * FROM items " +
-                    "CROSS JOIN users " +
-                    "WHERE username = '" + user.userName + "'" +
+            String query = "SELECT item_id, title, author, pages, borrowed, type_of_item " +
+                    "FROM users " +
+                    "INNER JOIN items " +
+                    "WHERE users.user_id = items.user_id " +
+                    "AND username = '" + user.userName + "'" +
                     "AND type_of_item = '" + typeOfItem + "' " +
                     "ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
@@ -91,7 +123,7 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public ResultSet showSortedItems(String comparator, User user){ // todo check for bugs
+    public ResultSet showSortedItems(String comparator, User user){
         try{
             String userName = user.userName;
             String query = "SELECT * FROM items " +
@@ -106,7 +138,7 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void createItemsTable() { // checked
+    public void createItemsTable() {
         try{
             String query = "CREATE TABLE IF NOT EXISTS items (" +
                     "item_id   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -127,7 +159,7 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public void createUsersTable() { // checked
+    public void createUsersTable() {
         try{
             String query = "CREATE TABLE IF NOT EXISTS users (" +
                     "user_id  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
