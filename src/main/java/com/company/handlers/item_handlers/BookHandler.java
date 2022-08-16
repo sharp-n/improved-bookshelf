@@ -197,7 +197,7 @@ public class BookHandler extends ItemHandler<Book> {
     @Override
     public Book getItem(int itemID, User user, SQLQueries sqlQueries) {
         try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, "book", user);
+            ResultSet resultSet = sqlQueries.getItem(itemID, user);
             List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet, itemStr);
             String dateStr = itemStr.get(6);

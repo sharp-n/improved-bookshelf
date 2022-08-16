@@ -138,7 +138,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
     @Override
     public Comics getItem(int itemID, User user, SQLQueries sqlQueries) {
         try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, "comics", user);
+            ResultSet resultSet = sqlQueries.getItem(itemID, user);
             List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet, itemStr);
             return new Comics(

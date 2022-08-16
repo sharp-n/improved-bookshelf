@@ -20,7 +20,7 @@ public abstract class SQLQueries<T extends Item> {
         this.connection = connection;
     }
 
-    public void insertItemToTable(Item item, User user){
+    public boolean insertItemToTable(Item item, User user){
         try{
             int borrowedSQL ;
             if(item.isBorrowed()){
@@ -33,24 +33,28 @@ public abstract class SQLQueries<T extends Item> {
                     " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
                     "'" + item.getTitle() +"'," + item.getPages() + ",'" + borrowedSQL + "','" + typeOfItem + "');";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            int result = statement.executeUpdate(query);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
 
-    public void addUserToTable(User user){
+    public boolean addUserToTable(User user){
         try{
             String query = "INSERT INTO users (username) " +
                     "VALUES ('" + user.userName +"');";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            int result = statement.executeUpdate(query);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
 
-    public void updateBorrowedItem(int itemID, String typeOFItem, boolean borrow, User user){
+    public boolean updateBorrowedItem(int itemID, boolean borrow, User user){
         try{
             String query = "UPDATE items set borrowed = " + borrow +
                     " WHERE EXISTS" +
@@ -59,16 +63,17 @@ public abstract class SQLQueries<T extends Item> {
                     "CROSS JOIN items " +
                     "WHERE users.user_id = items.user_id " +
                     "AND username = '" + user.userName + "') " +
-                    "AND type_of_item = '" + typeOFItem.toLowerCase() +"' " +
                     "AND item_id = " + itemID +"; ";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            int result = statement.executeUpdate(query);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
 
-    public void deleteItem(int itemId, String typeOfItem, User user) {
+    public boolean deleteItem(int itemId, User user) {
         try{
             String queryDel = "DELETE from items " +
                     "WHERE EXISTS" +
@@ -77,23 +82,23 @@ public abstract class SQLQueries<T extends Item> {
                     "CROSS JOIN items " +
                     "WHERE users.user_id = items.user_id " +
                     "AND username = '" + user.userName + "') " +
-                    "AND type_of_item = '" + typeOfItem.toLowerCase() + "' " +
                     "AND item_id = " + itemId + ";";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(queryDel);
+            int result = statement.executeUpdate(queryDel);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
 
-    public ResultSet getItem(int itemID, String typeOfItem, User user){
+    public ResultSet getItem(int itemID, User user){
         try {
             String query = "SELECT * " +
                     "FROM users " +
                     "CROSS JOIN items " +
                     "WHERE users.user_id = items.user_id " +
                     "AND username = '" + user.userName + "' " +
-                    "AND type_of_item = '" + typeOfItem.toLowerCase() + "' " +
                     "AND item_id = " + itemID + ";";
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);

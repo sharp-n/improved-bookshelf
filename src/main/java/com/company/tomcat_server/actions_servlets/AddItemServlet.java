@@ -42,7 +42,6 @@ public class AddItemServlet extends HttpServlet {
 
         servletService.printHtmlCode(resp, htmlCode);
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {

@@ -15,7 +15,7 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
     }
 
     @Override
-    public void insertItemToTable(Item item, User user){
+    public boolean insertItemToTable(Item item, User user){
         try{
             Comics comics = (Comics) item;
             int borrowedSQL ;
@@ -27,11 +27,12 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
                     "'" + comics.getTitle() +"',"   + comics.getPages() + "," +
                     "'" + borrowedSQL + "','" + comics.getPublishing() + "','comics');";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            int result = statement.executeUpdate(query);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
-
 
 }

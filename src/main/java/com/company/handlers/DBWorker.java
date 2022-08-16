@@ -1,10 +1,13 @@
 package com.company.handlers;
 
 import com.company.User;
+import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
+import com.company.sqlite.queries.SQLDefaultQueries;
 import com.company.sqlite.queries.SQLQueries;
+import com.company.table.TableUtil;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,68 +17,87 @@ import java.util.List;
 
 public class DBWorker extends Librarian{
 
+    // todo add usage of database to servlets
+
+    // todo add usage of database to console project
+
+    User user;
+    Connection connection;
 
 
     @Override
-    public boolean addItem(Item item) throws IOException {
-
-        return super.addItem(item);
+    public boolean addItem(Item item){ // todo check method
+        ItemHandler<Item> itemHandler = ItemHandlerProvider.getHandlerByClass(
+                ItemHandlerProvider.getClassBySimpleNameOfClass(item.getClass().getSimpleName()));
+        return addToDB(item,user,itemHandler,connection);
     }
 
     @Override
-    public boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException {
-        return super.deleteItem(itemID, forBorrow);
+    public boolean deleteItem(Integer itemID, boolean forBorrow) { // todo check method
+        return deleteFromDB(itemID,user,connection);
     }
 
     @Override
-    public boolean borrowItem(Integer itemID, boolean borrow) throws IOException {
-        return super.borrowItem(itemID, borrow);
+    public boolean borrowItem(Integer itemID, boolean borrow){ // todo check method
+        if(borrow){
+            return borrowFromDB(itemID,user,connection);
+        } else {
+            return returnToDb(itemID,user,connection);
+        }
     }
 
     @Override
-    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
-        super.initSorting(itemHandler);
+    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException { // todo check method
+        Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
+            List<List<String>> sortedItemsByComparator = getAnyTypeFromDB(sortingParameter.getOption(),user,itemHandler,connection);
+            if(!sortedItemsByComparator.isEmpty()){
+                List<String> options = itemHandler.getColumnTitles();
+                TableUtil tableUtil = new TableUtil(options, sortedItemsByComparator, out);
+                tableUtil.printTable();
+            }
+        } else{
+            itemHandler.userInput.printDefaultMessage();
+        }
     }
 
-    void addToDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
+    boolean addToDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         sqlQueries.createItemsTable();
-        sqlQueries.insertItemToTable(item,user);
+        return sqlQueries.insertItemToTable(item,user);
     }
 
-    void deleteFromDB(int itemID, User user, ItemHandler<Item> itemHandler, Connection connection){
-        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
-        SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.deleteItem(itemID,typeOfItem,user);
+    boolean deleteFromDB(int itemID, User user, Connection connection){
+        return new SQLDefaultQueries(connection).deleteItem(itemID,user);
+
     }
 
-    void borrowFromDB(int itemID, User user, ItemHandler<Item> itemHandler, Connection connection){
-        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
-        SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.updateBorrowedItem(itemID,typeOfItem,true,user);
+    boolean borrowFromDB(int itemID, User user, Connection connection){
+        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,true,user);
+
     }
 
-    void returnToDb(int itemID, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
-        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
-        SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        sqlQueries.updateBorrowedItem(itemID,typeOfItem,false,user);
+    boolean returnToDb(int itemID, User user, Connection connection){
+        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,false,user);
     }
 
     public List<List<String>> getAllFromDb(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         ResultSet resultSet = sqlQueries.showSortedItems(comparator, user);
-        List<List<String>> itemsStr = (itemHandler.getItemsAsStringListFromResultSet(resultSet));
-        return itemsStr;
+        return (itemHandler.getItemsAsStringListFromResultSet(resultSet));
     }
 
-    public List<List<String>> getAnyTypeFromDB(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
-        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
-        SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-        ResultSet resultSet = sqlQueries.showSortedItems(typeOfItem,comparator,user);
-        List<List<String>> itemsStr = (itemHandler.getItemsAsStringListFromResultSet(resultSet));
-        return itemsStr;
+    public List<List<String>> getAnyTypeFromDB(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) {
+        try {
+            String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
+            SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
+            ResultSet resultSet = sqlQueries.showSortedItems(typeOfItem, comparator, user);
+            return (itemHandler.getItemsAsStringListFromResultSet(resultSet));
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
     }
-
-
 
 }

@@ -17,7 +17,7 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
     }
 
     @Override
-    public void insertItemToTable(Item item, User user){
+    public boolean insertItemToTable(Item item, User user){
         try{
             Book book = (Book) item;
             int borrowedSQL ;
@@ -32,9 +32,11 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
                     "'" + publishingDateStr + "',"    + book.getPages() + "," +
                     "'" + borrowedSQL + "','book');";
             Statement statement = connection.createStatement();
-            statement.executeUpdate(query);
+            int result = statement.executeUpdate(query);
+            return result != 0;
         } catch(SQLException sqlException){
             sqlException.printStackTrace();
+            return false;
         }
     }
 
