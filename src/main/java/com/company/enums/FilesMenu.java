@@ -1,23 +1,28 @@
 package com.company.enums;
 
-import java.io.File;
 import java.util.Arrays;
 
 public enum FilesMenu {
 
-    EXIT_VALUE(0,"Exit"),
-    ONE_FILE(1,"oneFile"),
-    FILE_PER_ITEM(2,"filePerType"),
-    DATABASE(3,"database"),
-    CHANGE_USER(4,"Change user"),
-    DEFAULT(-1,"Default");
+    EXIT_VALUE(0,"Exit", ""),
+    ONE_FILE(1,"One file", "oneFile"),
+    FILE_PER_ITEM(2,"File per type", "filePerType"),
+    DATABASE(3,"Database", "database"),
+    CHANGE_USER(4,"Change user", ""),
+    DEFAULT(-1,"Default", "");
 
     private final int num;
     private final String option;
+    private final String servletParameter;
 
-    FilesMenu(int num, String option) {
+    FilesMenu(int num, String option, String servletParameter) {
         this.num = num;
         this.option = option;
+        this.servletParameter = servletParameter;
+    }
+
+    public String getServletParameter() {
+        return servletParameter;
     }
 
     @Override
