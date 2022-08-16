@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 
 import static com.company.tomcat_server.constants.ParametersConstants.NAME;
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
@@ -33,19 +34,16 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             if (param.typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME, NAME).toString());
             }
-            else if(param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
-                String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
 
-            }
-            else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
-                String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
-                String table = servletService.genTableOfSortedItemsFromFiles(param);
-                htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
-                htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
-                servletService.printHtmlCode(resp, htmlCode);
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
+
+            String table = servletService.genTable(htmlCode,FormConstants.ITEM_ID_PARAM,param);
+            htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
+            htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
+            servletService.printHtmlCode(resp, htmlCode);
+
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
             new ServletService().printErrorPage(resp);
         }
     }

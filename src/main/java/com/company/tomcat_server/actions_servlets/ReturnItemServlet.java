@@ -42,7 +42,7 @@ public class ReturnItemServlet extends HttpServlet {
             String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)))
                     .genFormForGettingID(URLConstants.RETURN_PAGE);
 
-            String table = servletService.genTableOfSortedItemsFromFiles(param);
+            String table = servletService.genTableOfSortedItemsFromFiles(param, FormConstants.ITEM_ID_PARAM);
             htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
