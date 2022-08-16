@@ -37,19 +37,12 @@ public class FilesWorkChoosingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String typeOfFileWork = req.getParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE);
-
-            String typeOfWorkParam = "";
-            if (typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
-                typeOfWorkParam = ParametersConstants.ONE_FILE;
-            } else if (typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
-                typeOfWorkParam = ParametersConstants.FILE_PER_TYPE;
-            } else if(typeOfFileWork.equals(ParametersConstants.DATABASE)){
-                typeOfWorkParam = ParametersConstants.DATABASE;
-            } else {
+            if (!typeOfFileWork.equals(ParametersConstants.ONE_FILE)
+                    &&!typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)
+                    &&!typeOfFileWork.equals(ParametersConstants.DATABASE)) {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString());
             }
-            resp.sendRedirect(new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,typeOfWorkParam,""));
-
+            resp.sendRedirect(new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,typeOfFileWork,""));
         } catch (IOException ioException) {
             ioException.printStackTrace();
             new ServletService().printErrorPage(resp);
