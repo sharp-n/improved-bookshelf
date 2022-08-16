@@ -31,11 +31,15 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             param.getParametersFromURL(req);
 
             if (param.typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
-
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(NAME, NAME).toString());
-            } else {
+            }
+            else if(param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
                 String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
-                String table = servletService.genTableOfSortedItems(FormConstants.ITEM_ID_PARAM,param);
+
+            }
+            else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
+                String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
+                String table = servletService.genTableOfSortedItemsFromFiles(param);
                 htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
                 htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
                 servletService.printHtmlCode(resp, htmlCode);

@@ -54,7 +54,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
 
             ServletOutputStream out = resp.getOutputStream();
 
-            String table = new ServletService().genTableOfSortedItems(comparator,param);
+            String table = new ServletService().genTableOfSortedItemsFromFiles(param);
             resp.setContentType("text/html");
             out.write(htmlCode.getBytes());
             out.println("<br><br><div align=\"center\">" + table + "</div>");

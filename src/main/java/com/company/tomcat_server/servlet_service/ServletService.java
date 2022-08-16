@@ -9,10 +9,7 @@ import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
 import com.company.table.HtmlTableBuilder;
-import com.company.tomcat_server.constants.FileNameConstants;
-import com.company.tomcat_server.constants.ParametersConstants;
-import com.company.tomcat_server.constants.TemplatesConstants;
-import com.company.tomcat_server.constants.URLConstants;
+import com.company.tomcat_server.constants.*;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletOutputStream;
@@ -125,18 +122,29 @@ public class ServletService {
     }
 
 
-    public String genTableOfSortedItems(String comparator, ParametersFromURL param) throws IOException {
+    public ProjectHandler genProjectHandlerFromParameters(ParametersFromURL param){
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
         projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
-        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-        ItemHandler itemHandler = projectHandler.getItemHandler();
-        Librarian librarian = projectHandler.getLibrarian();
-        List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
-        List<List<String>> itemsAsStr = itemHandler.anyItemsToString(items);
-        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(itemHandler.getColumnTitles(), itemsAsStr);
+        return projectHandler;
+    }
+    public String genTableOfSortedItems(ProjectHandler projectHandler, List<List<String>> itemsAsStr) throws IOException {
+        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(projectHandler.getItemHandler().getColumnTitles(), itemsAsStr);
         return tableBuilder.generateTable();
     }
+
+    public String genTableOfSortedItemsFromFiles(ParametersFromURL param) throws IOException {
+        ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
+        List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(), FormConstants.ITEM_ID_PARAM);
+        return genTableOfSortedItems(projectHandler, itemsAsStr);
+    }
+
+    public List<List<String>> getItemsAsStringListSortedByComparator(ItemHandler itemHandler, Librarian librarian, String comparator) throws IOException {
+        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
+        List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
+        return itemHandler.anyItemsToString(items);
+    }
+
 
     public String buildURLWithParameters(String url, String name, String typeOfFileWork, String typeOfItem){
         URIBuilder uri = new URIBuilder().setPathSegments(url);
