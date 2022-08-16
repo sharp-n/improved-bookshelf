@@ -8,22 +8,34 @@ import com.company.items.Item;
 import com.company.sqlite.queries.SQLDefaultQueries;
 import com.company.sqlite.queries.SQLQueries;
 import com.company.table.TableUtil;
+import com.company.work_with_files.FilesWorker;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+@AllArgsConstructor
 public class DBWorker extends Librarian{
 
     // todo add usage of database to servlets
 
-    // todo add usage of database to console project
-
     User user;
     Connection connection;
+    public DBWorker(User user, Connection connection, PrintWriter out) {
+        super.out = out;
+        this.user = user;
+        this.connection = connection;
+    }
 
+    @Override
+    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException {
+        Item item = itemHandler.createItem(itemOptions);
+        return addToDB(item,user,itemHandler,connection);
+    }
 
     @Override
     public boolean addItem(Item item){ // todo check method
@@ -51,7 +63,7 @@ public class DBWorker extends Librarian{
         Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-            List<List<String>> sortedItemsByComparator = getAnyTypeFromDB(sortingParameter.getOption(),user,itemHandler,connection);
+            List<List<String>> sortedItemsByComparator = getAnyTypeFromDB(sortingParameter.getDbColumn(),user,itemHandler,connection);
             if(!sortedItemsByComparator.isEmpty()){
                 List<String> options = itemHandler.getColumnTitles();
                 TableUtil tableUtil = new TableUtil(options, sortedItemsByComparator, out);
@@ -62,7 +74,7 @@ public class DBWorker extends Librarian{
         }
     }
 
-    boolean addToDB(Item item, User user, ItemHandler<Item> itemHandler, Connection connection){
+    boolean addToDB(Item item, User user, ItemHandler<? extends Item> itemHandler, Connection connection){
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         sqlQueries.createItemsTable();
         return sqlQueries.insertItemToTable(item,user);

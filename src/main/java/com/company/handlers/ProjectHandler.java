@@ -5,9 +5,11 @@ import com.company.UserInput;
 import com.company.enums.*;
 import com.company.handlers.item_handlers.*;
 import com.company.items.Item;
+import com.company.sqlite.DBService;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -119,8 +121,9 @@ public class ProjectHandler {
     }
 
     public void initWorkWithDB(User user){
-
-
+        DBService dbService = new DBService();
+        dbService.open();
+        librarian = new DBWorker(user,dbService.getConnection(),out);
     }
 
     public boolean itemMenuSwitch(MainMenu mainMenu){
@@ -157,7 +160,7 @@ public class ProjectHandler {
 
     public Integer usersFilesMenuChoice(UserInput dialogue) {
         out.println(NEW_LINE + EXIT_VALUE + NEW_LINE + ONE_FILE +
-                NEW_LINE + FILE_PER_ITEM + NEW_LINE + FilesMenu.CHANGE_USER);
+                NEW_LINE + FILE_PER_ITEM + NEW_LINE + DATABASE + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }

@@ -12,12 +12,16 @@ public class DBService {
 
     Connection connection;
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     void createDBIfNotExist(){
         FilesWorker filesWorker = new OneFileWorker(System.getProperty("user.home"),"yana");
         filesWorker.createFileIfNotExists(Paths.get("bookshelf.db"));
     }
 
-    void open(){
+    public void open(){
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:bookshelf.db");
@@ -27,7 +31,7 @@ public class DBService {
         }
     }
 
-    void close(){
+    public void close(){
         try {
             connection.close();
             System.out.println("Connection closed");
