@@ -29,7 +29,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         param.getParametersFromURL(req);
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_HTML_FILE));
         servletService.printHtmlCode(resp, htmlCode);
     }
 

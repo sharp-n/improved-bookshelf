@@ -34,7 +34,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
         param.getParametersFromURL(req);
 
         ServletService servletService = new ServletService();
-        htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_FILE));
+        htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
         HTMLFormBuilder htmlFormBuilder = new HTMLFormBuilder();
         String form = htmlFormBuilder.genForm(
                 Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(

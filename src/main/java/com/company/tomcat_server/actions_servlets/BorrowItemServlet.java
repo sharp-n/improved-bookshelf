@@ -37,7 +37,7 @@ public class BorrowItemServlet extends HttpServlet {
             throws IOException {
         param.getParametersFromURL(req);
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_HTML_FILE));
 
         String formContent = Objects.requireNonNull(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem))).genFormForGettingID(URLConstants.BORROW_PAGE);
         String table = servletService.genTableOfSortedItems("itemID",param);
@@ -64,7 +64,7 @@ public class BorrowItemServlet extends HttpServlet {
                     message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "borrowed";
                 }
             }
-            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_FILE);
+            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
         } catch (IOException ioException) {
             ioException.printStackTrace();
             new ServletService().printErrorPage(resp);

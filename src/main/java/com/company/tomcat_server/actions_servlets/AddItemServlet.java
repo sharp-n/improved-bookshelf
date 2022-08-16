@@ -33,7 +33,7 @@ public class AddItemServlet extends HttpServlet {
             throws IOException {
         param.getParametersFromURL(req);
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_HTML_FILE));
 
         String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
         String table = servletService.genTableOfSortedItems(FormConstants.ITEM_ID_PARAM,param);
@@ -55,7 +55,7 @@ public class AddItemServlet extends HttpServlet {
 
         List<String> params = itemHandler.convertItemParametersMapToList(req.getParameterMap());
 
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_HTML_FILE));
 
         params.forEach(o->System.out.println(o));
 

@@ -30,7 +30,7 @@ public class ChooseItemServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.CHOOSE_ITEM_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.CHOOSE_ITEM_HTML_FILE));
 
         param.getParametersFromURL(req);
 

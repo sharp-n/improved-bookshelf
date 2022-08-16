@@ -120,7 +120,7 @@ public class ServletService {
     }
 
     public void printErrorPage(HttpServletResponse resp){
-        String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), FileNameConstants.ERROR_PAGE_FILE));
+        String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), FileNameConstants.ERROR_PAGE_HTML_FILE));
         printHtmlCode(resp, htmlCode);
     }
 
