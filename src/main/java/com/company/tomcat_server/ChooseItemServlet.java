@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
@@ -35,7 +37,7 @@ public class ChooseItemServlet extends HttpServlet {
         param.getParametersFromURL(req);
 
         htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_SHOW_TEMPLATE,URLConstants.SHOW_ALL_THE_ITEMS,param)
-                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler().genItemChoosingForm());
+                .replace(TemplatesConstants.FORM_TEMPLATE,new DefaultItemHandler(new PrintWriter(System.out),new Scanner(System.in)).genItemChoosingForm());
         htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_TYPE_OF_FILE_WORK_TEMPLATE,URLConstants.FILE_WORK_PAGE,param);
         servletService.printHtmlCode(resp, htmlCode);
     }

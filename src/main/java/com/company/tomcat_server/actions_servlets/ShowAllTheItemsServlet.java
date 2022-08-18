@@ -1,5 +1,9 @@
 package com.company.tomcat_server.actions_servlets;
 
+import com.company.User;
+import com.company.enums.SortingMenu;
+import com.company.handlers.ProjectHandler;
+import com.company.sqlite.DBService;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
@@ -37,8 +41,19 @@ public class ShowAllTheItemsServlet extends HttpServlet {
 
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
 
-            String table = servletService.genTable(htmlCode,FormConstants.ITEM_ID_PARAM,param);
-            htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
+            ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
+            DBService dbService = new DBService();
+            dbService.open();
+            User user = new User(param.name);
+
+            String table = "";
+            if(param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
+                table = servletService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
+            }
+            else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
+                table = servletService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
+            }
+            htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
             servletService.printHtmlCode(resp, htmlCode);
 

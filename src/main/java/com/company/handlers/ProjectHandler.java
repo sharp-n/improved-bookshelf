@@ -47,8 +47,8 @@ public class ProjectHandler {
     public ProjectHandler(Scanner in, PrintWriter out) {
         this.in = in;
         this.out = out;
-        this.librarian = new Librarian();
-        this.itemHandler = new BookHandler(out,in);
+        this.librarian = new DefaultLibrarian();
+        this.itemHandler = new DefaultItemHandler(out,in);
         this.userInput = new UserInput(out,in);
     }
 
@@ -175,7 +175,7 @@ public class ProjectHandler {
 
     public void initFileWork(FilesWorker filesWorker) {
         filesWorker.genFilePath();
-        librarian = new Librarian(filesWorker, out);
+        librarian = new DefaultLibrarian(filesWorker, out);
     }
 
     public User createUser(UserInput dialogue, boolean validUserName) {

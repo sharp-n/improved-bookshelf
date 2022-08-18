@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.ComparatorsForSorting;
 import com.company.User;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
@@ -8,7 +9,6 @@ import com.company.items.Item;
 import com.company.sqlite.queries.SQLDefaultQueries;
 import com.company.sqlite.queries.SQLQueries;
 import com.company.table.TableUtil;
-import com.company.work_with_files.FilesWorker;
 import lombok.AllArgsConstructor;
 
 import java.io.IOException;
@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -110,6 +112,16 @@ public class DBWorker extends Librarian{
             sqlException.printStackTrace();
             return null;
         }
+    }
+
+    public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+        List<List<String>> sortedItemsStr = getAnyTypeFromDB(sortingParameter.getDbColumn(),user,itemHandler,connection);
+        List<Item> items = new ArrayList<>();
+        for (List<String> itemStr : sortedItemsStr){
+            Item item = itemHandler.createItem(itemStr);
+            items.add(item);
+        }
+        return items;
     }
 
 }

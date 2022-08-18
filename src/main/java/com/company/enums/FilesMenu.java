@@ -45,4 +45,12 @@ public enum FilesMenu {
                 .findFirst()
                 .orElse(DEFAULT);
     }
+
+    public static FilesMenu getByDBColumnName(String dbColumn){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.servletParameter.equals(dbColumn))
+                .findFirst()
+                .orElse(DEFAULT);
+    }
 }

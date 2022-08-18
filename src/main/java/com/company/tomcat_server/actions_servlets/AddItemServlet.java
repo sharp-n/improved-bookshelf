@@ -3,6 +3,7 @@ package com.company.tomcat_server.actions_servlets;
 import com.company.User;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
+import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
@@ -35,8 +37,10 @@ public class AddItemServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_HTML_FILE));
 
-        String formContent = new HTMLFormBuilder().genForm(ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(param.typeOfItem)).genAddFormContent(),URLConstants.ADD_PAGE);
-        String table = servletService.genTableOfSortedItemsFromFiles(param, FormConstants.ITEM_ID_PARAM);
+        ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
+        String formContent = new HTMLFormBuilder().genForm(projectHandler.getItemHandler().genAddFormContent(),URLConstants.ADD_PAGE);
+
+        String table = servletService.getTable(SortingMenu.ITEM_ID.getDbColumn(), servletService, projectHandler, param);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,table);
 
@@ -50,7 +54,8 @@ public class AddItemServlet extends HttpServlet {
 
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+        FilesMenu option = FilesMenu.getByDBColumnName(param.typeOfFileWork);
+        projectHandler.fileSwitch(option, new User(param.name));
         ItemHandler itemHandler = projectHandler.getItemHandler();
 
         List<String> params = itemHandler.convertItemParametersMapToList(req.getParameterMap());

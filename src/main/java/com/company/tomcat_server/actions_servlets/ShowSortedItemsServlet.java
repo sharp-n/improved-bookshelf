@@ -1,5 +1,6 @@
 package com.company.tomcat_server.actions_servlets;
 
+import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
@@ -14,10 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Objects;
 
-import static com.company.tomcat_server.constants.FormConstants.COMPARATOR_PARAM;
+import static com.company.tomcat_server.constants.ParametersConstants.COMPARATOR_PARAM;
 import static com.company.tomcat_server.constants.ParametersConstants.NAME;
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
@@ -62,19 +62,23 @@ public class ShowSortedItemsServlet extends HttpServlet {
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
             resp.setContentType("text/html");
 
+            ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
 
-            String table = servletService.genTable(htmlCode, comparator,param);
-            htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,table);
+            String table = servletService.getTable(comparator, servletService, projectHandler, param);
+            htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,table);
+            htmlCode =  servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
 
             out.write(htmlCode.getBytes());
-            out.println("<br><br><div align=\"center\">" + table + "</div>");
+            //out.println("<br><br><div align=\"center\">" + table + "</div>");
             out.flush();
             out.close();
-        } catch (IOException | SQLException exception) {
+        } catch (IOException exception) {
             exception.printStackTrace();
             new ServletService().printErrorPage(resp);
         }
     }
+
+
 
 
 }

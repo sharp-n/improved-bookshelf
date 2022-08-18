@@ -27,17 +27,17 @@ public class ItemHandlerProvider {
         classItemHandlerMap.forEach((k, v) -> classSimpleNameOfClassMap.put(k, k.getSimpleName()));
     }
 
-    public static Map<Class<? extends Item>, String> getClassSimpleNameOfClassMap() {
-        return classSimpleNameOfClassMap;
-    }
-
     public static SQLQueries<? extends Item> getSQLQueryClassByHandler(ItemHandler<? extends Item> itemHandler, Connection connection) {
         Map<Class<? extends Item>, SQLQueries<? extends Item>> itemHandlerQueriesMap = initClassSQLQueriesMap(connection);
+        if (itemHandler.getClass().isAssignableFrom(DefaultItemHandler.class)) {
+            return new SQLDefaultQueries(connection);
+        }
         Class<? extends Item> classOfItem = getClassByHandler(itemHandler);
         for (Map.Entry<Class<? extends Item>, SQLQueries<? extends Item>> itemHandlerSQLQueryEntry : itemHandlerQueriesMap.entrySet()) {
             if (itemHandlerSQLQueryEntry.getKey().isAssignableFrom(classOfItem)){
                 return itemHandlerSQLQueryEntry.getValue();
             }
+
         }
         return null;// TODO fix null
     }
@@ -48,6 +48,7 @@ public class ItemHandlerProvider {
         itemHandlerQueriesMap.put(Journal.class, new SQLJournalQueries(connection));
         itemHandlerQueriesMap.put(Comics.class, new SQLComicsQueries(connection));
         itemHandlerQueriesMap.put(Newspaper.class, new SQLNewspaperQueries(connection));
+        itemHandlerQueriesMap.put(Item.class, new SQLDefaultQueries(connection));
         return itemHandlerQueriesMap;
     }
 

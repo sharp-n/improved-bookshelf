@@ -10,7 +10,7 @@ public enum SortingMenu {
     PAGES(3, "Pages","pages"),
     AUTHOR(4, "Author","author"),
     PUBLISHING_DATE(5, "Publishing Date","publishing_date"),
-    PUBLISHING(6, "Publisher","publisher"),
+    PUBLISHER(6, "Publisher","publisher"),
     DEFAULT(-1, "DEFAULT","");
 
     private final int num;
@@ -21,6 +21,10 @@ public enum SortingMenu {
         this.num = num;
         this.option = option;
         this.dbColumn = dbColumn;
+    }
+
+    public String getOption() {
+        return option;
     }
 
     public String getDbColumn() {

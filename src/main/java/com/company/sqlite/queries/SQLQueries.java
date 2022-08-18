@@ -111,11 +111,11 @@ public abstract class SQLQueries<T extends Item> {
     public ResultSet showSortedItems(String typeOfItem, String comparator, User user){
         try{
             typeOfItem = typeOfItem.toLowerCase();
-            String query = "SELECT item_id, title, author, pages, borrowed, type_of_item " +
-                    "FROM users " +
-                    "INNER JOIN items " +
+            String query = "SELECT * " +
+                    "FROM items " +
+                    "LEFT JOIN users " +
                     "WHERE users.user_id = items.user_id " +
-                    "AND username = '" + user.userName + "'" +
+                    "AND username = '" + user.userName + "' " +
                     "AND type_of_item = '" + typeOfItem + "' " +
                     "ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
@@ -129,9 +129,11 @@ public abstract class SQLQueries<T extends Item> {
     public ResultSet showSortedItems(String comparator, User user){
         try{
             String userName = user.userName;
-            String query = "SELECT * FROM items " +
-                    "CROSS JOIN users " +
-                    "WHERE users.username = '" + userName + "'" +
+            String query = "SELECT * " +
+                    "FROM items " +
+                    "LEFT JOIN users " +
+                    "WHERE users.user_id = items.user_id " +
+                    "AND username = '" + user.userName + "' " +
                     "ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);
@@ -171,6 +173,15 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
+            sqlException.printStackTrace();
+        }
+    }
+    public void createDatabase(){
+        try{
+            String query = "CREATE DATABASE bookshelf;";
+            Statement statement = connection.createStatement();
+            statement.execute(query);
+        }catch(SQLException sqlException){
             sqlException.printStackTrace();
         }
     }

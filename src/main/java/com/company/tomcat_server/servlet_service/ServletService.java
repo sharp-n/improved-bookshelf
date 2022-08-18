@@ -10,7 +10,6 @@ import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
 import com.company.sqlite.DBService;
-import com.company.sqlite.queries.SQLDefaultQueries;
 import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.*;
 import org.apache.http.client.utils.URIBuilder;
@@ -25,8 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
-
-import static com.company.tomcat_server.constants.ParametersConstants.NAME;
 
 public class ServletService {
 
@@ -145,18 +142,18 @@ public class ServletService {
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 
-    public String genTableOfSortedItemsFromDB(ParametersFromURL param) throws IOException, SQLException {
-        ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
-        DBService dbService = new DBService();
-        dbService.open();
-        User user = new User(param.name);
-        List<List<String>> itemsAsStr = new DBWorker(user, dbService.getConnection()).getAllFromDb(FormConstants.ITEM_ID_PARAM,user,projectHandler.getItemHandler(), dbService.getConnection());
+    public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
+        List<List<String>> itemsAsStr = new DBWorker(user, dbService.getConnection()).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
+        return genTableOfSortedItems(projectHandler, itemsAsStr);
+    }
+    public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
+        List<List<String>> itemsAsStr = new DBWorker(user, dbService.getConnection()).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 
     public List<List<String>> getItemsAsStringListSortedByComparator(ItemHandler itemHandler, Librarian librarian, String comparator) throws IOException {
         SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-        List<Item> items = librarian.initSortingItemsByComparator(librarian.workWithFiles, sortingParam, itemHandler);
+        List<Item> items = librarian.initSortingItemsByComparator(sortingParam, itemHandler);
         return itemHandler.anyItemsToString(items);
     }
 
@@ -175,15 +172,22 @@ public class ServletService {
         return uri.toString();
     }
 
-    public String genTable(String htmlCode,String sortingParam, ParametersFromURL param) throws SQLException, IOException {
-        String table = "";
-        if(param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
-            table = genTableOfSortedItemsFromDB(param);
+    public String getTable(String comparator, ServletService servletService, ProjectHandler projectHandler, ParametersFromURL param) {
+        try {
+            String table = "";
+            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
+                DBService dbService = new DBService();
+                dbService.open();
+                User user = new User(param.name);
+                table = servletService.genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);
+            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
+                table = servletService.genTableOfSortedItemsFromFiles(param, comparator);
+            }
+            return table;
+        } catch (SQLException | IOException e){
+            e.printStackTrace();
+            return "";
         }
-        else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
-            table = genTableOfSortedItemsFromFiles(param, sortingParam);
-        }
-        return table;
     }
 
 }

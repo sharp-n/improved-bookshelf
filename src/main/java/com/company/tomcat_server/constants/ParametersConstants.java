@@ -7,6 +7,7 @@ public class ParametersConstants {
     public static final String TYPE_OF_ITEM = "type-of-item";
     public static final String ONE_FILE = "oneFile";
     public static final String FILE_PER_TYPE = "filePerItem";
-    public static final String DATABASE = "db";
+    public static final String DATABASE = "database";
+    public static final String COMPARATOR_PARAM = "comparator";
 
 }

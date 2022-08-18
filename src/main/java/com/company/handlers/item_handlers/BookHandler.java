@@ -5,7 +5,6 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.items.Newspaper;
 import com.company.sqlite.queries.SQLQueries;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
@@ -18,11 +17,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.constants.FormConstants.*;
+import static com.company.tomcat_server.constants.ParametersConstants.COMPARATOR_PARAM;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
+import static com.company.enums.SortingMenu.*;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book> {
+
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item","title","pages","borrowed","author", "publishing date"));
+
 
     public BookHandler(PrintWriter out, Scanner in) {
         super(out,in);
@@ -135,10 +138,10 @@ public class BookHandler extends ItemHandler<Book> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         String form = super.genAddFormContent();
         return form.substring(0,form.lastIndexOf("<"))
-                + formBuild.genLabel("Author: ",AUTHOR_PARAM)
-                + formBuild.genTextField(AUTHOR_PARAM,AUTHOR_PARAM)
+                + formBuild.genLabel("Author: ",AUTHOR.getDbColumn())
+                + formBuild.genTextField(AUTHOR.getDbColumn(),AUTHOR.getDbColumn())
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genLabel("Publishing date: ",PUBLISHING_DATE_PARAM)
+                + formBuild.genLabel("Publishing date: ",PUBLISHING_DATE.getDbColumn())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genLabel("Day: ","day")
                 + formBuild.genTextField("day", "day")
@@ -168,9 +171,9 @@ public class BookHandler extends ItemHandler<Book> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         String form = super.genSortFormContent();
         return form.substring(0,form.lastIndexOf("<"))
-                + formBuild.genRadioButton(COMPARATOR_PARAM,AUTHOR_PARAM,"Author")
+                + formBuild.genRadioButton(COMPARATOR_PARAM,AUTHOR.getDbColumn(),AUTHOR.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM,PUBLISHING_DATE_PARAM,"Publishing date")
+                + formBuild.genRadioButton(COMPARATOR_PARAM,PUBLISHING_DATE.getDbColumn(),PUBLISHING_DATE.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Sort");
     }
@@ -178,8 +181,8 @@ public class BookHandler extends ItemHandler<Book> {
     @Override
     public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
         List<List<String>> itemsStr = new ArrayList<>();
-        List<String> itemStr = new ArrayList<>();
         while (resultSet.next()) {
+            List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet,itemStr);
             itemsStr.add(itemStr);
         }
@@ -188,9 +191,9 @@ public class BookHandler extends ItemHandler<Book> {
 
     @Override
     List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
-        itemStr = getMainOptions(resultSet, itemStr);
-        itemStr.add(Integer.toString(resultSet.getInt("author")));
-        itemStr.add(Integer.toString(resultSet.getInt("publishing_date")));
+        itemStr = super.getMainOptions(resultSet, itemStr);
+        itemStr.add(Integer.toString(resultSet.getInt(AUTHOR.getDbColumn())));
+        itemStr.add(Integer.toString(resultSet.getInt(PUBLISHING_DATE.getDbColumn())));
         return itemStr;
     }
 
@@ -201,6 +204,7 @@ public class BookHandler extends ItemHandler<Book> {
             List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet, itemStr);
             String dateStr = itemStr.get(6);
+            System.out.println(itemStr.get(4));
             GregorianCalendar publishingDate = getDateFromString(dateStr);
             return new Book(
                     Integer.parseInt(itemStr.get(0)),

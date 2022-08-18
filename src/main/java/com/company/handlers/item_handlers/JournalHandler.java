@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class JournalHandler extends ItemHandler<Journal> {
 
-    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed"));
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","type of item","title","pages","borrowed"));
 
     public List<String> getColumnTitles() {
         return columnTitles;

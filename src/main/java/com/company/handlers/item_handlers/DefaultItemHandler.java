@@ -6,8 +6,10 @@ import com.company.items.Item;
 import com.company.items.Newspaper;
 import com.company.sqlite.queries.SQLQueries;
 import com.company.table.TableUtil;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class DefaultItemHandler extends ItemHandler<Item> {
+    public DefaultItemHandler(PrintWriter out, Scanner in) {
+        super(out, in);
+    }
 
     @Override
     public List<Item> getSortedItemsByComparator(List<Item> items, Comparator<Item> comparator) {
@@ -29,7 +34,7 @@ public class DefaultItemHandler extends ItemHandler<Item> {
     }
 
     @Override
-    public List<List<String>> anyItemsToString(List<Item> items) {
+    public List<List<String>> anyItemsToString(List<Item> items) { // todo fix converting
         List<List<String>> itemsAsStringList = new ArrayList<>();
         for (Item item: items) {
             ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(item.getClass());
