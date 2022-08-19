@@ -13,8 +13,8 @@ public class DBService {
 
     Connection connection;
 
-    private static final String user = "root";
-    private static final String password = "";
+    private static final String user = "sharp";
+    private static final String password = "1";
 
     public Connection getConnection() {
         return connection;
@@ -28,23 +28,25 @@ public class DBService {
     public void open() {
 
         try {
-            Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bookshelf", user, password);
-//            connection = DriverManager.getConnection("jdbc:sqlite:bookshelf.db");
+            Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
+            connection = DriverManager.getConnection("jdbc:sqlite:bookshelf.db");
+            System.out.println("Connection opened");
+
+        } catch (SQLException | ClassNotFoundException sqlException){
+            sqlException.printStackTrace();
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void openMySQL() {
+
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/bookshelf", user, password);
             System.out.println("Connection opened");
 
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
         }
     }
 

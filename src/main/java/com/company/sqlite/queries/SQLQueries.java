@@ -29,7 +29,7 @@ public abstract class SQLQueries<T extends Item> {
                 borrowedSQL = 0;
             }
             String typeOfItem = item.getClass().getSimpleName().toLowerCase();
-            String query = "INSERT INTO items (user_id,title, pages, borrowed,type_of_item)" +
+            String query = "INSERT INTO items (user_id, title, pages, borrowed,type_of_item)" +
                     " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
                     "'" + item.getTitle() +"'," + item.getPages() + ",'" + borrowedSQL + "','" + typeOfItem + "');";
             Statement statement = connection.createStatement();
@@ -128,7 +128,6 @@ public abstract class SQLQueries<T extends Item> {
 
     public ResultSet showSortedItems(String comparator, User user){
         try{
-            String userName = user.userName;
             String query = "SELECT * " +
                     "FROM items " +
                     "LEFT JOIN users " +
