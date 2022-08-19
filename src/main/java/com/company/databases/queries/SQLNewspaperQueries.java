@@ -1,4 +1,4 @@
-package com.company.sqlite.queries;
+package com.company.databases.queries;
 
 
 import com.company.items.Newspaper;

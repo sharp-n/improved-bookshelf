@@ -9,7 +9,7 @@ import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.items.Item;
-import com.company.sqlite.DBService;
+import com.company.databases.db_services.DBService;
 import com.company.table.HtmlTableBuilder;
 import com.company.tomcat_server.constants.*;
 import org.apache.http.client.utils.URIBuilder;

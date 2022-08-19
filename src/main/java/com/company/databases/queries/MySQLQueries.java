@@ -1,4 +1,4 @@
-package com.company.sqlite.queries;
+package com.company.databases.queries;
 
 import java.sql.Connection;
 import java.sql.SQLException;

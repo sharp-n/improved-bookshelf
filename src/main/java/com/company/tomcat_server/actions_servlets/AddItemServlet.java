@@ -6,7 +6,6 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.*;
 
@@ -14,7 +13,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;

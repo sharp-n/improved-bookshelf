@@ -1,13 +1,12 @@
 package com.company.handlers;
 
-import com.company.ComparatorsForSorting;
 import com.company.User;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
-import com.company.sqlite.queries.SQLDefaultQueries;
-import com.company.sqlite.queries.SQLQueries;
+import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 import com.company.table.TableUtil;
 import lombok.AllArgsConstructor;
 
@@ -17,7 +16,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor

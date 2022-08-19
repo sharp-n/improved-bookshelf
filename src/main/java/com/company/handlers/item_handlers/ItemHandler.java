@@ -5,7 +5,7 @@ import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
 
-import com.company.sqlite.queries.SQLQueries;
+import com.company.databases.queries.SQLQueries;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;

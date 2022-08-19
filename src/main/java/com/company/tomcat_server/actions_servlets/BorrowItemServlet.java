@@ -6,7 +6,6 @@ import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
-import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
@@ -19,11 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Scanner;
 
 import static com.company.enums.SortingMenu.ITEM_ID;
-import static com.company.enums.SortingMenu.PAGES;
 import static com.company.tomcat_server.constants.URLConstants.SLASH;
 
 @WebServlet(

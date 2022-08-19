@@ -3,8 +3,7 @@ package com.company.handlers.item_handlers;
 import com.company.User;
 import com.company.items.Item;
 import com.company.items.Journal;
-import com.company.items.Newspaper;
-import com.company.sqlite.queries.SQLQueries;
+import com.company.databases.queries.SQLQueries;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;

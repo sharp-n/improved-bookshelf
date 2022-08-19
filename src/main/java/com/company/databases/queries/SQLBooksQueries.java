@@ -1,9 +1,8 @@
-package com.company.sqlite.queries;
+package com.company.databases.queries;
 
 import com.company.User;
 import com.company.items.Book;
 import com.company.items.Item;
-import com.company.sqlite.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,7 +1,7 @@
 package com.company.handlers.item_handlers;
 
 import com.company.items.*;
-import com.company.sqlite.queries.*;
+import com.company.databases.queries.*;
 
 
 import java.sql.Connection;

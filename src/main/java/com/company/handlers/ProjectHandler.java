@@ -5,7 +5,8 @@ import com.company.UserInput;
 import com.company.enums.*;
 import com.company.handlers.item_handlers.*;
 import com.company.items.Item;
-import com.company.sqlite.DBService;
+import com.company.databases.db_services.DBService;
+import com.company.databases.db_services.SQLiteDBService;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
@@ -77,9 +78,7 @@ public class ProjectHandler {
             boolean chosenItem = itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
             FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
             filesValue = fileSwitch(filesMenuOption, user);
-
             if (chosenItem) {
-
                 Integer usersChoice = getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
                 if (usersChoice == null) usersChoice = -1;
                 ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
@@ -104,6 +103,9 @@ public class ProjectHandler {
             case DATABASE_SQLITE:
                 initWorkWithDB(user);
                 break;
+            case DATABASE_MYSQL:
+                initWorkWithDB(user); // todo implement method for this case
+                break;
             case CHANGE_USER:
                 mainProcValue = false;
                 break;
@@ -120,7 +122,7 @@ public class ProjectHandler {
     }
 
     public void initWorkWithDB(User user){
-        DBService dbService = new DBService();
+        DBService dbService = new SQLiteDBService();
         dbService.open();
         librarian = new DBWorker(user,dbService.getConnection(),out);
     }

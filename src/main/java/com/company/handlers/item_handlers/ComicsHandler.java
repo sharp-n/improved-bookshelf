@@ -4,7 +4,7 @@ import com.company.User;
 import com.company.enums.SortingMenu;
 import com.company.items.Comics;
 import com.company.items.Item;
-import com.company.sqlite.queries.SQLQueries;
+import com.company.databases.queries.SQLQueries;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 

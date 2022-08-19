@@ -1,7 +1,8 @@
-package com.company.sqlite;
+package com.company.databases;
 
-import com.company.sqlite.queries.SQLDefaultQueries;
-import com.company.sqlite.queries.SQLQueries;
+import com.company.databases.db_services.DBService;
+import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 
 import java.sql.SQLException;
 
