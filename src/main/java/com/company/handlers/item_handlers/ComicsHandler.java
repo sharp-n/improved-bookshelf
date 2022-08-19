@@ -48,9 +48,9 @@ public class ComicsHandler extends ItemHandler<Comics> {
     }
 
     @Override
-    public List<String> getItem() {
+    public List<String> getItem(Integer itemID) {
         String publishing = "";
-        List<String> itemOptions = new ArrayList<>(super.getItem());
+        List<String> itemOptions = new ArrayList<>(super.getItem(itemID));
 
         publishing = validator.validateAuthorName(userInput.publishingUserInput());
         if (publishing == null) {

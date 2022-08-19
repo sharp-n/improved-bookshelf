@@ -13,6 +13,7 @@ import com.company.work_with_files.OneFileWorker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.company.enums.FilesMenu.*;
@@ -28,7 +29,7 @@ public class ProjectHandler {
     public Scanner in;
     public PrintWriter out;
 
-    ItemHandler<? extends Item> itemHandler;
+    ItemHandler itemHandler;
 
     boolean mainProcValue;
 
@@ -120,7 +121,7 @@ public class ProjectHandler {
 
     public void initWorkWithDB(User user, DBService dbService){
         dbService.open();
-        librarian = new DBWorker(user,dbService.getConnection(),out,DBServiceProvider.getOptionByDBService(dbService));
+        librarian = new DBWorker(user,dbService,out);
     }
 
     public boolean itemMenuSwitch(MainMenu mainMenu){
@@ -138,6 +139,10 @@ public class ProjectHandler {
             case JOURNAL:
                 itemHandler = new JournalHandler(out,in);
                 break;
+            case SHOW_ALL_THE_ITEMS:
+                showSortedItems();
+                itemHandler = new JournalHandler(out,in);
+                break;
             default:
                 itemHandler.userInput.printDefaultMessage();
                 chosenItem = false;
@@ -149,6 +154,16 @@ public class ProjectHandler {
         return chosenItem;
     }
 
+    private void showSortedItems() {
+        try {
+            SortingMenu sortingParam = SortingMenu.getByOption(SortingMenu.ITEM_ID.getDbColumn());
+            List<Item> items = librarian.initSortingAllItemsByComparator(itemHandler);
+            librarian.printItems(items, itemHandler);
+        } catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
     public Integer getUsersMainMenuChoice(String message, UserInput dialogue) {
         out.println(message);
         dialogue.printWaitingForReplyMessage();
@@ -157,7 +172,10 @@ public class ProjectHandler {
 
     public Integer usersFilesMenuChoice(UserInput dialogue) {
         out.println(NEW_LINE + EXIT_VALUE + NEW_LINE + ONE_FILE +
-                NEW_LINE + FILE_PER_ITEM + NEW_LINE + DATABASE_SQLITE + NEW_LINE + FilesMenu.CHANGE_USER);
+                NEW_LINE + FILE_PER_ITEM + NEW_LINE +
+                DATABASE_SQLITE + NEW_LINE +
+                DATABASE_MYSQL + NEW_LINE +
+                FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
@@ -189,7 +207,7 @@ public class ProjectHandler {
             switch (actionsWithItem) {
 
                 case ADD:
-                    librarian.addItem(itemHandler,itemHandler.getItem());
+                    librarian.addItem(itemHandler,itemHandler.getItem(librarian.genItemID()));
                     break;
 
                 case DELETE:

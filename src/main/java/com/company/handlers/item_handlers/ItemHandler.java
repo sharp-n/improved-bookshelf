@@ -1,6 +1,7 @@
 package com.company.handlers.item_handlers;
 
 import com.company.*;
+import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
@@ -54,13 +55,7 @@ public abstract class ItemHandler<T extends Item> {
 
     public abstract T createItem(List<String> options);
 
-    public List<String> getItem() {
-        Integer itemID = validator.validateID(userInput.idUserInput());
-
-        if (itemID == null) {
-            validator.printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
-            return Collections.emptyList();
-        }
+    public List<String> getItem(Integer itemID) {
 
         String title = validator.validateTitle(userInput.titleUserInput());
         if (!Librarian.checkItemForValidity(title)) return Collections.emptyList();
@@ -76,7 +71,8 @@ public abstract class ItemHandler<T extends Item> {
         return NEW_LINE + MainMenu.BOOK + NEW_LINE
                 + MainMenu.NEWSPAPER + NEW_LINE
                 + MainMenu.COMICS + NEW_LINE
-                + MainMenu.JOURNAL + NEW_LINE;
+                + MainMenu.JOURNAL + NEW_LINE
+                + MainMenu.SHOW_ALL_THE_ITEMS + NEW_LINE;
     }
 
     public String initActionsWithItemsMenuText(){
@@ -218,5 +214,10 @@ public abstract class ItemHandler<T extends Item> {
     public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
 
 
+    public int genItemID(){
+
+
+        return 0;
+    }
 
 }

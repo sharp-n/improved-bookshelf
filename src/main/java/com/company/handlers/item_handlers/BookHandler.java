@@ -73,9 +73,9 @@ public class BookHandler extends ItemHandler<Book> {
     }
 
     @Override
-    public List<String> getItem() {
+    public List<String> getItem(Integer itemID) {
         String author = "";
-        List<String> itemOptions = new ArrayList<>(super.getItem());
+        List<String> itemOptions = new ArrayList<>(super.getItem(itemID));
 
         author = validator.validateAuthorName(userInput.authorUserInput());
         if (author == null) {

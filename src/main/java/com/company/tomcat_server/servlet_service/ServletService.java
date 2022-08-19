@@ -144,11 +144,11 @@ public class ServletService {
     }
 
     public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(DBServiceProvider.getOptionByDBService(dbService),user, dbService.getConnection()).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
+        List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
     public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(DBServiceProvider.getOptionByDBService(dbService),user, dbService.getConnection()).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
+        List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 

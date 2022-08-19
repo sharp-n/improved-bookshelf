@@ -1,6 +1,8 @@
 package com.company.handlers;
 
 import com.company.User;
+import com.company.databases.db_services.DBService;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
@@ -18,7 +20,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class DBWorker extends Librarian{
 
     // todo add usage of database to servlets
@@ -27,11 +28,18 @@ public class DBWorker extends Librarian{
     User user;
     Connection connection;
 
-    public DBWorker(User user, Connection connection, PrintWriter out, String dbType) {
+
+    public DBWorker(User user, DBService dbService) {
+        this.user = user;
+        this.connection = dbService.getConnection();
+        this.dbType = DBServiceProvider.getOptionByDBService(dbService);
+    }
+
+    public DBWorker(User user, DBService dbService, PrintWriter out) {
         super.out = out;
         this.user = user;
-        this.connection = connection;
-        this.dbType = dbType;
+        this.connection = dbService.getConnection();
+        this.dbType = DBServiceProvider.getOptionByDBService(dbService);
     }
 
     @Override

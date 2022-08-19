@@ -4,6 +4,7 @@ import com.company.Container;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.items.Item;
 import com.google.gson.*;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -24,6 +25,7 @@ public abstract class FilesWorker {
 
     protected FilesWorker(String root, String userName) {
         this.userName = userName;
+        createDirectoryIfNotExists(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS));
         pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser()));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
     }
@@ -47,7 +49,7 @@ public abstract class FilesWorker {
             bw.write(gson.toJson(containers));
             bw.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -113,8 +115,13 @@ public abstract class FilesWorker {
     }
 
     void createDirectoryIfNotExists(Path path) {
-        if (!Files.exists(path)) {
-            new File(pathToDirectoryAsString).mkdir();
+        try {
+            File folder = new File(path.toString());
+            if (!folder.exists()) {
+                Files.createDirectories(path);
+            }
+        } catch (IOException ioException){
+            ioException.printStackTrace();
         }
     }
 

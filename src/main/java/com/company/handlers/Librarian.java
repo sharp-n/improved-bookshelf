@@ -11,8 +11,7 @@ import com.company.work_with_files.FilesWorker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class Librarian {
 
@@ -21,8 +20,6 @@ public abstract class Librarian {
 
     Validator validator;
 
-
-
     public abstract boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException;
 
     public abstract boolean addItem(Item item) throws IOException ;
@@ -30,21 +27,7 @@ public abstract class Librarian {
 
     public abstract boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException ;
 
-    public boolean borrowItem(Integer itemID, boolean borrow) throws IOException {
-        itemID = validator.validateIdToBorrow(itemID);
-        if (itemID != null) {
-            List<Item> items = workWithFiles.readToItemsList();
-            Item item = findItemByID(itemID, items);
-            if (item != null&&item.isBorrowed() != borrow) {
-                deleteItem(itemID, true);
-                item.setBorrowed(borrow);
-                addItem(item);
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+    public abstract boolean borrowItem(Integer itemID, boolean borrow) throws IOException;
 
     public boolean checkIDForExistence(int itemID) throws IOException {
         List<? extends Item> items = workWithFiles.readToItemsList();
@@ -88,7 +71,7 @@ public abstract class Librarian {
 
     public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
-        List<Item> items =   workWithFiles.readToAnyItemList(typeOfItem);
+        List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
         switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
@@ -107,6 +90,24 @@ public abstract class Librarian {
                 break;
         }
         return Collections.emptyList();
+    }
+
+    public List<? extends Item> initSortingAllItemsByComparator( ItemHandler<? extends Item> itemHandler) throws IOException {
+        List<Item> items = workWithFiles.readToItemsList();
+        return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
+    }
+
+    public int genItemID() throws IOException {
+        int max = 1;
+        List<Item> items = workWithFiles.readToItemsList();
+        if (items != null) {
+            for (Item item : items) {
+                if(max<item.getItemID()){
+                    max=item.getItemID();
+                }
+            }
+        }
+        return max;
     }
 
 }

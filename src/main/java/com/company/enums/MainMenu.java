@@ -9,6 +9,7 @@ public enum MainMenu {
     NEWSPAPER(2, "Newspaper"),
     COMICS(3, "Comics"),
     JOURNAL(4, "Journal"),
+    SHOW_ALL_THE_ITEMS(5, "Show all the items"),
     DEFAULT(-1,"Default");
 
     private final int num;
