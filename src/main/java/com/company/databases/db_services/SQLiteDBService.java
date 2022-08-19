@@ -21,7 +21,6 @@ public class SQLiteDBService extends DBService {
         try {
             Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection("jdbc:sqlite:bookshelf.db");
-            System.out.println("Connection opened");
 
         } catch (SQLException | ClassNotFoundException sqlException){
             sqlException.printStackTrace();

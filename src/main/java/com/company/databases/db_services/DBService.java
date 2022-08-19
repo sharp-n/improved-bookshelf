@@ -14,7 +14,6 @@ public abstract class DBService {
     public void close(){
         try {
             connection.close();
-            System.out.println("Connection closed");
         } catch (SQLException sqlException){
             System.out.println(sqlException.getMessage());
         }

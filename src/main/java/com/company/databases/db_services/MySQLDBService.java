@@ -22,7 +22,6 @@ public class MySQLDBService extends DBService {
 
         try {
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/bookshelf", user, password);
-            System.out.println("Connection opened");
 
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
