@@ -7,9 +7,7 @@ public abstract class DBService {
 
     Connection connection;
 
-    public Connection getConnection() {
-        return connection;
-    }
+    public abstract Connection getConnection();
 
     public abstract void open();
 

@@ -12,7 +12,7 @@ public class MySQLTest {
         DBService dbService = new MySQLDBService();
         dbService.open();
 
-        SQLQueries sqlQueries = new MySQLQueries(dbService.connection);
+        SQLQueries sqlQueries = new MySQLQueries(dbService.getConnection());
         sqlQueries.addUserToTable(new User("yana"));
         dbService.close();
     }

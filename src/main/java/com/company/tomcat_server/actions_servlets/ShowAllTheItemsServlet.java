@@ -1,10 +1,10 @@
 package com.company.tomcat_server.actions_servlets;
 
 import com.company.User;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.databases.db_services.DBService;
-import com.company.databases.db_services.SQLiteDBService;
 import com.company.tomcat_server.constants.*;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
@@ -43,15 +43,16 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.SHOW_ALL_THE_ITEMS_HTML_FILE));
 
             ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
-            DBService dbService = new SQLiteDBService();
-            dbService.open();
+
             User user = new User(param.name);
 
             String table = "";
-            if(param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
+            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
+                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
+                dbService.open();
                 table = servletService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
-            }
-            else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
+            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
                 table = servletService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
             }
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);

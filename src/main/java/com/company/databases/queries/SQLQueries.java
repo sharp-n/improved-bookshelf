@@ -1,6 +1,7 @@
 package com.company.databases.queries;
 
 import com.company.User;
+import com.company.enums.FilesMenu;
 import com.company.items.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -54,16 +55,38 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
-    public boolean updateBorrowedItem(int itemID, boolean borrow, User user){
+//PDATE items,
+//       (SELECT id FROM items
+//        WHERE id IN
+//            (SELECT id FROM items
+//             WHERE retail / wholesale >= 1.3 AND quantity < 100))
+//        AS discounted
+//SET items.retail = items.retail * 0.9
+//WHERE items.id = discounted.id;
+
+
+    public boolean updateBorrowedItem(int itemID, boolean borrow, User user, String dbType){
         try{
-            String query = "UPDATE items set borrowed = " + borrow +
-                    " WHERE EXISTS" +
-                    "(SELECT * " +
-                    "FROM users " +
-                    "CROSS JOIN items " +
-                    "WHERE users.user_id = items.user_id " +
-                    "AND username = '" + user.userName + "') " +
-                    "AND item_id = " + itemID +"; ";
+            String query = "";
+            if(dbType.equals(FilesMenu.DATABASE_MYSQL.getServletParameter())){
+                query = "UPDATE items," +
+                            "(SELECT user_id FROM users " +
+                            "WHERE user_id IN " +
+                                "(SELECT user_id FROM users " +
+                                "WHERE username='" + user.userName + "'))" +
+                        "AS i " +
+                        "SET items.borrowed = " + borrow + " " +
+                        "WHERE items.user_id=i.user_id;";
+            } else if (dbType.equals(FilesMenu.DATABASE_SQLITE.getServletParameter())){
+                query = "UPDATE items set borrowed = " + borrow +
+                        " WHERE EXISTS" +
+                        "(SELECT * " +
+                        "FROM users " +
+                        "CROSS JOIN items " +
+                        "WHERE users.user_id = items.user_id " +
+                        "AND username = '" + user.userName + "') " +
+                        "AND item_id = " + itemID +"; ";
+            }
             Statement statement = connection.createStatement();
             int result = statement.executeUpdate(query);
             return result != 0;
@@ -114,8 +137,8 @@ public abstract class SQLQueries<T extends Item> {
             String query = "SELECT * " +
                     "FROM items " +
                     "LEFT JOIN users " +
-                    "WHERE users.user_id = items.user_id " +
-                    "AND username = '" + user.userName + "' " +
+                    "ON users.user_id = items.user_id " +
+                    "WHERE username = '" + user.userName + "' " +
                     "AND type_of_item = '" + typeOfItem + "' " +
                     "ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
@@ -131,8 +154,8 @@ public abstract class SQLQueries<T extends Item> {
             String query = "SELECT * " +
                     "FROM items " +
                     "LEFT JOIN users " +
-                    "WHERE users.user_id = items.user_id " +
-                    "AND username = '" + user.userName + "' " +
+                    "ON users.user_id = items.user_id " +
+                    "WHERE username = '" + user.userName + "' " +
                     "ORDER BY " + comparator + " ASC;";
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);

@@ -2,11 +2,11 @@ package com.company.handlers;
 
 import com.company.User;
 import com.company.UserInput;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.enums.*;
 import com.company.handlers.item_handlers.*;
 import com.company.items.Item;
 import com.company.databases.db_services.DBService;
-import com.company.databases.db_services.SQLiteDBService;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
@@ -93,18 +93,15 @@ public class ProjectHandler {
     public boolean fileSwitch(FilesMenu filesMenuOption,User user){
         boolean filesValue = true;
         switch (filesMenuOption) {
-
             case ONE_FILE:
                 initFileWork(genOneFileWorker(user));
                 break;
             case FILE_PER_ITEM:
                 initFileWork(genFilePerTypeWorker(user));
                 break;
-            case DATABASE_SQLITE:
-                initWorkWithDB(user);
-                break;
             case DATABASE_MYSQL:
-                initWorkWithDB(user); // todo implement method for this case
+            case DATABASE_SQLITE:
+                initWorkWithDB(user, DBServiceProvider.getDBServiceByOption(filesMenuOption.getServletParameter()));
                 break;
             case CHANGE_USER:
                 mainProcValue = false;
@@ -121,10 +118,9 @@ public class ProjectHandler {
         return filesValue;
     }
 
-    public void initWorkWithDB(User user){
-        DBService dbService = new SQLiteDBService();
+    public void initWorkWithDB(User user, DBService dbService){
         dbService.open();
-        librarian = new DBWorker(user,dbService.getConnection(),out);
+        librarian = new DBWorker(user,dbService.getConnection(),out,DBServiceProvider.getOptionByDBService(dbService));
     }
 
     public boolean itemMenuSwitch(MainMenu mainMenu){

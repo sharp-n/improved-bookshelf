@@ -1,6 +1,7 @@
 package com.company.tomcat_server.servlet_service;
 
 import com.company.User;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -143,11 +144,11 @@ public class ServletService {
     }
 
     public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(user, dbService.getConnection()).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
+        List<List<String>> itemsAsStr = new DBWorker(DBServiceProvider.getOptionByDBService(dbService),user, dbService.getConnection()).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
     public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(user, dbService.getConnection()).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
+        List<List<String>> itemsAsStr = new DBWorker(DBServiceProvider.getOptionByDBService(dbService),user, dbService.getConnection()).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 
@@ -175,8 +176,9 @@ public class ServletService {
     public String getTable(String comparator, ServletService servletService, ProjectHandler projectHandler, ParametersFromURL param) {
         try {
             String table = "";
-            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE)) {
-                DBService dbService = new DBService();
+            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
+                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
                 dbService.open();
                 User user = new User(param.name);
                 table = servletService.genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);

@@ -3,10 +3,18 @@ package com.company.databases.db_services;
 import com.company.databases.db_services.DBService;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteDBService extends DBService {
+
+    Connection connection;
+
+    @Override
+    public Connection getConnection() {
+        return connection;
+    }
 
     public void open() {
 

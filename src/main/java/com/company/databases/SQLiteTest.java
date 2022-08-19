@@ -1,6 +1,7 @@
 package com.company.databases;
 
 import com.company.databases.db_services.DBService;
+import com.company.databases.db_services.SQLiteDBService;
 import com.company.databases.queries.SQLDefaultQueries;
 import com.company.databases.queries.SQLQueries;
 
@@ -9,10 +10,10 @@ import java.sql.SQLException;
 public class SQLiteTest {
 
     public static void main(String [] args) throws SQLException {
-        DBService dbService = new DBService();
+        DBService dbService = new SQLiteDBService();
         dbService.open();
 
-        SQLQueries sqlQueries = new SQLDefaultQueries(dbService.connection);
+        SQLQueries sqlQueries = new SQLDefaultQueries(dbService.getConnection());
 
         sqlQueries.createUsersTable();
         sqlQueries.createItemsTable();

@@ -48,8 +48,6 @@ public class AddItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         ServletService servletService = new ServletService();
-
-
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
         FilesMenu option = FilesMenu.getByDBColumnName(param.typeOfFileWork);

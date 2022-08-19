@@ -23,16 +23,19 @@ public class DBWorker extends Librarian{
 
     // todo add usage of database to servlets
 
+    String dbType;
     User user;
     Connection connection;
-    public DBWorker(User user, Connection connection, PrintWriter out) {
+
+    public DBWorker(User user, Connection connection, PrintWriter out, String dbType) {
         super.out = out;
         this.user = user;
         this.connection = connection;
+        this.dbType = dbType;
     }
 
     @Override
-    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException {
+    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) {
         Item item = itemHandler.createItem(itemOptions);
         return addToDB(item,user,itemHandler,connection);
     }
@@ -86,12 +89,12 @@ public class DBWorker extends Librarian{
     }
 
     boolean borrowFromDB(int itemID, User user, Connection connection){
-        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,true,user);
+        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,true,user,dbType);
 
     }
 
     boolean returnToDb(int itemID, User user, Connection connection){
-        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,false,user);
+        return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,false,user,dbType);
     }
 
     public List<List<String>> getAllFromDb(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
