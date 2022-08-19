@@ -9,7 +9,6 @@ import com.company.sqlite.DBService;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -102,7 +101,7 @@ public class ProjectHandler {
             case FILE_PER_ITEM:
                 initFileWork(genFilePerTypeWorker(user));
                 break;
-            case DATABASE:
+            case DATABASE_SQLITE:
                 initWorkWithDB(user);
                 break;
             case CHANGE_USER:
@@ -160,7 +159,7 @@ public class ProjectHandler {
 
     public Integer usersFilesMenuChoice(UserInput dialogue) {
         out.println(NEW_LINE + EXIT_VALUE + NEW_LINE + ONE_FILE +
-                NEW_LINE + FILE_PER_ITEM + NEW_LINE + DATABASE + NEW_LINE + FilesMenu.CHANGE_USER);
+                NEW_LINE + FILE_PER_ITEM + NEW_LINE + DATABASE_SQLITE + NEW_LINE + FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }

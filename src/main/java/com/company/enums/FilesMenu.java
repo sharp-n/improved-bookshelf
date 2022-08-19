@@ -7,8 +7,9 @@ public enum FilesMenu {
     EXIT_VALUE(0,"Exit", ""),
     ONE_FILE(1,"One file", "oneFile"),
     FILE_PER_ITEM(2,"File per type", "filePerType"),
-    DATABASE(3,"Database", "database"),
-    CHANGE_USER(4,"Change user", ""),
+    DATABASE_SQLITE(3,"Database (SQLite)", "databaseSQLite"),
+    DATABASE_MYSQL(4,"Database (MySQL)", "databaseMySQL"),
+    CHANGE_USER(5,"Change user", ""),
     DEFAULT(-1,"Default", "");
 
     private final int num;
