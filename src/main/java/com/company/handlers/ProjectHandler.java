@@ -121,6 +121,7 @@ public class ProjectHandler {
 
     public void initWorkWithDB(User user, DBService dbService){
         dbService.open();
+        dbService.createUser(user,dbService.getConnection());
         librarian = new DBWorker(user,dbService,out);
     }
 

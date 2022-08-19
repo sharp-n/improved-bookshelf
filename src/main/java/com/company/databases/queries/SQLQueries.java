@@ -42,6 +42,22 @@ public abstract class SQLQueries<T extends Item> {
         }
     }
 
+    public String getUser(User user) {
+        try {
+            String query = "SELECT username FROM users " +
+                    "WHERE username='" + user.userName + "';";
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            if (resultSet==null) {
+                return null;
+            }
+            return resultSet.getString("username"); // todo fix bug
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean addUserToTable(User user){
         try{
             String query = "INSERT INTO users (username) " +

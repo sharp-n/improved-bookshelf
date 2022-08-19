@@ -181,6 +181,7 @@ public class ServletService {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
                 dbService.open();
                 User user = new User(param.name);
+                dbService.createUser(user,dbService.getConnection());
                 table = servletService.genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);
             } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
                 table = servletService.genTableOfSortedItemsFromFiles(param, comparator);

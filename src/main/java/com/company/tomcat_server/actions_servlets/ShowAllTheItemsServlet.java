@@ -51,6 +51,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
                     ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
                 dbService.open();
+                dbService.createUser(user,dbService.getConnection());
                 table = servletService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
             } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
                 table = servletService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
