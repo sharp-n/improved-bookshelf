@@ -1,5 +1,8 @@
 package com.company.tomcat_server;
 
+import com.company.User;
+import com.company.databases.db_services.DBService;
+import com.company.databases.db_services.SQLiteDBService;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.servlet_service.ParametersFromURL;
@@ -45,6 +48,12 @@ public class FilesWorkChoosingServlet extends HttpServlet {
                 url = new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).toString();
             } else {
                 url = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,typeOfFileWork,"");
+            }
+            if(typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)){
+                DBService dbService = new SQLiteDBService();
+                dbService.open();
+                dbService.createUser(new User(param.name),dbService.getConnection());
             }
             resp.sendRedirect(url);
         } catch (IOException ioException) {

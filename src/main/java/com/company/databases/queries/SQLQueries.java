@@ -6,10 +6,7 @@ import com.company.items.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -45,13 +42,13 @@ public abstract class SQLQueries<T extends Item> {
     public String getUser(User user) {
         try {
             String query = "SELECT username FROM users " +
-                    "WHERE username='" + user.userName + "';";
+                    "WHERE username = '"+ user.userName +"';";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            if (resultSet==null) {
-                return null;
+            if (resultSet.next()) {
+                return resultSet.getString("username");
             }
-            return resultSet.getString("username"); // todo fix bug
+            return null;
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
             return null;

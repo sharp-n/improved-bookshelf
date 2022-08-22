@@ -5,6 +5,7 @@ import com.company.databases.queries.SQLDefaultQueries;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 public abstract class DBService {
 
@@ -14,10 +15,11 @@ public abstract class DBService {
 
     public abstract void open();
 
-    public void createUser(User user, Connection connection){
+    public void createUser(User user, Connection connection) {
         SQLDefaultQueries sqlDefaultQueries = new SQLDefaultQueries(connection);
-        String userName = sqlDefaultQueries.getUser(user);
-        if(userName!=null){
+        String username = sqlDefaultQueries.getUser(user);
+        System.out.println(username);
+        if (username == null) {
             sqlDefaultQueries.addUserToTable(user);
         }
     }
