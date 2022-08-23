@@ -14,14 +14,14 @@ public class MainServletsRunner {
             String webappDirLocation = "src/main/webapp";
             Tomcat tomcat = new Tomcat();
 
-            tomcat.setPort(8080);
+            tomcat.setPort(8082);
             String absolutePath = new File(webappDirLocation).getAbsolutePath();
-            StandardContext ctx = (StandardContext) tomcat.addWebapp("", absolutePath);
+            //StandardContext ctx = (StandardContext) tomcat.addWebapp("", absolutePath);
             System.out.println("configuring app with basedir: " + absolutePath);
 
             tomcat.start();
             tomcat.getServer().await();
-        } catch (LifecycleException | ServletException exception){
+        } catch (LifecycleException exception){
             exception.printStackTrace();
         }
     }

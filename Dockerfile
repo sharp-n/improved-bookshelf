@@ -16,4 +16,5 @@ WORKDIR /app
 VOLUME /root/
 
 EXPOSE 8080
+EXPOSE 8082
 CMD java -jar bookshelf-1.0-SNAPSHOT.jar

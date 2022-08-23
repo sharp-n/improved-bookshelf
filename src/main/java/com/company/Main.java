@@ -26,12 +26,12 @@ public class Main {
             handler.handle();
         });
 
-        List<Thread> threads = new ArrayList<>(Arrays.asList(telnetThread,serverThread,consoleThread));
-        for (Thread thread : threads) {
-            thread.start();
-            thread.join();
-        }
-
+        telnetThread.start();
+        serverThread.start();
+        consoleThread.start();
+        telnetThread.join();
+        serverThread.join();
+        consoleThread.join();
     }
 
 }
