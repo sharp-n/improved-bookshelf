@@ -9,6 +9,7 @@ import com.company.tomcat_server.servlet_service.ParametersFromURL;
 import com.company.tomcat_server.servlet_service.ServletService;
 import com.company.tomcat_server.constants.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +25,8 @@ import static com.company.tomcat_server.constants.URLConstants.SLASH;
         urlPatterns = {SLASH + URLConstants.FILE_WORK_PAGE}
 )
 public class FilesWorkChoosingServlet extends HttpServlet {
+
+    Logger LOGGER;
 
     final ParametersFromURL param = new ParametersFromURL();
 
@@ -57,6 +60,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
             }
             resp.sendRedirect(url);
         } catch (IOException ioException) {
+            LOGGER.info(ioException.getMessage());
             ioException.printStackTrace();
             new ServletService().printErrorPage(resp);
         }

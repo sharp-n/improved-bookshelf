@@ -1,11 +1,16 @@
 package com.company;
 
+import org.slf4j.Logger;
+
+import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.util.*;
+import java.util.logging.LogManager;
 
 
 public class UserInput {
 
+    static Logger LOGGER;
     Scanner scan;
     PrintWriter out;
 
@@ -44,6 +49,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            LOGGER.info(e.getMessage());
             return null;
         }
     }
@@ -53,7 +59,6 @@ public class UserInput {
         printWaitingForReplyMessage();
         return scan.nextLine().trim();
     }
-
 
     public Integer yearUserInput() {
         try {
