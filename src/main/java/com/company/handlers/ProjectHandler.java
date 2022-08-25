@@ -65,6 +65,7 @@ public class ProjectHandler {
             User user = createUser(itemHandler.userInput, validUserName);
             if (user.userName.equals("exit")) {
                 filesValue = false;
+                validUserName = false;
             } else {
                 mainProcValue = true;
                 int usersFilesMenuChoice = usersFilesMenuChoice(itemHandler.userInput);

@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws  InterruptedException{
-
         Thread telnetThread = new Thread(()-> Server.main(args));
         Thread serverThread = new Thread(()-> MainServletsRunner.main(args));
 
