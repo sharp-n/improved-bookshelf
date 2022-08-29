@@ -1,6 +1,8 @@
 package com.company.databases.db_services;
 
 import com.company.databases.db_services.DBService;
+import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -27,6 +29,21 @@ public class SQLiteDBService extends DBService {
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void createTablesIfNotExist(Connection connection){
+        createUsersTableIfNotExists(connection);
+        createItemsTableIfNotExists(connection);
+    }
+
+    public void createUsersTableIfNotExists(Connection connection){
+        SQLQueries sqlQueries = new SQLDefaultQueries(connection);
+        sqlQueries.createUsersTable();
+    }
+
+    public void createItemsTableIfNotExists(Connection connection){
+        SQLQueries sqlQueries = new SQLDefaultQueries(connection);
+        sqlQueries.createItemsTable();
     }
 
 }

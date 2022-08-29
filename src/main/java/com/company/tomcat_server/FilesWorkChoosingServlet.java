@@ -56,6 +56,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
                     ||typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)){
                 DBService dbService = new SQLiteDBService();
                 dbService.open();
+                dbService.createTablesIfNotExist(dbService.getConnection());
                 dbService.createUser(new User(param.name),dbService.getConnection());
             }
             resp.sendRedirect(url);

@@ -1,6 +1,8 @@
 package com.company.databases.db_services;
 
-import com.company.databases.db_services.DBService;
+import com.company.databases.queries.MySQLQueries;
+import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,11 +23,26 @@ public class MySQLDBService extends DBService {
     public void open() {
 
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3307/bookshelf", user, password);
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/bookshelf", user, password);
 
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
         }
+    }
+
+    public void createTablesIfNotExist(Connection connection){
+        createUsersTableIfNotExists(connection);
+        createItemsTableIfNotExists(connection);
+    }
+
+    public void createUsersTableIfNotExists(Connection connection){
+        SQLQueries sqlQueries = new MySQLQueries(connection);
+        sqlQueries.createUsersTable();
+    }
+
+    public void createItemsTableIfNotExists(Connection connection){
+        SQLQueries sqlQueries = new MySQLQueries(connection);
+        sqlQueries.createItemsTable();
     }
 
 }

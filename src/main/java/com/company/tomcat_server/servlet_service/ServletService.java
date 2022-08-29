@@ -180,6 +180,7 @@ public class ServletService {
                     ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
                 dbService.open();
+                dbService.createTablesIfNotExist(dbService.getConnection());
                 User user = new User(param.name);
                 dbService.createUser(user,dbService.getConnection());
                 table = servletService.genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);

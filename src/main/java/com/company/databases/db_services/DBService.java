@@ -2,10 +2,10 @@ package com.company.databases.db_services;
 
 import com.company.User;
 import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 public abstract class DBService {
 
@@ -15,10 +15,16 @@ public abstract class DBService {
 
     public abstract void open();
 
+    public abstract void createTablesIfNotExist(Connection connection);
+
+    public abstract void createUsersTableIfNotExists(Connection connection);
+
+    public abstract void createItemsTableIfNotExists(Connection connection);
+
     public void createUser(User user, Connection connection) {
-        SQLDefaultQueries sqlDefaultQueries = new SQLDefaultQueries(connection);
+        SQLQueries sqlDefaultQueries = new SQLDefaultQueries(connection);
+
         String username = sqlDefaultQueries.getUser(user);
-        System.out.println(username);
         if (username == null) {
             sqlDefaultQueries.addUserToTable(user);
         }
