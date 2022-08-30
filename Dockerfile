@@ -20,6 +20,8 @@ VOLUME /root/
 
 EXPOSE 8080
 EXPOSE 8081
+EXPOSE 3306
+EXPOSE 3307
 
 
 CMD java -jar bookshelf-1.0-SNAPSHOT.jar

@@ -2,6 +2,7 @@ package com.company.tomcat_server;
 
 import com.company.User;
 import com.company.databases.db_services.DBService;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.databases.db_services.SQLiteDBService;
 import com.company.tomcat_server.constants.FileNameConstants;
 import com.company.tomcat_server.constants.ParametersConstants;
@@ -55,7 +56,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
             if(typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
                     ||typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)){
                 DBService dbService = new SQLiteDBService();
-                dbService.open();
+                dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 dbService.createUser(new User(param.name),dbService.getConnection());
             }

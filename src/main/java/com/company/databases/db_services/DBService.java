@@ -13,7 +13,7 @@ public abstract class DBService {
 
     public abstract Connection getConnection();
 
-    public abstract void open();
+    public abstract void open(String dbName);
 
     public abstract void createTablesIfNotExist(Connection connection);
 

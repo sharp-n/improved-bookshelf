@@ -11,7 +11,7 @@ public class MySQLTest {
 
     public static void main(String [] args){
         DBService dbService = new MySQLDBService();
-        dbService.open();
+        dbService.open("bookshelf");
         SQLQueries sqlQueries = new MySQLQueries(dbService.getConnection());
         //sqlQueries.createUsersTable();
         //sqlQueries.createItemsTable();

@@ -179,7 +179,7 @@ public class ServletService {
             if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
                     ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
-                dbService.open();
+                dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 User user = new User(param.name);
                 dbService.createUser(user,dbService.getConnection());

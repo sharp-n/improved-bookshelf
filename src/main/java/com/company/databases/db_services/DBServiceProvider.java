@@ -8,10 +8,14 @@ import java.util.Map;
 public class DBServiceProvider {
 
     public static final Map<String,DBService> optionDbServiceMap = new HashMap<>();
+    public static final Map<DBService,String> dbServiceDBNameMap = new HashMap<>();
 
     static{
         optionDbServiceMap.put(FilesMenu.DATABASE_SQLITE.getServletParameter(),new SQLiteDBService());
         optionDbServiceMap.put(FilesMenu.DATABASE_MYSQL.getServletParameter(),new MySQLDBService());
+
+        dbServiceDBNameMap.put(new SQLiteDBService(),DBNamesConstants.SQLITE_DB_NAME);
+        dbServiceDBNameMap.put(new MySQLDBService(),DBNamesConstants.MYSQL_DB_NAME);
     }
 
     public static DBService getDBServiceByOption(String option) {
@@ -21,6 +25,15 @@ public class DBServiceProvider {
             }
         }
         return null;// TODO fix null
+    }
+
+    public static String getDBNameByService(DBService dbService){
+        for (Map.Entry<DBService, String> dbServiceEntry : dbServiceDBNameMap.entrySet()) {
+            if (dbServiceEntry.getKey().getClass().isAssignableFrom(dbService.getClass())) {
+                return dbServiceEntry.getValue();
+            }
+        }
+        return null;
     }
 
     public static String getOptionByDBService(DBService dbService) {

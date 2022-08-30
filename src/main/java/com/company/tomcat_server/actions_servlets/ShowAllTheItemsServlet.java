@@ -50,7 +50,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
                     ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
-                dbService.open();
+                dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 dbService.createUser(user,dbService.getConnection());
                 table = servletService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);

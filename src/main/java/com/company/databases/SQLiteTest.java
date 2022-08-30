@@ -11,7 +11,7 @@ public class SQLiteTest {
 
     public static void main(String [] args) throws SQLException {
         DBService dbService = new SQLiteDBService();
-        dbService.open();
+        dbService.open("bookshelf.db");
 
         SQLQueries sqlQueries = new SQLDefaultQueries(dbService.getConnection());
 
