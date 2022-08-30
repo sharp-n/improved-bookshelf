@@ -14,12 +14,15 @@ public class Book extends Item {
     private GregorianCalendar publishingDate;
 
     public Book(int bookID, String title, String author, GregorianCalendar publishingDate, int pages) {
-        super.itemID = bookID;
-        super.title = title;
+        super(bookID,title,pages);
         this.author = author;
         this.publishingDate = publishingDate;
-        super.pages = pages;
-        super.borrowed = false;
+    }
+
+    public Book(int bookID, String title, String author, GregorianCalendar publishingDate, int pages, boolean borrowed) {
+        super(bookID,title,pages,borrowed);
+        this.author = author;
+        this.publishingDate = publishingDate;
     }
 
 }

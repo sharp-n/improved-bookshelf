@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.DefaultLibrarian;
 import com.company.handlers.item_handlers.BookHandler;
 import com.company.handlers.Librarian;
 import com.company.items.Book;
@@ -35,7 +36,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideTablesForPrinting")
     void printItemsTest(List<Item> provided, String expected){
-        Librarian librarian = new Librarian(new OneFileWorker("test", "test"),printWriter);
+        Librarian librarian = new DefaultLibrarian(new OneFileWorker("test", "test"),printWriter);
         librarian.printItems(provided, new BookHandler());
         assertEquals(expected,outputStream.toString());
     }
@@ -74,7 +75,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void deleteItemTest(int providedID) throws IOException {
-        Librarian librarian = new Librarian(new OneFileWorker("test_deleting", "test"),printWriter);
+        Librarian librarian = new DefaultLibrarian(new OneFileWorker("test_deleting", "test"),printWriter);
         librarian.workWithFiles.addItemToFile(book1);
         librarian.workWithFiles.addItemToFile(newspaper2);
         //librarian.workWithFiles.addItemToFile(journal3);
@@ -91,7 +92,7 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void borrowItemTest(int providedID,Item item) throws IOException {
-        Librarian librarian = new Librarian(new OneFileWorker("test_borrowing","test"),printWriter);
+        Librarian librarian = new DefaultLibrarian(new OneFileWorker("test_borrowing","test"),printWriter);
         librarian.workWithFiles.addItemToFile(item);
         //librarian.borrowItem(providedID,true,new JournalHandler());
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);

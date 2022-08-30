@@ -1,23 +1,27 @@
 package com.company.handlers.item_handlers;
 
+import com.company.User;
 import com.company.enums.SortingMenu;
 import com.company.items.Comics;
 import com.company.items.Item;
+import com.company.databases.queries.SQLQueries;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.constants.FormConstants.*;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
+import static com.company.enums.SortingMenu.PUBLISHER;
 
 @NoArgsConstructor
 public class ComicsHandler extends ItemHandler<Comics> {
 
-    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "title", "pages", "borrowed", "publishing"));
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item", "title", "pages", "borrowed", "publishing"));
 
     public List<String> getColumnTitles() {
         return columnTitles;
@@ -44,9 +48,9 @@ public class ComicsHandler extends ItemHandler<Comics> {
     }
 
     @Override
-    public List<String> getItem() {
+    public List<String> getItem(Integer itemID) {
         String publishing = "";
-        List<String> itemOptions = new ArrayList<>(super.getItem());
+        List<String> itemOptions = new ArrayList<>(super.getItem(itemID));
 
         publishing = validator.validateAuthorName(userInput.publishingUserInput());
         if (publishing == null) {
@@ -65,7 +69,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
 
     @Override
     public String genSortingMenuText() {
-        return super.genSortingMenuText() + SortingMenu.PUBLISHING + NEW_LINE;
+        return super.genSortingMenuText() + SortingMenu.PUBLISHER + NEW_LINE;
     }
 
 
@@ -95,8 +99,8 @@ public class ComicsHandler extends ItemHandler<Comics> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         String form = super.genAddFormContent();
         return form.substring(0,form.lastIndexOf("<"))
-                + formBuild.genLabel("Publishing: ",PUBLISHING_PARAM)
-                + formBuild.genTextField(PUBLISHING_PARAM,PUBLISHING_PARAM)
+                + formBuild.genLabel("Publishing: ",PUBLISHER.getDbColumn())
+                + formBuild.genTextField(PUBLISHER.getDbColumn(),PUBLISHER.getDbColumn())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Add comics");
     }
@@ -106,10 +110,44 @@ public class ComicsHandler extends ItemHandler<Comics> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         String form = super.genSortFormContent();
         return form.substring(0,form.lastIndexOf("<"))
-                + formBuild.genRadioButton(PUBLISHING_PARAM,PUBLISHING_PARAM,"Publisher")
+                + formBuild.genRadioButton(PUBLISHER.getDbColumn(),PUBLISHER.getDbColumn(),PUBLISHER.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Sort");
     }
 
-}
+    @Override
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<List<String>> itemsStr = new ArrayList<>();
+        while (resultSet.next()) {
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet,itemStr);
+            itemsStr.add(itemStr);
+        }
+        return itemsStr;
+    }
 
+    @Override
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
+        itemStr = getMainOptions(resultSet, itemStr);
+        itemStr.add(resultSet.getString(PUBLISHER.getDbColumn()));
+        return itemStr;
+    }
+
+    @Override
+    public Comics getItem(int itemID, User user, SQLQueries sqlQueries) {
+        try {
+            ResultSet resultSet = sqlQueries.getItem(itemID, user);
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet, itemStr);
+            return new Comics(
+                    Integer.parseInt(itemStr.get(0)),
+                    itemStr.get(2),
+                    Integer.parseInt(itemStr.get(3)),
+                    itemStr.get(5),
+                    Boolean.parseBoolean(itemStr.get(4)));
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            return null;
+        }
+    }
+}

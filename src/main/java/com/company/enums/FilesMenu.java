@@ -1,22 +1,29 @@
 package com.company.enums;
 
-import java.io.File;
 import java.util.Arrays;
 
 public enum FilesMenu {
 
-    EXIT_VALUE(0,"Exit"),
-    ONE_FILE(1,"oneFile"),
-    FILE_PER_ITEM(2,"filePerType"),
-    CHANGE_USER(3,"Change user"),
-    DEFAULT(-1,"Default");
+    EXIT_VALUE(0,"Exit", ""),
+    ONE_FILE(1,"One file", "oneFile"),
+    FILE_PER_ITEM(2,"File per type", "filePerType"),
+    DATABASE_SQLITE(3,"Database (SQLite)", "databaseSQLite"),
+    DATABASE_MYSQL(4,"Database (MySQL)", "databaseMySQL"),
+    CHANGE_USER(5,"Change user", ""),
+    DEFAULT(-1,"Default", "");
 
     private final int num;
     private final String option;
+    private final String servletParameter;
 
-    FilesMenu(int num, String option) {
+    FilesMenu(int num, String option, String servletParameter) {
         this.num = num;
         this.option = option;
+        this.servletParameter = servletParameter;
+    }
+
+    public String getServletParameter() {
+        return servletParameter;
     }
 
     @Override
@@ -36,6 +43,14 @@ public enum FilesMenu {
         return Arrays
                 .stream(values())
                 .filter(e -> e.option.equals(option))
+                .findFirst()
+                .orElse(DEFAULT);
+    }
+
+    public static FilesMenu getByDBColumnName(String dbColumn){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.servletParameter.equals(dbColumn))
                 .findFirst()
                 .orElse(DEFAULT);
     }

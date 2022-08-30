@@ -1,23 +1,27 @@
 package com.company.handlers.item_handlers;
 
 import com.company.*;
+import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.handlers.Librarian;
 import com.company.items.Item;
 
+import com.company.databases.queries.SQLQueries;
 import com.company.tomcat_server.constants.ParametersConstants;
 import com.company.tomcat_server.constants.URLConstants;
 import com.company.tomcat_server.servlet_service.HTMLFormBuilder;
 import lombok.NoArgsConstructor;
 
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static com.company.Validator.BAD_NUMBER_VALIDATION_MESSAGE;
 import static com.company.enums.ActionsWithItem.*;
 import static com.company.enums.SortingMenu.*;
 import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.tomcat_server.constants.FormConstants.*;
+import static com.company.tomcat_server.constants.ParametersConstants.COMPARATOR_PARAM;
 import static com.company.tomcat_server.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor
@@ -34,7 +38,7 @@ public abstract class ItemHandler<T extends Item> {
     public Validator validator;
     public UserInput userInput;
 
-    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id","title","pages","borrowed","author", "publishing date"));
+    public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item","title","pages","borrowed","author", "publishing date", "publisher"));
 
     public List<String> getColumnTitles() {
         return columnTitles;
@@ -51,13 +55,7 @@ public abstract class ItemHandler<T extends Item> {
 
     public abstract T createItem(List<String> options);
 
-    public List<String> getItem() {
-        Integer itemID = validator.validateID(userInput.idUserInput());
-
-        if (itemID == null) {
-            validator.printBadValidationMessage(BAD_NUMBER_VALIDATION_MESSAGE);
-            return Collections.emptyList();
-        }
+    public List<String> getItem(Integer itemID) {
 
         String title = validator.validateTitle(userInput.titleUserInput());
         if (!Librarian.checkItemForValidity(title)) return Collections.emptyList();
@@ -73,7 +71,8 @@ public abstract class ItemHandler<T extends Item> {
         return NEW_LINE + MainMenu.BOOK + NEW_LINE
                 + MainMenu.NEWSPAPER + NEW_LINE
                 + MainMenu.COMICS + NEW_LINE
-                + MainMenu.JOURNAL + NEW_LINE;
+                + MainMenu.JOURNAL + NEW_LINE
+                + MainMenu.SHOW_ALL_THE_ITEMS + NEW_LINE;
     }
 
     public String initActionsWithItemsMenuText(){
@@ -128,14 +127,14 @@ public abstract class ItemHandler<T extends Item> {
 
     public String genAddFormContent(){
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
-        return formBuild.genLabel("Item ID: ", ITEM_ID_PARAM)
-                        + formBuild.genTextField(ITEM_ID_PARAM, ITEM_ID_PARAM)
+        return formBuild.genLabel("Item ID: ", ITEM_ID.getDbColumn())
+                        + formBuild.genTextField(ITEM_ID.getDbColumn(), ITEM_ID.getDbColumn())
                         + NEW_LINE_TAG + NEW_LINE_TAG
-                        + formBuild.genLabel("Title: ",TITLE_PARAM)
-                        + formBuild.genTextField(TITLE_PARAM, TITLE_PARAM)
+                        + formBuild.genLabel("Title: ", TITLE.getDbColumn())
+                        + formBuild.genTextField( TITLE.getDbColumn(),  TITLE.getDbColumn())
                         + NEW_LINE_TAG + NEW_LINE_TAG
-                        + formBuild.genLabel("Pages: ",PAGES_PARAM)
-                        + formBuild.genTextField(PAGES_PARAM, PAGES_PARAM)
+                        + formBuild.genLabel("Pages: ",PAGES.getDbColumn())
+                        + formBuild.genTextField(PAGES.getDbColumn(), PAGES.getDbColumn())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Add item");
     }
@@ -143,8 +142,8 @@ public abstract class ItemHandler<T extends Item> {
     public String genFormForGettingID(String action){
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         return formBuild.genForm(
-                formBuild.genLabel("Item ID: ", ITEM_ID_PARAM)
-                        + formBuild.genTextField(ITEM_ID_PARAM, ITEM_ID_PARAM)
+                formBuild.genLabel("Item ID: ", ITEM_ID.getDbColumn())
+                        + formBuild.genTextField(ITEM_ID.getDbColumn(), ITEM_ID.getDbColumn())
                         + NEW_LINE_TAG + NEW_LINE_TAG
                         + formBuild.genButton(action.toUpperCase()),action);
     }
@@ -161,11 +160,11 @@ public abstract class ItemHandler<T extends Item> {
         HTMLFormBuilder formBuild = new HTMLFormBuilder();
         return formBuild.genLabel("Choose parameter for sorting", COMPARATOR_PARAM)
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM, ITEM_ID_PARAM,"Item ID")
+                + formBuild.genRadioButton(COMPARATOR_PARAM, ITEM_ID.getDbColumn(),ITEM_ID.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM, "title","Title")
+                + formBuild.genRadioButton(COMPARATOR_PARAM, TITLE.getDbColumn(),TITLE.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
-                + formBuild.genRadioButton(COMPARATOR_PARAM, "pages","Pages")
+                + formBuild.genRadioButton(COMPARATOR_PARAM, PAGES.getDbColumn(),PAGES.getOption())
                 + NEW_LINE_TAG + NEW_LINE_TAG
                 + formBuild.genButton("Sort");
     }
@@ -186,6 +185,39 @@ public abstract class ItemHandler<T extends Item> {
                         + formBuild.genButton("Choose"),
                 URLConstants.CHOOSE_ITEM_PAGE
         );
+    }
+
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
+        List<List<String>> itemsStr = new ArrayList<>();
+        while (resultSet.next()) {
+            List<String> itemStr = new ArrayList<>();
+            itemStr = getMainOptions(resultSet,itemStr);
+            itemsStr.add(itemStr);
+        }
+        return itemsStr;
+    }
+
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
+        itemStr.add(Integer.toString(resultSet.getInt("item_id")));
+        itemStr.add(resultSet.getString("type_of_item"));
+        itemStr.add(resultSet.getString("title"));
+        itemStr.add(Integer.toString(resultSet.getInt("pages")));
+        String borrowedStr ;
+        int borrowedInt = resultSet.getInt("borrowed");
+        if (borrowedInt==1) {
+            borrowedStr = "true";
+        } else borrowedStr = "false";
+        itemStr.add(borrowedStr);
+        return itemStr;
+    }
+
+    public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
+
+
+    public int genItemID(){
+
+
+        return 0;
     }
 
 }

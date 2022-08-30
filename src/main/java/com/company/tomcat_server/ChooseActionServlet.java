@@ -28,7 +28,7 @@ public class ChooseActionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_FILE));
+        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_HTML_FILE));
         param.getParametersFromURL(req);
         Map<String,String> pathsWithParameters = servletService.addParamsToParametersMapValues(servletService.initURLTemplatesMap(),param);
         htmlCode = servletService.replaceURLInTemplate(htmlCode, pathsWithParameters);
@@ -46,7 +46,5 @@ public class ChooseActionServlet extends HttpServlet {
             new ServletService().printErrorPage(resp);
         }
     }
-
-
 
 }

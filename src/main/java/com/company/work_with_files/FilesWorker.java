@@ -24,6 +24,7 @@ public abstract class FilesWorker {
 
     protected FilesWorker(String root, String userName) {
         this.userName = userName;
+        createDirectoryIfNotExists(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS));
         pathToDirectoryAsString = String.valueOf(Paths.get(root, PROGRAM_DIR_NAME_FOR_ITEMS, generateDirectoryForUser()));
         createDirectoryIfNotExists(Paths.get(pathToDirectoryAsString));
     }
@@ -41,13 +42,13 @@ public abstract class FilesWorker {
 
     void rewriteFile(List<Container<? extends Item>> containers) {
         try {
-            File file = createFileIfNotExists();
+            File file = createFileIfNotExists(filePath);
             FileWriter fw = new FileWriter(file, false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
             bw.close();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -67,7 +68,7 @@ public abstract class FilesWorker {
     }
 
     public <T extends Item> List<T> readToAnyItemList(String typeOfCLass) throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         List<? extends Item> items = readToItemsList();
         List<T> filteredItems = new ArrayList<>();
         for (Item item : items) {
@@ -79,7 +80,7 @@ public abstract class FilesWorker {
     }
 
     public List<Item> readToItemsList() throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         JsonArray jsonArray = readJsonArrayFromFile();
         List<Item> items = new ArrayList<>();
         if (jsonArray != null) {
@@ -95,11 +96,11 @@ public abstract class FilesWorker {
     }
 
     JsonArray readJsonArrayFromFile() throws IOException {
-        createFileIfNotExists();
+        createFileIfNotExists(filePath);
         return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
     }
 
-    File createFileIfNotExists() {
+    public File createFileIfNotExists(Path filePath) {
         try {
             File file = filePath.toFile();
 
@@ -113,8 +114,13 @@ public abstract class FilesWorker {
     }
 
     void createDirectoryIfNotExists(Path path) {
-        if (!Files.exists(path)) {
-            new File(pathToDirectoryAsString).mkdir();
+        try {
+            File folder = new File(path.toString());
+            if (!folder.exists()) {
+                Files.createDirectories(path);
+            }
+        } catch (IOException ioException){
+            ioException.printStackTrace();
         }
     }
 
