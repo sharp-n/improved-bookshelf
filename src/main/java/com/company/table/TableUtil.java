@@ -11,9 +11,14 @@ public class TableUtil {
 
     PrintWriter out;
 
+    public List<List<String>> getRows() {
+        return rows;
+    }
+
     private final int numberOfColumns;
     private static final int NUMBER_OF_SPACES_FOR_PRETTY_ITEMS_PRINTING = 2;
-    private static final String CONSTANT_FOR_EMPTY_OPTIONS = "NULL";
+    public static final String CONSTANT_FOR_EMPTY_OPTIONS = "NULL";
+    public static final String NEW_LINE = System.lineSeparator();
 
     public TableUtil(List<String> columns, List<List<String>> rows, PrintWriter out) {
         this.columns = columns;
