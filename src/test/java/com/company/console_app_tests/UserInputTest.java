@@ -1,5 +1,7 @@
-package com.company;
+package com.company.console_app_tests;
 
+import com.company.UserInput;
+import com.company.Validator;
 import com.company.handlers.item_handlers.BookHandler;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

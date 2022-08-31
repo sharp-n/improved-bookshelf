@@ -45,6 +45,15 @@ public class Validator {
         return null;
     }
 
+    public static Integer staticValidateID(Integer id) {
+        if (id == null) {
+            return null;
+        }
+        if (Librarian.checkItemForValidity(id)) {
+            return id;
+        }
+        return null;
+    }
 
     public String validateAuthorName(String author) {
         Pattern pattern = Pattern.compile("[@\t#$;:=+*&|/<>?!~()%']");

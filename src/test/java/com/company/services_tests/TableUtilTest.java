@@ -1,4 +1,4 @@
-package com.company;
+package com.company.services_tests;
 
 import com.company.handlers.item_handlers.BookHandler;
 import com.company.handlers.item_handlers.ItemHandler;

@@ -9,6 +9,7 @@ public enum MainMenu {
     NEWSPAPER(2, "Newspaper"),
     COMICS(3, "Comics"),
     JOURNAL(4, "Journal"),
+    SHOW_ALL_THE_ITEMS(5, "Show all the items"),
     DEFAULT(-1,"Default");
 
     private final int num;
@@ -30,6 +31,14 @@ public enum MainMenu {
         return Arrays
                 .stream(values())
                 .filter(e -> e.num == index)
+                .findFirst()
+                .orElse(DEFAULT);
+    }
+
+    public static MainMenu getByOption(String option){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.option.equals(option))
                 .findFirst()
                 .orElse(DEFAULT);
     }

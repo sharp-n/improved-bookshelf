@@ -2,15 +2,18 @@ package com.company.handlers;
 
 import com.company.User;
 import com.company.UserInput;
+import com.company.databases.db_services.DBServiceProvider;
 import com.company.enums.*;
 import com.company.handlers.item_handlers.*;
 import com.company.items.Item;
+import com.company.databases.db_services.DBService;
 import com.company.work_with_files.FilePerTypeWorker;
 import com.company.work_with_files.FilesWorker;
 import com.company.work_with_files.OneFileWorker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Scanner;
 
 import static com.company.enums.FilesMenu.*;
@@ -26,7 +29,7 @@ public class ProjectHandler {
     public Scanner in;
     public PrintWriter out;
 
-    ItemHandler<? extends Item> itemHandler;
+    ItemHandler itemHandler;
 
     boolean mainProcValue;
 
@@ -34,11 +37,19 @@ public class ProjectHandler {
     UserInput userInput;
     String typeOfItem;
 
+    public Librarian getLibrarian() {
+        return librarian;
+    }
+
+    public ItemHandler<? extends Item> getItemHandler() {
+        return itemHandler;
+    }
+
     public ProjectHandler(Scanner in, PrintWriter out) {
         this.in = in;
         this.out = out;
-        this.librarian = new Librarian();
-        this.itemHandler = new BookHandler(out,in);
+        this.librarian = new DefaultLibrarian();
+        this.itemHandler = new DefaultItemHandler(out,in);
         this.userInput = new UserInput(out,in);
     }
 
@@ -52,6 +63,7 @@ public class ProjectHandler {
             User user = createUser(itemHandler.userInput, validUserName);
             if (user.userName.equals("exit")) {
                 filesValue = false;
+                validUserName = false;
             } else {
                 mainProcValue = true;
                 int usersFilesMenuChoice = usersFilesMenuChoice(itemHandler.userInput);
@@ -68,9 +80,7 @@ public class ProjectHandler {
             boolean chosenItem = itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
             FilesMenu filesMenuOption = FilesMenu.getByIndex(usersFilesMenuChoice);
             filesValue = fileSwitch(filesMenuOption, user);
-
             if (chosenItem) {
-
                 Integer usersChoice = getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
                 if (usersChoice == null) usersChoice = -1;
                 ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
@@ -85,12 +95,15 @@ public class ProjectHandler {
     public boolean fileSwitch(FilesMenu filesMenuOption,User user){
         boolean filesValue = true;
         switch (filesMenuOption) {
-
             case ONE_FILE:
                 initFileWork(genOneFileWorker(user));
                 break;
             case FILE_PER_ITEM:
                 initFileWork(genFilePerTypeWorker(user));
+                break;
+            case DATABASE_MYSQL:
+            case DATABASE_SQLITE:
+                initWorkWithDB(user, DBServiceProvider.getDBServiceByOption(filesMenuOption.getServletParameter()));
                 break;
             case CHANGE_USER:
                 mainProcValue = false;
@@ -105,6 +118,13 @@ public class ProjectHandler {
                 break;
         }
         return filesValue;
+    }
+
+    public void initWorkWithDB(User user, DBService dbService){
+        dbService.open(DBServiceProvider.getDBNameByService(dbService));
+        dbService.createTablesIfNotExist(dbService.getConnection());
+        dbService.createUser(user,dbService.getConnection());
+        librarian = new DBWorker(user,dbService,out);
     }
 
     public boolean itemMenuSwitch(MainMenu mainMenu){
@@ -122,6 +142,10 @@ public class ProjectHandler {
             case JOURNAL:
                 itemHandler = new JournalHandler(out,in);
                 break;
+            case SHOW_ALL_THE_ITEMS:
+                showSortedItems();
+                itemHandler = new JournalHandler(out,in);
+                break;
             default:
                 itemHandler.userInput.printDefaultMessage();
                 chosenItem = false;
@@ -133,6 +157,16 @@ public class ProjectHandler {
         return chosenItem;
     }
 
+    private void showSortedItems() {
+        try {
+            SortingMenu sortingParam = SortingMenu.getByOption(SortingMenu.ITEM_ID.getDbColumn());
+            List<Item> items = librarian.initSortingAllItemsByComparator(itemHandler);
+            librarian.printItems(items, itemHandler);
+        } catch (IOException ioException){
+            ioException.printStackTrace();
+        }
+    }
+
     public Integer getUsersMainMenuChoice(String message, UserInput dialogue) {
         out.println(message);
         dialogue.printWaitingForReplyMessage();
@@ -141,7 +175,10 @@ public class ProjectHandler {
 
     public Integer usersFilesMenuChoice(UserInput dialogue) {
         out.println(NEW_LINE + EXIT_VALUE + NEW_LINE + ONE_FILE +
-                NEW_LINE + FILE_PER_ITEM + NEW_LINE + FilesMenu.CHANGE_USER);
+                NEW_LINE + FILE_PER_ITEM + NEW_LINE +
+                DATABASE_SQLITE + NEW_LINE +
+                DATABASE_MYSQL + NEW_LINE +
+                FilesMenu.CHANGE_USER);
         dialogue.printWaitingForReplyMessage();
         return dialogue.getMainMenuVar();
     }
@@ -156,7 +193,7 @@ public class ProjectHandler {
 
     public void initFileWork(FilesWorker filesWorker) {
         filesWorker.genFilePath();
-        librarian = new Librarian(filesWorker, out);
+        librarian = new DefaultLibrarian(filesWorker, out);
     }
 
     public User createUser(UserInput dialogue, boolean validUserName) {
@@ -173,7 +210,7 @@ public class ProjectHandler {
             switch (actionsWithItem) {
 
                 case ADD:
-                    librarian.addItem(itemHandler);
+                    librarian.addItem(itemHandler,itemHandler.getItem(librarian.genItemID()));
                     break;
 
                 case DELETE:
@@ -181,11 +218,11 @@ public class ProjectHandler {
                     break;
 
                 case TAKE:
-                    librarian.borrowItem(userInput.idUserInput(),true,itemHandler);
+                    librarian.borrowItem(userInput.idUserInput(),true);
                     break;
 
                 case RETURN:
-                    librarian.borrowItem(userInput.idUserInput(),false,itemHandler);
+                    librarian.borrowItem(userInput.idUserInput(),false);
                     break;
 
                 case SHOW:
