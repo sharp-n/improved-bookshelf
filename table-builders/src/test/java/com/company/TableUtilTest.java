@@ -14,8 +14,6 @@ import java.util.stream.Stream;
 
 class TableUtilTest {
 
-    // TODO create test for handlers and tableBuilder
-
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     PrintStream printStream = new PrintStream(outputStream);
 
