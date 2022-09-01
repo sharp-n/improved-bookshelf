@@ -4,12 +4,12 @@ import java.util.Arrays;
 
 public enum FilesMenu {
 
-    EXIT_VALUE(0,"Exit", ""),
+    EXIT_VALUE(0,"Exit", "exit"),
     ONE_FILE(1,"One file", "oneFile"),
     FILE_PER_ITEM(2,"File per type", "filePerType"),
     DATABASE_SQLITE(3,"Database (SQLite)", "databaseSQLite"),
     DATABASE_MYSQL(4,"Database (MySQL)", "databaseMySQL"),
-    CHANGE_USER(5,"Change user", ""),
+    CHANGE_USER(5,"Change user", "changeUser"),
     DEFAULT(-1,"Default", "");
 
     private final int num;
@@ -36,7 +36,7 @@ public enum FilesMenu {
                 .stream(values())
                 .filter(e -> e.num == index)
                 .findFirst()
-                .orElseGet(() -> DEFAULT);
+                .orElse(DEFAULT);
     }
 
     public static FilesMenu getByOption(String option){
