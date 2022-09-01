@@ -1,8 +1,5 @@
 package com.company;
 
-import com.company.items.Book;
-import com.company.items.Item;
-import com.company.items.Newspaper;
 import com.company.table.TableUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,8 +12,6 @@ import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 class TableUtilTest {
 
     // TODO create test for handlers and tableBuilder
@@ -26,100 +21,8 @@ class TableUtilTest {
 
     PrintWriter printWriter = new PrintWriter(printStream, true);
 
-    static List<String> bookOptions = Arrays.asList("ID", "Title", "Author", "Publishing date", "Pages", "borrowed");
-
     static final String NEW_LINE = System.lineSeparator();
 
-    //@ParameterizedTest
-    //@MethodSource("provideItemsForTablePrint")
-    //void testItemsInTable_1(List<Item> provided, String expected) {
-    //    ItemHandler<? extends Item> itemHandler = new BookHandler();
-    //    List<List<String>> items = itemHandler.itemsToString(provided,itemHandler);
-    //    TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
-    //    tableUtil.printBody();
-//
-    //    Assertions.assertEquals(expected, outputStream.toString());
-    //}
-
-    private static Stream<Arguments> provideItemsForTablePrint() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(
-                                new Newspaper(1, "title1", 1),
-                                new Newspaper(2, "title2", 2),
-                                new Newspaper(3, "title3", 3),
-                                new Newspaper(4, "title4", 4)),
-                        "" +
-                                " 1    | title1  | 1        | false             | NULL    | NULL       " + System.lineSeparator() +
-                                " 2    | title2  | 2        | false             | NULL    | NULL       " + System.lineSeparator() +
-                                " 3    | title3  | 3        | false             | NULL    | NULL       " + System.lineSeparator() +
-                                " 4    | title4  | 4        | false             | NULL    | NULL       " + System.lineSeparator()
-                ),
-                Arguments.of(Arrays.asList(
-                                new Newspaper(1, "title1", 1),
-                                //new Journal(2, "title2", 2),
-                                new Book(3, "title3", "some author", new GregorianCalendar(2022, 10, 2), 932)),
-                        "" +
-                                " 1    | title1  | 1           | false             | NULL    | NULL       " + System.lineSeparator() +
-                                " 2    | title2  | 2           | false             | NULL    | NULL       " + System.lineSeparator() +
-                                " 3    | title3  | some author | 02.11.2022        | 932     | false      " + System.lineSeparator())
-        );
-    }
-
-    //@ParameterizedTest
-    //@MethodSource("provideBooks")
-    //void bodyBooksTest(List<Book> provided, String expected) {
-    //    ItemHandler<Book> itemHandler = new BookHandler();
-    //    List<List<String>> items = itemHandler.anyItemsToString(provided);
-    //    TableUtil tableUtil = new TableUtil(bookOptions, items, printWriter);
-    //    tableUtil.printBody();
-    //    Assertions.assertEquals(expected, outputStream.toString());
-    //}
-
-    private static Stream<Arguments> provideBooks() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(
-                                new Book(1, "some title", "some author", new GregorianCalendar(2022, 10, 2), 932),
-                                new Book(534, "TITLE", null, new GregorianCalendar(2022, 8, 2), 932)),
-                        " 1    | some title | some author | 02.11.2022        | 932     | false      " + NEW_LINE +
-                                " 534  | TITLE      | NULL        | 02.9.2022         | 932     | false      " + NEW_LINE),
-                Arguments.of(Arrays.asList(
-                                new Book(534, "TITLE", "author", null, 932),
-                                new Book(534, "TITLE", null, null, 932)),
-                        " 534  | TITLE   | author   | NULL              | 932     | false      " + NEW_LINE +
-                                " 534  | TITLE   | NULL     | NULL              | 932     | false      " + NEW_LINE)
-        );
-    }
-
-    //@ParameterizedTest
-    //@MethodSource("provideBooksForTablePrint")
-    //void tableBooksTest(List<Book> provided, String expected, List<String> options) {
-    //    ItemHandler<Book> itemHandler = new BookHandler();
-    //    List<List<String>> items = itemHandler.anyItemsToString(provided);
-    //    TableUtil tableUtil = new TableUtil(options, items, printWriter);
-    //    tableUtil.printTable();
-    //    Assertions.assertEquals(expected, outputStream.toString());
-    //}
-
-    private static Stream<Arguments> provideBooksForTablePrint() {
-        return Stream.of(
-                Arguments.of(Arrays.asList(
-                                new Book(1, "some title", "some author", new GregorianCalendar(2022, 10, 2), 932),
-                                new Book(534, "TITLE", null, new GregorianCalendar(2022, 8, 2), 932)),
-                        " =ID= | =TITLE=    | =AUTHOR=    | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + NEW_LINE +
-                                "------+------------+-------------+-------------------+---------+------------" + NEW_LINE +
-                                " 1    | some title | some author | 02.11.2022        | 932     | false      " + NEW_LINE +
-                                " 534  | TITLE      | NULL        | 02.9.2022         | 932     | false      " + NEW_LINE,
-                        bookOptions),
-                Arguments.of(Arrays.asList(
-                                new Book(534, "TITLE", "author", null, 932),
-                                new Book(534, "TITLE", null, null, 932)),
-                        " =ID= | =TITLE= | =AUTHOR= | =PUBLISHING DATE= | =PAGES= | =BORROWED= " + NEW_LINE +
-                                "------+---------+----------+-------------------+---------+------------" + NEW_LINE +
-                                " 534  | TITLE   | author   | NULL              | 932     | false      " + NEW_LINE +
-                                " 534  | TITLE   | NULL     | NULL              | 932     | false      " + NEW_LINE,
-                        bookOptions)
-        );
-    }
 
     @ParameterizedTest
     @MethodSource("provideOption")
@@ -216,6 +119,7 @@ class TableUtilTest {
                                 "--------" + NEW_LINE)
         );
     }
+
 
 
 }
