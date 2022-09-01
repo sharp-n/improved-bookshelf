@@ -10,7 +10,7 @@ RUN mkdir /app/src/main/webapp
 # Copy the app files from host machine to image filesystem
 COPY src/main/java/com/company/ /app
 COPY target/bookshelf-1.0-SNAPSHOT.jar /app
-COPY src/main/webapp /app/src/main/webapp
+COPY servlets-app/src/main/webapp /app/src/main/webapp
 RUN ls -l /app
 
 #Set the directory for executing future commands

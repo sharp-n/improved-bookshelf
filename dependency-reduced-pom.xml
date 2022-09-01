@@ -3,6 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.company</groupId>
   <artifactId>bookshelf</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <build>
     <plugins>
@@ -29,33 +30,23 @@
       </plugin>
     </plugins>
   </build>
+  <modules>
+    <module>all-in-one</module>
+    <module>core</module>
+    <module>constants</module>
+    <module>enums</module>
+    <module>table-builders</module>
+    <module>socket-server</module>
+    <module>sql-queries</module>
+    <module>db-services</module>
+    <module>console-app</module>
+    <module>servlets-app</module>
+    <module>parameters-from-url</module>
+    <module>user</module>
+    <module>container</module>
+    <module>html-form-builder</module>
+  </modules>
   <dependencies>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.24</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>5.9.0-M1</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>junit-jupiter-api</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-jupiter-params</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>junit-jupiter-engine</artifactId>
-          <groupId>org.junit.jupiter</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
@@ -70,7 +61,6 @@
     </dependency>
   </dependencies>
   <properties>
-    <tomcat.version>8.0.48</tomcat.version>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.source>8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
