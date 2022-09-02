@@ -1,8 +1,8 @@
 package com.company.databases.queries;
 
 import com.company.User;
-import com.company.items.Book;
-import com.company.items.Item;
+import com.company.Book;
+import com.company.Item;
 
 import java.sql.Connection;
 import java.sql.SQLException;

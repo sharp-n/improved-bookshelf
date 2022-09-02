@@ -1,8 +1,5 @@
 package com.company;
 
-import com.company.items.Book;
-import com.company.items.Item;
-
 import java.util.Comparator;
 
 public class ComparatorsForSorting {

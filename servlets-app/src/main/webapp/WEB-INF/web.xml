@@ -4,7 +4,7 @@
 
     <servlet>
         <servlet-name>AddItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.AddItemServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.AddItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>MainMenuServlet</servlet-name>
@@ -12,39 +12,39 @@
     </servlet>
     <servlet>
         <servlet-name>UserLoginServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.UserLoginServlet</servlet-class>
+        <servlet-class>com.company.UserLoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>FilesWorkChoosingServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.FilesWorkChoosingServlet</servlet-class>
+        <servlet-class>com.company.FilesWorkChoosingServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChooseItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.ChooseItemServlet</servlet-class>
+        <servlet-class>com.company.ChooseItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ChooseActionServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.ChooseActionServlet</servlet-class>
+        <servlet-class>com.company.ChooseActionServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowAllTheItemsServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.ShowAllTheItemsServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.ShowAllTheItemsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.DeleteItemServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.DeleteItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BorrowItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.BorrowItemServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.BorrowItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ReturnItemServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.ReturnItemServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.ReturnItemServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ShowSortedItemsServlet</servlet-name>
-        <servlet-class>com.company.tomcat_server.actions_servlets.ShowSortedItemsServlet</servlet-class>
+        <servlet-class>com.company.actions_servlets.ShowSortedItemsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
