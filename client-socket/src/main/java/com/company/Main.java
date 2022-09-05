@@ -1,9 +1,9 @@
-package com.company.client;
+package com.company;
 
 import java.io.*;
 import java.net.Socket;
 
-public class ClientSocket {
+public class Main {
 
     public static void main(String[] args) throws IOException {
         try (Socket clientSocket = new Socket("localhost", 8080)) {

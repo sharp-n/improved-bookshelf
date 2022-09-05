@@ -7,7 +7,7 @@ import com.company.handlers.ProjectHandler;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class MainConsoleApp {
+public class Main {
 
     public static void main(String[] args) throws  InterruptedException{
         //Thread telnetThread = new Thread(()-> Server.main(args));

@@ -1,4 +1,4 @@
-package com.company.client;
+package com.company;
 
 import lombok.AllArgsConstructor;
 

@@ -7,7 +7,7 @@ import org.apache.catalina.startup.Tomcat;
 import javax.servlet.ServletException;
 import java.io.File;
 
-public class MainServletsRunner {
+public class Main {
 
     public static void main(String[] args) {
         try {

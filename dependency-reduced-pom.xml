@@ -22,7 +22,7 @@
           <transformers>
             <transformer>
               <manifestEntries>
-                <Main-Class>com.company.MainConsoleApp</Main-Class>
+                <Main-Class>com.company.Main</Main-Class>
               </manifestEntries>
             </transformer>
           </transformers>
