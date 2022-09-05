@@ -1,7 +1,7 @@
 package com.company;
 
-import com.company.handlers.item_handlers.BookHandler;
-import com.company.handlers.item_handlers.NewspaperHandler;
+import com.company.item_handlers.BookHandler;
+import com.company.item_handlers.NewspaperHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
