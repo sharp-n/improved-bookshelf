@@ -11,7 +11,7 @@ public enum SortingMenu {
     AUTHOR(4, "Author","author"),
     PUBLISHING_DATE(5, "Publishing Date","publishing_date"),
     PUBLISHER(6, "Publisher","publisher"),
-    DEFAULT(-1, "DEFAULT","");
+    DEFAULT(-1, "Default","");
 
     private final int num;
     private final String option;
@@ -44,7 +44,6 @@ public enum SortingMenu {
                 .orElse(DEFAULT);
     }
 
-
     public static SortingMenu getByOption(String option){
         return Arrays
                 .stream(values())
@@ -52,4 +51,5 @@ public enum SortingMenu {
                 .findFirst()
                 .orElse(DEFAULT);
     }
+
 }

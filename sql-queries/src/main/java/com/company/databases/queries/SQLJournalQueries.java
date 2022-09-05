@@ -1,6 +1,6 @@
 package com.company.databases.queries;
 
-import com.company.items.Journal;
+import com.company.Journal;
 
 import java.sql.Connection;
 

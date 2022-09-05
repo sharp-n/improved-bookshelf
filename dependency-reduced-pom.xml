@@ -22,7 +22,7 @@
           <transformers>
             <transformer>
               <manifestEntries>
-                <Main-Class>com.company.Main</Main-Class>
+                <Main-Class>com.company.MainConsoleApp</Main-Class>
               </manifestEntries>
             </transformer>
           </transformers>
@@ -31,7 +31,6 @@
     </plugins>
   </build>
   <modules>
-    <module>all-in-one</module>
     <module>core</module>
     <module>constants</module>
     <module>enums</module>
@@ -45,6 +44,8 @@
     <module>user</module>
     <module>container</module>
     <module>html-form-builder</module>
+    <module>app-handlers</module>
+    <module>client-socket</module>
   </modules>
   <dependencies>
     <dependency>

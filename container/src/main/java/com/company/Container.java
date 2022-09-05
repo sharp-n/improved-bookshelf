@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.items.Item;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

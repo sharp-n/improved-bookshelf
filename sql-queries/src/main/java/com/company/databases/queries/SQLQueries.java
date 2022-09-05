@@ -2,7 +2,7 @@ package com.company.databases.queries;
 
 import com.company.User;
 import com.company.enums.FilesMenu;
-import com.company.items.Item;
+import com.company.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

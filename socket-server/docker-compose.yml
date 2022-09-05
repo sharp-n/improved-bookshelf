@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+    bookshelf-socket-server:
+        build: .
+        image: bookshelf-socket-server:1.0
+        container_name: bookshelf-socket-server
+        ports:
+            - 8080:8080
+            - 8082:8081
+        links:
+            - mysql
+    mysql:
+        image: mysql:8.0.30
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=sharp
+            - MYSQL_PASSWORD=1
+            - MYSQL_DATABASE=bookshelf
+        container_name: mysql-bookshelf-socket-server
+        ports: 
+            - 3306:3306
+        volumes:
+            - ./db:/var/lib/mysql/bookshelf-socket-server
