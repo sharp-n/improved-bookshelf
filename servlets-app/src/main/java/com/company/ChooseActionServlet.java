@@ -1,8 +1,5 @@
 package com.company;
 
-import com.company.servlet_service.ParametersFromURL;
-import com.company.servlet_service.ServletService;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

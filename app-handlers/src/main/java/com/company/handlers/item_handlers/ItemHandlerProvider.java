@@ -3,10 +3,8 @@ package com.company.handlers.item_handlers;
 import com.company.*;
 import com.company.databases.queries.*;
 
-
 import java.sql.Connection;
 import java.util.HashMap;
-
 import java.util.Map;
 
 public class ItemHandlerProvider {

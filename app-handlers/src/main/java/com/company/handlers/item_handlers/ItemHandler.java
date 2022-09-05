@@ -1,18 +1,12 @@
 package com.company.handlers.item_handlers;
 
-import com.company.User;
-import com.company.UserInput;
-import com.company.Validator;
+import com.company.*;
+import com.company.databases.queries.SQLQueries;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
-import com.company.Item;
-
-import com.company.databases.queries.SQLQueries;
-import com.company.ParametersConstants;
-import com.company.URLConstants;
-import com.company.servlet_service.HTMLFormBuilder;
+import com.company.HTMLFormBuilder;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
 
@@ -20,12 +14,6 @@ import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-
-import static com.company.enums.ActionsWithItem.*;
-import static com.company.enums.SortingMenu.*;
-import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.ParametersConstants.COMPARATOR_PARAM;
-import static com.company.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
 
 @NoArgsConstructor
 public abstract class ItemHandler<T extends Item> {

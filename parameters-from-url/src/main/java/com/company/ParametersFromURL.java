@@ -1,4 +1,4 @@
-package com.company.servlet_service;
+package com.company;
 
 import com.company.ParametersConstants;
 

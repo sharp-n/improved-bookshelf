@@ -1,12 +1,11 @@
 package com.company.handlers;
 
-import com.company.User;
-import com.company.UserInput;
-import com.company.DBServiceProvider;
-import com.company.enums.*;
+import com.company.*;
+import com.company.enums.ActionsWithItem;
+import com.company.enums.FilesMenu;
+import com.company.enums.MainMenu;
+import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.*;
-import com.company.Item;
-import com.company.DBService;
 import com.company.handlers.work_with_files.FilePerTypeWorker;
 import com.company.handlers.work_with_files.FilesWorker;
 import com.company.handlers.work_with_files.OneFileWorker;
@@ -16,10 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Scanner;
-
-import static com.company.enums.FilesMenu.*;
-import static com.company.enums.FilesMenu.EXIT_VALUE;
-import static com.company.table.TableUtil.NEW_LINE;
 
 public class ProjectHandler {
 

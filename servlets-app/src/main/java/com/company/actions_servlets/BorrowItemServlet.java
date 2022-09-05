@@ -1,9 +1,9 @@
 package com.company.actions_servlets;
 
 import com.company.*;
-import com.company.servlet_service.HTMLFormBuilder;
-import com.company.servlet_service.ParametersFromURL;
-import com.company.servlet_service.ServletService;
+import com.company.HTMLFormBuilder;
+import com.company.ParametersFromURL;
+import com.company.ServletService;
 import com.company.FileNameConstants;
 import com.company.MessageConstants;
 import com.company.TemplatesConstants;

@@ -1,14 +1,14 @@
 package com.company.handlers;
 
-import com.company.User;
 import com.company.DBService;
 import com.company.DBServiceProvider;
+import com.company.Item;
+import com.company.User;
+import com.company.databases.queries.SQLDefaultQueries;
+import com.company.databases.queries.SQLQueries;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.Item;
-import com.company.databases.queries.SQLDefaultQueries;
-import com.company.databases.queries.SQLQueries;
 import com.company.table.TableUtil;
 
 import java.io.IOException;

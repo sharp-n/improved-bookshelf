@@ -1,11 +1,11 @@
 package com.company.handlers.item_handlers;
 
-import com.company.User;
-import com.company.enums.SortingMenu;
 import com.company.Comics;
 import com.company.Item;
+import com.company.User;
 import com.company.databases.queries.SQLQueries;
-import com.company.servlet_service.HTMLFormBuilder;
+import com.company.enums.SortingMenu;
+import com.company.HTMLFormBuilder;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
 
@@ -14,10 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.company.table.TableUtil.NEW_LINE;
-import static com.company.servlet_service.HTMLFormBuilder.NEW_LINE_TAG;
-import static com.company.enums.SortingMenu.PUBLISHER;
 
 @NoArgsConstructor
 public class ComicsHandler extends ItemHandler<Comics> {

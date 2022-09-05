@@ -6,9 +6,9 @@ import com.company.TemplatesConstants;
 import com.company.URLConstants;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.servlet_service.HTMLFormBuilder;
-import com.company.servlet_service.ParametersFromURL;
-import com.company.servlet_service.ServletService;
+import com.company.HTMLFormBuilder;
+import com.company.ParametersFromURL;
+import com.company.ServletService;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletOutputStream;

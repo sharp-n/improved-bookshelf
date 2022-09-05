@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.servlet_service.ParametersFromURL;
-import com.company.servlet_service.ServletService;
 import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 

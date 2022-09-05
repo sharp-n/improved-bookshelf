@@ -1,8 +1,8 @@
 package com.company.handlers.item_handlers;
 
-import com.company.User;
 import com.company.Item;
 import com.company.Newspaper;
+import com.company.User;
 import com.company.databases.queries.SQLQueries;
 import lombok.NoArgsConstructor;
 

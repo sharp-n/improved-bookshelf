@@ -1,6 +1,5 @@
-package com.company.servlet_service;
+package com.company;
 
-import com.company.*;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -9,10 +8,6 @@ import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.table.HtmlTableBuilder;
-import com.company.FileNameConstants;
-import com.company.ParametersConstants;
-import com.company.TemplatesConstants;
-import com.company.URLConstants;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.ServletOutputStream;

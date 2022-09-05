@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.servlet_service.ParametersFromURL;
-import com.company.servlet_service.ServletService;
 import com.company.handlers.item_handlers.DefaultItemHandler;
 
 import javax.servlet.annotation.WebServlet;

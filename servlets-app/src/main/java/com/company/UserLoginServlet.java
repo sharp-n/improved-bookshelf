@@ -1,6 +1,5 @@
 package com.company;
 
-import com.company.servlet_service.ServletService;
 import org.apache.http.client.utils.URIBuilder;
 
 import javax.servlet.annotation.WebServlet;
