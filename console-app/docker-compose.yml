@@ -1,7 +1,7 @@
 version: "3.3"
 services:
     bookshelf-socket-server:
-        build: ../console
+        build: .
         image: bookshelf-console-app:1.0
         container_name: bookshelf-console-app
         ports:

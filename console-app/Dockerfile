@@ -2,9 +2,7 @@ FROM openjdk:11
 
 RUN mkdir /app
 
-#COPY target/socket-server-1.0-SNAPSHOT.jar /app
 COPY /target /app
-COPY /com/company/Main.java /app
 RUN ls -l /app
 
 WORKDIR /app

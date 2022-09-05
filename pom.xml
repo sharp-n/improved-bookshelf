@@ -25,6 +25,7 @@
         <module>html-form-builder</module>
         <module>app-handlers</module>
         <module>client-socket</module>
+        <module>console-app</module>
 
     </modules>
 
