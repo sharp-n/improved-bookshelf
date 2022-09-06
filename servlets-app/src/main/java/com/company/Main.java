@@ -24,8 +24,6 @@ public class Main {
 
         } catch (LifecycleException exception){
             exception.printStackTrace();
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
         }
     }
 

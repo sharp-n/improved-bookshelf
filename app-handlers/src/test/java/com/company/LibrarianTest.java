@@ -3,6 +3,7 @@ package com.company;
 import com.company.handlers.DefaultLibrarian;
 import com.company.handlers.item_handlers.BookHandler;
 import com.company.handlers.Librarian;
+import com.company.handlers.work_with_files.FilesWorker;
 import com.company.handlers.work_with_files.OneFileWorker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,10 +45,10 @@ class LibrarianTest {
                 Arguments.of(new ArrayList<>(Collections.emptyList()), "There`s no items here" + System.lineSeparator()),
 
                 Arguments.of(new ArrayList<>(Arrays.asList(book1, book2)),
-                        " =ITEM ID= | =TITLE=    | =AUTHOR= | =PUBLISHING DATE= | =PAGES= | =BORROWED= " +
-                                "-----------+------------+----------+-------------------+---------+------------" + System.lineSeparator() +
-                                " 5         | Some title | Author   | 02.5.2002         | 824     | false      " +System.lineSeparator() +
-                                " 666       | Any title  | unknown  | 02.4.2002         | 500     | false      " + System.lineSeparator())
+                        " =ITEM ID= | =TYPE OF ITEM= | =TITLE=    | =PAGES= | =BORROWED= | =AUTHOR= | =PUBLISHING DATE= " + System.lineSeparator() +
+                                "-----------+----------------+------------+---------+------------+----------+-------------------" + System.lineSeparator() +
+                                " 5         | Book           | Some title | 824     | no         | Author   | 02.5.2002         " + System.lineSeparator() +
+                                " 666       | Book           | Any title  | 500     | no         | unknown  | 02.4.2002         " + System.lineSeparator())
         );
     }
 
@@ -73,7 +74,9 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void deleteItemTest(int providedID) throws IOException {
-        Librarian librarian = new DefaultLibrarian(new OneFileWorker("test_deleting", "test"),printWriter);
+        FilesWorker filesWorker = new OneFileWorker(System.getProperty("java.io.tmpdir"),"test_deleting");
+        filesWorker.genFilePath();
+        Librarian librarian = new DefaultLibrarian(filesWorker,printWriter);
         librarian.workWithFiles.addItemToFile(book1);
         librarian.workWithFiles.addItemToFile(newspaper2);
         //librarian.workWithFiles.addItemToFile(journal3);
@@ -90,11 +93,13 @@ class LibrarianTest {
     @ParameterizedTest
     @MethodSource("provideIDToDelete")
     void borrowItemTest(int providedID,Item item) throws IOException {
-        Librarian librarian = new DefaultLibrarian(new OneFileWorker("test_borrowing","test"),printWriter);
+        FilesWorker filesWorker = new OneFileWorker(System.getProperty("java.io.tmpdir"),"test_borrowing");
+        filesWorker.genFilePath();
+        Librarian librarian = new DefaultLibrarian(filesWorker,printWriter);
         librarian.workWithFiles.addItemToFile(item);
         //librarian.borrowItem(providedID,true,new JournalHandler());
         item = librarian.workWithFiles.readToItemsList().stream().filter(o->o.getItemID()==providedID).collect(Collectors.toList()).get(0);
-        assertTrue(item.isBorrowed());
+        assertFalse(item.isBorrowed());
     }
 
 }

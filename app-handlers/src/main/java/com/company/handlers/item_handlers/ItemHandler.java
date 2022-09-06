@@ -6,7 +6,6 @@ import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
-import com.company.HTMLFormBuilder;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
 
@@ -110,6 +109,7 @@ public abstract class ItemHandler<T extends Item> {
     public List<String> itemToString(Item item){
         List<String> itemAsList = new ArrayList<>();
         itemAsList.add(idToString(item));
+        itemAsList.add(item.getClass().getSimpleName());
         itemAsList.add(titleToString(item));
         itemAsList.add(pagesToString(item));
         itemAsList.add(borrowedToString(item));
