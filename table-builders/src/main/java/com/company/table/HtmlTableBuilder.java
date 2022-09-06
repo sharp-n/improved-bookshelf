@@ -16,7 +16,7 @@ public class HtmlTableBuilder {
 
     private static final String RAW_TAG_CENTER = "<tr align=\"center\">";
     private static final String RAW_TAG = "<tr>";
-    private static final String RAW_TAG_CLOSE = "<tr>";
+    private static final String RAW_TAG_CLOSE = "</tr>";
 
     private static final String HEADER_CELL_TAG = "<th>";
     private static final String HEADER_CELL_TAG_CLOSE = "</th>";
