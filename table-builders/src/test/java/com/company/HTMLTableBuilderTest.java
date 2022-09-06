@@ -76,7 +76,7 @@ public class HTMLTableBuilderTest {
                                 "</table>"),
                 Arguments.of(new ArrayList<>(Arrays.asList("first column","seconD Column","third cOlumn","fourth")),
                         new ArrayList<>(Arrays.asList(
-                                new ArrayList<>(Arrays.asList(" 1.1","1.2","1.3","1.4")),
+                                new ArrayList<>(Arrays.asList("1.1","1.2","1.3","1.4")),
                                 new ArrayList<>(Arrays.asList("2.1","2.2","2.3","2.4")))),
                         "<table border=\"1\" cellpadding=\"5\" cellspacing=\"5\">" +
                                 "<tr align=\"center\"><th>FIRST COLUMN</th><th>SECOND COLUMN</th><th>THIRD COLUMN</th><th>FOURTH</th></tr>" +
