@@ -8,10 +8,12 @@ import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.table.HtmlTableBuilder;
+import com.company.parameters.ParametersFromURL;
+
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -104,7 +106,7 @@ public class ServletService {
         printHtmlCode(resp,htmlCode);
     }
 
-    public void printHtmlCode(HttpServletResponse resp,String htmlCode) {
+    public void printHtmlCode(HttpServletResponse resp, String htmlCode) {
         try {
             ServletOutputStream out = resp.getOutputStream();
             out.write(htmlCode.getBytes());

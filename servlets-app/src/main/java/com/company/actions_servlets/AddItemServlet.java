@@ -1,26 +1,23 @@
 package com.company.actions_servlets;
 
 import com.company.*;
-import com.company.FileNameConstants;
-import com.company.MessageConstants;
-import com.company.TemplatesConstants;
-import com.company.URLConstants;
-import com.company.HTMLFormBuilder;
-import com.company.ParametersFromURL;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
+import com.company.parameters.ParametersFromURL;
 
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 @WebServlet(
         name = "AddItemServlet",

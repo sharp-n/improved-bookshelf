@@ -1,8 +1,7 @@
-package com.company;
+package com.company.parameters;
 
 import com.company.ParametersConstants;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 public class ParametersFromURL {
