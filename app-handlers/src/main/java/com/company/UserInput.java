@@ -23,8 +23,10 @@ public class UserInput {
     }
 
     public String titleUserInput() {
+
         out.println("Input title:");
         printWaitingForReplyMessage();
+        System.out.println();
         return scan.nextLine().trim();
     }
 
@@ -35,9 +37,9 @@ public class UserInput {
     }
 
     public String usernameInput() {
-        out.println(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
-        printWaitingForReplyMessage();
-        return scan.nextLine().trim();
+            out.println(NEW_LINE + "Input your name. If you want to use default file(s) write \"default\". To exit input\"exit\"");
+            printWaitingForReplyMessage();
+            return scan.nextLine().trim();
     }
 
     public Integer idUserInput() {

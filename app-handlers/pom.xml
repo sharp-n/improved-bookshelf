@@ -14,18 +14,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
+        <gson.version>2.9.0</gson.version>
+        <lombok.version>1.18.24</lombok.version>
+        <slf4j-api.version>2.0.0</slf4j-api.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.0</version>
+            <version>${slf4j-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -38,7 +41,7 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.company</groupId>
@@ -80,6 +83,36 @@
             <artifactId>html-form-duilder</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.company</groupId>
+            <artifactId>html-form-builder</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.21.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.2.0-M1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>5.2.0-M1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>
 

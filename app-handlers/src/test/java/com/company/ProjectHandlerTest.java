@@ -28,7 +28,7 @@ class ProjectHandlerTest {
     @MethodSource("provideNulls")
     void numberOfFilesNullInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        Assertions.assertNull(serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
+        Assertions.assertEquals(-1,serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideNulls(){
@@ -58,7 +58,7 @@ class ProjectHandlerTest {
     @MethodSource("provideNumberOfFilesForBadInput")
     void numberOfFilesBadInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        Assertions.assertNull(serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
+        Assertions.assertEquals(-1,serverHandler.usersFilesMenuChoice(new UserInput(serverHandler.out,serverHandler.in)));
     }
 
     private static Stream<Arguments> provideNumberOfFilesForBadInput(){
@@ -108,7 +108,7 @@ class ProjectHandlerTest {
     @MethodSource("provideVariantsForMainMenuBadInput")
     void mainMenuBadInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        Assertions.assertNull(serverHandler.getUsersMainMenuChoice(
+        Assertions.assertEquals(-1,serverHandler.getUsersMainMenuChoice(
                 new BookHandler(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
                 new UserInput(serverHandler.out,serverHandler.in)));
     }
@@ -143,7 +143,7 @@ class ProjectHandlerTest {
     @MethodSource("provideNulls")
     void mainMenuNullInput(String input){
         ProjectHandler serverHandler = getServerHandler(input);
-        Assertions.assertNull(serverHandler.getUsersMainMenuChoice(
+        Assertions.assertEquals(-1,serverHandler.getUsersMainMenuChoice(
                 new BookHandler(new PrintWriter(System.out,true),new Scanner(System.in)).initItemsMenuText(),
                 new UserInput(serverHandler.out,serverHandler.in)));
     }

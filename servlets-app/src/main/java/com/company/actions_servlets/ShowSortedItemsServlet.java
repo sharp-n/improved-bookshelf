@@ -7,15 +7,16 @@ import com.company.URLConstants;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.HTMLFormBuilder;
-import com.company.ParametersFromURL;
+import com.company.parameters.ParametersFromURL;
+
 import com.company.ServletService;
+import jakarta.servlet.ServletOutputStream;
 import org.apache.http.client.utils.URIBuilder;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;

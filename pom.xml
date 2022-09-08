@@ -15,28 +15,21 @@
         <module>enums</module>
         <module>table-builders</module>
         <module>socket-server</module>
-        <module>sql-queries</module>
         <module>db-services</module>
         <module>console-app</module>
         <module>servlets-app</module>
-        <module>parameters-from-url</module>
         <module>user</module>
         <module>container</module>
         <module>html-form-builder</module>
         <module>app-handlers</module>
         <module>client-socket</module>
-        <module>console-app</module>
-
     </modules>
 
-
     <properties>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
-
     </properties>
 
     <build>

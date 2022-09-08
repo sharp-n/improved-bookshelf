@@ -1,7 +1,5 @@
 package com.company;
 
-import com.company.TemplatesConstants;
-
 public class HTMLFormBuilder {
 
     public static final String FORM_TAG = "<form method=\"post\" action=\"" + TemplatesConstants.ACTION_TEMPLATE + "\">";

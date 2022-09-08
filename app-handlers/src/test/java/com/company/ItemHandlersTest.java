@@ -46,9 +46,15 @@ class ItemHandlersTest {
     @Test
     void bookAddingItemHandlerTest(){
         BookHandler bookHandler = new BookHandler();
-        Book book  = bookHandler.createItem(Arrays.asList("1","title","63","author","2002.2.3"));
+        Book book = bookHandler.createItem(new ArrayList<>(Arrays.asList("1","title","63","author","3.2.2002")));
         String expected = "1 - title - author - 03.2.2002 - 63 - false";
         SimpleDateFormat sdf = new SimpleDateFormat("dd.M.y");
+        String provided = book.getItemID() + " - ";
+        provided=provided+book.getTitle() + " - ";
+        provided=provided+book.getAuthor() + " - ";
+        provided=provided+sdf.format(book.getPublishingDate().getTime());
+        provided =provided+" - " + book.getPages() + " - ";
+        provided=provided+book.isBorrowed();
         Assertions.assertEquals(expected,book.getItemID() + " - " + book.getTitle() + " - "
                 + book.getAuthor() + " - " + sdf.format(book.getPublishingDate().getTime())
                 + " - " + book.getPages() + " - " + book.isBorrowed());

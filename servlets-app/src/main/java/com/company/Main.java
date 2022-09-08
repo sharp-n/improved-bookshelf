@@ -4,7 +4,6 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 
-import javax.servlet.ServletException;
 import java.io.File;
 
 public class Main {
@@ -24,8 +23,6 @@ public class Main {
 
         } catch (LifecycleException exception){
             exception.printStackTrace();
-        } catch (ServletException e) {
-            throw new RuntimeException(e);
         }
     }
 
