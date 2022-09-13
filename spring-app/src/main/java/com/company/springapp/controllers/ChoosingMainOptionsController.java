@@ -1,8 +1,5 @@
 package com.company.springapp.controllers;
 
-import com.company.HTMLFormBuilder;
-import com.company.URLConstants;
-import com.company.handlers.item_handlers.ItemHandlerProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
-public class ChoosingFileWorkController {
+public class ChoosingMainOptionsController {
 
     @GetMapping("/login-spring")
     public String showLoginPage(Model model){
@@ -47,7 +44,6 @@ public class ChoosingFileWorkController {
 
         return "redirect:/choose-action";
     }
-
 
     @GetMapping
     public String redirectToLogin(Model model){
