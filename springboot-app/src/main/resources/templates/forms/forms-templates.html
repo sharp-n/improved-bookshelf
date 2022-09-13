@@ -1,0 +1,111 @@
+<div th:fragment="add-book-form">
+    <form method="post" action="/choose-action/add">
+        <label for="book_id">Item ID: </label>
+        <input id="book_id" type="text" name="item_id"><br><br>
+        <label for="book-title">Title: </label>
+        <input id="book-title" type="text" name="title"><br><br>
+        <label for="book-pages">Pages: </label>
+        <input id="book-pages" type="text" name="pages"><br><br>
+        <label for="book-author">Author: </label>
+        <input id="book-author" type="text" name="author"><br><br>
+        <label>Publishing date: </label><br><br>
+        <label for="day">Day: </label>
+        <input id="day" type="text" name="day"><br><br>
+        <label for="month">Month: </label>
+        <input id="month" type="text" name="month"><br><br>
+        <label for="year">Year: </label>
+        <input id="year" type="text" name="year"><br><br>
+        <input type="submit" value="Add book"/>
+    </form>
+</div>
+<div th:fragment="add-min-option-items-form">
+    <form method="post" action="/choose-action/add">
+        <label for="items_id">Item ID: </label>
+        <input id="items_id" type="text" name="item_id"><br><br>
+        <label for="items-title">Title: </label>
+        <input id="items-title" type="text" name="title"><br><br>
+        <label for="items-pages">Pages: </label>
+        <input id="items-pages" type="text" name="pages"><br><br>
+        <input type="submit" value="Add item"/>
+    </form>
+</div>
+<div th:fragment="add-comics-form">
+    <form method="post" action="/choose-action/add">
+        <label for="comics_id">Item ID: </label>
+        <input id="comics_id" type="text" name="item_id"><br><br>
+        <label for="comics-title">Title: </label>
+        <input id="comics-title" type="text" name="title"><br><br>
+        <label for="comics-pages">Pages: </label>
+        <input id="comics-pages" type="text" name="pages"><br><br>
+        <label for="comics-publisher">Publisher: </label>
+        <input id="comics-publisher" type="text" name="pages"><br><br>
+        <input type="submit" value="Add comics"/>
+    </form>
+</div>
+
+<div th:fragment="delete-item-form" >
+    <form method="post" action="/choose-action/delete">
+        <label for="item_id_to_delete">Item ID: </label>
+        <input id="item_id_to_delete" type="text" name="item_id"><br><br>
+        <input type="submit" value="Delete"/>
+    </form>
+</div>
+
+<div th:fragment="return-item-form">
+    <form method="post" action="/choose-action/return">
+        <label for="item_id_to_return">Item ID: </label>
+        <input id="item_id_to_return" type="text" name="item_id"><br><br>
+        <input type="submit" value="Return"/>
+    </form>
+</div>
+
+<div th:fragment="take-item-form">
+    <form method="post" action="/choose-action/take">
+        <label for="item_id_to_take">Item ID: </label>
+        <input id="item_id_to_take" type="text" name="item_id"><br><br>
+        <input type="submit" value="Take"/>
+    </form>
+</div>
+
+<div th:fragment="sorting-options-form">
+    <form method="post" action="/choose-action/show">
+        <label for="comparator">Choose parameter for sorting</label><br><br>
+        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
+        <input type="radio" name="comparator" value="title"/>Title<br><br>
+        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
+        <input type="radio" name="comparator" value="author"/>Author<br><br>
+        <input type="radio" name="comparator" value="publishing_date"/>Publishing Date<br><br>
+        <input type="submit" value="Sort"/>
+    </form>
+</div>
+
+<div th:fragment="file-work-choose">
+    <form method="post" action="/file-work">
+        <label >Choose how to work with files:</label><br><br>
+        <input type="radio" name="type-of-work" value="oneFile" />Work with one file<br><br>
+        <input type="radio" name="type-of-work" value="filePerItem" />Work with file per type<br><br>
+        <input type="radio" name="type-of-work" value="databaseSQLite" />Use database (SQLite)<br><br>
+        <input type="radio" name="type-of-work" value="databaseMySQL" />Use database (MySQL)<br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<div th:fragment="login">
+    <form method="post" action="/login-spring">
+        <label for="name">Login: </label>
+        <input id="name" type="text" name="name"><br><br>
+        <button type="submit">Sign in</button>
+    </form>
+</div>
+
+
+<div th:fragment="choose-item">
+    <form method="post" action="/choose-item">
+        <label>Choose item:</label><br><br>
+        <input type="radio" name="type-of-item" value="Newspaper"/>Newspaper<br><br>
+        <input type="radio" name="type-of-item" value="Book"/>Book<br><br>
+        <input type="radio" name="type-of-item" value="Comics"/>Comics<br><br>
+        <input type="radio" name="type-of-item" value="Journal"/>Journal<br><br><br><br>
+        <input type="submit" value="Choose"/>
+    </form>
+</div>
