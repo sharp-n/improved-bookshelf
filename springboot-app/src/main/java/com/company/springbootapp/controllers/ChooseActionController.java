@@ -1,4 +1,4 @@
-package com.company.springapp.controllers;
+package com.company.springbootapp.controllers;
 
 import com.company.HTMLFormBuilder;
 import com.company.URLConstants;
