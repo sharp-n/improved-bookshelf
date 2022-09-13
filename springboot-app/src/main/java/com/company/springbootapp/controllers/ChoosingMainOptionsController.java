@@ -1,24 +1,26 @@
 package com.company.springbootapp.controllers;
 
+import com.company.springbootapp.handlers.ChooseMainOptionsHandler;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/")
+@AllArgsConstructor
 public class ChoosingMainOptionsController {
+
+    ChooseMainOptionsHandler mainOptionsHandler;
 
     @GetMapping("/login-spring")
     public String showLoginPage(Model model){
-        return "login-spring";
+        return "choose-main-options";
     }
 
     @PostMapping("/login-spring")
-    public String getUserName(@RequestParam("name") String name, Model model) {
-        //todo implement
+    public String getUserName(@RequestParam String name, Model model) {
+        mainOptionsHandler.createUser(name); // todo check it
         return "redirect:/file-work";
     }
 
@@ -29,7 +31,7 @@ public class ChoosingMainOptionsController {
 
     @PostMapping("/file-work")
     public String getParams(@RequestParam("type-of-work") String typeOfWork, Model model){
-        //todo implement
+        mainOptionsHandler.addTypeOfFileWork(typeOfWork);
         return "redirect:/choose-item";
     }
 
@@ -40,8 +42,7 @@ public class ChoosingMainOptionsController {
 
     @PostMapping("/choose-item")
     public String getChosenItem(@RequestParam("type-of-item") String typeOfItem, Model model){
-        //todo implement
-
+        mainOptionsHandler.addTypeOfItem(typeOfItem);
         return "redirect:/choose-action";
     }
 
