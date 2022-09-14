@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MainParams {
 
-    User user;
+    String name;
     String typeOfFileWork;
     String typeOfItem;
 

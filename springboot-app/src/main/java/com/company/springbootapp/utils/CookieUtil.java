@@ -1,0 +1,25 @@
+package com.company.springbootapp.utils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
+
+public class CookieUtil {
+
+    public void createCookie(HttpServletResponse response,String name, String value){
+        Cookie cookie = new Cookie(name,value);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
+    }
+
+    public Map<String, String> getCookies(HttpServletRequest request){
+        Cookie [] cookiesArr = request.getCookies();
+        List<Cookie> cookieList = new ArrayList<>(Arrays.asList(cookiesArr));
+        Map<String,String> cookies = new HashMap<>();
+        cookieList.stream().filter(cookie -> !"JSESSION".equals(cookie.getName())).forEach(cookie -> cookies.put(cookie.getName(),cookie.getValue()));
+        return cookies;
+    }
+
+}
