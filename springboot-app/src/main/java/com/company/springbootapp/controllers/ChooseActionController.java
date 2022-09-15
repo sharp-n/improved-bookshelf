@@ -1,21 +1,29 @@
 package com.company.springbootapp.controllers;
 
+import com.company.parameters.ParametersFromURL;
+import com.company.springbootapp.constants.CookieNames;
 import com.company.springbootapp.handlers.ChooseActionsHandler;
 import com.company.springbootapp.utils.CookieUtil;
+import com.company.springbootapp.utils.MainParams;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/choose-action")
-public class ChooseActionController {
+public class  ChooseActionController {
 
     ChooseActionsHandler actionsHandler;
     CookieUtil cookieUtil;
@@ -25,7 +33,6 @@ public class ChooseActionController {
         model.addAttribute("form","choose-action");
         model.addAttribute("ref_template","refs-to-login-item");
         return "choose-main-options";
-
     }
 
     @PostMapping
@@ -47,7 +54,8 @@ public class ChooseActionController {
     }
 
     @PostMapping("/add/book")
-    public String showAddBookPage(@RequestParam(name = "book-title") String title,
+    public String showAddBookPage(HttpServletRequest request,
+                                  @RequestParam(name = "book-title") String title,
                                   @RequestParam(name = "book-pages") String pages,
                                   @RequestParam(name = "author") String author,
                                   @RequestParam(name = "day") String day,
@@ -55,30 +63,45 @@ public class ChooseActionController {
                                   @RequestParam(name = "year") String year,
                                   Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
-        actionsHandler.addItem(itemOptions);
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.addItem(itemOptions, params);
+        actionsHandler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
     @PostMapping("/add/comics")
-    public String showAddComicsPage(@RequestParam(name = "comics-title") String title,
+    public String showAddComicsPage(HttpServletRequest request,
+                                    @RequestParam(name = "comics-title") String title,
                                     @RequestParam(name = "comics-pages") String pages,
                                     @RequestParam(name = "publisher") String publisher,
                                     Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,publisher));
-        actionsHandler.addItem(itemOptions);
-        // todo implement
-        return "item-actions";
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.addItem(itemOptions, params);
+        actionsHandler.informAboutActionSuccess(model,success);
+        return "inform-page-template";
     }
 
     @PostMapping("/add")
-    public String showAddItemPage(@RequestParam(name = "items-title") String title,
+    public String showAddItemPage(HttpServletRequest request,
+                                  @RequestParam(name = "items-title") String title,
                                   @RequestParam(name = "items-pages") String pages,
                                   Model model){ // todo implement
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages));
-        actionsHandler.addItem(itemOptions);
-        return "item-actions";
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.addItem(itemOptions, params);
+        actionsHandler.informAboutActionSuccess(model,success);
+        return "inform-page-template";
     }
-
 
     @GetMapping("/delete")
     public String showDeleteItemPage(Model model){
@@ -88,9 +111,13 @@ public class ChooseActionController {
     }
 
     @PostMapping("/delete")
-    public String deleteItem(@RequestParam(name = "delete-id") String id){
-        //todo implementation
-
+    public String deleteItem(HttpServletRequest request, @RequestParam(name = "delete-id") int id, Model model){
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.deleteItem(params,id);
+        actionsHandler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
@@ -102,8 +129,13 @@ public class ChooseActionController {
     }
 
     @PostMapping("/take")
-    public String borrowItem(@RequestParam(name = "take-id") String id){
-        //todo implementation
+    public String borrowItem(HttpServletRequest request, @RequestParam(name = "take-id") int id, Model model){
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.takeItem(params,id, true);
+        actionsHandler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
     }
 
@@ -115,8 +147,13 @@ public class ChooseActionController {
     }
 
     @PostMapping("/return")
-    public String returnItem(@RequestParam(name = "return-id") String id){
-        //todo implementation
+    public String returnItem(HttpServletRequest request, @RequestParam(name = "return-id") int id, Model model){
+        MainParams params = new MainParams();
+        params.setName(cookieUtil.getCookies(request).get("typeOfItem"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        Boolean success = actionsHandler.takeItem(params,id, false);
+        actionsHandler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
     }
 
@@ -128,15 +165,23 @@ public class ChooseActionController {
         return "item-actions";
     }
 
-    @PostMapping("/show")
-    public String showItems(@RequestParam(name = "comparator") String option,Model model){
-        //todo implementation
-        return "/inform-page-template";
+    @PostMapping(value = "/show")
+    public String showItems(HttpServletRequest request, @RequestParam(name = "comparator") String option, Model model){
+        ParametersFromURL params = new ParametersFromURL();
+        params.setName(cookieUtil.getCookies(request).get("userName"));
+        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        model.addAttribute("message",actionsHandler.showItems(params,option));
+        return "inform-page-template";
     }
 
     @GetMapping("/show-all-the-items")
-    public String showAllTheItemsPage(Model model){ //todo implement
-        return "item-actions";
+    public String showAllTheItemsPage(HttpServletRequest request, Model model){ //todo implement
+        MainParams mainParams = new MainParams();
+        mainParams.setName(cookieUtil.getCookies(request).get(CookieNames.USER_NAME));
+        mainParams.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        model.addAttribute("message",actionsHandler.showItems(mainParams));
+        return "inform-page-template";
     }
 
 }
