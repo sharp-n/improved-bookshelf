@@ -2,8 +2,10 @@ package com.company.parameters;
 
 import com.company.ParametersConstants;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-
+@Data
 public class ParametersFromURL {
 
     public String name = "";
