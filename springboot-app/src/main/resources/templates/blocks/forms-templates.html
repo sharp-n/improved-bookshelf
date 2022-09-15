@@ -1,7 +1,7 @@
-<div th:fragment="add-book-form">
+<div th:fragment="add-book-form" style="text-align: center">
     <form method="post" action="/choose-action/add">
-        <label for="book_id">Item ID: </label>
-        <input id="book_id" type="text" name="item_id"><br><br>
+        <label for="book-id">Item ID: </label>
+        <input id="book-id" type="text" name="item_id"><br><br>
         <label for="book-title">Title: </label>
         <input id="book-title" type="text" name="title"><br><br>
         <label for="book-pages">Pages: </label>
@@ -18,10 +18,10 @@
         <input type="submit" value="Add book"/>
     </form>
 </div>
-<div th:fragment="add-min-option-items-form">
+<div th:fragment="add-main-option-items-form" style="text-align: center">
     <form method="post" action="/choose-action/add">
-        <label for="items_id">Item ID: </label>
-        <input id="items_id" type="text" name="item_id"><br><br>
+        <label for="items-id">Item ID: </label>
+        <input id="items-id" type="text" name="item_id"><br><br>
         <label for="items-title">Title: </label>
         <input id="items-title" type="text" name="title"><br><br>
         <label for="items-pages">Pages: </label>
@@ -29,10 +29,10 @@
         <input type="submit" value="Add item"/>
     </form>
 </div>
-<div th:fragment="add-comics-form">
+<div th:fragment="add-comics-form" style="text-align: center">
     <form method="post" action="/choose-action/add">
-        <label for="comics_id">Item ID: </label>
-        <input id="comics_id" type="text" name="item_id"><br><br>
+        <label for="comics-id">Item ID: </label>
+        <input id="comics-id" type="text" name="item_id"><br><br>
         <label for="comics-title">Title: </label>
         <input id="comics-title" type="text" name="title"><br><br>
         <label for="comics-pages">Pages: </label>
@@ -43,31 +43,31 @@
     </form>
 </div>
 
-<div th:fragment="delete-item-form" >
+<div th:fragment="delete-item-form" style="text-align: center">
     <form method="post" action="/choose-action/delete">
-        <label for="item_id_to_delete">Item ID: </label>
-        <input id="item_id_to_delete" type="text" name="item_id"><br><br>
+        <label for="delete-id">Item ID: </label>
+        <input id="delete-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Delete"/>
     </form>
 </div>
 
-<div th:fragment="return-item-form">
+<div th:fragment="return-item-form" style="text-align: center">
     <form method="post" action="/choose-action/return">
-        <label for="item_id_to_return">Item ID: </label>
-        <input id="item_id_to_return" type="text" name="item_id"><br><br>
+        <label for="return-id">Item ID: </label>
+        <input id="return-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Return"/>
     </form>
 </div>
 
-<div th:fragment="take-item-form">
+<div th:fragment="take-item-form" style="text-align: center">
     <form method="post" action="/choose-action/take">
-        <label for="item_id_to_take">Item ID: </label>
-        <input id="item_id_to_take" type="text" name="item_id"><br><br>
+        <label for="take-id">Item ID: </label>
+        <input id="take-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Take"/>
     </form>
 </div>
 
-<div th:fragment="sorting-options-form">
+<div th:fragment="book-sorting-options-form" style="text-align: center">
     <form method="post" action="/choose-action/show">
         <label for="comparator">Choose parameter for sorting</label><br><br>
         <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
@@ -75,6 +75,27 @@
         <input type="radio" name="comparator" value="pages"/>Pages<br><br>
         <input type="radio" name="comparator" value="author"/>Author<br><br>
         <input type="radio" name="comparator" value="publishing_date"/>Publishing Date<br><br>
+        <input type="submit" value="Sort"/>
+    </form>
+</div>
+
+<div th:fragment="comics-sorting-options-form">
+    <form method="post" action="/choose-action/show">
+        <label for="comparator">Choose parameter for sorting</label><br><br>
+        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
+        <input type="radio" name="comparator" value="title"/>Title<br><br>
+        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
+        <input type="radio" name="comparator" value="publisher"/>Publisher<br><br>
+        <input type="submit" value="Sort"/>
+    </form>
+</div>
+
+<div th:fragment="items-sorting-options-form">
+    <form method="post" action="/choose-action/show">
+        <label for="comparator">Choose parameter for sorting</label><br><br>
+        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
+        <input type="radio" name="comparator" value="title"/>Title<br><br>
+        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
         <input type="submit" value="Sort"/>
     </form>
 </div>
@@ -111,12 +132,14 @@
 </div>
 
 <div th:fragment="choose-action">
-    <div align="center">
-        <a href="/choose-action/add">Add</a><br><br>
-        <a href="/choose-action/delete">Delete</a><br><br>
-        <a href="/choose-action/take">Take</a><br><br>
-        <a href="/choose-action/return">Return</a><br><br>
-        <a href="/choose-action/show">Show</a><br><br>
-    </div>
+    <form method="post" action="/choose-action">
+        <label>Choose action:</label><br><br>
+        <input type="radio" name="action" value="add"/>Add<br><br>
+        <input type="radio" name="action" value="delete"/>Delete<br><br>
+        <input type="radio" name="action" value="take"/>Take<br><br>
+        <input type="radio" name="action" value="return"/>Return<br><br>
+        <input type="radio" name="action" value="show"/>Show<br><br><br><br><br><br>
+        <input type="submit" value="Choose"/>
+    </form>
 </div>
 
