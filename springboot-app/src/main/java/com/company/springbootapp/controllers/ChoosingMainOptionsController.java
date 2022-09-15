@@ -1,15 +1,12 @@
 package com.company.springbootapp.controllers;
 
-import com.company.User;
 import com.company.springbootapp.handlers.ChooseMainOptionsHandler;
 import com.company.springbootapp.utils.CookieUtil;
-import com.company.springbootapp.utils.MainParams;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -18,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ChoosingMainOptionsController {
 
     ChooseMainOptionsHandler mainOptionsHandler;
+    CookieUtil cookieUtil;
 
     @GetMapping("/login-spring")
     public String showLoginPage(Model model){
@@ -28,11 +26,7 @@ public class ChoosingMainOptionsController {
 
     @RequestMapping(value = "/login-spring", method = RequestMethod.POST,consumes = {"*/*"})
     public String getUserName(HttpServletResponse response, @RequestBody String name, Model model) {
-        Cookie cookie  = new Cookie("userName",name);
-        CookieUtil cookieUtil = new CookieUtil();
         cookieUtil.createCookie(response,"userName",name);
-
-        System.out.println(name); // todo check it
         return "redirect:/file-work";
     }
 
@@ -44,8 +38,8 @@ public class ChoosingMainOptionsController {
     }
 
     @PostMapping("/file-work")
-    public String getParams(@RequestParam("type-of-work") String typeOfWork, Model model){
-        //mainOptionsHandler.addTypeOfFileWork(typeOfWork);
+    public String getParams(HttpServletResponse response, @RequestParam("type-of-work") String typeOfWork, Model model){
+        cookieUtil.createCookie(response,"typeOfWork",typeOfWork);
         return "redirect:/choose-item";
     }
 
@@ -57,9 +51,8 @@ public class ChoosingMainOptionsController {
     }
 
     @PostMapping("/choose-item")
-    public String getChosenItem(@RequestParam("type-of-item") String typeOfItem, Model model){
-        //mainOptionsHandler.addTypeOfItem(typeOfItem);
-
+    public String getChosenItem(HttpServletResponse response, @RequestParam("type-of-item") String typeOfItem, Model model){
+        cookieUtil.createCookie(response,"typeOfItem",typeOfItem);
         return "redirect:/choose-action";
     }
 

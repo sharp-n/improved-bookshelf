@@ -1,10 +1,13 @@
 package com.company.springbootapp.utils;
 
+import org.springframework.stereotype.Repository;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
+@Repository
 public class CookieUtil {
 
     public void createCookie(HttpServletResponse response,String name, String value){
