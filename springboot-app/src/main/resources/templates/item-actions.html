@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
@@ -9,7 +9,7 @@
         }
     </style>
 </head>
-<body>
+<body  style="text-align: center">
 <div th:insert="/blocks/forms-templates :: ${form}"></div>
 <div th:insert="/blocks/refs-template :: refs-to-login-item-action"></div>
 </body>
