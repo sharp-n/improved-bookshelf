@@ -44,15 +44,16 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             User user = new User(param.name);
 
             String table = "";
+            WebAppService webAppService = new WebAppService();
             if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
                     ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
                 DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
                 dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 dbService.createUser(user,dbService.getConnection());
-                table = servletService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
+                table = webAppService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
             } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
-                table = servletService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
+                table = webAppService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
             }
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);

@@ -7,7 +7,6 @@ import com.company.handlers.DBWorker;
 import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.parameters.ParametersFromURL;
 import com.company.table.HtmlTableBuilder;
 
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class WebAppService {
         return projectHandler;
     }
 
-    public String genTableOfSortedItems(ProjectHandler projectHandler, List<List<String>> itemsAsStr) throws IOException {
+    public String genTableOfSortedItems(ProjectHandler projectHandler, List<List<String>> itemsAsStr) {
         HtmlTableBuilder tableBuilder = new HtmlTableBuilder(projectHandler.getItemHandler().getColumnTitles(), itemsAsStr);
         return tableBuilder.generateTable();
     }
@@ -36,12 +35,12 @@ public class WebAppService {
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 
-    public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
+    public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws SQLException {
         List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
 
-    public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
+    public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) {
         List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
         return genTableOfSortedItems(projectHandler, itemsAsStr);
     }
@@ -52,5 +51,25 @@ public class WebAppService {
         return itemHandler.anyItemsToString(items);
     }
 
+    public String getTable(String comparator, ProjectHandler projectHandler, ParametersForWeb param) {
+        try {
+            String table = "";
+            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
+                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
+                dbService.open(DBServiceProvider.getDBNameByService(dbService));
+                dbService.createTablesIfNotExist(dbService.getConnection());
+                User user = new User(param.name);
+                dbService.createUser(user,dbService.getConnection());
+                table = genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);
+            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
+                table = genTableOfSortedItemsFromFiles(param, comparator);
+            }
+            return table;
+        } catch (IOException e){
+            e.printStackTrace();
+            return "";
+        }
+    }
 
 }

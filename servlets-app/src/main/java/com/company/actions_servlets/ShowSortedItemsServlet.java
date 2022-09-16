@@ -1,15 +1,9 @@
 package com.company.actions_servlets;
 
-import com.company.FileNameConstants;
-import com.company.ParametersConstants;
-import com.company.TemplatesConstants;
-import com.company.URLConstants;
+import com.company.*;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.HTMLFormBuilder;
-import com.company.ParametersForWeb;
 
-import com.company.ServletService;
 import jakarta.servlet.ServletOutputStream;
 import org.apache.http.client.utils.URIBuilder;
 
@@ -64,7 +58,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
 
             ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
 
-            String table = servletService.getTable(comparator, servletService, projectHandler, param);
+            String table = new WebAppService().getTable(comparator, projectHandler, param);
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,table);
             htmlCode =  servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
 

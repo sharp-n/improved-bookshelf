@@ -32,12 +32,13 @@ public class AddItemServlet extends HttpServlet {
             throws IOException {
         param.getParametersFromURL(req);
         ServletService servletService = new ServletService();
+        WebAppService webAppService = new WebAppService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_HTML_FILE));
 
         ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
         String formContent = new HTMLFormBuilder().genForm(projectHandler.getItemHandler().genAddFormContent(),URLConstants.ADD_PAGE);
 
-        String table = servletService.getTable(SortingMenu.ITEM_ID.getDbColumn(), servletService, projectHandler, param);
+        String table = webAppService.getTable(SortingMenu.ITEM_ID.getDbColumn(), projectHandler, param);
         htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
         htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE,table);
 

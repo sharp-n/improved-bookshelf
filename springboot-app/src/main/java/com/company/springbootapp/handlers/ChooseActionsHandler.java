@@ -6,14 +6,12 @@ import com.company.WebAppService;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
-import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.ParametersForWeb;
 import com.company.springbootapp.constants.CookieNames;
 import com.company.springbootapp.constants.MessagesAndTitlesConstants;
 import com.company.springbootapp.utils.CookieUtil;
-import com.company.table.HtmlTableBuilder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -132,27 +130,11 @@ public class ChooseActionsHandler {
 
     public String showItems(ParametersForWeb params) {
         try {
-            return genTableOfSortedItemsFromFiles(params,SortingMenu.ITEM_ID.getOption());
+            return new WebAppService().genTableOfSortedItemsFromFiles(params,SortingMenu.ITEM_ID.getOption()); // or from db
         } catch (IOException e){
             e.printStackTrace();
             return "";
         }
-    }
-
-    public String genTableOfSortedItemsFromFiles(ParametersForWeb params, String sortingParam ) throws IOException {
-        ProjectHandler projectHandler = initProjectHandler(params);
-        List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(),sortingParam);
-        return genTableOfSortedItems(projectHandler, itemsAsStr);
-    }
-
-    public String genTableOfSortedItems(ProjectHandler projectHandler, List<List<String>> itemsAsStr) {
-        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(projectHandler.getItemHandler().getColumnTitles(), itemsAsStr);
-        return tableBuilder.generateTable();
-    }
-    public List<List<String>> getItemsAsStringListSortedByComparator(ItemHandler itemHandler, Librarian librarian, String comparator) throws IOException {
-        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-        List<Item> items = librarian.initSortingItemsByComparator(sortingParam, itemHandler);
-        return itemHandler.anyItemsToString(items);
     }
 
     public ParametersForWeb genAndGetParams(HttpServletRequest request) {

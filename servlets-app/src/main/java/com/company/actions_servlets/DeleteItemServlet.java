@@ -35,7 +35,7 @@ public class DeleteItemServlet extends HttpServlet {
 
             ProjectHandler projectHandler = servletService.genProjectHandlerFromParameters(param);
             String formContent = new HTMLFormBuilder().genForm(projectHandler.getItemHandler().genFormForGettingID(URLConstants.DELETE_PAGE),URLConstants.DELETE_PAGE);
-            String table = servletService.getTable(SortingMenu.ITEM_ID.getDbColumn(), servletService, projectHandler, param);
+            String table = new WebAppService().getTable(SortingMenu.ITEM_ID.getDbColumn(), projectHandler, param);
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = htmlCode.replace(TemplatesConstants.FORM_TEMPLATE, formContent);
             htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);

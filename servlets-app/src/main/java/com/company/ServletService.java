@@ -2,12 +2,7 @@ package com.company;
 
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
-import com.company.enums.SortingMenu;
-import com.company.handlers.DBWorker;
-import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
-import com.company.handlers.item_handlers.ItemHandler;
-import com.company.table.HtmlTableBuilder;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.*;
 
 public class ServletService {
@@ -128,32 +122,7 @@ public class ServletService {
         projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
         return projectHandler;
     }
-    public String genTableOfSortedItems(ProjectHandler projectHandler, List<List<String>> itemsAsStr) throws IOException {
-        HtmlTableBuilder tableBuilder = new HtmlTableBuilder(projectHandler.getItemHandler().getColumnTitles(), itemsAsStr);
-        return tableBuilder.generateTable();
-    }
 
-    public String genTableOfSortedItemsFromFiles(ParametersForWeb param, String sortingParam ) throws IOException {
-        ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
-        List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(),sortingParam);
-        return genTableOfSortedItems(projectHandler, itemsAsStr);
-    }
-
-    public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAllFromDb(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
-        return genTableOfSortedItems(projectHandler, itemsAsStr);
-    }
-
-    public String genTableOfSortedTypeOfItemsFromDB(DBService dbService, ProjectHandler projectHandler,User user) throws IOException, SQLException {
-        List<List<String>> itemsAsStr = new DBWorker(user,dbService).getAnyTypeFromDB(SortingMenu.ITEM_ID.getDbColumn(),user,projectHandler.getItemHandler(), dbService.getConnection());
-        return genTableOfSortedItems(projectHandler, itemsAsStr);
-    }
-
-    public List<List<String>> getItemsAsStringListSortedByComparator(ItemHandler itemHandler, Librarian librarian, String comparator) throws IOException {
-        SortingMenu sortingParam = SortingMenu.getByOption(comparator);
-        List<Item> items = librarian.initSortingItemsByComparator(sortingParam, itemHandler);
-        return itemHandler.anyItemsToString(items);
-    }
 
 
     public String buildURLWithParameters(String url, String name, String typeOfFileWork, String typeOfItem){
@@ -170,25 +139,6 @@ public class ServletService {
         return uri.toString();
     }
 
-    public String getTable(String comparator, ServletService servletService, ProjectHandler projectHandler, ParametersForWeb param) {
-        try {
-            String table = "";
-            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
-                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
-                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
-                dbService.open(DBServiceProvider.getDBNameByService(dbService));
-                dbService.createTablesIfNotExist(dbService.getConnection());
-                User user = new User(param.name);
-                dbService.createUser(user,dbService.getConnection());
-                table = servletService.genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);
-            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
-                table = servletService.genTableOfSortedItemsFromFiles(param, comparator);
-            }
-            return table;
-        } catch (SQLException | IOException e){
-            e.printStackTrace();
-            return "";
-        }
-    }
+
 
 }
