@@ -2,7 +2,9 @@ package com.company.springbootapp.controllers;
 
 import com.company.ParametersForWeb;
 import com.company.springbootapp.constants.CookieNames;
-import com.company.springbootapp.handlers.ChooseActionsHandler;
+import com.company.springbootapp.constants.BlocksNames;
+import com.company.springbootapp.constants.ThymeleafVariables;
+import com.company.springbootapp.handlers.ControllersHandler;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,20 +21,20 @@ import java.util.List;
 @RequestMapping("/choose-action")
 public class  ChooseActionController {
 
-    ChooseActionsHandler actionsHandler;
+    ControllersHandler handler;
     CookieUtil cookieUtil;
 
     @GetMapping
     public String showChooseActionPage(Model model){
-        actionsHandler.addAttribute(model,"choose-action","refs-to-login-item");
+        handler.addAttribute(model,BlocksNames.CHOOSE_ACTION, BlocksNames.REF_TO_LOGIN_ITEM);
         return "choose-main-options";
     }
 
     @PostMapping
-    public String redirectToAction(HttpServletRequest request, @RequestParam String action, Model model){
+    public String redirectToAction(HttpServletRequest request, @RequestParam String action){
         if (action.equals("add")) {
-            String typeOfItem = cookieUtil.getCookies(request).get("typeOfItem");
-            return actionsHandler.redirectionToAddPage(typeOfItem);
+            String typeOfItem = cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM);
+            return handler.redirectionToAddPage(typeOfItem);
         } else {
             return "redirect:/choose-action/" + action;
         }
@@ -40,8 +42,8 @@ public class  ChooseActionController {
 
     @GetMapping({"/add","/add/book","/add/comics"})
     public String addItem(HttpServletRequest request,Model model){
-        String template = actionsHandler.getAddTemplateBySimpleCLassName(cookieUtil.getCookies(request).get("typeOfItem")); //todo const
-        actionsHandler.addAttribute(model,template,"refs-to-login-item-action");
+        String template = handler.getAddTemplateBySimpleCLassName(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM)); //todo const
+        handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
@@ -55,9 +57,9 @@ public class  ChooseActionController {
                                   @RequestParam(name = "year") String year,
                                   Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        Boolean success = actionsHandler.addItem(itemOptions, params);
-        actionsHandler.informAboutActionSuccess(model,success);
+        ParametersForWeb params = handler.genAndGetParams(request);
+        Boolean success = handler.addItem(itemOptions, params);
+        handler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
@@ -68,10 +70,10 @@ public class  ChooseActionController {
                                     @RequestParam(name = "publisher") String publisher,
                                     Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,publisher));
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = handler.genAndGetParams(request);
 
-        Boolean success = actionsHandler.addItem(itemOptions, params);
-        actionsHandler.informAboutActionSuccess(model,success);
+        Boolean success = handler.addItem(itemOptions, params);
+        handler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
@@ -81,72 +83,72 @@ public class  ChooseActionController {
                                   @RequestParam(name = "items-pages") String pages,
                                   Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages));
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        Boolean success = actionsHandler.addItem(itemOptions, params);
-        actionsHandler.informAboutActionSuccess(model,success);
+        ParametersForWeb params = handler.genAndGetParams(request);
+        Boolean success = handler.addItem(itemOptions, params);
+        handler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
     @GetMapping("/delete")
     public String showDeleteItemPage(Model model){
-        actionsHandler.addAttribute(model,"delete-item-form","refs-to-login-item-action");
+        handler.addAttribute(model,BlocksNames.DELETE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
     @PostMapping("/delete")
     public String deleteItem(HttpServletRequest request, @RequestParam(name = "delete-id") int id, Model model){
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        Boolean success = actionsHandler.deleteItem(params,id);
-        actionsHandler.informAboutActionSuccess(model,success);
+        ParametersForWeb params = handler.genAndGetParams(request);
+        Boolean success = handler.deleteItem(params,id);
+        handler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }
 
     @GetMapping("/take")
     public String showBorrowItemPage(Model model){
-        actionsHandler.addAttribute(model,"take-item-form","refs-to-login-item-action");
+        handler.addAttribute(model,BlocksNames.TAKE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
     @PostMapping("/take")
     public String borrowItem(HttpServletRequest request, @RequestParam(name = "take-id") int id, Model model){
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        Boolean success = actionsHandler.takeItem(params,id, true);
-        actionsHandler.informAboutActionSuccess(model,success);
+        ParametersForWeb params = handler.genAndGetParams(request);
+        Boolean success = handler.takeItem(params,id, true);
+        handler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
     }
 
     @GetMapping("/return")
     public String showReturnItemPage(Model model){
-        actionsHandler.addAttribute(model,"return-item-form","refs-to-login-item-action");
+        handler.addAttribute(model,BlocksNames.RETURN_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
     @PostMapping("/return")
     public String returnItem(HttpServletRequest request, @RequestParam(name = "return-id") int id, Model model){
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        Boolean success = actionsHandler.takeItem(params,id, false);
-        actionsHandler.informAboutActionSuccess(model,success);
+        ParametersForWeb params = handler.genAndGetParams(request);
+        Boolean success = handler.takeItem(params,id, false);
+        handler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
     }
 
     @GetMapping("/show")
     public String showItemsPage(HttpServletRequest request,Model model){
-        String template = actionsHandler.getSortingTemplateByTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
-        actionsHandler.addAttribute(model,template,"refs-to-login-item-action");
+        String template = handler.getSortingTemplateByTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
+        handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
     @PostMapping(value = "/show")
     public String showItems(HttpServletRequest request, @RequestParam(name = "comparator") String option, Model model){
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        model.addAttribute("message",actionsHandler.showItems(params,option));
+        ParametersForWeb params = handler.genAndGetParams(request);
+        model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params,option));
         return "inform-page-template";
     }
 
     @GetMapping("/show-all-the-items")
     public String showAllTheItemsPage(HttpServletRequest request, Model model){ //todo implement
-        ParametersForWeb params = actionsHandler.genAndGetParams(request);
-        model.addAttribute("message",actionsHandler.showItems(params));
+        ParametersForWeb params = handler.genAndGetParams(request);
+        model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params));
         return "inform-page-template";
     }
 

@@ -1,6 +1,8 @@
 package com.company.springbootapp.controllers;
 
-import com.company.springbootapp.handlers.ChooseMainOptionsHandler;
+import com.company.springbootapp.constants.CookieNames;
+import com.company.springbootapp.constants.BlocksNames;
+import com.company.springbootapp.handlers.ControllersHandler;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,45 +16,42 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class ChoosingMainOptionsController {
 
-    ChooseMainOptionsHandler mainOptionsHandler;
+    ControllersHandler handler;
     CookieUtil cookieUtil;
 
     @GetMapping("/login-spring")
     public String showLoginPage(Model model){
-        model.addAttribute("form","login");
-        model.addAttribute("ref_template","no-refs");
+        handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
         return "choose-main-options";
     }
 
     @RequestMapping(value = "/login-spring", method = RequestMethod.POST,consumes = {"*/*"})
     public String getUserName(HttpServletResponse response, @RequestBody String name, Model model) {
-        cookieUtil.createCookie(response,"userName",name);
+        cookieUtil.createCookie(response,CookieNames.USER_NAME,name);
         return "redirect:/file-work";
     }
 
     @GetMapping("/file-work")
     public String choosingFileWork(Model model) {
-        model.addAttribute("form","file-work-choose");
-        model.addAttribute("ref_template","change-user");
+        handler.addAttribute(model,BlocksNames.FILE_WORK_CHOOSE, BlocksNames.REF_CHANGE_USER);
         return "choose-main-options";
     }
 
     @PostMapping("/file-work")
     public String getParams(HttpServletResponse response, @RequestParam("type-of-work") String typeOfWork, Model model){
-        cookieUtil.createCookie(response,"typeOfWork",typeOfWork);
+        cookieUtil.createCookie(response,CookieNames.TYPE_OF_FILE_WORK,typeOfWork);
         return "redirect:/choose-item";
     }
 
     @GetMapping("/choose-item")
     public String showChooseItemPage(Model model){
-        model.addAttribute("form","choose-item");
-        model.addAttribute("ref_template","refs-to-show-login-item");
+        handler.addAttribute(model,BlocksNames.CHOOSE_ITEM, BlocksNames.REF_TO_SHOW_LOGIN_ITEM);
         return "choose-main-options";
     }
 
     @PostMapping("/choose-item")
     public String getChosenItem(HttpServletResponse response, @RequestParam("type-of-item") String typeOfItem, Model model){
-        cookieUtil.createCookie(response,"typeOfItem",typeOfItem);
+        cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,typeOfItem);
         return "redirect:/choose-action";
     }
 
