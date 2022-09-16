@@ -28,9 +28,6 @@
       </plugin>
     </plugins>
   </build>
-  <modules>
-    <module>sql-queries</module>
-  </modules>
   <dependencies>
     <dependency>
       <groupId>org.projectlombok</groupId>
