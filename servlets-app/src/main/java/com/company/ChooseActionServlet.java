@@ -15,7 +15,7 @@ import java.util.Map;
 )
 public class ChooseActionServlet extends HttpServlet {
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

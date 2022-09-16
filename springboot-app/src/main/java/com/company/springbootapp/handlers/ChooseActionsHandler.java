@@ -9,7 +9,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.ParametersFromURL;
+import com.company.ParametersForWeb;
 import com.company.springbootapp.constants.CookieNames;
 import com.company.springbootapp.constants.MessagesAndTitlesConstants;
 import com.company.springbootapp.utils.CookieUtil;
@@ -74,7 +74,7 @@ public class ChooseActionsHandler {
         return typeOfItemTemplate.get("default");
     }
 
-    public Boolean addItem(List<String> itemOptions, ParametersFromURL params) {
+    public Boolean addItem(List<String> itemOptions, ParametersForWeb params) {
         try {
             ProjectHandler projectHandler = initProjectHandler(params);
             ItemHandler itemHandler = projectHandler.getItemHandler();
@@ -85,7 +85,7 @@ public class ChooseActionsHandler {
         }
     }
 
-    public Boolean deleteItem(ParametersFromURL params, int id) {
+    public Boolean deleteItem(ParametersForWeb params, int id) {
         try {
             ProjectHandler projectHandler = initProjectHandler(params);
             return projectHandler.getLibrarian().deleteItem(id, false);
@@ -95,7 +95,7 @@ public class ChooseActionsHandler {
         }
     }
 
-    public ProjectHandler initProjectHandler(ParametersFromURL params){
+    public ProjectHandler initProjectHandler(ParametersForWeb params){
         String typeOfItem = params.getTypeOfItem();
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
@@ -109,7 +109,7 @@ public class ChooseActionsHandler {
         model.addAttribute("title",MessagesAndTitlesConstants.successFailTitleMap.get(success));
     }
 
-    public Boolean takeItem(ParametersFromURL params, int id,boolean forBorrow) {
+    public Boolean takeItem(ParametersForWeb params, int id, boolean forBorrow) {
         try {
             ProjectHandler projectHandler = initProjectHandler(params);
             return projectHandler.getLibrarian().borrowItem(id, forBorrow);
@@ -119,7 +119,7 @@ public class ChooseActionsHandler {
         }
     }
 
-    public String showItems(ParametersFromURL params, String option) {
+    public String showItems(ParametersForWeb params, String option) {
         try {
 
             // todo refactor
@@ -130,7 +130,7 @@ public class ChooseActionsHandler {
         }
     }
 
-    public String showItems(ParametersFromURL params) {
+    public String showItems(ParametersForWeb params) {
         try {
             return genTableOfSortedItemsFromFiles(params,SortingMenu.ITEM_ID.getOption());
         } catch (IOException e){
@@ -139,7 +139,7 @@ public class ChooseActionsHandler {
         }
     }
 
-    public String genTableOfSortedItemsFromFiles(ParametersFromURL params, String sortingParam ) throws IOException {
+    public String genTableOfSortedItemsFromFiles(ParametersForWeb params, String sortingParam ) throws IOException {
         ProjectHandler projectHandler = initProjectHandler(params);
         List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(),sortingParam);
         return genTableOfSortedItems(projectHandler, itemsAsStr);
@@ -155,8 +155,8 @@ public class ChooseActionsHandler {
         return itemHandler.anyItemsToString(items);
     }
 
-    public ParametersFromURL genAndGetParams(HttpServletRequest request) {
-        ParametersFromURL params = new ParametersFromURL();
+    public ParametersForWeb genAndGetParams(HttpServletRequest request) {
+        ParametersForWeb params = new ParametersForWeb();
         params.setName(cookieUtil.getCookies(request).get(CookieNames.USER_NAME));
         params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
         params.setTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));

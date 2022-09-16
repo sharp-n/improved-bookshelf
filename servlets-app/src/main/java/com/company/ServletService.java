@@ -66,20 +66,20 @@ public class ServletService {
         return htmlCode;
     }
 
-    public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, ParametersFromURL param){
+    public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, ParametersForWeb param){
         for(Map.Entry<String,String> path : paths.entrySet()){
             path.setValue(new ServletService().addParams(param.name,param.typeOfFileWork,param.typeOfItem).setPathSegments(path.getValue()).toString());
         }
         return paths;
     }
 
-    public String replaceURLTemplatesInActionsPage(String htmlCode, ParametersFromURL param){
+    public String replaceURLTemplatesInActionsPage(String htmlCode, ParametersForWeb param){
         htmlCode = replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE, URLConstants.CHOOSE_ITEM_PAGE,param);
         htmlCode = replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ACTIONS_TEMPLATE,URLConstants.CHOOSE_ACTION,param);
         return htmlCode;
     }
 
-    public String replaceTemplateByURL(String htmlCode, String template, String path, ParametersFromURL param){
+    public String replaceTemplateByURL(String htmlCode, String template, String path, ParametersForWeb param){
         return htmlCode.replace(
                 template,
                 new URIBuilder()
@@ -99,7 +99,7 @@ public class ServletService {
 
     }
 
-    public void generateAndPrintHTMLCode(HttpServletResponse resp, String message, ParametersFromURL param, String fileName) {
+    public void generateAndPrintHTMLCode(HttpServletResponse resp, String message, ParametersForWeb param, String fileName) {
         String htmlCode = getTextFromFile(Paths.get(pathToHTMLFilesDir.toString(), fileName));
         htmlCode = replaceURLTemplatesInActionsPage(htmlCode,param).replace(TemplatesConstants.MESSAGE_TEMPLATE, message);
         printHtmlCode(resp,htmlCode);
@@ -122,7 +122,7 @@ public class ServletService {
     }
 
 
-    public ProjectHandler genProjectHandlerFromParameters(ParametersFromURL param){
+    public ProjectHandler genProjectHandlerFromParameters(ParametersForWeb param){
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
         projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
@@ -133,7 +133,7 @@ public class ServletService {
         return tableBuilder.generateTable();
     }
 
-    public String genTableOfSortedItemsFromFiles(ParametersFromURL param, String sortingParam ) throws IOException {
+    public String genTableOfSortedItemsFromFiles(ParametersForWeb param, String sortingParam ) throws IOException {
         ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
         List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(),sortingParam);
         return genTableOfSortedItems(projectHandler, itemsAsStr);
@@ -170,7 +170,7 @@ public class ServletService {
         return uri.toString();
     }
 
-    public String getTable(String comparator, ServletService servletService, ProjectHandler projectHandler, ParametersFromURL param) {
+    public String getTable(String comparator, ServletService servletService, ProjectHandler projectHandler, ParametersForWeb param) {
         try {
             String table = "";
             if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)

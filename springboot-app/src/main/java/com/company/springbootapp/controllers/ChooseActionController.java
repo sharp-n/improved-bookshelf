@@ -1,6 +1,6 @@
 package com.company.springbootapp.controllers;
 
-import com.company.ParametersFromURL;
+import com.company.ParametersForWeb;
 import com.company.springbootapp.constants.CookieNames;
 import com.company.springbootapp.handlers.ChooseActionsHandler;
 import com.company.springbootapp.utils.CookieUtil;
@@ -55,7 +55,7 @@ public class  ChooseActionController {
                                   @RequestParam(name = "year") String year,
                                   Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         Boolean success = actionsHandler.addItem(itemOptions, params);
         actionsHandler.informAboutActionSuccess(model,success);
         return "inform-page-template";
@@ -68,7 +68,7 @@ public class  ChooseActionController {
                                     @RequestParam(name = "publisher") String publisher,
                                     Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,publisher));
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
 
         Boolean success = actionsHandler.addItem(itemOptions, params);
         actionsHandler.informAboutActionSuccess(model,success);
@@ -81,7 +81,7 @@ public class  ChooseActionController {
                                   @RequestParam(name = "items-pages") String pages,
                                   Model model){
         List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages));
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         Boolean success = actionsHandler.addItem(itemOptions, params);
         actionsHandler.informAboutActionSuccess(model,success);
         return "inform-page-template";
@@ -95,7 +95,7 @@ public class  ChooseActionController {
 
     @PostMapping("/delete")
     public String deleteItem(HttpServletRequest request, @RequestParam(name = "delete-id") int id, Model model){
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         Boolean success = actionsHandler.deleteItem(params,id);
         actionsHandler.informAboutActionSuccess(model,success);
         return "inform-page-template";
@@ -109,7 +109,7 @@ public class  ChooseActionController {
 
     @PostMapping("/take")
     public String borrowItem(HttpServletRequest request, @RequestParam(name = "take-id") int id, Model model){
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         Boolean success = actionsHandler.takeItem(params,id, true);
         actionsHandler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
@@ -123,7 +123,7 @@ public class  ChooseActionController {
 
     @PostMapping("/return")
     public String returnItem(HttpServletRequest request, @RequestParam(name = "return-id") int id, Model model){
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         Boolean success = actionsHandler.takeItem(params,id, false);
         actionsHandler.informAboutActionSuccess(model,success);
         return "/inform-page-template";
@@ -138,14 +138,14 @@ public class  ChooseActionController {
 
     @PostMapping(value = "/show")
     public String showItems(HttpServletRequest request, @RequestParam(name = "comparator") String option, Model model){
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         model.addAttribute("message",actionsHandler.showItems(params,option));
         return "inform-page-template";
     }
 
     @GetMapping("/show-all-the-items")
     public String showAllTheItemsPage(HttpServletRequest request, Model model){ //todo implement
-        ParametersFromURL params = actionsHandler.genAndGetParams(request);
+        ParametersForWeb params = actionsHandler.genAndGetParams(request);
         model.addAttribute("message",actionsHandler.showItems(params));
         return "inform-page-template";
     }

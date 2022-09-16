@@ -1,11 +1,10 @@
 package com.company;
 
-import com.company.ParametersConstants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
 
 @Data
-public class ParametersFromURL {
+public class ParametersForWeb {
 
     public String name = "";
     public String typeOfFileWork = "";

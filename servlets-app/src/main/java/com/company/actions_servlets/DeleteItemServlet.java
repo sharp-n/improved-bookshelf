@@ -23,7 +23,7 @@ import static com.company.enums.SortingMenu.ITEM_ID;
 )
 public class DeleteItemServlet extends HttpServlet {
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
     final ServletService servletService = new ServletService();
 
     @Override

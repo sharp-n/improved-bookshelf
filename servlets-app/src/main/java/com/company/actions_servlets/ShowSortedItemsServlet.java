@@ -7,7 +7,7 @@ import com.company.URLConstants;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.HTMLFormBuilder;
-import com.company.ParametersFromURL;
+import com.company.ParametersForWeb;
 
 import com.company.ServletService;
 import jakarta.servlet.ServletOutputStream;
@@ -27,7 +27,7 @@ import java.util.Objects;
 )
 public class ShowSortedItemsServlet extends HttpServlet {
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
     private String htmlCode = "";
 
     @Override

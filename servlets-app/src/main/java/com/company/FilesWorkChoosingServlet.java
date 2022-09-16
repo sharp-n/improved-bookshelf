@@ -19,7 +19,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
 
     Logger LOGGER;
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {

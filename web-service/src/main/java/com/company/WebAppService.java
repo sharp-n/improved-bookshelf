@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class WebAppService {
 
-    public ProjectHandler genProjectHandlerFromParameters(ParametersFromURL param){
+    public ProjectHandler genProjectHandlerFromParameters(ParametersForWeb param){
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
         projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
@@ -30,7 +30,7 @@ public class WebAppService {
         return tableBuilder.generateTable();
     }
 
-    public String genTableOfSortedItemsFromFiles(ParametersFromURL param, String sortingParam ) throws IOException {
+    public String genTableOfSortedItemsFromFiles(ParametersForWeb param, String sortingParam ) throws IOException {
         ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
         List<List<String>> itemsAsStr = getItemsAsStringListSortedByComparator(projectHandler.getItemHandler(),projectHandler.getLibrarian(),sortingParam);
         return genTableOfSortedItems(projectHandler, itemsAsStr);

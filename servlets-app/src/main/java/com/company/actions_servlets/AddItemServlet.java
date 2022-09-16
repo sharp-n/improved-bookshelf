@@ -6,7 +6,7 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.ParametersFromURL;
+import com.company.ParametersForWeb;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,7 +25,7 @@ import java.util.Scanner;
 )
 public class AddItemServlet extends HttpServlet {
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

@@ -18,7 +18,7 @@ import java.util.Scanner;
 )
 public class ChooseItemServlet extends HttpServlet {
 
-    final ParametersFromURL param = new ParametersFromURL();
+    final ParametersForWeb param = new ParametersForWeb();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp){
