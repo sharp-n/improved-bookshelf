@@ -7,7 +7,7 @@ import com.company.URLConstants;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.HTMLFormBuilder;
-import com.company.parameters.ParametersFromURL;
+import com.company.ParametersFromURL;
 
 import com.company.ServletService;
 import jakarta.servlet.ServletOutputStream;

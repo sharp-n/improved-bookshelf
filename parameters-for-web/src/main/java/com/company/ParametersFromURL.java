@@ -1,8 +1,7 @@
-package com.company.parameters;
+package com.company;
 
 import com.company.ParametersConstants;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

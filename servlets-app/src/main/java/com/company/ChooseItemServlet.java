@@ -1,7 +1,6 @@
 package com.company;
 
 import com.company.handlers.item_handlers.DefaultItemHandler;
-import com.company.parameters.ParametersFromURL;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

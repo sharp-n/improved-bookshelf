@@ -8,7 +8,6 @@ import com.company.handlers.Librarian;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.table.HtmlTableBuilder;
-import com.company.parameters.ParametersFromURL;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
