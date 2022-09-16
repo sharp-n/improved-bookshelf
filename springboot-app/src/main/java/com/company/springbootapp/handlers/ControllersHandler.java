@@ -8,8 +8,8 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.ParametersForWeb;
-import com.company.springbootapp.constants.CookieNames;
-import com.company.springbootapp.constants.MessagesAndTitlesConstants;
+import com.company.enums.springappconstants.CookieNames;
+import com.company.enums.springappconstants.MessagesAndTitlesConstants;
 import com.company.enums.TemplatesAndRefs;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.company.springbootapp.constants.ThymeleafVariables.*;
+import static com.company.enums.springappconstants.ThymeleafVariables.*;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor

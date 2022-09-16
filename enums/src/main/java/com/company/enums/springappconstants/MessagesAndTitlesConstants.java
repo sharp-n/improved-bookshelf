@@ -1,4 +1,4 @@
-package com.company.springbootapp.constants;
+package com.company.enums.springappconstants;
 
 import java.util.HashMap;
 import java.util.Map;

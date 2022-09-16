@@ -1,9 +1,9 @@
 package com.company.springbootapp.controllers;
 
 import com.company.ParametersForWeb;
-import com.company.springbootapp.constants.CookieNames;
-import com.company.springbootapp.constants.BlocksNames;
-import com.company.springbootapp.constants.ThymeleafVariables;
+import com.company.enums.springappconstants.CookieNames;
+import com.company.enums.springappconstants.BlocksNames;
+import com.company.enums.springappconstants.ThymeleafVariables;
 import com.company.springbootapp.handlers.ControllersHandler;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
