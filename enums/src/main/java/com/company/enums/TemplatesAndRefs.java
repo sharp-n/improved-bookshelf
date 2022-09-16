@@ -1,4 +1,4 @@
-package com.company.springbootapp.constants;
+package com.company.enums;
 
 import java.util.Arrays;
 

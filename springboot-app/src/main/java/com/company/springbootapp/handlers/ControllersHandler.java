@@ -10,7 +10,7 @@ import com.company.handlers.item_handlers.ItemHandler;
 import com.company.ParametersForWeb;
 import com.company.springbootapp.constants.CookieNames;
 import com.company.springbootapp.constants.MessagesAndTitlesConstants;
-import com.company.springbootapp.constants.TemplatesAndRefs;
+import com.company.enums.TemplatesAndRefs;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
