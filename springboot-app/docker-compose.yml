@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+    bookshelf:
+        build: .
+        image: bookshelf-springboot-app:1.0
+        container_name: bookshelf-springboot-app
+        ports: 
+            - 8090:8090
+        links: 
+            - mysql
+    mysql:
+        image: mysql:8.0.30
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=sharp
+            - MYSQL_PASSWORD=1
+            - MYSQL_DATABASE=bookshelf
+        container_name: mysql-improved-bookshelf
+        ports: 
+            - 3306:3306
+        volumes: 
+            - ./db:/var/lib/mysql/data
+        restart: always
