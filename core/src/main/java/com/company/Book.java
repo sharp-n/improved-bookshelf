@@ -24,4 +24,10 @@ public class Book extends Item {
         this.publishingDate = publishingDate;
     }
 
+    public Book(int bookID, String title, String author, int day, int month, int year, int pages) {
+        super(bookID,title,pages);
+        this.author = author;
+        this.publishingDate = new GregorianCalendar(year,month,day);
+    }
+
 }

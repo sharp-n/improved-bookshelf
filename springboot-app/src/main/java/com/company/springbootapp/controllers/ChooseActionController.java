@@ -1,5 +1,6 @@
 package com.company.springbootapp.controllers;
 
+import com.company.Book;
 import com.company.ParametersForWeb;
 import com.company.enums.springappconstants.CookieNames;
 import com.company.enums.springappconstants.BlocksNames;
@@ -7,11 +8,13 @@ import com.company.enums.springappconstants.ThymeleafVariables;
 import com.company.springbootapp.handlers.ControllersHandler;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,19 +50,21 @@ public class  ChooseActionController {
         return "item-actions";
     }
 
-    @PostMapping("/add/book" )
+    @PostMapping(value = "/add/book", consumes = MediaType.ALL_VALUE)
     public String showAddBookPage(HttpServletRequest request,
-                                  @RequestParam(name = "book-title") String title,
-                                  @RequestParam(name = "book-pages") String pages,
-                                  @RequestParam(name = "author") String author,
-                                  @RequestParam(name = "day") String day,
-                                  @RequestParam(name = "month") String month,
-                                  @RequestParam(name = "year") String year,
+                                  @RequestBody Book book,
+                                  //@RequestParam(name = "book-pages") String pages,
+                                  //@RequestParam(name = "author") String author,
+                                  //@RequestParam(name = "day") String day,
+                                  //@RequestParam(name = "month") String month,
+                                  //@RequestParam(name = "year") String year,
                                   Model model){
-        List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
-        ParametersForWeb params = handler.genAndGetParams(request);
-        Boolean success = handler.addItem(itemOptions, params);
-        handler.informAboutActionSuccess(model,success);
+
+        //List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
+        //ParametersForWeb params = handler.genAndGetParams(request);
+        System.out.println(book.toString());
+        //Boolean success = handler.addItem(itemOptions, params);
+        handler.informAboutActionSuccess(model,true);
         return "inform-page-template";
     }
 
