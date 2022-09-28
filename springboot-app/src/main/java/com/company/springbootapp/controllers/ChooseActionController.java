@@ -1,6 +1,5 @@
 package com.company.springbootapp.controllers;
 
-import com.company.Book;
 import com.company.ParametersForWeb;
 import com.company.enums.springappconstants.CookieNames;
 import com.company.enums.springappconstants.BlocksNames;
@@ -14,10 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -35,61 +30,22 @@ public class  ChooseActionController {
 
     @PostMapping
     public String redirectToAction(HttpServletRequest request, @RequestParam String action){
-        if (action.equals("add")) {
-            String typeOfItem = cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM);
-            return handler.redirectionToAddPage(typeOfItem);
-        } else {
             return "redirect:/choose-action/" + action;
-        }
     }
 
-    @GetMapping({"/add","/add/book","/add/comics"})
+    @GetMapping({"/add"})
     public String addItem(HttpServletRequest request,Model model){
         String template = handler.getAddTemplateBySimpleCLassName(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM)); //todo const
         handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
 
-    @PostMapping(value = "/add/book", consumes = MediaType.ALL_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
     public String showAddBookPage(HttpServletRequest request,
-                                  @RequestBody Book book,
-                                  //@RequestParam(name = "book-pages") String pages,
-                                  //@RequestParam(name = "author") String author,
-                                  //@RequestParam(name = "day") String day,
-                                  //@RequestParam(name = "month") String month,
-                                  //@RequestParam(name = "year") String year,
+                                  @RequestBody String item,
                                   Model model){
-
-        //List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,author,day+ "." + month + "." + year));
-        //ParametersForWeb params = handler.genAndGetParams(request);
-        System.out.println(book.toString());
-        //Boolean success = handler.addItem(itemOptions, params);
-        handler.informAboutActionSuccess(model,true);
-        return "inform-page-template";
-    }
-
-    @PostMapping("/add/comics")
-    public String showAddComicsPage(HttpServletRequest request,
-                                    @RequestParam(name = "comics-title") String title,
-                                    @RequestParam(name = "comics-pages") String pages,
-                                    @RequestParam(name = "publisher") String publisher,
-                                    Model model){
-        List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages,publisher));
         ParametersForWeb params = handler.genAndGetParams(request);
-
-        Boolean success = handler.addItem(itemOptions, params);
-        handler.informAboutActionSuccess(model,success);
-        return "inform-page-template";
-    }
-
-    @PostMapping("/add")
-    public String showAddItemPage(HttpServletRequest request,
-                                  @RequestParam(name = "items-title") String title,
-                                  @RequestParam(name = "items-pages") String pages,
-                                  Model model){
-        List<String> itemOptions = new ArrayList<>(Arrays.asList(title,pages));
-        ParametersForWeb params = handler.genAndGetParams(request);
-        Boolean success = handler.addItem(itemOptions, params);
+        Boolean success = handler.addItem(item, params);
         handler.informAboutActionSuccess(model,success);
         return "inform-page-template";
     }

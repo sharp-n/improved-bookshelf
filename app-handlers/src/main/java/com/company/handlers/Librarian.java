@@ -8,6 +8,7 @@ import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.handlers.work_with_files.FilesWorker;
 import com.company.table.TableUtil;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -109,6 +110,11 @@ public abstract class Librarian {
             }
         }
         return max;
+    }
+
+    public Item getItemFromJson(String jsonItem, ItemHandler itemHandler){
+        Gson gson = new Gson();
+        return (Item) gson.fromJson(jsonItem, ItemHandlerProvider.getClassByHandler(itemHandler));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.company.springbootapp.handlers;
 
+import com.company.Item;
 import com.company.User;
 import com.company.WebAppService;
 import com.company.enums.FilesMenu;
@@ -11,7 +12,9 @@ import com.company.ParametersForWeb;
 import com.company.enums.springappconstants.CookieNames;
 import com.company.enums.springappconstants.MessagesAndTitlesConstants;
 import com.company.enums.TemplatesAndRefs;
+import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.springbootapp.utils.CookieUtil;
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,18 @@ public class ControllersHandler {
 
     public String getSortingTemplateByTypeOfItem(String typeOfItem) { // todo optimize
         return TemplatesAndRefs.getByOptionType(typeOfItem).getSortingForm();
+    }
+
+    public Boolean addItem(String jsonItem, ParametersForWeb params) {
+        try {
+            ProjectHandler projectHandler = initProjectHandler(params);
+            ItemHandler itemHandler = projectHandler.getItemHandler();
+            Item item = projectHandler.getLibrarian().getItemFromJson(jsonItem,itemHandler);
+            return projectHandler.getLibrarian().addItem(item);
+        } catch(IOException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public Boolean addItem(List<String> itemOptions, ParametersForWeb params) {

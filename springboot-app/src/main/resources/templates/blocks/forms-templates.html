@@ -1,5 +1,5 @@
 <div th:fragment="add-book-form" style="text-align: center">
-    <form method="post" action="/choose-action/add/book" id="addBookForm">
+    <form method="post" action="/choose-action/add" id="addBookForm">
         <label for="book-id">Item ID: </label>
         <input id="book-id" type="text" name="item_id"><br><br>
         <label for="book-title">Title: </label>
@@ -19,114 +19,42 @@
     </form>
 
     <script>
-
         const sampleForm = document.getElementById("addBookForm");
-
-
-        //Add an event listener to the form element and handler for the submit an event.
         sampleForm.addEventListener("submit", async (e) => {
-            /**
-             * Prevent the default browser behaviour of submitting
-             * the form so that you can handle this instead.
-             */
             e.preventDefault();
-
-            /**
-             * Get the element attached to the event handler.
-             */
             let form = e.currentTarget;
-
-            /**
-             * Take the URL from the form's `action` attribute.
-             */
             let url = form.action;
-
             try {
                 let formData = new FormData(form);
-
                 let responseData = await postFormFieldsAsJson({ url, formData });
-
-                //Destructure the response data
                 let { serverDataResponse } = responseData;
-
-                //Display the response data in the console (for debugging)
                 console.log(serverDataResponse);
             } catch (error) {
-                //If an error occurs display it in the console (for debugging)
-                console.error(error);
+               console.error(error);
             }
         });
         async function postFormFieldsAsJson({ url, formData }) {
-            //Create an object from the form data entries
             let formDataObject = Object.fromEntries(formData.entries());
-            // Format the plain form data as JSON
-            let formDataJsonString = JSON.stringify(formDataObject);
 
-            //Set the fetch options (headers, body)
+            let formDataJsonString = JSON.stringify(formDataObject);
             let fetchOptions = {
-                //HTTP method set to POST.
                 method: "POST",
                 //Set the headers that specify you're sending a JSON body request and accepting JSON response
                 headers: {
                     "Content-Type": "application/json",
-                    Accept: "application/json",
+                    Accept: "text/html",
                 },
                 redirect: "follow",
-                // POST request body as JSON string.
                 body: formDataJsonString,
             };
 
-            //Get the response body as JSON.
-            //If the response was not OK, throw an error.
              await fetch(url, fetchOptions).then((res) => {
                  if (res.ok) window.location.href = '/';
              });
 
-            //If the response is not ok throw an error (for debugging)
-
-            //If the response was OK, return the response body.
         }
     </script>
 
-    <!--script>
-
-        let addbookform = document.getElementById("addBookForm");
-        addbookform.onsubmit = async (e) => {
-            e.preventDefault();
-
-            let response = await fetch('/choose-action/add/book', {
-                method: 'POST',
-                body: new FormData(document.getElementById("addBookForm")),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            let result = await response.json();
-
-            alert(result.message);
-        };
-    </script-->
-    <!--script type="text/javascript">
-
-        const url = '/choose-action/add/book';
-        const data = new FormData("addbookform");
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST', // или 'PUT'
-                body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const json = await response.json();
-            alert(json);
-            console.log('Успех:', JSON.stringify(json));
-        } catch (error) {
-            console.error('Ошибка:', error);
-        }
-    </script-->
 </div>
 <div th:fragment="add-main-option-items-form" style="text-align: center">
     <form method="post" action="/choose-action/add">
