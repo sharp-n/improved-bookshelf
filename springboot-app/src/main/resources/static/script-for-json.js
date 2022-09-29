@@ -1,7 +1,7 @@
 let refToRedirect;
 let formId;
 function initWork() {
-    const sampleForm = document.getElementById("login");
+    const sampleForm = document.getElementById(formId);
     sampleForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         let form = e.currentTarget;
@@ -32,7 +32,7 @@ function initWork() {
         };
 
         await fetch(url, fetchOptions).then((res) => {
-            if (res.ok) window.location.href = "/choose-item";
+            if (res.ok) window.location.href = refToRedirect;
         });
     }
 }

@@ -25,7 +25,7 @@ public class  ChooseActionController {
     @GetMapping
     public String showChooseActionPage(Model model){
         handler.addAttribute(model,BlocksNames.CHOOSE_ACTION, BlocksNames.REF_TO_LOGIN_ITEM);
-        return "choose-main-options";
+        return "choose-action";
     }
 
     @PostMapping
