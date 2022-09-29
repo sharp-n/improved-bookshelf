@@ -49,7 +49,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
 
             ServletService servletService = new ServletService();
             ServletOutputStream out = resp.getOutputStream();
-            if (param.typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
+            if (param.typeOfWork.equals(ParametersConstants.FILE_PER_TYPE)) {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME, ParametersConstants.NAME).toString());
             }
 

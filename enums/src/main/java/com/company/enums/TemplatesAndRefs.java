@@ -1,6 +1,8 @@
 package com.company.enums;
 
-import com.company.enums.springappconstants.BlocksNames;
+
+
+import com.company.springappconstants.BlocksNames;
 
 import java.util.Arrays;
 

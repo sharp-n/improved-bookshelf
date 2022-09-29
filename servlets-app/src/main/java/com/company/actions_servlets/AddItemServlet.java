@@ -50,7 +50,7 @@ public class AddItemServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        FilesMenu option = FilesMenu.getByDBColumnName(param.typeOfFileWork);
+        FilesMenu option = FilesMenu.getByDBColumnName(param.typeOfWork);
         projectHandler.fileSwitch(option, new User(param.name));
         ItemHandler itemHandler = projectHandler.getItemHandler();
 

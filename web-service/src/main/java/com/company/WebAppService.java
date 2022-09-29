@@ -20,7 +20,7 @@ public class WebAppService {
     public ProjectHandler genProjectHandlerFromParameters(ParametersForWeb param){
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfWork), new User(param.name));
         return projectHandler;
     }
 
@@ -54,15 +54,15 @@ public class WebAppService {
     public String getTable(String comparator, ProjectHandler projectHandler, ParametersForWeb param) {
         try {
             String table = "";
-            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
-                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
-                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
+            if (param.typeOfWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||param.typeOfWork.equals(ParametersConstants.DATABASE_MYSQL)) {
+                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfWork);
                 dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 User user = new User(param.name);
                 dbService.createUser(user,dbService.getConnection());
                 table = genTableOfSortedTypeOfItemsFromDB(dbService, projectHandler, user);
-            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE)) {
+            } else if (param.typeOfWork.equals(ParametersConstants.ONE_FILE)) {
                 table = genTableOfSortedItemsFromFiles(param, comparator);
             }
             return table;

@@ -1,9 +1,9 @@
 package com.company.springbootapp.controllers;
 
 import com.company.ParametersForWeb;
-import com.company.enums.springappconstants.CookieNames;
-import com.company.enums.springappconstants.BlocksNames;
-import com.company.enums.springappconstants.ThymeleafVariables;
+import com.company.springappconstants.CookieNames;
+import com.company.springappconstants.BlocksNames;
+import com.company.springappconstants.ThymeleafVariables;
 import com.company.springbootapp.handlers.ControllersHandler;
 import com.company.springbootapp.utils.CookieUtil;
 import lombok.AllArgsConstructor;
@@ -39,6 +39,7 @@ public class  ChooseActionController {
         handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
     }
+
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
     public String showAddBookPage(HttpServletRequest request,

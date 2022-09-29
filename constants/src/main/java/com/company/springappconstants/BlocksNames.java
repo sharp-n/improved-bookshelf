@@ -1,4 +1,4 @@
-package com.company.enums.springappconstants;
+package com.company.springappconstants;
 
 public class BlocksNames {
 
@@ -22,6 +22,8 @@ public class BlocksNames {
     public static final String COMICS_SORTING_OPTIONS_FORM = "comics-sorting-options-form";
     public static final String ITEMS_SORTING_OPTIONS_FORM = "items-sorting-options-form";
 
+
+    public static final String SCRIPT_PATH = "/static/script-for-json.js";
 
 
 

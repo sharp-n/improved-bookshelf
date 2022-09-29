@@ -9,12 +9,10 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.ParametersForWeb;
-import com.company.enums.springappconstants.CookieNames;
-import com.company.enums.springappconstants.MessagesAndTitlesConstants;
+import com.company.springappconstants.CookieNames;
+import com.company.springappconstants.MessagesAndTitlesConstants;
 import com.company.enums.TemplatesAndRefs;
-import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.springbootapp.utils.CookieUtil;
-import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 
-import static com.company.enums.springappconstants.ThymeleafVariables.*;
+import static com.company.springappconstants.ThymeleafVariables.*;
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -84,7 +82,7 @@ public class ControllersHandler {
         String typeOfItem = params.getTypeOfItem();
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
-        FilesMenu option = FilesMenu.getByDBColumnName(params.getTypeOfFileWork());
+        FilesMenu option = FilesMenu.getByDBColumnName(params.getTypeOfWork());
         projectHandler.fileSwitch(option, new User(params.getName()));
         return projectHandler;
     }
@@ -120,7 +118,7 @@ public class ControllersHandler {
     public ParametersForWeb genAndGetParams(HttpServletRequest request) {
         ParametersForWeb params = new ParametersForWeb();
         params.setName(cookieUtil.getCookies(request).get(CookieNames.USER_NAME));
-        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        params.setTypeOfWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
         params.setTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
         return params;
     }

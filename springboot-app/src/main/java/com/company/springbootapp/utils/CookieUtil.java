@@ -14,6 +14,7 @@ public class CookieUtil {
         Cookie cookie = new Cookie(name,value);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(31*24*60*60);
         response.addCookie(cookie);
     }
 

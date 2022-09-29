@@ -55,7 +55,7 @@ public class DeleteItemServlet extends HttpServlet {
             if (itemID != null) {
                 ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-                projectHandler.fileSwitch(FilesMenu.getByDBColumnName(param.typeOfFileWork), new User(param.name));
+                projectHandler.fileSwitch(FilesMenu.getByDBColumnName(param.typeOfWork), new User(param.name));
                 boolean deleted = projectHandler.getLibrarian().deleteItem(itemID, true);
                 if (deleted) {
                     message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "deleted";

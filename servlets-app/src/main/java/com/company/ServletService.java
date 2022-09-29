@@ -62,7 +62,7 @@ public class ServletService {
 
     public Map<String, String> addParamsToParametersMapValues(Map<String,String> paths, ParametersForWeb param){
         for(Map.Entry<String,String> path : paths.entrySet()){
-            path.setValue(new ServletService().addParams(param.name,param.typeOfFileWork,param.typeOfItem).setPathSegments(path.getValue()).toString());
+            path.setValue(new ServletService().addParams(param.name,param.typeOfWork,param.typeOfItem).setPathSegments(path.getValue()).toString());
         }
         return paths;
     }
@@ -79,7 +79,7 @@ public class ServletService {
                 new URIBuilder()
                         .setPathSegments(path)
                         .addParameter(ParametersConstants.NAME,param.name)
-                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfFileWork)
+                        .addParameter(ParametersConstants.TYPE_OF_WORK_WITH_FILE,param.typeOfWork)
                         .addParameter(ParametersConstants.TYPE_OF_ITEM,param.typeOfItem)
                         .toString());
     }
@@ -119,7 +119,7 @@ public class ServletService {
     public ProjectHandler genProjectHandlerFromParameters(ParametersForWeb param){
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfFileWork), new User(param.name));
+        projectHandler.fileSwitch(FilesMenu.getByOption(param.typeOfWork), new User(param.name));
         return projectHandler;
     }
 
