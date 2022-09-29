@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="/script-for-json.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/tag-style.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body topmargin="100">
+
+<div align="center">
+    <form method="post" action="/login" id="login">
+        <label for="name">Login: </label>
+        <input id="name" type="text" name="name"><br><br>
+        <label for="typeOfWork">
+            Choose how to work with files:
+        </label><br><br>
+        <fieldset id="typeOfWork">
+            <input type="radio" name="typeOfWork" value="oneFile" />Work with one file<br><br>
+            <input type="radio" name="typeOfWork" value="filePerItem" />Work with file per type<br><br>
+            <input type="radio" name="typeOfWork" value="databaseSQLite" />Use database (SQLite)<br><br>
+            <input type="radio" name="typeOfWork" value="databaseMySQL" />Use database (MySQL)
+        </fieldset>
+        <br><br>
+        <label for="typeOfItem">Choose item:</label><br><br>
+        <fieldset id="typeOfItem">
+            <input type="radio" name="typeOfItem" value="Newspaper"/>Newspaper<br><br>
+            <input type="radio" name="typeOfItem" value="Book"/>Book<br><br>
+            <input type="radio" name="typeOfItem" value="Comics"/>Comics<br><br>
+            <input type="radio" name="typeOfItem" value="Journal"/>Journal
+        </fieldset>
+        <br><br>
+        <button type="submit">Log in</button>
+        </form>
+    <script>
+        formId = "login";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
+    <br><br>
+    <p th:insert="/blocks/refs-template :: ${ref_template}"></p>
+</div>
+</body>
+
+</html>

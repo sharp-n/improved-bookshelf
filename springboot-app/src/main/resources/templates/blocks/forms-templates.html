@@ -17,44 +17,6 @@
         <input id="year" type="text" name="year"><br><br>
         <input type="submit" value="Add book"/>
     </form>
-
-    <script>
-        const sampleForm = document.getElementById("addBookForm");
-        sampleForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            let form = e.currentTarget;
-            let url = form.action;
-            try {
-                let formData = new FormData(form);
-                let responseData = await postFormFieldsAsJson({ url, formData });
-                let { serverDataResponse } = responseData;
-                console.log(serverDataResponse);
-            } catch (error) {
-               console.error(error);
-            }
-        });
-        async function postFormFieldsAsJson({ url, formData }) {
-            let formDataObject = Object.fromEntries(formData.entries());
-
-            let formDataJsonString = JSON.stringify(formDataObject);
-            let fetchOptions = {
-                method: "POST",
-                //Set the headers that specify you're sending a JSON body request and accepting JSON response
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "text/html",
-                },
-                redirect: "follow",
-                body: formDataJsonString,
-            };
-
-             await fetch(url, fetchOptions).then((res) => {
-                 if (res.ok) window.location.href = '/';
-             });
-
-        }
-    </script>
-
 </div>
 <div th:fragment="add-main-option-items-form" style="text-align: center">
     <form method="post" action="/choose-action/add">
@@ -138,36 +100,8 @@
     </form>
 </div>
 
-<div th:fragment="file-work-choose">
-    <form method="post" action="/file-work">
-        <label >Choose how to work with files:</label><br><br>
-        <input type="radio" name="type-of-work" value="oneFile" />Work with one file<br><br>
-        <input type="radio" name="type-of-work" value="filePerItem" />Work with file per type<br><br>
-        <input type="radio" name="type-of-work" value="databaseSQLite" />Use database (SQLite)<br><br>
-        <input type="radio" name="type-of-work" value="databaseMySQL" />Use database (MySQL)<br><br>
-        <input type="submit" value="Submit">
-    </form>
-</div>
-
-<div th:fragment="login">
-    <form method="post" action="/login-spring">
-        <label for="name">Login: </label>
-        <input id="name" type="text" name="name"><br><br>
-        <button type="submit">Sign in</button>
-    </form>
-</div>
 
 
-<div th:fragment="choose-item">
-    <form method="post" action="/choose-item">
-        <label>Choose item:</label><br><br>
-        <input type="radio" name="type-of-item" value="Newspaper"/>Newspaper<br><br>
-        <input type="radio" name="type-of-item" value="Book"/>Book<br><br>
-        <input type="radio" name="type-of-item" value="Comics"/>Comics<br><br>
-        <input type="radio" name="type-of-item" value="Journal"/>Journal<br><br><br><br>
-        <input type="submit" value="Choose"/>
-    </form>
-</div>
 
 <div th:fragment="choose-action">
     <form method="post" action="/choose-action">
