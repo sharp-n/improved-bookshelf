@@ -1,0 +1,17 @@
+body {
+    background-color: #cca297;
+    font-size: 125%
+}
+fieldset{
+    width: 50%;
+    border-color: #cca297;
+}
+button {
+    width: 90px;
+    height: 30px;
+    font-size: 90%;
+}
+input {
+    font-size: 80%;
+    height: 20px;
+}
