@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/choose-action")
-public class  ChooseActionController {
+public class ActionsController {
 
     ControllersHandler handler;
     CookieUtil cookieUtil;
