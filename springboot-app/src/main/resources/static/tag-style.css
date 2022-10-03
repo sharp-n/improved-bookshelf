@@ -1,11 +1,13 @@
 body {
     background-color: #cca297;
-    font-size: 125%
+    font-size: 125%;
+    margin-top: 10%;
 }
-fieldset{
-    width: 50%;
-    border-color: #cca297;
+div{
+    text-align: center;
+    align-content: center;
 }
+
 button {
     width: 90px;
     height: 30px;
@@ -14,4 +16,8 @@ button {
 input {
     font-size: 80%;
     height: 20px;
+}
+form{
+    align-content: center;
+    align-items: center;
 }

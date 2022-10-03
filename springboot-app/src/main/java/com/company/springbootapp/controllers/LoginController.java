@@ -31,10 +31,6 @@ public class LoginController {
 
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_HTML_VALUE)
     public String getUserName(HttpServletResponse response, @RequestBody Params params, Model model) {
-
-        System.out.println(params.getName());
-        System.out.println(params.getTypeOfItem());
-
         cookieUtil.createCookie(response, CookieNames.USER_NAME,params.getName());
         cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
         cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());

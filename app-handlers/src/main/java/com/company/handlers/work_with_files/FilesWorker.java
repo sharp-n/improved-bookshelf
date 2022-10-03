@@ -1,5 +1,6 @@
 package com.company.handlers.work_with_files;
 
+import com.company.Book;
 import com.company.Container;
 import com.company.Item;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
@@ -10,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public abstract class FilesWorker {
@@ -132,4 +134,9 @@ public abstract class FilesWorker {
         return containers;
     }
 
+    public static void main(String[] args) {
+        Book book = new Book();
+        book.setPublishingDate(new GregorianCalendar());
+        System.out.println(new Gson().toJson(book));
+    }
 }

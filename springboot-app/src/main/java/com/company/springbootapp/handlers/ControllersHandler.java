@@ -26,12 +26,9 @@ import java.util.Scanner;
 import static com.company.springappconstants.ThymeleafVariables.*;
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ControllersHandler {
 
     CookieUtil cookieUtil;
-
-
 
     public String getAddTemplateBySimpleCLassName(String typeOfItem){ //todo refactor map init
         return TemplatesAndRefs.getByOptionType(typeOfItem).getAddForm();
@@ -49,7 +46,9 @@ public class ControllersHandler {
         try {
             ProjectHandler projectHandler = initProjectHandler(params);
             ItemHandler itemHandler = projectHandler.getItemHandler();
+            System.out.println(itemHandler.getClass().getSimpleName());
             Item item = projectHandler.getLibrarian().getItemFromJson(jsonItem,itemHandler);
+
             return projectHandler.getLibrarian().addItem(item);
         } catch(IOException e){
             e.printStackTrace();
@@ -117,7 +116,8 @@ public class ControllersHandler {
 
     public ParametersForWeb genAndGetParams(HttpServletRequest request) {
         ParametersForWeb params = new ParametersForWeb();
-        params.setName(cookieUtil.getCookies(request).get(CookieNames.USER_NAME));
+        String name = cookieUtil.getCookies(request).get(CookieNames.USER_NAME);
+        params.setName(name);
         params.setTypeOfWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
         params.setTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
         return params;

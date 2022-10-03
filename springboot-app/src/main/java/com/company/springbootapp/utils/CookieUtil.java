@@ -22,7 +22,9 @@ public class CookieUtil {
         Cookie [] cookiesArr = request.getCookies();
         List<Cookie> cookieList = new ArrayList<>(Arrays.asList(cookiesArr));
         Map<String,String> cookies = new HashMap<>();
-        cookieList.stream().filter(cookie -> !"JSESSION".equals(cookie.getName())).forEach(cookie -> cookies.put(cookie.getName(),cookie.getValue()));
+        cookieList.stream()
+                .filter(cookie -> !"JSESSION".equals(cookie.getName()))
+                .forEach(cookie -> cookies.put(cookie.getName(),cookie.getValue()));
         return cookies;
     }
 

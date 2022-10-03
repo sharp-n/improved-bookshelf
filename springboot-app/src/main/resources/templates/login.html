@@ -12,23 +12,23 @@
     <form method="post" action="/login" id="login">
         <label for="name">Login: </label>
         <input id="name" type="text" name="name"><br><br>
-        <label for="typeOfWork">
+        <label for="typeOfWork" style="font-size: 120%">
             Choose how to work with files:
         </label><br><br>
-        <fieldset id="typeOfWork">
-            <input type="radio" name="typeOfWork" value="oneFile" />Work with one file<br><br>
-            <input type="radio" name="typeOfWork" value="filePerItem" />Work with file per type<br><br>
-            <input type="radio" name="typeOfWork" value="databaseSQLite" />Use database (SQLite)<br><br>
-            <input type="radio" name="typeOfWork" value="databaseMySQL" />Use database (MySQL)
-        </fieldset>
-        <br><br>
-        <label for="typeOfItem">Choose item:</label><br><br>
-        <fieldset id="typeOfItem">
-            <input type="radio" name="typeOfItem" value="Newspaper"/>Newspaper<br><br>
-            <input type="radio" name="typeOfItem" value="Book"/>Book<br><br>
-            <input type="radio" name="typeOfItem" value="Comics"/>Comics<br><br>
-            <input type="radio" name="typeOfItem" value="Journal"/>Journal
-        </fieldset>
+        <input type="radio" name="typeOfWork" value="oneFile" />Work with one file<br><br>
+        <input type="radio" name="typeOfWork" value="filePerItem" />Work with file per type<br><br>
+        <input type="radio" name="typeOfWork" value="databaseSQLite" />Use database (SQLite)<br><br>
+        <input type="radio" name="typeOfWork" value="databaseMySQL" />Use database (MySQL)
+        <br><br><br><br>
+        <label for="typeOfItem" style="font-size: 120%">
+            Choose item:
+        </label><br><br>
+
+        <input type="radio" name="typeOfItem" value="Newspaper"/>Newspaper<br><br>
+        <input type="radio" name="typeOfItem" value="Book"/>Book<br><br>
+        <input type="radio" name="typeOfItem" value="Comics"/>Comics<br><br>
+        <input type="radio" name="typeOfItem" value="Journal"/>Journal
+
         <br><br>
         <button type="submit">Log in</button>
         </form>

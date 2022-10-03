@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.Book;
 import com.company.ComparatorsForSorting;
 import com.company.Item;
 import com.company.Validator;
@@ -114,7 +115,11 @@ public abstract class Librarian {
 
     public Item getItemFromJson(String jsonItem, ItemHandler itemHandler){
         Gson gson = new Gson();
-        return (Item) gson.fromJson(jsonItem, ItemHandlerProvider.getClassByHandler(itemHandler));
+        Class<Item> classname = ItemHandlerProvider.getClassByHandler(itemHandler);
+        Item item = gson.fromJson(jsonItem, classname);
+        Book book = (Book) item;
+        System.out.println(book.getAuthor() + " " + book.getPublishingDate());
+        return item;
     }
 
 }

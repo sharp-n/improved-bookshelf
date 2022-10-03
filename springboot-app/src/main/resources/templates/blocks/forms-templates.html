@@ -1,4 +1,5 @@
-<div th:fragment="add-book-form" style="text-align: center">
+<div th:fragment="add-book-form">
+
     <form method="post" action="/choose-action/add" id="addBookForm">
         <label for="book-id">Item ID: </label>
         <input id="book-id" type="text" name="item_id"><br><br>
@@ -8,18 +9,26 @@
         <input id="book-pages" type="text" name="pages"><br><br>
         <label for="book-author">Author: </label>
         <input id="book-author" type="text" name="author"><br><br>
-        <label>Publishing date: </label><br><br>
-        <label for="day">Day: </label>
+        <label for="date">Publishing date: </label><br><br>
+
+        <input id="date" type="date" required=""
+               data-date-format="yyyy-mm-dd">
+        <!--label for="day">Day: </label>
         <input id="day" type="text" name="day"><br><br>
         <label for="month">Month: </label>
         <input id="month" type="text" name="month"><br><br>
         <label for="year">Year: </label>
-        <input id="year" type="text" name="year"><br><br>
+        <input id="year" type="text" name="year"--><br><br>
         <input type="submit" value="Add book"/>
     </form>
+    <script>
+        formId = "addBookForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
-<div th:fragment="add-main-option-items-form" style="text-align: center">
-    <form method="post" action="/choose-action/add">
+<div th:fragment="add-main-option-items-form">
+    <form method="post" action="/choose-action/add" id="addItemForm">
         <label for="items-id">Item ID: </label>
         <input id="items-id" type="text" name="item_id"><br><br>
         <label for="items-title">Title: </label>
@@ -28,9 +37,14 @@
         <input id="items-pages" type="text" name="pages"><br><br>
         <input type="submit" value="Add item"/>
     </form>
+    <script>
+        formId = "addItemForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
 <div th:fragment="add-comics-form" style="text-align: center">
-    <form method="post" action="/choose-action/add">
+    <form method="post" action="/choose-action/add" id="addComicsForm">
         <label for="comics-id">Item ID: </label>
         <input id="comics-id" type="text" name="item_id"><br><br>
         <label for="comics-title">Title: </label>
@@ -41,67 +55,72 @@
         <input id="comics-publisher" type="text" name="pages"><br><br>
         <input type="submit" value="Add comics"/>
     </form>
+    <script>
+        formId = "addComicsForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
 
-<div th:fragment="delete-item-form" style="text-align: center">
+<div th:fragment="delete-item-form">
     <form method="post" action="/choose-action/delete">
         <label for="delete-id">Item ID: </label>
         <input id="delete-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Delete"/>
     </form>
+    <script>
+        formId = "addComicsForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
 
-<div th:fragment="return-item-form" style="text-align: center">
+<div th:fragment="return-item-form">
     <form method="post" action="/choose-action/return">
         <label for="return-id">Item ID: </label>
         <input id="return-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Return"/>
     </form>
+    <script>
+        formId = "addComicsForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
 
-<div th:fragment="take-item-form" style="text-align: center">
+<div th:fragment="take-item-form">
     <form method="post" action="/choose-action/take">
         <label for="take-id">Item ID: </label>
         <input id="take-id" type="text" name="item_id"><br><br>
         <input type="submit" value="Take"/>
     </form>
+    <script>
+        formId = "addComicsForm";
+        refToRedirect = "/choose-action";
+        initWork();
+    </script>
 </div>
 
-<div th:fragment="books-sorting-options-form">
-    <form method="post" action="/choose-action/show">
-        <label for="comparator">Choose parameter for sorting</label><br><br>
-        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
-        <input type="radio" name="comparator" value="title"/>Title<br><br>
-        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
-        <input type="radio" name="comparator" value="author"/>Author<br><br>
-        <input type="radio" name="comparator" value="publishing_date"/>Publishing Date<br><br>
-        <input type="submit" value="Sort"/>
-    </form>
+<div th:fragment="books-sorting-options">
+    Choose parameter for sorting<br><br>
+    <a href="/choose-action/show/item-id">Item ID</a><br><br>
+    <a href="/choose-action/show/title">Title</a><br><br>
+    <a href="/choose-action/show/pages">Pages</a><br><br>
+    <a href="/choose-action/show/author">Author</a><br><br>
+    <a href="/choose-action/show/publishing-date">Publishing Date</a><br><br>
 </div>
 
-<div th:fragment="comics-sorting-options-form">
-    <form method="post" action="/choose-action/show">
-        <label for="comparator">Choose parameter for sorting</label><br><br>
-        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
-        <input type="radio" name="comparator" value="title"/>Title<br><br>
-        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
-        <input type="radio" name="comparator" value="publisher"/>Publisher<br><br>
-        <input type="submit" value="Sort"/>
-    </form>
+<div th:fragment="comics-sorting-options">
+    Choose parameter for sorting<br><br>
+    <a href="/choose-action/show/item-id">Item ID</a><br><br>
+    <a href="/choose-action/show/title">Title</a><br><br>
+    <a href="/choose-action/show/pages">Pages</a><br><br>
+    <a href="/choose-action/show/publisher">Publisher</a><br><br>
 </div>
 
-<div th:fragment="items-sorting-options-form">
-    <form method="post" action="/choose-action/show">
-        <label for="comparator">Choose parameter for sorting</label><br><br>
-        <input type="radio" name="comparator" value="item_id"/>Item ID<br><br>
-        <input type="radio" name="comparator" value="title"/>Title<br><br>
-        <input type="radio" name="comparator" value="pages"/>Pages<br><br>
-        <input type="submit" value="Sort"/>
-    </form>
+<div th:fragment="items-sorting-options">
+    Choose parameter for sorting<br><br>
+    <a href="/choose-action/show/item-id">Item ID</a><br><br>
+    <a href="/choose-action/show/title">Title</a><br><br>
+    <a href="/choose-action/show/pages">Pages</a><br><br>
 </div>
-
-
-
-
-
-

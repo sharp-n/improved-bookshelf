@@ -34,7 +34,7 @@ public class ActionsController {
     }
 
     @GetMapping({"/add"})
-    public String addItem(HttpServletRequest request,Model model){
+    public String addItemPage(HttpServletRequest request,Model model){
         String template = handler.getAddTemplateBySimpleCLassName(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM)); //todo const
         handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ITEM_ACTION);
         return "item-actions";
@@ -42,9 +42,10 @@ public class ActionsController {
 
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
-    public String showAddBookPage(HttpServletRequest request,
+    public String addItem(HttpServletRequest request,
                                   @RequestBody String item,
                                   Model model){
+        System.out.println(item);
         ParametersForWeb params = handler.genAndGetParams(request);
         Boolean success = handler.addItem(item, params);
         handler.informAboutActionSuccess(model,success);
@@ -58,7 +59,7 @@ public class ActionsController {
     }
 
     @PostMapping("/delete")
-    public String deleteItem(HttpServletRequest request, @RequestParam(name = "delete-id") int id, Model model){
+    public String deleteItem(HttpServletRequest request, @RequestParam(name = "delete_id") int id, Model model){
         ParametersForWeb params = handler.genAndGetParams(request);
         Boolean success = handler.deleteItem(params,id);
         handler.informAboutActionSuccess(model,success);
@@ -100,15 +101,15 @@ public class ActionsController {
         return "item-actions";
     }
 
-    @PostMapping(value = "/show")
-    public String showItems(HttpServletRequest request, @RequestParam(name = "comparator") String option, Model model){
+    @PostMapping(value = "/show/{comparator}")
+    public String showItems(HttpServletRequest request, @PathVariable String comparator, Model model){
         ParametersForWeb params = handler.genAndGetParams(request);
-        model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params,option));
+        model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params,comparator));
         return "inform-page-template";
     }
 
     @GetMapping("/show-all-the-items")
-    public String showAllTheItemsPage(HttpServletRequest request, Model model){ //todo implement
+    public String showAllTheItemsPage(HttpServletRequest request, Model model){
         ParametersForWeb params = handler.genAndGetParams(request);
         model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params));
         return "inform-page-template";

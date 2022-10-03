@@ -18,9 +18,9 @@ public class BlocksNames {
     public static final String ADD_BOOK_FORM = "add-book-form";
     public static final String ADD_COMICS_FORM = "add-comics-form";
     public static final String ADD_ITEMS_FORM = "add-main-option-items-form";
-    public static final String BOOK_SORTING_OPTIONS_FORM = "books-sorting-options-form";
-    public static final String COMICS_SORTING_OPTIONS_FORM = "comics-sorting-options-form";
-    public static final String ITEMS_SORTING_OPTIONS_FORM = "items-sorting-options-form";
+    public static final String BOOK_SORTING_OPTIONS_FORM = "books-sorting-options";
+    public static final String COMICS_SORTING_OPTIONS_FORM = "comics-sorting-options";
+    public static final String ITEMS_SORTING_OPTIONS_FORM = "items-sorting-options";
 
 
     public static final String SCRIPT_PATH = "/static/script-for-json.js";

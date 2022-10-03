@@ -43,12 +43,12 @@ public class BookHandler extends ItemHandler<Book> {
         String author = options.get(3);
         String date = options.get(4);
 
-        GregorianCalendar publishingDate = getDateFromString(date);
+        Date publishingDate = getDateFromString(date);
         if (publishingDate == null) {return null;}
         return new Book(itemID,title, author, publishingDate,pages);
     }
 
-    public GregorianCalendar validateDate(Integer year, Integer month, Integer day) {
+    public Date validateDate(Integer year, Integer month, Integer day) {
         if (day == null || month == null || year == null) {
             return null;
         }
@@ -198,7 +198,7 @@ public class BookHandler extends ItemHandler<Book> {
             itemStr = getMainOptions(resultSet, itemStr);
             String dateStr = itemStr.get(6);
             System.out.println(itemStr.get(4));
-            GregorianCalendar publishingDate = getDateFromString(dateStr);
+            Date publishingDate = getDateFromString(dateStr);
             return new Book(
                     Integer.parseInt(itemStr.get(0)),
                     itemStr.get(2),
@@ -212,7 +212,7 @@ public class BookHandler extends ItemHandler<Book> {
         }
     }
 
-    public GregorianCalendar getDateFromString(String dateStr){
+    public Date getDateFromString(String dateStr){
         String [] date = dateStr.split("\\.");
         return validateDate(Integer.parseInt(date[2].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[0].trim()));
     }
