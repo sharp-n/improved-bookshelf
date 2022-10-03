@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ItemHandlersTest {
 
-    static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
-    static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
-    static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
-    static Book book4 = new Book(1,"Title","same author",new GregorianCalendar(2002,Calendar.MAY,25),666);
+    static Book book1 = new Book(5,"Some title","Author",new Date(2002, Calendar.MAY,2),824);
+    static Book book2 = new Book(666,"Any title","unknown",new Date(2002,Calendar.APRIL,2),500);
+    static Book book3 = new Book(1005,"title","Some author",new Date(1991,Calendar.MAY,2),2736);
+    static Book book4 = new Book(1,"Title","same author",new Date(2002,Calendar.MAY,25),666);
 
 
     static Newspaper newspaper1 = new Newspaper(5,"Some title",824);

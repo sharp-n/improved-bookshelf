@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LibrarianTest {
 
-    static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
-    static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
+    static Book book1 = new Book(5,"Some title","Author",new Date(2002, Calendar.MAY,2),824);
+    static Book book2 = new Book(666,"Any title","unknown",new Date(2002,Calendar.APRIL,2),500);
 
 
 

@@ -13,7 +13,6 @@ public class Book extends Item {
     private Date publishingDate;
 
     public Book(int bookID, String title, String author, Date publishingDate, int pages) {
-
         super(bookID,title,pages);
         this.author = author;
         this.publishingDate = publishingDate;
@@ -24,6 +23,5 @@ public class Book extends Item {
         this.author = author;
         this.publishingDate = publishingDate;
     }
-
 
 }
