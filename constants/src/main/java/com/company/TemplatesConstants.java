@@ -18,9 +18,5 @@ public class TemplatesConstants {
     public static final String URL_DELETE_TEMPLATE = "{{URL-DELETE}}";
     public static final String URL_TAKE_TEMPLATE = "{{URL-TAKE}}";
 
-    public static final String NAME_TEMPLATE = "{{NAME}}";
-    public static final String VALUE_TEMPLATE = "{{VALUE}}";
-    public static final String ACTION_TEMPLATE = "{{ACTION}}";
-    public static final String ID_TEMPLATE = "{{ID}}";
 
 }
