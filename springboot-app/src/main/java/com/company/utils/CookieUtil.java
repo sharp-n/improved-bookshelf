@@ -1,4 +1,5 @@
-package com.company.springbootapp.utils;
+package com.company.utils;
+
 
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.*;
 @Repository
 public class CookieUtil {
 
-    public void createCookie(HttpServletResponse response,String name, String value){
+    public void createCookie(HttpServletResponse response, String name, String value){
         Cookie cookie = new Cookie(name,value);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);

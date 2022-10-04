@@ -1,10 +1,6 @@
-package com.company.springbootapp.auth;
+package com.company.auth;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 @Service
 public class AuthServiceImpl implements AuthService {

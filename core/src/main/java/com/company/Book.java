@@ -10,18 +10,18 @@ import java.util.Date;
 public class Book extends Item {
 
     private String author;
-    private Date publishingDate;
+    private Date date;
 
     public Book(int bookID, String title, String author, Date publishingDate, int pages) {
         super(bookID,title,pages);
         this.author = author;
-        this.publishingDate = publishingDate;
+        this.date = publishingDate;
     }
 
     public Book(int bookID, String title, String author, Date publishingDate, int pages, boolean borrowed) {
         super(bookID,title,pages,borrowed);
         this.author = author;
-        this.publishingDate = publishingDate;
+        this.date = publishingDate;
     }
 
 }

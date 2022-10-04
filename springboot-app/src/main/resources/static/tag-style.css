@@ -1,4 +1,5 @@
 body {
+    text-align: center;
     background-color: #cca297;
     font-size: 125%;
     margin-top: 10%;
@@ -20,4 +21,12 @@ input {
 form{
     align-content: center;
     align-items: center;
+}
+p{
+    text-align: center;
+    align-content: center;
+}
+table {
+    border: 3px #a46e5f;
+    margin: auto;
 }

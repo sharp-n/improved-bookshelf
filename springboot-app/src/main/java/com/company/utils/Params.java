@@ -1,4 +1,4 @@
-package com.company.springbootapp.utils;
+package com.company.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

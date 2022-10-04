@@ -1,11 +1,11 @@
-package com.company.springbootapp.controllers;
+package com.company.controllers;
 
+import com.company.auth.AuthService;
+import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
-import com.company.springbootapp.auth.AuthService;
-import com.company.springbootapp.handlers.ControllersHandler;
-import com.company.springbootapp.utils.CookieUtil;
-import com.company.springbootapp.utils.Params;
+import com.company.utils.CookieUtil;
+import com.company.utils.Params;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+
 
 @Controller
 @RequestMapping("/")

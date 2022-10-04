@@ -15,9 +15,9 @@ services:
             - MYSQL_USER=sharp
             - MYSQL_PASSWORD=1
             - MYSQL_DATABASE=bookshelf
-        container_name: mysql-improved-bookshelf
+        container_name: mysql-springboot-bookshelf
         ports: 
-            - 3306:3306
+            - 3307:3306
         volumes: 
             - ./db:/var/lib/mysql/data
         restart: always

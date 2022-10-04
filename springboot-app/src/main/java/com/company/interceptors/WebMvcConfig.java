@@ -1,4 +1,4 @@
-package com.company.springbootapp.interceptors;
+package com.company.interceptors;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;

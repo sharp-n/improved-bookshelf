@@ -1,4 +1,4 @@
-package com.company.springbootapp.controllers;
+package com.company.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

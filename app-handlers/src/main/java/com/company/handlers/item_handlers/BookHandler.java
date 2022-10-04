@@ -60,7 +60,7 @@ public class BookHandler extends ItemHandler<Book> {
         }
         if (Librarian.checkItemForValidity(year) && Librarian.checkItemForValidity(month)
                 && Librarian.checkItemForValidity(day)) {
-            return new GregorianCalendar(year, month - 1, day);
+            return new Date(year, month - 1, day);
         }
         return null;
     }
@@ -114,8 +114,8 @@ public class BookHandler extends ItemHandler<Book> {
 
     public String publishingDateToString(Book book){
         SimpleDateFormat df = new SimpleDateFormat("dd.M.y");
-        if(book.getPublishingDate()==null) return "NULL";
-        return df.format(book.getPublishingDate().getTime());
+        if(book.getDate()==null) return "NULL";
+        return df.format(book.getDate().getTime());
     }
 
     @Override
@@ -197,7 +197,6 @@ public class BookHandler extends ItemHandler<Book> {
             List<String> itemStr = new ArrayList<>();
             itemStr = getMainOptions(resultSet, itemStr);
             String dateStr = itemStr.get(6);
-            System.out.println(itemStr.get(4));
             Date publishingDate = getDateFromString(dateStr);
             return new Book(
                     Integer.parseInt(itemStr.get(0)),

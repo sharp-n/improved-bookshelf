@@ -7,6 +7,4 @@ public class ThymeleafVariables {
     public static final String FORM = "form";
     public static final String REF = "ref_template";
 
-    public static final String SCRIPT_FILE_PATH = "script";
-
 }

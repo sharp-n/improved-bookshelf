@@ -15,12 +15,12 @@ public enum SortingMenu {
 
     private final int num;
     private final String option;
-    private final String dbColumn;
+    private final String parameter;
 
-    SortingMenu(int num, String option, String dbColumn) {
+    SortingMenu(int num, String option, String parameter) {
         this.num = num;
         this.option = option;
-        this.dbColumn = dbColumn;
+        this.parameter = parameter;
     }
 
     public String getOption() {
@@ -28,7 +28,7 @@ public enum SortingMenu {
     }
 
     public String getDbColumn() {
-        return dbColumn;
+        return parameter;
     }
 
     @Override
@@ -48,6 +48,13 @@ public enum SortingMenu {
         return Arrays
                 .stream(values())
                 .filter(e -> e.option.replace(" ", "").equalsIgnoreCase(option))
+                .findFirst()
+                .orElse(DEFAULT);
+    }
+    public static SortingMenu getByParameter(String parameter){
+        return Arrays
+                .stream(values())
+                .filter(e -> e.parameter.equalsIgnoreCase(parameter))
                 .findFirst()
                 .orElse(DEFAULT);
     }

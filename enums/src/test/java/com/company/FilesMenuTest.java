@@ -60,7 +60,7 @@ public class FilesMenuTest {
     @ParameterizedTest
     @MethodSource("provideDBNameOptions")
     void getByDBColumnName(String provided, FilesMenu expected) {
-        Assertions.assertEquals(expected,FilesMenu.getByDBColumnName(provided));
+        Assertions.assertEquals(expected,FilesMenu.getByParameter(provided));
     }
 
     private static Stream<Arguments> provideDBNameOptions() {

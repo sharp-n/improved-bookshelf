@@ -1,8 +1,10 @@
 package com.company;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Data
 public class Newspaper extends Item {
 
     public Newspaper(int itemID, String title, int pages) {

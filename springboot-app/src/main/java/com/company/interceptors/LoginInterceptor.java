@@ -1,16 +1,14 @@
-package com.company.springbootapp.interceptors;
+package com.company.interceptors;
 
 import com.company.springappconstants.CookieNames;
-import com.company.springbootapp.auth.AuthService;
-import com.company.springbootapp.utils.CookieUtil;
+import com.company.auth.AuthService;
+import com.company.utils.CookieUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -47,7 +47,7 @@ public enum FilesMenu {
                 .orElse(DEFAULT);
     }
 
-    public static FilesMenu getByDBColumnName(String dbColumn){
+    public static FilesMenu getByParameter(String dbColumn){
         return Arrays
                 .stream(values())
                 .filter(e -> e.servletParameter.equals(dbColumn))
