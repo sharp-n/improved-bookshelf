@@ -1,9 +1,11 @@
 package com.company.handlers;
 
+import com.company.Book;
 import com.company.ComparatorsForSorting;
 import com.company.Item;
 import com.company.Validator;
 import com.company.enums.SortingMenu;
+import com.company.handlers.item_handlers.DefaultItemHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.handlers.work_with_files.FilesWorker;
@@ -73,6 +75,7 @@ public abstract class Librarian {
 
     public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
+
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
         switch (sortingParameter) {
             case RETURN_VALUE:
@@ -94,13 +97,14 @@ public abstract class Librarian {
         return Collections.emptyList();
     }
 
-    public List<? extends Item> initSortingAllItemsByComparator( ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<Item> initSortingAllItemsByComparator() throws IOException {
         List<Item> items = workWithFiles.readToItemsList();
-        return itemHandler.getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
+        return new DefaultItemHandler().getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
     }
 
+
     public int genItemID() throws IOException {
-        int max = 1;
+        int max = 0;
         List<Item> items = workWithFiles.readToItemsList();
         if (items != null) {
             for (Item item : items) {
@@ -109,12 +113,13 @@ public abstract class Librarian {
                 }
             }
         }
-        return max;
+        return max+1;
     }
 
     public Item getItemFromJson(String jsonItem, ItemHandler itemHandler){
         Gson gson = new Gson();
-        return (Item) gson.fromJson(jsonItem, ItemHandlerProvider.getClassByHandler(itemHandler));
+        Class<Item> classname = ItemHandlerProvider.getClassByHandler(itemHandler);
+        return gson.fromJson(jsonItem, classname);
     }
 
 }

@@ -33,7 +33,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             ServletService servletService = new ServletService();
             param.getParametersFromURL(req);
 
-            if (param.typeOfFileWork.equals(ParametersConstants.FILE_PER_TYPE)) {
+            if (param.typeOfWork.equals(ParametersConstants.FILE_PER_TYPE)) {
                 resp.sendRedirect(new URIBuilder().setPathSegments(URLConstants.FILE_WORK_PAGE).addParameter(ParametersConstants.NAME, ParametersConstants.NAME).toString());
             }
 
@@ -45,14 +45,14 @@ public class ShowAllTheItemsServlet extends HttpServlet {
 
             String table = "";
             WebAppService webAppService = new WebAppService();
-            if (param.typeOfFileWork.equals(ParametersConstants.DATABASE_SQLite)
-                    ||param.typeOfFileWork.equals(ParametersConstants.DATABASE_MYSQL)) {
-                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfFileWork);
+            if (param.typeOfWork.equals(ParametersConstants.DATABASE_SQLite)
+                    ||param.typeOfWork.equals(ParametersConstants.DATABASE_MYSQL)) {
+                DBService dbService = DBServiceProvider.getDBServiceByOption(param.typeOfWork);
                 dbService.open(DBServiceProvider.getDBNameByService(dbService));
                 dbService.createTablesIfNotExist(dbService.getConnection());
                 dbService.createUser(user,dbService.getConnection());
                 table = webAppService.genTableOfSortedItemsFromDB(dbService,projectHandler,user);
-            } else if (param.typeOfFileWork.equals(ParametersConstants.ONE_FILE))  {
+            } else if (param.typeOfWork.equals(ParametersConstants.ONE_FILE))  {
                 table = webAppService.genTableOfSortedItemsFromFiles(param, SortingMenu.ITEM_ID.getDbColumn());
             }
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);

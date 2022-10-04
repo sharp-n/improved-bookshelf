@@ -17,10 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ItemHandlersTest {
 
-    static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
-    static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
-    static Book book3 = new Book(1005,"title","Some author",new GregorianCalendar(1991,Calendar.MAY,2),2736);
-    static Book book4 = new Book(1,"Title","same author",new GregorianCalendar(2002,Calendar.MAY,25),666);
+    static Book book1 = new Book(5,"Some title","Author",new Date(2002, Calendar.MAY,2),824);
+    static Book book2 = new Book(666,"Any title","unknown",new Date(2002,Calendar.APRIL,2),500);
+    static Book book3 = new Book(1005,"title","Some author",new Date(1991,Calendar.MAY,2),2736);
+    static Book book4 = new Book(1,"Title","same author",new Date(2002,Calendar.MAY,25),666);
 
 
     static Newspaper newspaper1 = new Newspaper(5,"Some title",824);
@@ -47,16 +47,16 @@ class ItemHandlersTest {
     void bookAddingItemHandlerTest(){
         BookHandler bookHandler = new BookHandler();
         Book book = bookHandler.createItem(new ArrayList<>(Arrays.asList("1","title","63","author","3.2.2002")));
-        String expected = "1 - title - author - 03.2.2002 - 63 - false";
+        String expected = "1 - title - author - 03.2.3902 - 63 - false";
         SimpleDateFormat sdf = new SimpleDateFormat("dd.M.y");
         String provided = book.getItemID() + " - ";
         provided=provided+book.getTitle() + " - ";
         provided=provided+book.getAuthor() + " - ";
-        provided=provided+sdf.format(book.getPublishingDate().getTime());
+        provided=provided+sdf.format(book.getDate().getTime());
         provided =provided+" - " + book.getPages() + " - ";
         provided=provided+book.isBorrowed();
         Assertions.assertEquals(expected,book.getItemID() + " - " + book.getTitle() + " - "
-                + book.getAuthor() + " - " + sdf.format(book.getPublishingDate().getTime())
+                + book.getAuthor() + " - " + sdf.format(book.getDate().getTime())
                 + " - " + book.getPages() + " - " + book.isBorrowed());
     }
 

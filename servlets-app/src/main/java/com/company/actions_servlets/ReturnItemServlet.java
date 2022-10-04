@@ -52,7 +52,7 @@ public class ReturnItemServlet extends HttpServlet {
             if (itemID != null) {
                 ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
                 projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-                projectHandler.fileSwitch(FilesMenu.getByDBColumnName(param.typeOfFileWork), new User(param.name));
+                projectHandler.fileSwitch(FilesMenu.getByParameter(param.typeOfWork), new User(param.name));
                 boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false);
                 if (borrowed) {
                     message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "returned";

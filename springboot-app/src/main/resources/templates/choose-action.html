@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/tag-style.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body topmargin="100">
+<div>
+
+    <form method="post" action="/choose-action">
+        <label for="action">Choose action:</label><br><br>
+
+            <input type="radio" name="action" value="add"/>Add<br><br>
+            <input type="radio" name="action" value="delete"/>Delete<br><br>
+            <input type="radio" name="action" value="take"/>Take<br><br>
+            <input type="radio" name="action" value="return"/>Return<br><br>
+            <input type="radio" name="action" value="show"/>Show
+        <br><br>
+        <button type="submit">
+            Choose
+        </button>
+    </form>
+
+    <br><br>
+    <p th:insert="/blocks/refs-template :: ${ref_template}"></p>
+</div>
+</body>
+</html>

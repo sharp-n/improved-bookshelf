@@ -1,49 +1,36 @@
-package com.company.springbootapp.handlers;
+package com.company.handlers;
 
 import com.company.Item;
 import com.company.User;
 import com.company.WebAppService;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
-import com.company.enums.SortingMenu;
-import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.ParametersForWeb;
-import com.company.enums.springappconstants.CookieNames;
-import com.company.enums.springappconstants.MessagesAndTitlesConstants;
+import com.company.springappconstants.CookieNames;
+import com.company.springappconstants.MessagesAndTitlesConstants;
 import com.company.enums.TemplatesAndRefs;
-import com.company.handlers.item_handlers.ItemHandlerProvider;
-import com.company.springbootapp.utils.CookieUtil;
-import com.google.gson.Gson;
+import com.company.utils.CookieUtil;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.List;
 import java.util.Scanner;
 
-import static com.company.enums.springappconstants.ThymeleafVariables.*;
+import static com.company.springappconstants.ThymeleafVariables.*;
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class ControllersHandler {
 
     CookieUtil cookieUtil;
 
-
-
-    public String getAddTemplateBySimpleCLassName(String typeOfItem){ //todo refactor map init
+    public String getAddTemplateBySimpleCLassName(String typeOfItem){
         return TemplatesAndRefs.getByOptionType(typeOfItem).getAddForm();
     }
 
-    public String redirectionToAddPage(String typeOfItem) {
-        return "redirect:/choose-action" + TemplatesAndRefs.getByOptionType(typeOfItem).getRef();
-    }
-
-    public String getSortingTemplateByTypeOfItem(String typeOfItem) { // todo optimize
+    public String getSortingTemplateByTypeOfItem(String typeOfItem) {
         return TemplatesAndRefs.getByOptionType(typeOfItem).getSortingForm();
     }
 
@@ -52,18 +39,8 @@ public class ControllersHandler {
             ProjectHandler projectHandler = initProjectHandler(params);
             ItemHandler itemHandler = projectHandler.getItemHandler();
             Item item = projectHandler.getLibrarian().getItemFromJson(jsonItem,itemHandler);
+            item.setItemID(projectHandler.getLibrarian().genItemID());
             return projectHandler.getLibrarian().addItem(item);
-        } catch(IOException e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public Boolean addItem(List<String> itemOptions, ParametersForWeb params) {
-        try {
-            ProjectHandler projectHandler = initProjectHandler(params);
-            ItemHandler itemHandler = projectHandler.getItemHandler();
-            return projectHandler.getLibrarian().addItem(itemHandler, itemOptions);
         } catch(IOException e){
             e.printStackTrace();
             return false;
@@ -84,7 +61,7 @@ public class ControllersHandler {
         String typeOfItem = params.getTypeOfItem();
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(typeOfItem));
-        FilesMenu option = FilesMenu.getByDBColumnName(params.getTypeOfFileWork());
+        FilesMenu option = FilesMenu.getByParameter(params.getTypeOfWork());
         projectHandler.fileSwitch(option, new User(params.getName()));
         return projectHandler;
     }
@@ -114,13 +91,14 @@ public class ControllersHandler {
     }
 
     public String showItems(ParametersForWeb params) {
-        return new WebAppService().getTable(SortingMenu.ITEM_ID.getOption(),initProjectHandler(params),params);
+        return new WebAppService().getTable(initProjectHandler(params),params);
     }
 
     public ParametersForWeb genAndGetParams(HttpServletRequest request) {
         ParametersForWeb params = new ParametersForWeb();
-        params.setName(cookieUtil.getCookies(request).get(CookieNames.USER_NAME));
-        params.setTypeOfFileWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
+        String name = cookieUtil.getCookies(request).get(CookieNames.USER_NAME);
+        params.setName(name);
+        params.setTypeOfWork(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK));
         params.setTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
         return params;
     }

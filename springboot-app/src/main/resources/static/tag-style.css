@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+    background-color: #cca297;
+    font-size: 125%;
+    margin-top: 10%;
+}
+div{
+    text-align: center;
+    align-content: center;
+}
+
+button {
+    width: 90px;
+    height: 30px;
+    font-size: 90%;
+}
+input {
+    font-size: 80%;
+    height: 20px;
+}
+form{
+    align-content: center;
+    align-items: center;
+}
+p{
+    text-align: center;
+    align-content: center;
+}
+table {
+    border: 3px #a46e5f;
+    margin: auto;
+}

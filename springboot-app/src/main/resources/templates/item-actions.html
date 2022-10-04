@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<script src="/script-for-json.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/tag-style.css">
 <head>
     <meta charset="UTF-8">
     <title th:text="${title}"></title>
-    <style>
-        body{
-            background-color: #cca297;
-        }
-    </style>
+
 </head>
-<body  style="text-align: center">
-<div th:insert="/blocks/forms-templates :: ${form}"></div>
-<div th:insert="/blocks/refs-template :: refs-to-login-item-action"></div>
+<body>
+<div>
+    <div th:insert="/blocks/forms-templates :: ${form}"></div>
+    <div th:insert="/blocks/refs-template :: refs-to-login-action"></div>
+</div>
 </body>
 </html>

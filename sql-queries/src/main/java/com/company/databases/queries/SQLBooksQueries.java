@@ -24,7 +24,7 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
                 borrowedSQL = 1;
             } else borrowedSQL = 0;
             SimpleDateFormat sdf = new SimpleDateFormat("dd.M.y");
-            String publishingDateStr = sdf.format(book.getPublishingDate().getTime());
+            String publishingDateStr = sdf.format(book.getDate().getTime());
             String query = "INSERT INTO items (user_id,title, author, publishing_date, pages, borrowed, type_of_item)" +
                     " VALUES ((SELECT user_id FROM users WHERE username = '" + user.userName + "')," +
                     "'" + book.getTitle() +"','" + book.getAuthor() + "'," +

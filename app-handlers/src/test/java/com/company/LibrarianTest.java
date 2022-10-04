@@ -19,9 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class LibrarianTest {
 
-    static Book book1 = new Book(5,"Some title","Author",new GregorianCalendar(2002, Calendar.MAY,2),824);
-    static Book book2 = new Book(666,"Any title","unknown",new GregorianCalendar(2002,Calendar.APRIL,2),500);
-
+    static Book book1 = new Book(5,"Some title","Author",new Date(2002, Calendar.MAY,2),824);
+    static Book book2 = new Book(666,"Any title","unknown",new Date(2002,Calendar.APRIL,2),500);
 
 
      static Newspaper newspaper2 = new Newspaper(666,"Any title",500);
@@ -42,13 +41,13 @@ class LibrarianTest {
 
     private static Stream<Arguments> provideTablesForPrinting(){
         return Stream.of(
-                Arguments.of(new ArrayList<>(Collections.emptyList()), "There`s no items here" + System.lineSeparator()),
+                Arguments.of(new ArrayList<>(Collections.emptyList()), "There`s no items here" + System.lineSeparator()), // todo check!!!
 
                 Arguments.of(new ArrayList<>(Arrays.asList(book1, book2)),
                         " =ITEM ID= | =TYPE OF ITEM= | =TITLE=    | =PAGES= | =BORROWED= | =AUTHOR= | =PUBLISHING DATE= " + System.lineSeparator() +
                                 "-----------+----------------+------------+---------+------------+----------+-------------------" + System.lineSeparator() +
-                                " 5         | Book           | Some title | 824     | no         | Author   | 02.5.2002         " + System.lineSeparator() +
-                                " 666       | Book           | Any title  | 500     | no         | unknown  | 02.4.2002         " + System.lineSeparator())
+                                " 5         | Book           | Some title | 824     | no         | Author   | 02.5.3902         " + System.lineSeparator() +
+                                " 666       | Book           | Any title  | 500     | no         | unknown  | 02.4.3902         " + System.lineSeparator())
         );
     }
 

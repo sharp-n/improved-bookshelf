@@ -1,4 +1,5 @@
-package com.company.springbootapp.utils;
+package com.company.utils;
+
 
 import org.springframework.stereotype.Repository;
 
@@ -10,10 +11,11 @@ import java.util.*;
 @Repository
 public class CookieUtil {
 
-    public void createCookie(HttpServletResponse response,String name, String value){
+    public void createCookie(HttpServletResponse response, String name, String value){
         Cookie cookie = new Cookie(name,value);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
+        cookie.setMaxAge(31*24*60*60);
         response.addCookie(cookie);
     }
 
@@ -21,7 +23,9 @@ public class CookieUtil {
         Cookie [] cookiesArr = request.getCookies();
         List<Cookie> cookieList = new ArrayList<>(Arrays.asList(cookiesArr));
         Map<String,String> cookies = new HashMap<>();
-        cookieList.stream().filter(cookie -> !"JSESSION".equals(cookie.getName())).forEach(cookie -> cookies.put(cookie.getName(),cookie.getValue()));
+        cookieList.stream()
+                .filter(cookie -> !"JSESSION".equals(cookie.getName()))
+                .forEach(cookie -> cookies.put(cookie.getName(),cookie.getValue()));
         return cookies;
     }
 

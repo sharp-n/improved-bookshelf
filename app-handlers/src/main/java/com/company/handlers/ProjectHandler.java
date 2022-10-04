@@ -156,7 +156,7 @@ public class ProjectHandler {
     private void showSortedItems() {
         try {
             SortingMenu sortingParam = SortingMenu.getByOption(SortingMenu.ITEM_ID.getDbColumn());
-            List<Item> items = librarian.initSortingAllItemsByComparator(itemHandler);
+            List<Item> items = librarian.initSortingAllItemsByComparator();
             librarian.printItems(items, itemHandler);
         } catch (IOException ioException){
             ioException.printStackTrace();

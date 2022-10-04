@@ -20,12 +20,12 @@
         <module>servlets-app</module>
         <module>user</module>
         <module>container</module>
-        <module>html-form-builder</module>
         <module>app-handlers</module>
         <module>client-socket</module>
         <module>sql-queries</module>
         <module>parameters-for-web</module>
         <module>web-service</module>
+        <module>springboot-app</module>
     </modules>
 
     <properties>

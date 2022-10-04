@@ -50,15 +50,13 @@ public class AddItemServlet extends HttpServlet {
         ServletService servletService = new ServletService();
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
         projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-        FilesMenu option = FilesMenu.getByDBColumnName(param.typeOfFileWork);
+        FilesMenu option = FilesMenu.getByParameter(param.typeOfWork);
         projectHandler.fileSwitch(option, new User(param.name));
         ItemHandler itemHandler = projectHandler.getItemHandler();
 
         List<String> params = itemHandler.convertItemParametersMapToList(req.getParameterMap());
 
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(),FileNameConstants.INFORM_PAGE_HTML_FILE));
-
-        params.forEach(o->System.out.println(o));
 
         if (projectHandler.getLibrarian().addItem(itemHandler,params)){
             htmlCode = htmlCode.replace(TemplatesConstants.MESSAGE_TEMPLATE, MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "added");

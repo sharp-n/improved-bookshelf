@@ -32,7 +32,7 @@ public class ChooseActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp){
         try {
-            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,param.typeOfFileWork,param.typeOfItem);
+            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,param.typeOfWork,param.typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
             ioException.printStackTrace();

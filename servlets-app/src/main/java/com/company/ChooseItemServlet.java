@@ -39,7 +39,7 @@ public class ChooseItemServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String typeOfItem = req.getParameter(ParametersConstants.TYPE_OF_ITEM);
-            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ACTION,param.name,param.typeOfFileWork,typeOfItem);
+            String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ACTION,param.name,param.typeOfWork,typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
             ioException.printStackTrace();
