@@ -215,4 +215,29 @@ public class BookHandler extends ItemHandler<Book> {
         String [] date = dateStr.split("\\.");
         return validateDate(Integer.parseInt(date[2].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[0].trim()));
     }
+
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> books = new ArrayList<>();
+        items.forEach(item -> books.add(
+                new Book(
+                        Integer.parseInt(Long.toString(item.getId())),
+                        item.getTitle(),
+                        item.getAuthor(),
+                        item.getPublishingDate(),
+                        item.getPages(),
+                        item.isBorrowed())));
+        return books;
+    }
+
+    public Book convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Book(
+                Integer.parseInt(Long.toString(item.getId())),
+                item.getTitle(),
+                item.getAuthor(),
+                item.getPublishingDate(),
+                item.getPages(),
+                item.isBorrowed());
+    }
+
+
 }

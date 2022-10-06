@@ -204,4 +204,38 @@ public abstract class ItemHandler<T extends Item> {
 
     public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
 
+
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> itemsCore = new ArrayList<>();
+
+        items.forEach(item -> itemsCore.add(
+                new Item(
+                        Integer.parseInt(Long.toString(item.getId())),
+                        item.getTitle(),
+                        item.getPages(),
+                        item.isBorrowed())));
+        return itemsCore;
+    }
+
+    public Item convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Item(
+                        Integer.parseInt(Long.toString(item.getId())),
+                        item.getTitle(),
+                        item.getPages(),
+                        item.isBorrowed());
+    }
+
+    public List<Item> convertToCoreItems(List<com.company.db.entities.Item> items){
+        List<Item> itemsCore = new ArrayList<>();
+
+        items.forEach(item -> itemsCore
+                .add(Objects.requireNonNull(
+                        ItemHandlerProvider.getHandlerByClass(
+                                ItemHandlerProvider.getClassBySimpleNameOfClass(item.getTypeOfItem())))
+                        .convertToCoreDefinedItem(item)));
+        return itemsCore;
+    }
+
+
+
 }

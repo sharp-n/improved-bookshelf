@@ -77,6 +77,10 @@ public abstract class Librarian {
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
 
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
+        return sortItems(sortingParameter,itemHandler,items);
+    }
+
+    public List<?extends Item> sortItems(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler, List<Item> items){
         switch (sortingParameter) {
             case RETURN_VALUE:
                 break;
