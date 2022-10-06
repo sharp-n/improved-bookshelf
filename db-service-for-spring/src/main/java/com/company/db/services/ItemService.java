@@ -28,7 +28,7 @@ public class ItemService {
         itemRepository.saveAndFlush(itemEntity);
     }
 
-    public void addItem(Book book,String userName){
+    public void addItem(Book book, String userName){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(
                 book.getClass().getSimpleName(),
                 book.getTitle(),
@@ -68,4 +68,19 @@ public class ItemService {
     public boolean checkItemExistence(int id){
         return itemRepository.existsById(id);
     }
+
+    public boolean updateBorrowed(int id, boolean borrowedToSet){
+        if (checkItemExistence(id)){
+            com.company.db.entities.Item item = getItemById(id);
+            if (item.isBorrowed()!=borrowedToSet){
+                item.setBorrowed(borrowedToSet);
+                itemRepository.save(item);
+            }
+        }
+        return false;
+    }
+
+
+
+
 }

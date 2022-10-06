@@ -1,6 +1,5 @@
 package com.company.db.entities;
 
-import com.company.db.entities.User;
 import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 import lombok.NoArgsConstructor;
