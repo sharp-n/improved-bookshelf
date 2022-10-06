@@ -26,6 +26,7 @@
         <module>parameters-for-web</module>
         <module>web-service</module>
         <module>springboot-app</module>
+        <module>db-service-for-spring</module>
     </modules>
 
     <properties>
