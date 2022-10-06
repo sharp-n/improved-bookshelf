@@ -1,6 +1,7 @@
 package com.company.controllers;
 
 import com.company.auth.AuthService;
+import com.company.db.services.UserService;
 import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class LoginController {
 
+    UserService userService;
     ControllersHandler handler;
     CookieUtil cookieUtil;
     AuthService authService;
@@ -42,5 +44,6 @@ public class LoginController {
     public String redirectToLogin(Model model){
         return "redirect:/login";
     }
+
 
 }
