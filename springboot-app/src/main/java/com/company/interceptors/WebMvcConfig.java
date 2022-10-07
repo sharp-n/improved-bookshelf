@@ -16,7 +16,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
 //                .addPathPatterns("/choose-item")
-                .excludePathPatterns("/login**")
+                .excludePathPatterns(
+                        "/login**",
+                        "/script-for-json.js",
+                        "/tag-style.css")
                 .order(-1)
         ;
     }

@@ -1,5 +1,4 @@
 <div th:fragment="add-book-form">
-
     <form method="post" action="/choose-action/add" id="addBookForm">
         <label for="book-title">Title: </label>
         <input id="book-title" type="text" name="title"><br><br>
@@ -13,7 +12,7 @@
                data-date-format="yyyy-mm-dd"
                name="date" max="2022-10-03"><br><br>
 
-        <input type="submit" value="Add book"/>
+        <button type="submit">Add Book</button>
     </form>
 
     <script>
@@ -29,7 +28,7 @@
         <input id="items-title" type="text" name="title"><br><br>
         <label for="items-pages">Pages: </label>
         <input id="items-pages" type="text" name="pages"><br><br>
-        <input type="submit" value="Add item"/>
+        <button type="submit">Add Item</button>
     </form>
     <script>
         formId = "addItemForm";
@@ -37,7 +36,7 @@
         initWork();
     </script>
 </div>
-<div th:fragment="add-comics-form" style="text-align: center">
+<div th:fragment="add-comics-form">
     <form method="post" action="/choose-action/add" id="addComicsForm">
         <label for="comics-title">Title: </label>
         <input id="comics-title" type="text" name="title"><br><br>
@@ -45,7 +44,7 @@
         <input id="comics-pages" type="text" name="pages"><br><br>
         <label for="comics-publisher">Publisher: </label>
         <input id="comics-publisher" type="text" name="pages"><br><br>
-        <input type="submit" value="Add comics"/>
+        <button type="submit">Add Comics</button>
     </form>
     <script>
         formId = "addComicsForm";
@@ -83,7 +82,7 @@
     <form method="post" action="/choose-action/take">
         <label for="take-id">Item ID: </label>
         <input id="take-id" type="text" name="item_id"><br><br>
-        <input type="submit" value="Take"/>
+        <button type="submit">Take</button>
     </form>
     <script>
         formId = "addComicsForm";
