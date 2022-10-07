@@ -3,6 +3,8 @@ package com.company.db.services;
 import com.company.db.entities.User;
 import com.company.db.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -34,8 +36,14 @@ public class UserService {
         userRepository.delete(getUserByID(id));
     }
 
-    public boolean checkUserExistence(int id){
-        return userRepository.existsById(id);
+    public boolean checkUserExistence(String name){
+        ExampleMatcher userMatcher = ExampleMatcher.matching()
+                .withIgnorePaths("id")
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
+        User user = new User();
+        user.setName(name);
+        Example<User> userExample = Example.of(user,userMatcher);
+        return userRepository.exists(userExample);
     }
 
     public User getUserByName(String name) {

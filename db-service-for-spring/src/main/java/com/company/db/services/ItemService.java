@@ -25,7 +25,7 @@ public class ItemService {
                 itemCore.isBorrowed(),
                 userService.getUserByName(userName)
         );
-        itemRepository.saveAndFlush(itemEntity);
+        itemRepository.save(itemEntity);
     }
 
     public void addItem(Book book, String userName){
@@ -38,7 +38,7 @@ public class ItemService {
                 book.isBorrowed(),
                 userService.getUserByName(userName)
         );
-        itemRepository.saveAndFlush(itemEntity);
+        itemRepository.save(itemEntity);
     }
 
     public void addItem(Comics comics, String userName){
@@ -75,6 +75,7 @@ public class ItemService {
             if (item.isBorrowed()!=borrowedToSet){
                 item.setBorrowed(borrowedToSet);
                 itemRepository.save(item);
+                return true;
             }
         }
         return false;

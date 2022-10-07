@@ -47,14 +47,16 @@ public class ControllersHandler {
 
     public Boolean addItem(String jsonItem, ParametersForWeb params) {
         try {
-
-            ProjectHandler projectHandler = initProjectHandler(params);
-            ItemHandler itemHandler = projectHandler.getItemHandler();
-            Item item = projectHandler.getLibrarian().getItemFromJson(jsonItem, itemHandler);
-
             if (checkTypeOFFileWork(params)) {
+                Item item = new DefaultLibrarian().getItemFromJson(
+                        jsonItem,
+                        ItemHandlerProvider.getHandlerByClass(
+                                ItemHandlerProvider.getClassBySimpleNameOfClass(params.getTypeOfItem())));
                 return addItemToDB(item,params);
             } else {
+                ProjectHandler projectHandler = initProjectHandler(params);
+                ItemHandler itemHandler = projectHandler.getItemHandler();
+                Item item = projectHandler.getLibrarian().getItemFromJson(jsonItem, itemHandler);
                 item.setItemID(projectHandler.getLibrarian().genItemID());
                 return projectHandler.getLibrarian().addItem(item);
             }
@@ -64,11 +66,12 @@ public class ControllersHandler {
         }
     }
     public Boolean addItemToDB(Item item, ParametersForWeb params){
-        if(!userService.checkUserExistence(Integer.parseInt(userService.getUserByName(params.getName()).getId().toString()))){
+        if(!userService.checkUserExistence(params.getName())){
             userService.addUser(params.getName());
         }
-        itemService.addItem(item,params.getName());
-        return true;
+        ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(
+                ItemHandlerProvider.getClassBySimpleNameOfClass(params.typeOfItem));
+        return itemHandler.addItemToDB(item,params.getName(),itemService);
     }
 
     public Boolean deleteItem(ParametersForWeb params, int id) {
@@ -184,7 +187,7 @@ public class ControllersHandler {
     }
 
     public boolean checkTypeOFFileWork(ParametersForWeb params){
-        return params.getTypeOfWork().equals(FilesMenu.DATABASE_MYSQL.getServletParameter());
+        return params.getTypeOfWork().equals(FilesMenu.DATABASE_MYSQL.getServletParameter())||params.getTypeOfWork().equals(FilesMenu.DATABASE_SQLITE.getServletParameter());
     }
 
 
