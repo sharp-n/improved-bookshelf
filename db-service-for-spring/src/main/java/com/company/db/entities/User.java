@@ -13,12 +13,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",unique = true,nullable = false)
     @Basic(optional = false)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name",unique = true,nullable = false)
     private String name;
-
-    @Column
-    private String lastName;
 
 }

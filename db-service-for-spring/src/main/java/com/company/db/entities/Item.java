@@ -17,13 +17,13 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",unique = true,nullable = false)
     @Basic(optional = false)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "type_of_item",unique = true,nullable = false)
+    @Column(name = "type_of_item",nullable = false)
     @Basic(optional = false)
     private String typeOfItem;
 
-    @Column(name = "title",unique = true,nullable = false)
+    @Column(name = "title",nullable = false)
     @Basic(optional = false)
     private String title;
 
@@ -36,15 +36,15 @@ public class Item {
     @Property(name = "publisher")
     private String publisher;
 
-    @Column(name = "pages",unique = true,nullable = false)
+    @Column(name = "pages",nullable = false)
     @Basic(optional = false)
     private int pages;
 
-    @Property(name = "borrowed")
+    @Column(name = "borrowed",nullable = false)
     private boolean borrowed;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
     public Item(String typeOfItem, String title, String author, java.util.Date publishingDate, int pages, boolean borrowed, User user) {
