@@ -2,6 +2,7 @@ package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.services.ItemService;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.table.TableUtil;
@@ -220,7 +221,7 @@ public class BookHandler extends ItemHandler<Book> {
         List<Item> books = new ArrayList<>();
         items.forEach(item -> books.add(
                 new Book(
-                        Integer.parseInt(Long.toString(item.getId())),
+                        item.getId(),
                         item.getTitle(),
                         item.getAuthor(),
                         item.getPublishingDate(),
@@ -231,7 +232,7 @@ public class BookHandler extends ItemHandler<Book> {
 
     public Book convertToCoreDefinedItem(com.company.db.entities.Item item){
         return new Book(
-                Integer.parseInt(Long.toString(item.getId())),
+                item.getId(),
                 item.getTitle(),
                 item.getAuthor(),
                 item.getPublishingDate(),
@@ -239,5 +240,14 @@ public class BookHandler extends ItemHandler<Book> {
                 item.isBorrowed());
     }
 
+    public boolean addItemToDB(Book item, String userName, ItemService itemService){
+        try {
+            itemService.addItem(item, userName);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

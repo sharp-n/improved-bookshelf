@@ -2,6 +2,7 @@ package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.services.ItemService;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -205,25 +206,9 @@ public abstract class ItemHandler<T extends Item> {
     public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
 
 
-    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
-        List<Item> itemsCore = new ArrayList<>();
+    public abstract List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items);
 
-        items.forEach(item -> itemsCore.add(
-                new Item(
-                        Integer.parseInt(Long.toString(item.getId())),
-                        item.getTitle(),
-                        item.getPages(),
-                        item.isBorrowed())));
-        return itemsCore;
-    }
-
-    public Item convertToCoreDefinedItem(com.company.db.entities.Item item){
-        return new Item(
-                        Integer.parseInt(Long.toString(item.getId())),
-                        item.getTitle(),
-                        item.getPages(),
-                        item.isBorrowed());
-    }
+    public abstract Item convertToCoreDefinedItem(com.company.db.entities.Item item);
 
     public List<Item> convertToCoreItems(List<com.company.db.entities.Item> items){
         List<Item> itemsCore = new ArrayList<>();
@@ -236,6 +221,14 @@ public abstract class ItemHandler<T extends Item> {
         return itemsCore;
     }
 
-
+    public boolean addItemToDB(Item item, String userName, ItemService itemService){
+        try {
+            itemService.addItem(item, userName);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.company.handlers.item_handlers;
 
 import com.company.Item;
+import com.company.Newspaper;
 import com.company.User;
 import com.company.databases.queries.SQLQueries;
 import com.company.table.TableUtil;
@@ -56,5 +57,25 @@ public class DefaultItemHandler extends ItemHandler<Item> {
             sqlException.printStackTrace();
             return null;
         }
+    }
+
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> itemsCore = new ArrayList<>();
+
+        items.forEach(item -> itemsCore.add(
+                new Item(
+                        item.getId(),
+                        item.getTitle(),
+                        item.getPages(),
+                        item.isBorrowed())));
+        return itemsCore;
+    }
+
+    public Item convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Item(
+                item.getId(),
+                item.getTitle(),
+                item.getPages(),
+                item.isBorrowed());
     }
 }
