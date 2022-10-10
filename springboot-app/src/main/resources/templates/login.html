@@ -6,29 +6,34 @@
     <meta charset="UTF-8">
     <title>Login</title>
 </head>
-<body topmargin="100">
-
-<div align="center">
+<body>
+<div>
     <form method="post" action="/login" id="login">
         <label for="name">Login: </label>
-        <input id="name" type="text" name="name"><br><br>
-        <label for="typeOfWork" style="font-size: 120%">
+        <input id="name" type="text" name="name"><br><br><br>
+        <label for="typeOfWork">
             Choose how to work with files:
         </label><br><br>
-        <input type="radio" name="typeOfWork" value="oneFile" />Work with one file<br><br>
-        <input type="radio" name="typeOfWork" value="filePerItem" />Work with file per type<br><br>
-        <input type="radio" name="typeOfWork" value="databaseSQLite" />Use database (SQLite)<br><br>
-        <input type="radio" name="typeOfWork" value="databaseMySQL" />Use database (MySQL)
+        <input type="radio" id="oneFile" name="typeOfWork" value="oneFile" />
+        <label for="oneFile">Work with one file</label><br><br>
+        <input type="radio" id="filePerType" name="typeOfWork" value="filePerItem" />
+        <label for="filePerType">Work with file per type</label><br><br>
+        <input type="radio" id="sqlite" name="typeOfWork" value="databaseSQLite" />
+        <label for="sqlite">Use database (SQLite)</label><br><br>
+        <input type="radio" id="mysql" name="typeOfWork" value="databaseMySQL" />
+        <label for="mysql">Use database (MySQL)</label>
         <br><br><br><br>
-        <label for="typeOfItem" style="font-size: 120%">
+        <label for="typeOfItem">
             Choose item:
         </label><br><br>
-
-        <input type="radio" name="typeOfItem" value="Newspaper"/>Newspaper<br><br>
-        <input type="radio" name="typeOfItem" value="Book"/>Book<br><br>
-        <input type="radio" name="typeOfItem" value="Comics"/>Comics<br><br>
-        <input type="radio" name="typeOfItem" value="Journal"/>Journal
-
+        <input type="radio" id="newspaper" name="typeOfItem" value="Newspaper"/>
+        <label for="newspaper">Newspaper</label><br><br>
+        <input type="radio" id="book" name="typeOfItem" value="Book"/>
+        <label for="book">Book</label><br><br>
+        <input type="radio" id="comics" name="typeOfItem" value="Comics"/>
+        <label for="comics">Comics</label><br><br>
+        <input type="radio" id="journal" name="typeOfItem" value="Journal"/>
+        <label for="journal">Journal</label>
         <br><br>
         <button type="submit">Log in</button>
         </form>

@@ -1,20 +1,34 @@
 body {
+    color: #1f1e1e;
     text-align: center;
     background-color: #cca297;
     font-size: 125%;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 div{
     text-align: center;
     align-content: center;
 }
-
-button {
-    width: 90px;
-    height: 30px;
+button{
+    color: #cca297;
+    width: 120px;
+    height: 35px;
     font-size: 90%;
+    background-color: #363636;
+    border-color: #282828;
+
+}
+button:hover {
+    /*color: #cca297;
+    width: 90px;
+    height: 35px;
+    font-size: 90%;*/
+    background-color: #423b3b;
+    border-color: #3b3333;
 }
 input {
+    background-color: #dcc4bd;
+    border-color: #3b3333;
     font-size: 80%;
     height: 20px;
 }
@@ -29,4 +43,15 @@ p{
 table {
     border: 3px #a46e5f;
     margin: auto;
+}
+a:visited{
+    color: #444444;
+}
+a:active{
+    color: #414141;
+}
+a:link,a:hover {
+    font-size: 120%;
+    color: #343434;
+    text-decoration-line: none;
 }

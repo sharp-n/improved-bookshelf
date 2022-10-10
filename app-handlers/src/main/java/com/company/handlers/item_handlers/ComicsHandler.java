@@ -1,11 +1,9 @@
 package com.company.handlers.item_handlers;
 
-import com.company.Comics;
-import com.company.Item;
-import com.company.User;
+import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.services.ItemService;
 import com.company.enums.SortingMenu;
-import com.company.HTMLFormBuilder;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
 
@@ -147,4 +145,37 @@ public class ComicsHandler extends ItemHandler<Comics> {
             return null;
         }
     }
+
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> comics = new ArrayList<>();
+
+        items.forEach(item -> comics.add(
+                new Comics(
+                        item.getId(),
+                        item.getTitle(),
+                        item.getPages(),
+                        item.getPublisher(),
+                        item.isBorrowed())));
+        return comics;
+    }
+
+    public Comics convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Comics(
+                item.getId(),
+                item.getTitle(),
+                item.getPages(),
+                item.getPublisher(),
+                item.isBorrowed());
+    }
+
+    public boolean addItemToDB(Comics item, String userName, ItemService itemService){
+        try {
+            itemService.addItem(item, userName);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

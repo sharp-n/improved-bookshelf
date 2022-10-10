@@ -67,4 +67,24 @@ public class NewspaperHandler extends ItemHandler<Newspaper> {
         }
     }
 
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> itemsCore = new ArrayList<>();
+
+        items.forEach(item -> itemsCore.add(
+                new Newspaper(
+                        item.getId(),
+                        item.getTitle(),
+                        item.getPages(),
+                        item.isBorrowed())));
+        return itemsCore;
+    }
+
+    public Item convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Newspaper(
+                item.getId(),
+                item.getTitle(),
+                item.getPages(),
+                item.isBorrowed());
+    }
+
 }

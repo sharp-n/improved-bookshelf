@@ -2,6 +2,7 @@ package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.services.ItemService;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.table.TableUtil;
@@ -215,4 +216,38 @@ public class BookHandler extends ItemHandler<Book> {
         String [] date = dateStr.split("\\.");
         return validateDate(Integer.parseInt(date[2].trim()),Integer.parseInt(date[1].trim()),Integer.parseInt(date[0].trim()));
     }
+
+    public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
+        List<Item> books = new ArrayList<>();
+        items.forEach(item -> books.add(
+                new Book(
+                        item.getId(),
+                        item.getTitle(),
+                        item.getAuthor(),
+                        item.getPublishingDate(),
+                        item.getPages(),
+                        item.isBorrowed())));
+        return books;
+    }
+
+    public Book convertToCoreDefinedItem(com.company.db.entities.Item item){
+        return new Book(
+                item.getId(),
+                item.getTitle(),
+                item.getAuthor(),
+                item.getPublishingDate(),
+                item.getPages(),
+                item.isBorrowed());
+    }
+
+    public boolean addItemToDB(Book item, String userName, ItemService itemService){
+        try {
+            itemService.addItem(item, userName);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

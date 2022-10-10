@@ -2,6 +2,7 @@ package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.services.ItemService;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -203,5 +204,31 @@ public abstract class ItemHandler<T extends Item> {
     }
 
     public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
+
+
+    public abstract List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items);
+
+    public abstract Item convertToCoreDefinedItem(com.company.db.entities.Item item);
+
+    public List<Item> convertToCoreItems(List<com.company.db.entities.Item> items){
+        List<Item> itemsCore = new ArrayList<>();
+
+        items.forEach(item -> itemsCore
+                .add(Objects.requireNonNull(
+                        ItemHandlerProvider.getHandlerByClass(
+                                ItemHandlerProvider.getClassBySimpleNameOfClass(item.getTypeOfItem())))
+                        .convertToCoreDefinedItem(item)));
+        return itemsCore;
+    }
+
+    public boolean addItemToDB(Item item, String userName, ItemService itemService){
+        try {
+            itemService.addItem(item, userName);
+            return true;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
