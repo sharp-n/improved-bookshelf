@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    public final UserRepository userRepository;
 
     public List<User> getAllElements(){
         return new ArrayList<>(userRepository.findAll());

@@ -1,6 +1,5 @@
 package com.company.db.entities;
 
-import jdk.nashorn.internal.objects.annotations.Property;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,13 +26,13 @@ public class Item {
     @Basic(optional = false)
     private String title;
 
-    @Property(name = "author")
+    @Column(name = "author")
     private String author;
 
-    @Property(name = "publishing_date")
+    @Column(name = "publishing_date")
     private Date publishingDate;
 
-    @Property(name = "publisher")
+    @Column(name = "publisher")
     private String publisher;
 
     @Column(name = "pages",nullable = false)

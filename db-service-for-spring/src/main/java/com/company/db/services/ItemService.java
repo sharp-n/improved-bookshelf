@@ -14,8 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemService {
 
-    private final ItemRepository itemRepository;
-    private final UserService userService;
+    public final ItemRepository itemRepository;
+    public final UserService userService;
 
     public void addItem(Item itemCore, String userName){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(
