@@ -1,24 +1,26 @@
 package com.company;
 
-import com.company.db.services.UserService;
-import lombok.AllArgsConstructor;
+import com.company.db.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
 
 @SpringBootTest
-class SpringbootAppApplicationTests {
+@Transactional(propagation = Propagation.SUPPORTS)
+public class SpringbootAppApplicationTests {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Test
     void contextLoads() {
-//        userService.addUser("yana" + new Random().nextDouble());
-//        userService.addUser("sof4"+ new Random().nextDouble());
-        userService.getAllElements().forEach(System.out::println);
+        userRepository.addUser("yana2");
+        userRepository.addUser("sof2");
+        userRepository.getAllElements().forEach(System.out::println);
     }
 
 }

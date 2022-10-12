@@ -1,7 +1,7 @@
 package com.company.controllers;
 
 import com.company.auth.AuthService;
-import com.company.db.services.UserService;
+import com.company.db.repositories.UserRepository;
 import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @AllArgsConstructor
 public class LoginController {
 
-    UserService userService;
+    UserRepository userRepository;
     ControllersHandler handler;
     CookieUtil cookieUtil;
     AuthService authService;
