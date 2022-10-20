@@ -4,6 +4,8 @@ import com.company.*;
 import com.company.databases.queries.SQLQueries;
 import com.company.db.repositories.ItemRepository;
 import com.company.db.repositories.UserRepository;
+import com.company.db.services.ItemService;
+import com.company.db.services.UserService;
 import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.table.TableUtil;
@@ -241,9 +243,9 @@ public class BookHandler extends ItemHandler<Book> {
                 item.isBorrowed());
     }
 
-    public boolean addItemToDB(Book item, String userName, ItemRepository itemService, UserRepository userRepository){
+    public boolean addItemToDB(Book item, String userName, ItemService itemService, UserService userService){
         try {
-            itemService.addItem(item, userName,userRepository);
+            itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception e){
             e.printStackTrace();

@@ -52,7 +52,8 @@ public class UserRepositoryTests {
     @Test
     void removeUserTest(){
         saveUserForTest(USER_NAME);
-        userService.removeUser(USER_ID);
+        User user = userRepository.findAll().stream().filter(u->u.getName().equals(USER_NAME)).findFirst().get();
+        userService.removeUser(user.getId());
         Assertions.assertFalse(userRepository.existsById(USER_ID));
     }
 

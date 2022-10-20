@@ -4,12 +4,14 @@ import com.company.Book;
 import com.company.Comics;
 import com.company.db.entities.Item;
 import com.company.db.repositories.ItemRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ItemService {
 
     ItemRepository itemRepository;
