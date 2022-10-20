@@ -70,7 +70,7 @@ public class ControllersHandler {
         }
         ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(
                 ItemHandlerProvider.getClassBySimpleNameOfClass(params.typeOfItem));
-        return itemHandler.addItemToDB(item,params.getName(),itemService);
+        return itemHandler.addItemToDB(item,params.getName(), itemService, userService);
     }
 
     public Boolean deleteItem(ParametersForWeb params, int id) {

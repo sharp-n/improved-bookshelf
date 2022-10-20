@@ -2,7 +2,10 @@ package com.company.handlers.item_handlers;
 
 import com.company.*;
 import com.company.databases.queries.SQLQueries;
+import com.company.db.repositories.ItemRepository;
+import com.company.db.repositories.UserRepository;
 import com.company.db.services.ItemService;
+import com.company.db.services.UserService;
 import com.company.enums.SortingMenu;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
@@ -168,9 +171,9 @@ public class ComicsHandler extends ItemHandler<Comics> {
                 item.isBorrowed());
     }
 
-    public boolean addItemToDB(Comics item, String userName, ItemService itemService){
+    public boolean addItemToDB(Comics item, String userName, ItemService itemService, UserService userService){
         try {
-            itemService.addItem(item, userName);
+            itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception e){
             e.printStackTrace();

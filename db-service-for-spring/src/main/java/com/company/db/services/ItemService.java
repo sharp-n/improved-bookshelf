@@ -2,7 +2,7 @@ package com.company.db.services;
 
 import com.company.Book;
 import com.company.Comics;
-import com.company.Item;
+import com.company.db.entities.Item;
 import com.company.db.repositories.ItemRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemService {
 
-    private final ItemRepository itemRepository;
-    private final UserService userService;
+    ItemRepository itemRepository;
 
-    public void addItem(Item itemCore, String userName){
+    public void addItem(com.company.Item itemCore, String userName, UserService userService){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(
                 itemCore.getClass().getSimpleName(),
                 itemCore.getTitle(),
@@ -28,7 +27,7 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    public void addItem(Book book, String userName){
+    void addItem(Book book, String userName, UserService userService){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(
                 book.getClass().getSimpleName(),
                 book.getTitle(),
@@ -41,7 +40,7 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    public void addItem(Comics comics, String userName){
+    void addItem(Comics comics, String userName, UserService userService){
         com.company.db.entities.Item item = new com.company.db.entities.Item(
                 comics.getClass().getSimpleName(),
                 comics.getTitle(),
@@ -61,7 +60,7 @@ public class ItemService {
         itemRepository.delete(getItemById(id));
     }
 
-    public List<com.company.db.entities.Item> getAllElements(){
+    public List<Item> getAllElements(){
         return new ArrayList<>(itemRepository.findAll());
     }
 
@@ -80,7 +79,6 @@ public class ItemService {
         }
         return false;
     }
-
 
 
 

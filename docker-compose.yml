@@ -22,3 +22,16 @@ services:
         volumes: 
             - ./db:/var/lib/mysql/data
         restart: always
+    mysql-test:
+        image: mysql:8.0.30
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_USER=test
+            - MYSQL_PASSWORD=test
+            - MYSQL_DATABASE=test
+        container_name: mysql-improved-bookshelf-test
+        ports:
+            - 3308:3306
+        volumes:
+            - ./db:/var/lib/mysql/data
+        restart: always

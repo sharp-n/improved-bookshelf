@@ -7,7 +7,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
-    public List<User> getAllElements(){
+    List<User> getAllElements(){
         return new ArrayList<>(userRepository.findAll());
     }
 
-    @Transactional
     public void addUser(String username){
         User user = new User();
         user.setName(username);
