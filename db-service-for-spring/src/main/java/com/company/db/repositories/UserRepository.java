@@ -14,39 +14,4 @@ import java.util.List;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    default List<User> getAllElements(){
-        return new ArrayList<>(findAll());
-    }
-
-
-    default void addUser(String username){
-        User user = new User();
-        user.setName(username);
-        save(user);
-    }
-
-    default User getUserByID(int id){
-        return findById(id).get();
-    }
-
-    default void removeUser(int id){
-        delete(getUserByID(id));
-    }
-
-    default boolean checkUserExistence(String name){
-        ExampleMatcher userMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id")
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.caseSensitive());
-        User user = new User();
-        user.setName(name);
-        Example<User> userExample = Example.of(user,userMatcher);
-        return exists(userExample);
-    }
-
-    default User getUserByName(String name) {
-        List<User> users = new ArrayList<>();
-        findAll().forEach(users::add);
-        return users.stream().filter(user -> user.getName().equals(name)).findFirst().get();
-    }
-
 }

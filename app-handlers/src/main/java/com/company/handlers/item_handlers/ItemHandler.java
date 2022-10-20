@@ -4,6 +4,8 @@ import com.company.*;
 import com.company.databases.queries.SQLQueries;
 import com.company.db.repositories.ItemRepository;
 import com.company.db.repositories.UserRepository;
+import com.company.db.services.ItemService;
+import com.company.db.services.UserService;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -222,9 +224,9 @@ public abstract class ItemHandler<T extends Item> {
         return itemsCore;
     }
 
-    public boolean addItemToDB(Item item, String userName, ItemRepository itemRepository, UserRepository userRepository){
+    public boolean addItemToDB(Item item, String userName, ItemService itemService, UserService userService){
         try {
-            itemRepository.addItem(item, userName,userRepository);
+            itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception e){
             e.printStackTrace();

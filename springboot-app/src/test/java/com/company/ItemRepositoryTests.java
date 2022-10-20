@@ -1,7 +1,8 @@
 package com.company;
 
 import com.company.db.repositories.ItemRepository;
-import com.company.db.repositories.UserRepository;
+import com.company.db.services.ItemService;
+import com.company.db.services.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,21 +32,23 @@ public class ItemRepositoryTests {
 
     @BeforeEach
     void addUser(){
-        if(!userRepository.checkUserExistence(USER_NAME)){
-            userRepository.addUser(USER_NAME);
+        if(!userService.checkUserExistence(USER_NAME)){
+            userService.addUser(USER_NAME);
         }
     }
 
     @Autowired
+    ItemService itemService;
+    @Autowired
     ItemRepository itemRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @ParameterizedTest
     @MethodSource("provideItemsToAdd")
     void addItemTest(Item providedItem){
-        itemRepository.addItem(providedItem,USER_NAME,userRepository);
+        itemService.addItem(providedItem,USER_NAME, userService);
         List<com.company.db.entities.Item> items = new ArrayList<>();
         itemRepository.findAll().forEach(items::add);
         String provided = items.stream()
@@ -72,7 +75,7 @@ public class ItemRepositoryTests {
                 .filter(item -> item.getUser().getName().equals(USER_NAME))
                 .filter(item->item.getTitle().equals(TITLE))
                 .findFirst().get().getId();
-        Assertions.assertEquals(TITLE,itemRepository.getItemById(id).getTitle());
+        Assertions.assertEquals(TITLE, itemService.getItemById(id).getTitle());
         deleteItemForTest(TITLE);
     }
 
@@ -80,7 +83,7 @@ public class ItemRepositoryTests {
     void removeItemTest(){
         addTestItem(testItem,USER_NAME);
         Integer id=  getItemForTest(TITLE).getId();
-        itemRepository.removeItem(id);
+        itemService.removeItem(id);
         Assertions.assertFalse(itemRepository.existsById(id));
     }
 
@@ -88,7 +91,7 @@ public class ItemRepositoryTests {
     void getAllElementsTest(){
         addTestItem(testItem,USER_NAME);
         addTestItem(new Newspaper(1,"test newspaper",34),USER_NAME);
-        List<com.company.db.entities.Item> items = itemRepository.getAllElements();
+        List<com.company.db.entities.Item> items = itemService.getAllElements();
         Assertions.assertEquals(TITLE,getItemForTest(TITLE).getTitle());
         Assertions.assertEquals("test newspaper",getItemForTest("test newspaper").getTitle());
         deleteItemForTest(TITLE);
@@ -98,16 +101,16 @@ public class ItemRepositoryTests {
     @Test
     void checkItemExistenceTest(){
         addTestItem(testItem,USER_NAME);
-        Assertions.assertTrue(itemRepository.checkItemExistence(getItemForTest(TITLE).getId()));
+        Assertions.assertTrue(itemService.checkItemExistence(getItemForTest(TITLE).getId()));
         deleteItemForTest(TITLE);
     }
 
     @Test
     void updateBorrowedTest(){
         addTestItem(testItem,USER_NAME);
-        itemRepository.updateBorrowed(getItemForTest(TITLE).getId(),true);
+        itemService.updateBorrowed(getItemForTest(TITLE).getId(),true);
         Assertions.assertTrue(getItemForTest(TITLE).isBorrowed());
-        itemRepository.updateBorrowed(getItemForTest(TITLE).getId(),false);
+        itemService.updateBorrowed(getItemForTest(TITLE).getId(),false);
         Assertions.assertFalse(getItemForTest(TITLE).isBorrowed());
         deleteItemForTest(TITLE);
     }
@@ -118,7 +121,7 @@ public class ItemRepositoryTests {
                 itemCore.getTitle(),
                 itemCore.getPages(),
                 itemCore.isBorrowed(),
-                userRepository.getUserByName(userName)
+                userService.getUserByName(userName)
         );
         itemRepository.save(itemEntity);
     }

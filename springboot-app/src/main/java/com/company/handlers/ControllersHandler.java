@@ -3,8 +3,8 @@ package com.company.handlers;
 import com.company.Item;
 import com.company.User;
 import com.company.WebAppService;
-import com.company.db.repositories.ItemRepository;
-import com.company.db.repositories.UserRepository;
+import com.company.db.services.ItemService;
+import com.company.db.services.UserService;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
@@ -33,8 +33,8 @@ import static com.company.springappconstants.ThymeleafVariables.*;
 public class ControllersHandler {
 
     CookieUtil cookieUtil;
-    ItemRepository itemRepository;
-    UserRepository userRepository;
+    ItemService itemService;
+    UserService userService;
 
     public String getAddTemplateBySimpleCLassName(String typeOfItem){
         return TemplatesAndRefs.getByOptionType(typeOfItem).getAddForm();
@@ -65,12 +65,12 @@ public class ControllersHandler {
         }
     }
     public Boolean addItemToDB(Item item, ParametersForWeb params){
-        if(!userRepository.checkUserExistence(params.getName())){
-            userRepository.addUser(params.getName());
+        if(!userService.checkUserExistence(params.getName())){
+            userService.addUser(params.getName());
         }
         ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(
                 ItemHandlerProvider.getClassBySimpleNameOfClass(params.typeOfItem));
-        return itemHandler.addItemToDB(item,params.getName(), itemRepository,userRepository);
+        return itemHandler.addItemToDB(item,params.getName(), itemService, userService);
     }
 
     public Boolean deleteItem(ParametersForWeb params, int id) {
@@ -88,8 +88,8 @@ public class ControllersHandler {
     }
 
     public boolean delete(int id, ParametersForWeb params){
-        if(itemRepository.checkItemExistence(id)&params.getName().equals(itemRepository.getItemById(id).getUser().getName())){
-            itemRepository.removeItem(id);
+        if(itemService.checkItemExistence(id)&params.getName().equals(itemService.getItemById(id).getUser().getName())){
+            itemService.removeItem(id);
             return true;
         }
         return false;
@@ -125,7 +125,7 @@ public class ControllersHandler {
 
     public boolean takeItemFromDB(int id, boolean forBorrow, ParametersForWeb params){
         if(checkTypeOFFileWork(params)){
-            return itemRepository.updateBorrowed(id,forBorrow);
+            return itemService.updateBorrowed(id,forBorrow);
         }
         return false;
     }
@@ -145,7 +145,7 @@ public class ControllersHandler {
 
     private String genTableOfSortedItemsFromDB(ParametersForWeb params, String option) throws IOException {
         List<com.company.db.entities.Item> items;
-        items = itemRepository.getAllElements().stream()
+        items = itemService.getAllElements().stream()
                 .filter(item -> item.getUser().getName().equals(params.getName())&item.getTypeOfItem().equals(params.getTypeOfItem()))
                 .collect(Collectors.toList());
         ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(ItemHandlerProvider.getClassBySimpleNameOfClass(params.getTypeOfItem()));
@@ -155,7 +155,7 @@ public class ControllersHandler {
 
     public String showItems(ParametersForWeb params) {
         if (checkTypeOFFileWork(params)){
-            List<com.company.db.entities.Item> items = itemRepository.getAllElements();
+            List<com.company.db.entities.Item> items = itemService.getAllElements();
             ItemHandler itemHandler = new DefaultItemHandler();
             List<Item> coreItems = itemHandler.convertToCoreItems(items);
             return sortItemsAndBuildTable(coreItems,SortingMenu.ITEM_ID.getDbColumn(),itemHandler);
