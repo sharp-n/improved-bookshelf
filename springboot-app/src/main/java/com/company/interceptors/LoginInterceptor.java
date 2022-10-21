@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,10 +31,14 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userName = cookieUtil.getCookies(request).get(CookieNames.USER_NAME);
         String typeOfWork = cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK);
 
+        boolean auth = authService.validateBasicAuthentication(userName, typeOfWork);
+        if (!auth){
+            response.sendRedirect("/login");
+        }
+
 //        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         //response.sendRedirect("/login?url=" + request.getRequestURI());
-        return authService.validateBasicAuthentication(userName, typeOfWork);
-
+        return auth;
     }
 
     @Override
