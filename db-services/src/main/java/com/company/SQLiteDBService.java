@@ -10,6 +10,10 @@ import java.sql.SQLException;
 
 public class SQLiteDBService extends DBService {
 
+    private static final org.apache.log4j.Logger log
+            = org.apache.log4j.Logger.getLogger(SQLiteDBService.class);
+
+
     Connection connection;
 
     @Override
@@ -23,10 +27,9 @@ public class SQLiteDBService extends DBService {
             Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 
-        } catch (SQLException | ClassNotFoundException sqlException){
-            sqlException.printStackTrace();
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
+                 InstantiationException | IllegalAccessException sqlException){
+            log.error(sqlException.getMessage() + " : " + SQLiteDBService.class.getSimpleName() + " : open()");
         }
     }
 
