@@ -7,9 +7,8 @@ import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
 import com.company.utils.CookieUtil;
 import com.company.utils.Params;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private static final Logger log
-            = LoggerFactory.getLogger(LoginController.class);
-    //static Logger log = LogManager.getLogger(ActionsController.class);
+            = Logger.getLogger(LoginController.class);
 
     UserRepository userRepository;
     ControllersHandler handler;
@@ -37,7 +35,7 @@ public class LoginController {
             handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
             return "login";
         } catch (Exception e){
-            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -50,7 +48,7 @@ public class LoginController {
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
             return "redirect:/choose-action";
         } catch (Exception e){
-            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -60,7 +58,7 @@ public class LoginController {
         try {
             return "redirect:/login";
         } catch (Exception e){
-            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }

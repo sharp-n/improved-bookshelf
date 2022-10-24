@@ -6,9 +6,8 @@ import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
 import com.company.springappconstants.ThymeleafVariables;
 import com.company.utils.CookieUtil;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,8 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ActionsController {
 
     private static final Logger log
-            = LoggerFactory.getLogger(ActionsController.class);
-    //static Logger log = LogManager.getLogger(ActionsController.class);
+            = Logger.getLogger(ActionsController.class);
 
     ControllersHandler handler;
     CookieUtil cookieUtil;
@@ -35,7 +33,7 @@ public class ActionsController {
             handler.addAttribute(model, BlocksNames.CHOOSE_ACTION, BlocksNames.REF_TO_LOGIN_SHOW_ALL_ITEMS);
             return "choose-action";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -52,7 +50,7 @@ public class ActionsController {
             handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_SHOW_ALL_ITEMS);
             return "item-actions";
         } catch(Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -67,7 +65,7 @@ public class ActionsController {
             handler.informAboutActionSuccess(model,success);
             return "inform-page-template";
         } catch (Exception e) {
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -78,7 +76,7 @@ public class ActionsController {
             handler.addAttribute(model, BlocksNames.DELETE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
         } catch(Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -91,7 +89,7 @@ public class ActionsController {
             handler.informAboutActionSuccess(model, success);
             return "inform-page-template";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -102,7 +100,7 @@ public class ActionsController {
             handler.addAttribute(model, BlocksNames.TAKE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -115,7 +113,7 @@ public class ActionsController {
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
 
@@ -127,7 +125,7 @@ public class ActionsController {
             handler.addAttribute(model,BlocksNames.RETURN_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -140,7 +138,7 @@ public class ActionsController {
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
 
@@ -153,7 +151,7 @@ public class ActionsController {
             handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -165,7 +163,7 @@ public class ActionsController {
             model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params, comparator));
             return "inform-page-template";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -177,7 +175,7 @@ public class ActionsController {
             model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params));
             return "inform-page-template";
         } catch (Exception e){
-            log.error(e.getMessage(),ActionsController.class.getSimpleName());
+            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
