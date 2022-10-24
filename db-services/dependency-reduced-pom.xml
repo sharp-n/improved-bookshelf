@@ -56,12 +56,12 @@
     </dependency>
   </dependencies>
   <properties>
-    <lombok.version>1.18.24</lombok.version>
-    <maven.compiler.target>8</maven.compiler.target>
-    <sqlite-jdbc.version>3.39.3.0</sqlite-jdbc.version>
-    <junit-jupiter.version>5.9.0</junit-jupiter.version>
-    <maven.compiler.source>8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>8</maven.compiler.source>
+    <lombok.version>1.18.24</lombok.version>
     <mysql-connector-java.version>8.0.30</mysql-connector-java.version>
+    <junit-jupiter.version>5.9.0</junit-jupiter.version>
+    <sqlite-jdbc.version>3.39.3.0</sqlite-jdbc.version>
+    <maven.compiler.target>8</maven.compiler.target>
   </properties>
 </project>
