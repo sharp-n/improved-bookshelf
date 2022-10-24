@@ -6,6 +6,7 @@ import com.company.User;
 import com.company.databases.queries.SQLQueries;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class DefaultItemHandler extends ItemHandler<Item> {
+
+    private static final Logger log
+            = Logger.getLogger(DefaultItemHandler.class);
+
     public DefaultItemHandler(PrintWriter out, Scanner in) {
         super(out, in);
     }
@@ -54,7 +59,7 @@ public class DefaultItemHandler extends ItemHandler<Item> {
             itemStr = getMainOptions(resultSet, itemStr);
             return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
         } catch (SQLException sqlException){
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage() + " : " + DefaultItemHandler.class.getSimpleName() + " : getItem()");
             return null;
         }
     }

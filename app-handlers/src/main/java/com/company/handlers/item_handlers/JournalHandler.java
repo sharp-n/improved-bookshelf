@@ -58,15 +58,10 @@ public class JournalHandler extends ItemHandler<Journal> {
 
     @Override
     public Journal getItem(int itemID, User user, SQLQueries sqlQueries) {
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            return new Journal(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        return new Journal(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){

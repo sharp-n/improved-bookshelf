@@ -10,6 +10,7 @@ import com.company.handlers.work_with_files.FilePerTypeWorker;
 import com.company.handlers.work_with_files.FilesWorker;
 import com.company.handlers.work_with_files.OneFileWorker;
 import com.company.table.TableUtil;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -154,13 +155,9 @@ public class ProjectHandler {
     }
 
     private void showSortedItems() {
-        try {
-            SortingMenu sortingParam = SortingMenu.getByOption(SortingMenu.ITEM_ID.getDbColumn());
-            List<Item> items = librarian.initSortingAllItemsByComparator();
-            librarian.printItems(items, itemHandler);
-        } catch (IOException ioException){
-            ioException.printStackTrace();
-        }
+        SortingMenu sortingParam = SortingMenu.getByOption(SortingMenu.ITEM_ID.getDbColumn());
+        List<Item> items = librarian.initSortingAllItemsByComparator();
+        librarian.printItems(items, itemHandler);
     }
 
     public Integer getUsersMainMenuChoice(String message, UserInput dialogue) {
@@ -202,39 +199,35 @@ public class ProjectHandler {
     }
 
     private void mainMenuVariants(ActionsWithItem actionsWithItem) {
-        try {
-            switch (actionsWithItem) {
+        switch (actionsWithItem) {
 
-                case ADD:
-                    librarian.addItem(itemHandler,itemHandler.getItem(librarian.genItemID()));
-                    break;
+            case ADD:
+                librarian.addItem(itemHandler, itemHandler.getItem(librarian.genItemID()));
+                break;
 
-                case DELETE:
-                    librarian.deleteItem(userInput.idUserInput(),false);
-                    break;
+            case DELETE:
+                librarian.deleteItem(userInput.idUserInput(), false);
+                break;
 
-                case TAKE:
-                    librarian.borrowItem(userInput.idUserInput(),true);
-                    break;
+            case TAKE:
+                librarian.borrowItem(userInput.idUserInput(), true);
+                break;
 
-                case RETURN:
-                    librarian.borrowItem(userInput.idUserInput(),false);
-                    break;
+            case RETURN:
+                librarian.borrowItem(userInput.idUserInput(), false);
+                break;
 
-                case SHOW:
-                    librarian.initSorting(itemHandler);
-                    break;
+            case SHOW:
+                librarian.initSorting(itemHandler);
+                break;
 
-                case EXIT_VALUE:
-                    mainProcValue = false;
-                    break;
+            case EXIT_VALUE:
+                mainProcValue = false;
+                break;
 
-                default:
-                    itemHandler.userInput.printDefaultMessage();
-                    break;
-            }
-        } catch (IOException e) {
-            out.println(e);
+            default:
+                itemHandler.userInput.printDefaultMessage();
+                break;
         }
     }
 }

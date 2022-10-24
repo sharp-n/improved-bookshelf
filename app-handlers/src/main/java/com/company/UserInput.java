@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.DefaultLibrarian;
 import org.slf4j.Logger;
 
 import java.io.PrintWriter;
@@ -7,7 +8,9 @@ import java.util.Scanner;
 
 public class UserInput {
 
-    static Logger LOGGER;
+    private static final org.apache.log4j.Logger log
+            = org.apache.log4j.Logger.getLogger(UserInput.class);
+
     Scanner scan;
     PrintWriter out;
 
@@ -48,7 +51,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
-            LOGGER.info(e.getMessage());
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
             return null;
         }
     }
@@ -66,6 +69,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
             return null;
         }
     }
@@ -76,6 +80,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
             return null;
         }
     }
@@ -86,6 +91,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
             return null;
         }
     }
@@ -96,6 +102,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
             return null;
         }
     }
@@ -107,6 +114,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
             printDefaultMessage();
             return null;
         }
@@ -116,6 +124,7 @@ public class UserInput {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
             printDefaultMessage();
             return -1;
         }
@@ -125,6 +134,7 @@ public class UserInput {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException e) {
+            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
             printDefaultMessage();
             return null;
         }

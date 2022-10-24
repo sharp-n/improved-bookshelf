@@ -16,7 +16,7 @@ public class OneFileWorker extends FilesWorker {
     }
 
     @Override
-    public synchronized void addItemToFile(Item itemToAdd) throws IOException {
+    public synchronized void addItemToFile(Item itemToAdd) {
         super.addItemToFile(itemToAdd);
     }
 }

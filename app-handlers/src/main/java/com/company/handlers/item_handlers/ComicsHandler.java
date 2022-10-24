@@ -9,6 +9,7 @@ import com.company.db.services.UserService;
 import com.company.enums.SortingMenu;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class ComicsHandler extends ItemHandler<Comics> {
+
+    private static final Logger log
+            = Logger.getLogger(ComicsHandler.class);
+
 
     public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item", "title", "pages", "borrowed", "publishing"));
 
@@ -114,39 +119,45 @@ public class ComicsHandler extends ItemHandler<Comics> {
     }
 
     @Override
-    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
-        List<List<String>> itemsStr = new ArrayList<>();
-        while (resultSet.next()) {
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet,itemStr);
-            itemsStr.add(itemStr);
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) {
+        try {
+            List<List<String>> itemsStr = new ArrayList<>();
+            while (resultSet.next()) {
+                List<String> itemStr = new ArrayList<>();
+                itemStr = getMainOptions(resultSet, itemStr);
+                itemsStr.add(itemStr);
+            }
+            return itemsStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            return Collections.emptyList();
         }
-        return itemsStr;
     }
 
     @Override
-    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
-        itemStr = getMainOptions(resultSet, itemStr);
-        itemStr.add(resultSet.getString(SortingMenu.PUBLISHER.getDbColumn()));
-        return itemStr;
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr){
+        try {
+            itemStr = getMainOptions(resultSet, itemStr);
+            itemStr.add(resultSet.getString(SortingMenu.PUBLISHER.getDbColumn()));
+            return itemStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage()  + " : " + ComicsHandler.class.getSimpleName() + " : getMainOptions()");
+            return itemStr;
+        }
     }
 
     @Override
     public Comics getItem(int itemID, User user, SQLQueries sqlQueries) {
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            return new Comics(
-                    Integer.parseInt(itemStr.get(0)),
-                    itemStr.get(2),
-                    Integer.parseInt(itemStr.get(3)),
-                    itemStr.get(5),
-                    Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        return new Comics(
+                Integer.parseInt(itemStr.get(0)),
+                itemStr.get(2),
+                Integer.parseInt(itemStr.get(3)),
+                itemStr.get(5),
+                Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){
@@ -176,7 +187,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
             itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

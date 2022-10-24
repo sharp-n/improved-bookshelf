@@ -11,6 +11,7 @@ import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.handlers.work_with_files.FilesWorker;
 import com.company.table.TableUtil;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,16 +25,16 @@ public abstract class Librarian {
 
     Validator validator;
 
-    public abstract boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException;
+    public abstract boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions);
 
     public abstract boolean addItem(Item item) throws IOException ;
 
 
-    public abstract boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException ;
+    public abstract boolean deleteItem(Integer itemID, boolean forBorrow);
 
-    public abstract boolean borrowItem(Integer itemID, boolean borrow) throws IOException;
+    public abstract boolean borrowItem(Integer itemID, boolean borrow);
 
-    public boolean checkIDForExistence(int itemID) throws IOException {
+    public boolean checkIDForExistence(int itemID){
         List<? extends Item> items = workWithFiles.readToItemsList();
         if (items != null) {
             for (Item item : items) {
@@ -71,9 +72,9 @@ public abstract class Librarian {
         }
     }
 
-    public abstract void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException ;
+    public abstract void initSorting(ItemHandler<? extends Item> itemHandler);
 
-    public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler){
         String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName();
 
         List<Item> items = workWithFiles.readToAnyItemList(typeOfItem);
@@ -101,13 +102,13 @@ public abstract class Librarian {
         return Collections.emptyList();
     }
 
-    public List<Item> initSortingAllItemsByComparator() throws IOException {
+    public List<Item> initSortingAllItemsByComparator() {
         List<Item> items = workWithFiles.readToItemsList();
         return new DefaultItemHandler().getSortedItemsByComparator(items, ComparatorsForSorting.COMPARATOR_ITEM_BY_ID);
     }
 
 
-    public int genItemID() throws IOException {
+    public int genItemID() {
         int max = 0;
         List<Item> items = workWithFiles.readToItemsList();
         if (items != null) {

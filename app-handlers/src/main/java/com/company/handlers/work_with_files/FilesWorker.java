@@ -3,8 +3,10 @@ package com.company.handlers.work_with_files;
 import com.company.Book;
 import com.company.Container;
 import com.company.Item;
+import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.google.gson.*;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -13,6 +15,9 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public abstract class FilesWorker {
+
+    private static final Logger log
+            = Logger.getLogger(FilesWorker.class);
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -33,7 +38,7 @@ public abstract class FilesWorker {
         return userName + "_directory";
     }
 
-    public synchronized void addItemToFile(Item itemToAdd) throws IOException {
+    public synchronized void addItemToFile(Item itemToAdd) {
         List<Item> items = readToItemsList();
         items.add(itemToAdd);
         List<Container<? extends Item>> containers = convertToContainer(items);
@@ -48,11 +53,11 @@ public abstract class FilesWorker {
             bw.write(gson.toJson(containers));
             bw.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : rewriteFile()");
         }
     }
 
-    public boolean removeItemFromFile(int itemID, boolean forBorrow) throws IOException {
+    public boolean removeItemFromFile(int itemID, boolean forBorrow) {
         List<Item> items = readToItemsList();
         for (Item item : items) {
             if (item.getItemID() == itemID) {
@@ -67,7 +72,7 @@ public abstract class FilesWorker {
         return false;
     }
 
-    public <T extends Item> List<T> readToAnyItemList(String typeOfCLass) throws IOException {
+    public <T extends Item> List<T> readToAnyItemList(String typeOfCLass) {
         createFileIfNotExists(filePath);
         List<? extends Item> items = readToItemsList();
         List<T> filteredItems = new ArrayList<>();
@@ -79,7 +84,7 @@ public abstract class FilesWorker {
         return filteredItems;
     }
 
-    public List<Item> readToItemsList() throws IOException {
+    public List<Item> readToItemsList() {
         createFileIfNotExists(filePath);
         JsonArray jsonArray = readJsonArrayFromFile();
         List<Item> items = new ArrayList<>();
@@ -95,9 +100,14 @@ public abstract class FilesWorker {
         return items;
     }
 
-    JsonArray readJsonArrayFromFile() throws IOException {
-        createFileIfNotExists(filePath);
-        return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
+    JsonArray readJsonArrayFromFile() {
+        try {
+            createFileIfNotExists(filePath);
+            return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
+        } catch (IOException ioException){
+            log.error(ioException.getMessage()  + " : " + FilesWorker.class.getSimpleName() + " : readJsonArrayFromFile()");
+            return new JsonArray();
+        }
     }
 
     public File createFileIfNotExists(Path filePath) {
@@ -109,6 +119,7 @@ public abstract class FilesWorker {
             }
             return file;
         } catch (IOException e) {
+            log.error(e.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
             return null;
         }
     }
@@ -120,7 +131,7 @@ public abstract class FilesWorker {
                 Files.createDirectories(path);
             }
         } catch (IOException ioException){
-            ioException.printStackTrace();
+            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
         }
     }
 
