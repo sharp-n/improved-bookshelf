@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,9 @@ import static com.company.enums.SortingMenu.ITEM_ID;
         urlPatterns = {URLConstants.SLASH + URLConstants.RETURN_PAGE}
 )
 public class ReturnItemServlet extends HttpServlet {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     final ParametersForWeb param = new ParametersForWeb();
     final ServletService servletService = new ServletService();
@@ -60,7 +64,7 @@ public class ReturnItemServlet extends HttpServlet {
             }
             servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error(ioException.getMessage() + " : " + ReturnItemServlet.class.getSimpleName() + " : doPost()");
             new ServletService().printErrorPage(resp);
         }
     }

@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -23,6 +24,9 @@ import java.sql.SQLException;
         urlPatterns = {URLConstants.SLASH + URLConstants.SHOW_ALL_THE_ITEMS}
 )
 public class ShowAllTheItemsServlet extends HttpServlet {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     final ParametersForWeb param = new ParametersForWeb();
 
@@ -58,9 +62,8 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
             servletService.printHtmlCode(resp, htmlCode);
-
         } catch (SQLException | IOException exception) {
-            exception.printStackTrace();
+            log.error(exception.getMessage() + " : " + ShowAllTheItemsServlet.class.getSimpleName() + " : doGet()");
             new ServletService().printErrorPage(resp);
         }
     }

@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,9 @@ import java.util.Scanner;
         urlPatterns = {URLConstants.SLASH + URLConstants.CHOOSE_ITEM_PAGE}
 )
 public class ChooseItemServlet extends HttpServlet {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     final ParametersForWeb param = new ParametersForWeb();
 
@@ -42,7 +46,7 @@ public class ChooseItemServlet extends HttpServlet {
             String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ACTION,param.name,param.typeOfWork,typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error(ioException.getMessage() + " : " + ChooseItemServlet.class.getSimpleName() + " : doPost()");
             new ServletService().printErrorPage(resp);
         }
     }
