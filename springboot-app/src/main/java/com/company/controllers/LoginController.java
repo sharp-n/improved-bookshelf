@@ -7,6 +7,8 @@ import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
 import com.company.utils.CookieUtil;
 import com.company.utils.Params;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -15,11 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
-
 @Controller
 @RequestMapping("/")
 @AllArgsConstructor
 public class LoginController {
+
+    private static final Logger log
+            = LoggerFactory.getLogger(LoginController.class);
+    //static Logger log = LogManager.getLogger(ActionsController.class);
 
     UserRepository userRepository;
     ControllersHandler handler;
@@ -28,22 +33,36 @@ public class LoginController {
 
     @GetMapping("/login")
     public String showLoginPage(Model model){
-        handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
-        return "login";
+        try{
+            handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
+            return "login";
+        } catch (Exception e){
+            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            return "redirect:/error";
+        }
     }
 
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_HTML_VALUE)
     public String getUserName(HttpServletResponse response, @RequestBody Params params, Model model) {
-        cookieUtil.createCookie(response, CookieNames.USER_NAME,params.getName());
-        cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
-        cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
-        return "redirect:/choose-action";
+        try{
+            cookieUtil.createCookie(response, CookieNames.USER_NAME,params.getName());
+            cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
+            cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
+            return "redirect:/choose-action";
+        } catch (Exception e){
+            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            return "redirect:/error";
+        }
     }
 
     @GetMapping
     public String redirectToLogin(Model model){
-        return "redirect:/login";
+        try {
+            return "redirect:/login";
+        } catch (Exception e){
+            log.error(e.getMessage(),LoginController.class.getSimpleName());
+            return "redirect:/error";
+        }
     }
-
 
 }

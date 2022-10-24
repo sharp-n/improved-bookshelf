@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="/error-page-styles.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Whoops...</title>
+</head>
+<body>
+<div id="background"></div>
+<div class="top">
+    <div class="top">
+        <h1 th:text="${ERROR_CODE}">404</h1>
+        <h3 th:test="${ERROR_MESSAGE}">page not found</h3>
+    </div>
+</div>
+<div class="container">
+    <div class="ghost-copy">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+        <div class="four"></div>
+    </div>
+    <div class="ghost">
+        <div class="face">
+            <div class="eye"></div>
+            <div class="eye-right"></div>
+            <div class="mouth"></div>
+        </div>
+    </div>
+    <div class="shadow"></div>
+</div>
+<div class="bottom">
+    <p>Boo, looks like a ghost stole this page!</p>
+    <div class="buttons">
+        <a href="/login" >Home</a>
+    </div>
+</div>
+
+
+</body>
+</html>

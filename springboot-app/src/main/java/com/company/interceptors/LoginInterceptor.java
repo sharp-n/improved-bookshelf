@@ -4,7 +4,6 @@ import com.company.springappconstants.CookieNames;
 import com.company.auth.AuthService;
 import com.company.utils.CookieUtil;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,7 +13,7 @@ import org.springframework.web.util.UriBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Slf4j
+
 @Component
 @AllArgsConstructor
 public class LoginInterceptor implements HandlerInterceptor {

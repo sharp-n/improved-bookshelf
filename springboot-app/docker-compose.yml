@@ -9,7 +9,7 @@ services:
         links: 
             - mysql
     mysql:
-        image: mysql:8.0.30
+        image: mysql:latest
         environment:
             - MYSQL_ROOT_PASSWORD=root
             - MYSQL_USER=sharp
@@ -17,7 +17,8 @@ services:
             - MYSQL_DATABASE=bookshelf
         container_name: mysql-springboot-bookshelf
         ports: 
-            - 3307:3306
-        volumes: 
-            - ./db:/var/lib/mysql/data
+            - 3306:3306
+#        volumes:
+#            - /mysql:/var/lib/mysql
         restart: always
+
