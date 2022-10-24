@@ -3,12 +3,16 @@ package com.company.databases.queries;
 import com.company.User;
 import com.company.Comics;
 import com.company.Item;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLComicsQueries extends SQLQueries<Comics> {
+
+    private static final Logger log
+            = Logger.getLogger(SQLComicsQueries.class);
 
     public SQLComicsQueries(Connection connection) {
         super(connection);
@@ -30,7 +34,7 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage() + " : " + SQLComicsQueries.class.getSimpleName() + " : insertItemToTable()");
             return false;
         }
     }

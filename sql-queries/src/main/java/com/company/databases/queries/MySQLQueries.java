@@ -1,10 +1,15 @@
 package com.company.databases.queries;
 
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MySQLQueries extends SQLQueries{
+
+    private static final Logger log
+            = Logger.getLogger(MySQLQueries.class);
 
     public MySQLQueries(Connection connection) {
         super(connection);
@@ -28,7 +33,7 @@ public class MySQLQueries extends SQLQueries{
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createItemsTable()");
         }
     }
 
@@ -41,7 +46,7 @@ public class MySQLQueries extends SQLQueries{
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createUsersTable()");
         }
     }
 }
