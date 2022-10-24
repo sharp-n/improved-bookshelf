@@ -1,13 +1,21 @@
 package com.company;
 
+
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.Socket;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        try (Socket clientSocket = new Socket("localhost", 8080)) {
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
+    public static void main(String[] args){
+        try {
+            log.error("error");
+            Socket clientSocket = new Socket("localhost", 8080);
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
@@ -25,6 +33,9 @@ public class Main {
                     clientHandlerWriter.write();
                 } else read = false;
             }
+            clientSocket.close();
+        } catch (Exception e){
+            log.error(e.getMessage() + " : " + Main.class.getSimpleName());
         }
     }
 
