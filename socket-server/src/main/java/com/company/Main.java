@@ -1,6 +1,7 @@
 package com.company;
 
 import com.company.handlers.ProjectHandler;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     static ServerSocket serverSocket;
     public static void main(String[] args) {
@@ -38,6 +42,7 @@ public class Main {
                 serverSocket = new ServerSocket(port);
                 openPort = true;
             } catch (IOException e){
+                log.error(e.getMessage());
                 port++;
             }
         }
@@ -47,6 +52,7 @@ public class Main {
         try {
             return serverSocket.accept();
         } catch (IOException e){
+            log.error(e.getMessage());
             return null;
         }
     }
@@ -56,16 +62,16 @@ public class Main {
             for (Thread connectionThread : connectionThreads) {
                 connectionThread.join();
             }
-        } catch(InterruptedException ignored){
-
+        } catch(InterruptedException e){
+            log.error(e.getMessage());
         }
     }
 
     private static void stopServer(){
         try {
             serverSocket.close();
-        } catch (IOException ignored){
-
+        } catch (IOException e){
+            log.error(e.getMessage());
         }
     }
 
@@ -82,7 +88,7 @@ public class Main {
 
             input.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 }
