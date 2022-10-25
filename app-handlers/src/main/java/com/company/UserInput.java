@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.handlers.DefaultLibrarian;
 import org.slf4j.Logger;
 
 import java.io.PrintWriter;
@@ -7,7 +8,9 @@ import java.util.Scanner;
 
 public class UserInput {
 
-    static Logger LOGGER;
+    private static final org.apache.log4j.Logger log
+            = org.apache.log4j.Logger.getLogger(UserInput.class);
+
     Scanner scan;
     PrintWriter out;
 
@@ -47,8 +50,8 @@ public class UserInput {
             out.println("Item ID:");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            LOGGER.info(e.getMessage());
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
             return null;
         }
     }
@@ -65,7 +68,8 @@ public class UserInput {
             out.println("Date of publish:" + NEW_LINE_WITH_TAB + "Year: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
             return null;
         }
     }
@@ -75,7 +79,8 @@ public class UserInput {
             out.println("\tDay: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
             return null;
         }
     }
@@ -85,7 +90,8 @@ public class UserInput {
             out.println("\tMonth: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
             return null;
         }
     }
@@ -95,7 +101,8 @@ public class UserInput {
             out.println("Pages: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
             return null;
         }
     }
@@ -106,7 +113,8 @@ public class UserInput {
             out.print(sortingMenuText);
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
             printDefaultMessage();
             return null;
         }
@@ -115,7 +123,8 @@ public class UserInput {
     public int getMainMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
             printDefaultMessage();
             return -1;
         }
@@ -124,7 +133,8 @@ public class UserInput {
     public Integer getItemMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
             printDefaultMessage();
             return null;
         }

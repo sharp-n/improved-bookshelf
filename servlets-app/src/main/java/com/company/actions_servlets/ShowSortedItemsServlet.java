@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -20,6 +22,9 @@ import java.util.Objects;
         urlPatterns = {URLConstants.SLASH + URLConstants.SHOW_ITEMS}
 )
 public class ShowSortedItemsServlet extends HttpServlet {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     final ParametersForWeb param = new ParametersForWeb();
     private String htmlCode = "";
@@ -67,7 +72,7 @@ public class ShowSortedItemsServlet extends HttpServlet {
             out.flush();
             out.close();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            log.error(exception.getMessage() + " : " + ShowSortedItemsServlet.class.getSimpleName() + " : doPost()");
             new ServletService().printErrorPage(resp);
         }
     }

@@ -3,6 +3,7 @@ package com.company.databases.queries;
 import com.company.User;
 import com.company.Book;
 import com.company.Item;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,6 +11,9 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 public class SQLBooksQueries  extends SQLQueries<Book> {
+
+    private static final Logger log
+            = Logger.getLogger(SQLBooksQueries.class);
 
     public SQLBooksQueries(Connection connection) {
         super(connection);
@@ -34,7 +38,7 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage() + " : " + SQLBooksQueries.class.getSimpleName() + " : insertItemToTable()");
             return false;
         }
     }

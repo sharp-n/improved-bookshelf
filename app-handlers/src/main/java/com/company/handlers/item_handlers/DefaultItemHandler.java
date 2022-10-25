@@ -6,6 +6,7 @@ import com.company.User;
 import com.company.databases.queries.SQLQueries;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 public class DefaultItemHandler extends ItemHandler<Item> {
+
     public DefaultItemHandler(PrintWriter out, Scanner in) {
         super(out, in);
     }
@@ -47,16 +49,11 @@ public class DefaultItemHandler extends ItemHandler<Item> {
     }
 
     @Override
-    public Item getItem(int itemID, User user, SQLQueries sqlQueries){
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+    public Item getItem(int itemID, User user, SQLQueries sqlQueries) {
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){

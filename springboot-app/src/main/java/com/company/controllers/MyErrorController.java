@@ -1,12 +1,10 @@
 package com.company.controllers;
 
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.RequestDispatcher;
@@ -17,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MyErrorController implements ErrorController {
 
     private static final Logger log
-            = LoggerFactory.getLogger(ActionsController.class);
+            = Logger.getLogger(ErrorController.class);
 
     @GetMapping
     public String handleError(HttpServletRequest request, Model model) {

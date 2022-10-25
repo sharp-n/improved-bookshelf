@@ -7,6 +7,7 @@ import com.company.handlers.ProjectHandler;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +18,9 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class ServletService {
+
+    private static final Logger log
+            = Logger.getLogger(Main.class);
 
     public final Path pathToHTMLFilesDir = Paths.get("src/main/webapp");
 
@@ -31,7 +35,8 @@ public class ServletService {
             in.close();
             return htmlCode.toString();
         } catch (FileNotFoundException fileNotFoundException){
-            return null; // TODO FIX null
+            log.error(fileNotFoundException.getMessage() + ServletService.class.getSimpleName() + " : getTextFromFile()");
+            return "";
         }
 
     }
@@ -87,7 +92,8 @@ public class ServletService {
     public Integer parseParamToInt(String itemIDParam){
         try{
             return Integer.parseInt(itemIDParam);
-        } catch (NumberFormatException nfe){
+        } catch (NumberFormatException numberFormatException){
+            log.error(numberFormatException.getMessage() + " : " + ServletService.class.getSimpleName() + " : parseParamToInt()");
             return -1;
         }
 
@@ -106,6 +112,7 @@ public class ServletService {
             out.flush();
             out.close();
         } catch (IOException ioException){
+            log.error(ioException.getMessage() + " : " + ServletService.class.getSimpleName() + " : printHtmlCode()");
             printErrorPage(resp);
         }
     }

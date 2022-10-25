@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,8 +28,7 @@ public class DeleteItemServlet extends HttpServlet {
     final ServletService servletService = new ServletService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
             param.getParametersFromURL(req);
 
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_REALIZATION_HTML_FILE));
@@ -46,26 +46,21 @@ public class DeleteItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            Integer itemID = servletService.parseParamToInt(req.getParameter(ITEM_ID.getDbColumn()));
-            itemID = Validator.staticValidateID(itemID);
+        Integer itemID = servletService.parseParamToInt(req.getParameter(ITEM_ID.getDbColumn()));
+        itemID = Validator.staticValidateID(itemID);
 
-            String message = MessageConstants.FAIL_MESSAGE;
+        String message = MessageConstants.FAIL_MESSAGE;
 
-            if (itemID != null) {
-                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
-                projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-                projectHandler.fileSwitch(FilesMenu.getByParameter(param.typeOfWork), new User(param.name));
-                boolean deleted = projectHandler.getLibrarian().deleteItem(itemID, true);
-                if (deleted) {
-                    message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "deleted";
-                }
+        if (itemID != null) {
+            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out));
+            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+            projectHandler.fileSwitch(FilesMenu.getByParameter(param.typeOfWork), new User(param.name));
+            boolean deleted = projectHandler.getLibrarian().deleteItem(itemID, true);
+            if (deleted) {
+                message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "deleted";
             }
-            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-            new ServletService().printErrorPage(resp);
         }
+        servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
     }
 
 

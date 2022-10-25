@@ -69,7 +69,7 @@ public class DBWorker extends Librarian{
     }
 
     @Override
-    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException { // todo check method
+    public void initSorting(ItemHandler<? extends Item> itemHandler) { // todo check method
         Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
@@ -104,25 +104,20 @@ public class DBWorker extends Librarian{
         return new SQLDefaultQueries(connection).updateBorrowedItem(itemID,false,user,dbType);
     }
 
-    public List<List<String>> getAllFromDb(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) throws SQLException {
+    public List<List<String>> getAllFromDb(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) {
         SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
         ResultSet resultSet = sqlQueries.showSortedItems(comparator, user);
         return (itemHandler.getItemsAsStringListFromResultSet(resultSet));
     }
 
     public List<List<String>> getAnyTypeFromDB(String comparator, User user, ItemHandler<? extends Item> itemHandler, Connection connection) {
-        try {
-            String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
-            SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
-            ResultSet resultSet = sqlQueries.showSortedItems(typeOfItem, comparator, user);
-            return (itemHandler.getItemsAsStringListFromResultSet(resultSet));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+        String typeOfItem = ItemHandlerProvider.getClassByHandler(itemHandler).getSimpleName().toLowerCase();
+        SQLQueries<? extends Item> sqlQueries = ItemHandlerProvider.getSQLQueryClassByHandler(itemHandler, connection);
+        ResultSet resultSet = sqlQueries.showSortedItems(typeOfItem, comparator, user);
+        return (itemHandler.getItemsAsStringListFromResultSet(resultSet));
     }
 
-    public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) throws IOException {
+    public List<? extends Item> initSortingItemsByComparator(SortingMenu sortingParameter, ItemHandler<? extends Item> itemHandler) {
         List<List<String>> sortedItemsStr = getAnyTypeFromDB(sortingParameter.getDbColumn(),user,itemHandler,connection);
         List<Item> items = new ArrayList<>();
         for (List<String> itemStr : sortedItemsStr){

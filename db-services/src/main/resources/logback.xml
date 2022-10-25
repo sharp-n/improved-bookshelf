@@ -2,10 +2,10 @@
 <configuration>
     <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
     <import class="ch.qos.logback.core.FileAppender"/>
-    <property name="LOGS" value="./servlets-app/logs" />
+    <property name="LOGS" value="./db-services/logs" />
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>./servlets-app/logs/servlets-app-logs.log</file>
+        <file>./db-services/logs/db-services-logs.log</file>
         <append>true</append>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} | %-5p | [%thread] %logger{5}:%L - %msg%n</pattern>

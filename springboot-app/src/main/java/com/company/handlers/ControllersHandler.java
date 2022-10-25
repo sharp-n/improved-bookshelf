@@ -59,8 +59,8 @@ public class ControllersHandler {
                 item.setItemID(projectHandler.getLibrarian().genItemID());
                 return projectHandler.getLibrarian().addItem(item);
             }
-        } catch(IOException e) {
-            e.printStackTrace();
+        } catch(IOException ioException) {
+            ioException.printStackTrace();
             return false;
         }
     }
@@ -74,16 +74,11 @@ public class ControllersHandler {
     }
 
     public Boolean deleteItem(ParametersForWeb params, int id) {
-        try {
-            if (checkTypeOFFileWork(params)) {
-                return delete(id,params);
-            } else {
-                ProjectHandler projectHandler = initProjectHandler(params);
-                return projectHandler.getLibrarian().deleteItem(id, false);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+        if (checkTypeOFFileWork(params)) {
+            return delete(id, params);
+        } else {
+            ProjectHandler projectHandler = initProjectHandler(params);
+            return projectHandler.getLibrarian().deleteItem(id, false);
         }
     }
 
@@ -110,16 +105,11 @@ public class ControllersHandler {
     }
 
     public Boolean takeItem(ParametersForWeb params, int id, boolean forBorrow) {
-        try {
-            if(checkTypeOFFileWork(params)){
-                return takeItemFromDB(id, forBorrow,params);
-            } else{
-                ProjectHandler projectHandler = initProjectHandler(params);
-                return projectHandler.getLibrarian().borrowItem(id, forBorrow);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-            return false;
+        if (checkTypeOFFileWork(params)) {
+            return takeItemFromDB(id, forBorrow, params);
+        } else {
+            ProjectHandler projectHandler = initProjectHandler(params);
+            return projectHandler.getLibrarian().borrowItem(id, forBorrow);
         }
     }
 
@@ -137,8 +127,8 @@ public class ControllersHandler {
             }else {
                 return new WebAppService().genTableOfSortedItemsFromFiles(params, option);
             }
-        } catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException ioException){
+            ioException.printStackTrace();
             return "";
         }
     }

@@ -10,6 +10,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book> {
+
+    private static final Logger log
+            = Logger.getLogger(BookHandler.class);
 
     public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item","title","pages","borrowed","author", "publishing date"));
 
@@ -176,43 +180,48 @@ public class BookHandler extends ItemHandler<Book> {
     }
 
     @Override
-    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
-        List<List<String>> itemsStr = new ArrayList<>();
-        while (resultSet.next()) {
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet,itemStr);
-            itemsStr.add(itemStr);
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) {
+        try {
+            List<List<String>> itemsStr = new ArrayList<>();
+            while (resultSet.next()) {
+                List<String> itemStr = new ArrayList<>();
+                itemStr = getMainOptions(resultSet, itemStr);
+                itemsStr.add(itemStr);
+            }
+            return itemsStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            return Collections.emptyList();
         }
-        return itemsStr;
     }
 
     @Override
-    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
-        itemStr = super.getMainOptions(resultSet, itemStr);
-        itemStr.add(Integer.toString(resultSet.getInt(SortingMenu.AUTHOR.getDbColumn())));
-        itemStr.add(Integer.toString(resultSet.getInt(SortingMenu.PUBLISHING_DATE.getDbColumn())));
-        return itemStr;
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) {
+        try {
+            itemStr = super.getMainOptions(resultSet, itemStr);
+            itemStr.add(Integer.toString(resultSet.getInt(SortingMenu.AUTHOR.getDbColumn())));
+            itemStr.add(Integer.toString(resultSet.getInt(SortingMenu.PUBLISHING_DATE.getDbColumn())));
+            return itemStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getMainOptions()");
+            return itemStr;
+        }
     }
 
     @Override
     public Book getItem(int itemID, User user, SQLQueries sqlQueries) {
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            String dateStr = itemStr.get(6);
-            Date publishingDate = getDateFromString(dateStr);
-            return new Book(
-                    Integer.parseInt(itemStr.get(0)),
-                    itemStr.get(2),
-                    itemStr.get(5),
-                    publishingDate,
-                    Integer.parseInt(itemStr.get(3)),
-                    Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        String dateStr = itemStr.get(6);
+        Date publishingDate = getDateFromString(dateStr);
+        return new Book(
+                Integer.parseInt(itemStr.get(0)),
+                itemStr.get(2),
+                itemStr.get(5),
+                publishingDate,
+                Integer.parseInt(itemStr.get(3)),
+                Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public Date getDateFromString(String dateStr){
@@ -247,8 +256,8 @@ public class BookHandler extends ItemHandler<Book> {
         try {
             itemService.addItem(item, userName,userService);
             return true;
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

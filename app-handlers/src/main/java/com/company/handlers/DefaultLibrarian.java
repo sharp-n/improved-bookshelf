@@ -6,6 +6,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.handlers.work_with_files.FilesWorker;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class DefaultLibrarian extends Librarian{
 
-    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) throws IOException {
+    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) {
         Item item = itemHandler.createItem(itemOptions);
         if (checkIDForExistence(item.getItemID())) {
             out.println("Item with this ID exists. Please change ID and try again");
@@ -31,7 +32,7 @@ public class DefaultLibrarian extends Librarian{
         this.validator = new Validator(out);
     }
 
-    public boolean addItem(Item item) throws IOException {
+    public boolean addItem(Item item) {
         if (checkIDForExistence(item.getItemID())) {
             out.println("Item with this ID exists. Please change ID and try again");
             return false;
@@ -41,7 +42,7 @@ public class DefaultLibrarian extends Librarian{
         return true;
     }
 
-    public boolean deleteItem(Integer itemID, boolean forBorrow) throws IOException {
+    public boolean deleteItem(Integer itemID, boolean forBorrow) {
         itemID = validator.validateIdToBorrow(itemID);
         if (itemID != null) {
             boolean deleted = false;
@@ -50,7 +51,7 @@ public class DefaultLibrarian extends Librarian{
             }
             if (!deleted) {
                 out.println("This item maybe borrowed or does not exist");
-            }else {
+            } else {
                 out.println("Item was successful deleted");
             }
             return deleted;
@@ -58,7 +59,7 @@ public class DefaultLibrarian extends Librarian{
         return false;
     }
 
-    public boolean borrowItem(Integer itemID, boolean borrow) throws IOException {
+    public boolean borrowItem(Integer itemID, boolean borrow) {
         itemID = validator.validateIdToBorrow(itemID);
         if (itemID != null) {
             List<Item> items = workWithFiles.readToItemsList();
@@ -74,15 +75,15 @@ public class DefaultLibrarian extends Librarian{
         return false;
     }
 
-    public void initSorting(ItemHandler<? extends Item> itemHandler) throws IOException {
+    public void initSorting(ItemHandler<? extends Item> itemHandler) {
         Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
         if (usersChoice != null) {
             SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-            List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(sortingParameter,itemHandler);
-            if(!sortedItemsByComparator.isEmpty()){
+            List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(sortingParameter, itemHandler);
+            if (!sortedItemsByComparator.isEmpty()) {
                 printItems(sortedItemsByComparator, itemHandler);
             }
-        } else{
+        } else {
             itemHandler.userInput.printDefaultMessage();
         }
     }

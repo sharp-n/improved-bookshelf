@@ -12,6 +12,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.Librarian;
 import com.company.table.TableUtil;
 import lombok.NoArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -26,6 +27,9 @@ public abstract class ItemHandler<T extends Item> {
     // adding comics - 15.0
     // adding journals - 3.31
     //
+
+    private static final Logger log
+            = Logger.getLogger(ItemHandler.class);
 
     Scanner in; // TODO fix input/output
     PrintWriter out;
@@ -182,28 +186,38 @@ public abstract class ItemHandler<T extends Item> {
         );
     }
 
-    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) throws SQLException {
-        List<List<String>> itemsStr = new ArrayList<>();
-        while (resultSet.next()) {
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet,itemStr);
-            itemsStr.add(itemStr);
+    public List<List<String>> getItemsAsStringListFromResultSet(ResultSet resultSet) {
+        try {
+            List<List<String>> itemsStr = new ArrayList<>();
+            while (resultSet.next()) {
+                List<String> itemStr = new ArrayList<>();
+                itemStr = getMainOptions(resultSet, itemStr);
+                itemsStr.add(itemStr);
+            }
+            return itemsStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            return Collections.emptyList();
         }
-        return itemsStr;
     }
 
-    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) throws SQLException {
-        itemStr.add(Integer.toString(resultSet.getInt("item_id")));
-        itemStr.add(resultSet.getString("type_of_item"));
-        itemStr.add(resultSet.getString("title"));
-        itemStr.add(Integer.toString(resultSet.getInt("pages")));
-        String borrowedStr ;
-        int borrowedInt = resultSet.getInt("borrowed");
-        if (borrowedInt==1) {
-            borrowedStr = "true";
-        } else borrowedStr = "false";
-        itemStr.add(borrowedStr);
-        return itemStr;
+    List<String> getMainOptions(ResultSet resultSet, List<String> itemStr) {
+        try {
+            itemStr.add(Integer.toString(resultSet.getInt("item_id")));
+            itemStr.add(resultSet.getString("type_of_item"));
+            itemStr.add(resultSet.getString("title"));
+            itemStr.add(Integer.toString(resultSet.getInt("pages")));
+            String borrowedStr;
+            int borrowedInt = resultSet.getInt("borrowed");
+            if (borrowedInt == 1) {
+                borrowedStr = "true";
+            } else borrowedStr = "false";
+            itemStr.add(borrowedStr);
+            return itemStr;
+        } catch (SQLException sqlException){
+            log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            return itemStr;
+        }
     }
 
     public abstract T getItem(int itemID, User user, SQLQueries sqlQueries);
@@ -228,8 +242,8 @@ public abstract class ItemHandler<T extends Item> {
         try {
             itemService.addItem(item, userName,userService);
             return true;
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

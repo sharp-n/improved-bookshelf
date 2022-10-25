@@ -1,6 +1,7 @@
 package com.company;
 
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,6 +9,9 @@ import java.io.PrintWriter;
 
 @AllArgsConstructor
 public class ClientHandler {
+
+    private static final Logger log
+            = Logger.getLogger(ClientHandler.class);
 
     BufferedReader reader;
     PrintWriter out;
@@ -26,7 +30,8 @@ public class ClientHandler {
                 message += lineFromServer + "\n\r";
             } while (!lineFromServer.equals(replyMessage));
             return message;
-        } catch (NullPointerException ignored){
+        } catch (NullPointerException nullPointerException){
+            log.error(nullPointerException.getMessage() + " : " + ClientHandler.class.getSimpleName());
             return null;
         }
     }

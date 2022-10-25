@@ -55,16 +55,11 @@ public class NewspaperHandler extends ItemHandler<Newspaper> {
         return newspapersAsStringList;
     }
 
-    public Newspaper getItem(int itemID, User user, SQLQueries sqlQueries){
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            return new Newspaper(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            return null;
-        }
+    public Newspaper getItem(int itemID, User user, SQLQueries sqlQueries) {
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        return new Newspaper(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.http.client.utils.URIBuilder;
-import org.slf4j.Logger;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -17,17 +17,22 @@ import java.nio.file.Paths;
 )
 public class FilesWorkChoosingServlet extends HttpServlet {
 
-    Logger LOGGER;
+    private static final org.apache.log4j.Logger log
+            = Logger.getLogger(Main.class);
 
     final ParametersForWeb param = new ParametersForWeb();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
-        resp.setContentType("text/html");
-        ServletService servletService = new ServletService();
-        param.getParametersFromURL(req);
-        String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_HTML_FILE));
-        servletService.printHtmlCode(resp, htmlCode);
+        try {
+            resp.setContentType("text/html");
+            ServletService servletService = new ServletService();
+            param.getParametersFromURL(req);
+            String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_HTML_FILE));
+            servletService.printHtmlCode(resp, htmlCode);
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + FilesWorkChoosingServlet.class.getSimpleName() + " : doGet()");
+        }
     }
 
     @Override
@@ -52,8 +57,7 @@ public class FilesWorkChoosingServlet extends HttpServlet {
             }
             resp.sendRedirect(url);
         } catch (IOException ioException) {
-            LOGGER.info(ioException.getMessage());
-            ioException.printStackTrace();
+            log.error(ioException.getMessage() + " : " + FilesWorkChoosingServlet.class.getSimpleName() + " : doPost()");
             new ServletService().printErrorPage(resp);
         }
     }

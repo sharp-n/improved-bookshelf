@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -15,10 +16,13 @@ import java.util.Map;
 )
 public class ChooseActionServlet extends HttpServlet {
 
+    private static final Logger log
+            = Logger.getLogger(Main.class);
+
     final ParametersForWeb param = new ParametersForWeb();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         resp.setContentType("text/html");
         ServletService servletService = new ServletService();
         String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.ACTIONS_HTML_FILE));
@@ -35,7 +39,7 @@ public class ChooseActionServlet extends HttpServlet {
             String strURI = new ServletService().buildURLWithParameters(URLConstants.CHOOSE_ITEM_PAGE,param.name,param.typeOfWork,param.typeOfItem);
             resp.sendRedirect(strURI);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error(ioException.getMessage() + " : " + ChooseActionServlet.class.getSimpleName() + " : doPost()");
             new ServletService().printErrorPage(resp);
         }
     }
