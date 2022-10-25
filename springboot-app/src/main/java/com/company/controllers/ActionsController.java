@@ -32,8 +32,8 @@ public class ActionsController {
         try {
             handler.addAttribute(model, BlocksNames.CHOOSE_ACTION, BlocksNames.REF_TO_LOGIN_SHOW_ALL_ITEMS);
             return "choose-action";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -49,8 +49,8 @@ public class ActionsController {
             String template = handler.getAddTemplateBySimpleCLassName(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
             handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_SHOW_ALL_ITEMS);
             return "item-actions";
-        } catch(Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch(Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -64,8 +64,8 @@ public class ActionsController {
             Boolean success = handler.addItem(item, params);
             handler.informAboutActionSuccess(model,success);
             return "inform-page-template";
-        } catch (Exception e) {
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception) {
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -75,8 +75,8 @@ public class ActionsController {
         try {
             handler.addAttribute(model, BlocksNames.DELETE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
-        } catch(Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch(Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -88,8 +88,8 @@ public class ActionsController {
             Boolean success = handler.deleteItem(params, id);
             handler.informAboutActionSuccess(model, success);
             return "inform-page-template";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -99,8 +99,8 @@ public class ActionsController {
         try {
             handler.addAttribute(model, BlocksNames.TAKE_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -112,8 +112,8 @@ public class ActionsController {
             Boolean success = handler.takeItem(params,id, true);
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
 
@@ -124,8 +124,8 @@ public class ActionsController {
         try{
             handler.addAttribute(model,BlocksNames.RETURN_ITEM_FORM, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -137,8 +137,8 @@ public class ActionsController {
             Boolean success = handler.takeItem(params,id, false);
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
 
@@ -150,8 +150,8 @@ public class ActionsController {
             String template = handler.getSortingTemplateByTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
             handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -162,8 +162,8 @@ public class ActionsController {
             ParametersForWeb params = handler.genAndGetParams(request);
             model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params, comparator));
             return "inform-page-template";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -174,8 +174,8 @@ public class ActionsController {
             ParametersForWeb params = handler.genAndGetParams(request);
             model.addAttribute(ThymeleafVariables.MESSAGE, handler.showItems(params));
             return "inform-page-template";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + ActionsController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
         }
     }

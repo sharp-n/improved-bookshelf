@@ -31,8 +31,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
     final ParametersForWeb param = new ParametersForWeb();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             ServletService servletService = new ServletService();
             param.getParametersFromURL(req);
@@ -62,7 +61,7 @@ public class ShowAllTheItemsServlet extends HttpServlet {
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
             htmlCode = servletService.replaceTemplateByURL(htmlCode,TemplatesConstants.URL_ITEMS_MENU_TEMPLATE,URLConstants.CHOOSE_ITEM_PAGE,param);
             servletService.printHtmlCode(resp, htmlCode);
-        } catch (SQLException | IOException exception) {
+        } catch (IOException exception) {
             log.error(exception.getMessage() + " : " + ShowAllTheItemsServlet.class.getSimpleName() + " : doGet()");
             new ServletService().printErrorPage(resp);
         }

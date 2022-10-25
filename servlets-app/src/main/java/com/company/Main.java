@@ -26,7 +26,7 @@ public class Main {
             tomcat.getServer().await();
 
         } catch (LifecycleException exception){
-            log.error(exception.getMessage() + Main.class.getSimpleName());
+            log.error(exception.getMessage() + " : " + Main.class.getSimpleName());
         }
     }
 

@@ -32,8 +32,7 @@ public class AddItemServlet extends HttpServlet {
     final ParametersForWeb param = new ParametersForWeb();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             param.getParametersFromURL(req);
             ServletService servletService = new ServletService();
@@ -48,14 +47,13 @@ public class AddItemServlet extends HttpServlet {
             htmlCode = htmlCode.replace(TemplatesConstants.TABLE_TEMPLATE, table);
 
             servletService.printHtmlCode(resp, htmlCode);
-        } catch(Exception e){
-            log.error(e.getMessage() + " : " + HttpServlet.class.getSimpleName() + " : doGet()");
+        } catch(Exception exception){
+            log.error(exception.getMessage() + " : " + HttpServlet.class.getSimpleName() + " : doGet()");
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             ServletService servletService = new ServletService();
             ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
@@ -76,8 +74,8 @@ public class AddItemServlet extends HttpServlet {
 
             htmlCode = servletService.replaceURLTemplatesInActionsPage(htmlCode, param);
             servletService.printHtmlCode(resp, htmlCode);
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + HttpServlet.class.getSimpleName() + " : doPost()");
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + HttpServlet.class.getSimpleName() + " : doPost()");
         }
     }
 

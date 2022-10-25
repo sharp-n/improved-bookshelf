@@ -256,8 +256,8 @@ public class BookHandler extends ItemHandler<Book> {
         try {
             itemService.addItem(item, userName,userService);
             return true;
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

@@ -28,8 +28,8 @@ public class SQLiteDBService extends DBService {
             connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
 
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
-                 InstantiationException | IllegalAccessException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLiteDBService.class.getSimpleName() + " : open()");
+                 InstantiationException | IllegalAccessException exception){
+            log.error(exception.getMessage() + " : " + SQLiteDBService.class.getSimpleName() + " : open()");
         }
     }
 

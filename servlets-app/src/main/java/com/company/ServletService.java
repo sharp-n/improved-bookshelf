@@ -36,7 +36,7 @@ public class ServletService {
             return htmlCode.toString();
         } catch (FileNotFoundException fileNotFoundException){
             log.error(fileNotFoundException.getMessage() + ServletService.class.getSimpleName() + " : getTextFromFile()");
-            return null; // TODO FIX null
+            return "";
         }
 
     }
@@ -92,8 +92,8 @@ public class ServletService {
     public Integer parseParamToInt(String itemIDParam){
         try{
             return Integer.parseInt(itemIDParam);
-        } catch (NumberFormatException nfe){
-            log.error(nfe.getMessage() + " : " + ServletService.class.getSimpleName() + " : parseParamToInt()");
+        } catch (NumberFormatException numberFormatException){
+            log.error(numberFormatException.getMessage() + " : " + ServletService.class.getSimpleName() + " : parseParamToInt()");
             return -1;
         }
 

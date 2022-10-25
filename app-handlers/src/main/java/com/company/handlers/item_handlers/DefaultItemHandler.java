@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class DefaultItemHandler extends ItemHandler<Item> {
 
-    private static final Logger log
-            = Logger.getLogger(DefaultItemHandler.class);
-
     public DefaultItemHandler(PrintWriter out, Scanner in) {
         super(out, in);
     }
@@ -52,16 +49,11 @@ public class DefaultItemHandler extends ItemHandler<Item> {
     }
 
     @Override
-    public Item getItem(int itemID, User user, SQLQueries sqlQueries){
-        try {
-            ResultSet resultSet = sqlQueries.getItem(itemID, user);
-            List<String> itemStr = new ArrayList<>();
-            itemStr = getMainOptions(resultSet, itemStr);
-            return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
-        } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + DefaultItemHandler.class.getSimpleName() + " : getItem()");
-            return null;
-        }
+    public Item getItem(int itemID, User user, SQLQueries sqlQueries) {
+        ResultSet resultSet = sqlQueries.getItem(itemID, user);
+        List<String> itemStr = new ArrayList<>();
+        itemStr = getMainOptions(resultSet, itemStr);
+        return new Item(Integer.parseInt(itemStr.get(0)), itemStr.get(2), Integer.parseInt(itemStr.get(3)), Boolean.parseBoolean(itemStr.get(4)));
     }
 
     public List<Item> convertToCoreDefinedTypeOfItems(List<com.company.db.entities.Item> items){

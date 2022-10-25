@@ -30,8 +30,8 @@ public class FilesWorkChoosingServlet extends HttpServlet {
             param.getParametersFromURL(req);
             String htmlCode = servletService.getTextFromFile(Paths.get(servletService.pathToHTMLFilesDir.toString(), FileNameConstants.FILE_WORK_CHOOSE_HTML_FILE));
             servletService.printHtmlCode(resp, htmlCode);
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + FilesWorkChoosingServlet.class.getSimpleName() + " : doGet()");
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + FilesWorkChoosingServlet.class.getSimpleName() + " : doGet()");
         }
     }
 

@@ -25,9 +25,6 @@ import static com.company.enums.SortingMenu.ITEM_ID;
 )
 public class ReturnItemServlet extends HttpServlet {
 
-    private static final Logger log
-            = Logger.getLogger(Main.class);
-
     final ParametersForWeb param = new ParametersForWeb();
     final ServletService servletService = new ServletService();
 
@@ -49,24 +46,19 @@ public class ReturnItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            Integer itemID = servletService.parseParamToInt(req.getParameter(ITEM_ID.getDbColumn()));
-            itemID = Validator.staticValidateID(itemID);
-            String message = MessageConstants.FAIL_MESSAGE;
-            if (itemID != null) {
-                ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
-                projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
-                projectHandler.fileSwitch(FilesMenu.getByParameter(param.typeOfWork), new User(param.name));
-                boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false);
-                if (borrowed) {
-                    message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "returned";
-                }
+        Integer itemID = servletService.parseParamToInt(req.getParameter(ITEM_ID.getDbColumn()));
+        itemID = Validator.staticValidateID(itemID);
+        String message = MessageConstants.FAIL_MESSAGE;
+        if (itemID != null) {
+            ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out)); // todo optimize handlers
+            projectHandler.itemMenuSwitch(MainMenu.getByOption(param.typeOfItem));
+            projectHandler.fileSwitch(FilesMenu.getByParameter(param.typeOfWork), new User(param.name));
+            boolean borrowed = projectHandler.getLibrarian().borrowItem(itemID, false);
+            if (borrowed) {
+                message = MessageConstants.SUCCESS_MESSAGE_TEMPLATE + "returned";
             }
-            servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + ReturnItemServlet.class.getSimpleName() + " : doPost()");
-            new ServletService().printErrorPage(resp);
         }
+        servletService.generateAndPrintHTMLCode(resp, message, param, FileNameConstants.INFORM_PAGE_HTML_FILE);
     }
 
 }

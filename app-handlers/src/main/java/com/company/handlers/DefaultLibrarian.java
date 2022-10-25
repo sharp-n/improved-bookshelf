@@ -15,23 +15,15 @@ import java.util.List;
 @NoArgsConstructor
 public class DefaultLibrarian extends Librarian{
 
-    private static final Logger log
-            = Logger.getLogger(DefaultLibrarian.class);
-
-    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions){
-        try {
-            Item item = itemHandler.createItem(itemOptions);
-            if (checkIDForExistence(item.getItemID())) {
-                out.println("Item with this ID exists. Please change ID and try again");
-                return false;
-            }
-            workWithFiles.addItemToFile(item);
-            out.println("Item was successful added");
-            return true;
-        } catch (IOException ioException){
-            log.error(ioException.getMessage() + " : " + DefaultLibrarian.class.getSimpleName() + " : addItem()");
+    public boolean addItem(ItemHandler<? extends Item> itemHandler, List<String> itemOptions) {
+        Item item = itemHandler.createItem(itemOptions);
+        if (checkIDForExistence(item.getItemID())) {
+            out.println("Item with this ID exists. Please change ID and try again");
             return false;
         }
+        workWithFiles.addItemToFile(item);
+        out.println("Item was successful added");
+        return true;
     }
 
     public DefaultLibrarian(FilesWorker workWithFiles, PrintWriter out) {
@@ -41,40 +33,30 @@ public class DefaultLibrarian extends Librarian{
     }
 
     public boolean addItem(Item item) {
-        try {
-            if (checkIDForExistence(item.getItemID())) {
-                out.println("Item with this ID exists. Please change ID and try again");
-                return false;
-            }
-            workWithFiles.addItemToFile(item);
-            out.println("Item was successful added");
-            return true;
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + DefaultLibrarian.class.getSimpleName() + " : addItem()");
+        if (checkIDForExistence(item.getItemID())) {
+            out.println("Item with this ID exists. Please change ID and try again");
             return false;
         }
+        workWithFiles.addItemToFile(item);
+        out.println("Item was successful added");
+        return true;
     }
 
     public boolean deleteItem(Integer itemID, boolean forBorrow) {
-        try {
-            itemID = validator.validateIdToBorrow(itemID);
-            if (itemID != null) {
-                boolean deleted = false;
-                if (checkIDForExistence(itemID)) {
-                    deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
-                }
-                if (!deleted) {
-                    out.println("This item maybe borrowed or does not exist");
-                } else {
-                    out.println("Item was successful deleted");
-                }
-                return deleted;
+        itemID = validator.validateIdToBorrow(itemID);
+        if (itemID != null) {
+            boolean deleted = false;
+            if (checkIDForExistence(itemID)) {
+                deleted = workWithFiles.removeItemFromFile(itemID, forBorrow);
             }
-            return false;
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + DefaultLibrarian.class.getSimpleName() + " : deleteItem()");
-            return false;
+            if (!deleted) {
+                out.println("This item maybe borrowed or does not exist");
+            } else {
+                out.println("Item was successful deleted");
+            }
+            return deleted;
         }
+        return false;
     }
 
     public boolean borrowItem(Integer itemID, boolean borrow) {
@@ -94,19 +76,15 @@ public class DefaultLibrarian extends Librarian{
     }
 
     public void initSorting(ItemHandler<? extends Item> itemHandler) {
-        try {
-            Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
-            if (usersChoice != null) {
-                SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
-                List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(sortingParameter, itemHandler);
-                if (!sortedItemsByComparator.isEmpty()) {
-                    printItems(sortedItemsByComparator, itemHandler);
-                }
-            } else {
-                itemHandler.userInput.printDefaultMessage();
+        Integer usersChoice = itemHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
+        if (usersChoice != null) {
+            SortingMenu sortingParameter = SortingMenu.getByIndex(usersChoice);
+            List<? extends Item> sortedItemsByComparator = initSortingItemsByComparator(sortingParameter, itemHandler);
+            if (!sortedItemsByComparator.isEmpty()) {
+                printItems(sortedItemsByComparator, itemHandler);
             }
-        }  catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + DefaultLibrarian.class.getSimpleName() + " : InitSorting()");
+        } else {
+            itemHandler.userInput.printDefaultMessage();
         }
     }
 }

@@ -52,8 +52,8 @@ public abstract class FilesWorker {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(gson.toJson(containers));
             bw.close();
-        } catch (IOException e) {
-            log.error(e.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : rewriteFile()");
+        } catch (IOException ioException) {
+            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : rewriteFile()");
         }
     }
 
@@ -118,8 +118,8 @@ public abstract class FilesWorker {
                 file.createNewFile();
             }
             return file;
-        } catch (IOException e) {
-            log.error(e.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
+        } catch (IOException ioException) {
+            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
             return null;
         }
     }

@@ -41,8 +41,8 @@ public class Main {
             try {
                 serverSocket = new ServerSocket(port);
                 openPort = true;
-            } catch (IOException e){
-                log.error(e.getMessage());
+            } catch (IOException ioException){
+                log.error(ioException.getMessage());
                 port++;
             }
         }
@@ -51,8 +51,8 @@ public class Main {
     private static Socket runInputSocket() {
         try {
             return serverSocket.accept();
-        } catch (IOException e){
-            log.error(e.getMessage());
+        } catch (IOException ioException){
+            log.error(ioException.getMessage());
             return null;
         }
     }
@@ -62,16 +62,16 @@ public class Main {
             for (Thread connectionThread : connectionThreads) {
                 connectionThread.join();
             }
-        } catch(InterruptedException e){
-            log.error(e.getMessage());
+        } catch(InterruptedException interruptedException){
+            log.error(interruptedException.getMessage());
         }
     }
 
     private static void stopServer(){
         try {
             serverSocket.close();
-        } catch (IOException e){
-            log.error(e.getMessage());
+        } catch (IOException ioException){
+            log.error(ioException.getMessage());
         }
     }
 
@@ -87,8 +87,8 @@ public class Main {
             out.close();
 
             input.close();
-        } catch (IOException e) {
-            log.error(e.getMessage());
+        } catch (IOException ioException) {
+            log.error(ioException.getMessage());
         }
     }
 }

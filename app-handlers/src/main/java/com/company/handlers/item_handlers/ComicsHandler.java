@@ -186,8 +186,8 @@ public class ComicsHandler extends ItemHandler<Comics> {
         try {
             itemService.addItem(item, userName,userService);
             return true;
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

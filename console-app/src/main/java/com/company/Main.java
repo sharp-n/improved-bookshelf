@@ -30,8 +30,8 @@ public class Main {
             //telnetThread.join();
             //serverThread.join();
             consoleThread.join();
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + Main.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + Main.class.getSimpleName());
         }
     }
 

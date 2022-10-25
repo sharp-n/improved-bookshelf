@@ -242,8 +242,8 @@ public abstract class ItemHandler<T extends Item> {
         try {
             itemService.addItem(item, userName,userService);
             return true;
-        } catch (Exception e){
-            log.error(e.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : addItemToDB()");
+        } catch (Exception exception){
+            log.error(exception.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

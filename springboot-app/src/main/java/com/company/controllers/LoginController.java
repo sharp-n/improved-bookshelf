@@ -34,8 +34,8 @@ public class LoginController {
         try{
             handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
             return "login";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -47,8 +47,8 @@ public class LoginController {
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
             return "redirect:/choose-action";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }
@@ -57,8 +57,8 @@ public class LoginController {
     public String redirectToLogin(Model model){
         try {
             return "redirect:/login";
-        } catch (Exception e){
-            log.error(e.getMessage() + ":" + LoginController.class.getSimpleName());
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
     }

@@ -50,8 +50,8 @@ public class UserInput {
             out.println("Item ID:");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
             return null;
         }
     }
@@ -68,8 +68,8 @@ public class UserInput {
             out.println("Date of publish:" + NEW_LINE_WITH_TAB + "Year: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
             return null;
         }
     }
@@ -79,8 +79,8 @@ public class UserInput {
             out.println("\tDay: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
             return null;
         }
     }
@@ -90,8 +90,8 @@ public class UserInput {
             out.println("\tMonth: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
             return null;
         }
     }
@@ -101,8 +101,8 @@ public class UserInput {
             out.println("Pages: ");
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
             return null;
         }
     }
@@ -113,8 +113,8 @@ public class UserInput {
             out.print(sortingMenuText);
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
             printDefaultMessage();
             return null;
         }
@@ -123,8 +123,8 @@ public class UserInput {
     public int getMainMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
             printDefaultMessage();
             return -1;
         }
@@ -133,8 +133,8 @@ public class UserInput {
     public Integer getItemMenuVar() {
         try {
             return Integer.parseInt(scan.nextLine().trim());
-        } catch (NumberFormatException e) {
-            log.error(e.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
+        } catch (NumberFormatException numberFormatException) {
+            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
             printDefaultMessage();
             return null;
         }
