@@ -28,6 +28,27 @@
           </transformers>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/resources</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/main/resources</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <modules>
@@ -36,31 +57,19 @@
     <module>enums</module>
     <module>table-builders</module>
     <module>socket-server</module>
-    <module>sql-queries</module>
     <module>db-services</module>
     <module>console-app</module>
     <module>servlets-app</module>
-    <module>parameters-from-url</module>
     <module>user</module>
     <module>container</module>
-    <module>html-form-builder</module>
     <module>app-handlers</module>
     <module>client-socket</module>
+    <module>sql-queries</module>
+    <module>parameters-for-web</module>
+    <module>web-service</module>
+    <module>springboot-app</module>
+    <module>db-service-for-spring</module>
   </modules>
-  <dependencies>
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.2.11</version>
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>logback-core</artifactId>
-          <groupId>ch.qos.logback</groupId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.source>8</maven.compiler.source>
