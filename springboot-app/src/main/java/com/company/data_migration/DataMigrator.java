@@ -2,10 +2,8 @@ package com.company.data_migration;
 
 import com.company.ParametersForWeb;
 import com.company.enums.FilesMenu;
-import com.company.utils.Params;
 import lombok.AllArgsConstructor;
 
-import java.io.File;
 
 @AllArgsConstructor
 public class DataMigrator {

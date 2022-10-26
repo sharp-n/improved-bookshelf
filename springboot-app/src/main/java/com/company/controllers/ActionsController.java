@@ -1,6 +1,7 @@
 package com.company.controllers;
 
 import com.company.ParametersForWeb;
+import com.company.data_migration.DataMigrator;
 import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.BlocksNames;
@@ -62,6 +63,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.addItem(item, params);
+            new DataMigrator(params).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "inform-page-template";
         } catch (Exception exception) {
@@ -86,6 +88,7 @@ public class ActionsController {
         try {
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.deleteItem(params, id);
+            new DataMigrator(params).updateStorages();
             handler.informAboutActionSuccess(model, success);
             return "inform-page-template";
         } catch (Exception exception){
@@ -110,6 +113,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.takeItem(params,id, true);
+            new DataMigrator(params).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception exception){
@@ -135,6 +139,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.takeItem(params,id, false);
+            new DataMigrator(params).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception exception){

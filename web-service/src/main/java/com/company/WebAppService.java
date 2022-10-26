@@ -48,7 +48,6 @@ public class WebAppService {
         ProjectHandler projectHandler = genProjectHandlerFromParameters(param);
         List<List<String>> itemsAsStr = getAllTheItemsAsStringListSortedByComparator(projectHandler.getItemHandler(), projectHandler.getLibrarian());
         return genTableOfSortedItems(itemsAsStr);
-
     }
 
     public String genTableOfSortedItemsFromDB(DBService dbService, ProjectHandler projectHandler, User user) {
