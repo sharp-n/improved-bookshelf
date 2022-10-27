@@ -12,8 +12,8 @@ import java.text.SimpleDateFormat;
 
 public class SQLBooksQueries  extends SQLQueries<Book> {
 
-    private static final Logger log
-            = Logger.getLogger(SQLBooksQueries.class);
+//    private static final Logger log
+//            = Logger.getLogger(SQLBooksQueries.class);
 
     public SQLBooksQueries(Connection connection) {
         super(connection);
@@ -38,7 +38,7 @@ public class SQLBooksQueries  extends SQLQueries<Book> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLBooksQueries.class.getSimpleName() + " : insertItemToTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLBooksQueries.class.getSimpleName() + " : insertItemToTable()");
             return false;
         }
     }

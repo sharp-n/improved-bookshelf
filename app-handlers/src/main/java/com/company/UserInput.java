@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class UserInput {
 
-    private static final org.apache.log4j.Logger log
-            = org.apache.log4j.Logger.getLogger(UserInput.class);
+    //private static final org.apache.log4j.Logger log
+     //       = org.apache.log4j.Logger.getLogger(UserInput.class);
 
     Scanner scan;
     PrintWriter out;
@@ -51,7 +51,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : idUserInput()");
             return null;
         }
     }
@@ -69,7 +69,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : yearUserInput()");
             return null;
         }
     }
@@ -80,7 +80,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : dayUserInput()");
             return null;
         }
     }
@@ -91,7 +91,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : monthUserInput()");
             return null;
         }
     }
@@ -102,7 +102,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : pagesUserInput()");
             return null;
         }
     }
@@ -114,7 +114,7 @@ public class UserInput {
             printWaitingForReplyMessage();
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getSortingVar()");
             printDefaultMessage();
             return null;
         }
@@ -124,7 +124,7 @@ public class UserInput {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getMainMenuVar()");
             printDefaultMessage();
             return -1;
         }
@@ -134,7 +134,7 @@ public class UserInput {
         try {
             return Integer.parseInt(scan.nextLine().trim());
         } catch (NumberFormatException numberFormatException) {
-            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
+//            log.error(numberFormatException.getMessage() + " : " + UserInput.class.getSimpleName() + " : getItemMenuVar()");
             printDefaultMessage();
             return null;
         }

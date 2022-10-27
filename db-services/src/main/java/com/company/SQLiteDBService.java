@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 public class SQLiteDBService extends DBService {
 
-    private static final org.apache.log4j.Logger log
-            = org.apache.log4j.Logger.getLogger(SQLiteDBService.class);
+//    private static final org.apache.log4j.Logger log
+//            = org.apache.log4j.Logger.getLogger(SQLiteDBService.class);
 
 
     Connection connection;
@@ -29,7 +29,7 @@ public class SQLiteDBService extends DBService {
 
         } catch (SQLException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException |
                  InstantiationException | IllegalAccessException exception){
-            log.error(exception.getMessage() + " : " + SQLiteDBService.class.getSimpleName() + " : open()");
+//            log.error(exception.getMessage() + " : " + SQLiteDBService.class.getSimpleName() + " : open()");
         }
     }
 

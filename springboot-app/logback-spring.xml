@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <import class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"/>
-    <import class="ch.qos.logback.core.FileAppender"/>
-    <property name="LOGS" value="./springboot-app/logs" />
-
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender" level="warn">
-
-        <file>./springboot-app/logs/myapplication.log</file>
-
-        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <Pattern>
-                %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
-            </Pattern>
-            <rollingPolicy
-                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <!-- rollover daily and when the file reaches 10 MegaBytes -->
-                <timeBasedFileNamingAndTriggeringPolicy
-                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                    <maxFileSize>10MB</maxFileSize>
-                </timeBasedFileNamingAndTriggeringPolicy>
-            </rollingPolicy>
-        </encoder>
-
-    </appender>
-
-
-    <!-- LOG everything at INFO level -->
-    <root level="warn">
-        <!--appender-ref ref="RollingFile" /-->
-        <!--appender-ref ref="Console" /-->
-        <appender-ref ref="FILE" />
-    </root>
-
-    <logger name="com.company" level="WARN" additivity="false">
-        <appender-ref ref="FILE" />
-    </logger>
-
+<configuration scan="true">
+    <property resource ="application.properties"/>
+    <!--springProperty name="NAME" source="spring.application.name" /-->
+    <include resource="logback-common.xml"/>
 </configuration>

@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor // TODO
 public class BookHandler extends ItemHandler<Book> {
 
-    private static final Logger log
-            = Logger.getLogger(BookHandler.class);
+    //private static final Logger log
+    //      = Logger.getLogger(BookHandler.class);
 
     public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item","title","pages","borrowed","author", "publishing date"));
 
@@ -190,7 +190,7 @@ public class BookHandler extends ItemHandler<Book> {
             }
             return itemsStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            //log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
             return Collections.emptyList();
         }
     }
@@ -203,7 +203,7 @@ public class BookHandler extends ItemHandler<Book> {
             itemStr.add(Integer.toString(resultSet.getInt(SortingMenu.PUBLISHING_DATE.getDbColumn())));
             return itemStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getMainOptions()");
+            //log.error(sqlException.getMessage() + " : " + BookHandler.class.getSimpleName() + " : getMainOptions()");
             return itemStr;
         }
     }
@@ -257,7 +257,7 @@ public class BookHandler extends ItemHandler<Book> {
             itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception exception){
-            log.error(exception.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");
+            //log.error(exception.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

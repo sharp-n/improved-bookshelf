@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 public abstract class DBService {
 
-    private static final org.apache.log4j.Logger log
-            = org.apache.log4j.Logger.getLogger(DBService.class);
+//    private static final org.apache.log4j.Logger log
+//            = org.apache.log4j.Logger.getLogger(DBService.class);
 
     Connection connection;
 
@@ -38,7 +38,7 @@ public abstract class DBService {
         try {
             connection.close();
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + DBService.class.getSimpleName() + " : close()");
+//            log.error(sqlException.getMessage() + " : " + DBService.class.getSimpleName() + " : close()");
             System.out.println(sqlException.getMessage());
         }
     }

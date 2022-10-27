@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ComicsHandler extends ItemHandler<Comics> {
 
-    private static final Logger log
-            = Logger.getLogger(ComicsHandler.class);
+//    private static final Logger log
+//            = Logger.getLogger(ComicsHandler.class);
 
 
     public List<String> columnTitles = new ArrayList<>(Arrays.asList("item id", "type of item", "title", "pages", "borrowed", "publishing"));
@@ -129,7 +129,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
             }
             return itemsStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+//            log.error(sqlException.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
             return Collections.emptyList();
         }
     }
@@ -141,7 +141,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
             itemStr.add(resultSet.getString(SortingMenu.PUBLISHER.getDbColumn()));
             return itemStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage()  + " : " + ComicsHandler.class.getSimpleName() + " : getMainOptions()");
+//            log.error(sqlException.getMessage()  + " : " + ComicsHandler.class.getSimpleName() + " : getMainOptions()");
             return itemStr;
         }
     }
@@ -187,7 +187,7 @@ public class ComicsHandler extends ItemHandler<Comics> {
             itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception exception){
-            log.error(exception.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
+//            log.error(exception.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

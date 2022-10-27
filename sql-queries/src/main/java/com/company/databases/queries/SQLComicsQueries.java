@@ -11,8 +11,8 @@ import java.sql.Statement;
 
 public class SQLComicsQueries extends SQLQueries<Comics> {
 
-    private static final Logger log
-            = Logger.getLogger(SQLComicsQueries.class);
+//    private static final Logger log
+//            = Logger.getLogger(SQLComicsQueries.class);
 
     public SQLComicsQueries(Connection connection) {
         super(connection);
@@ -34,7 +34,7 @@ public class SQLComicsQueries extends SQLQueries<Comics> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLComicsQueries.class.getSimpleName() + " : insertItemToTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLComicsQueries.class.getSimpleName() + " : insertItemToTable()");
             return false;
         }
     }

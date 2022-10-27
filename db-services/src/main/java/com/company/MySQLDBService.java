@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class MySQLDBService extends DBService {
 
-    private static final org.apache.log4j.Logger log
-            = org.apache.log4j.Logger.getLogger(SQLiteDBService.class);
+//    private static final org.apache.log4j.Logger log
+//            = org.apache.log4j.Logger.getLogger(SQLiteDBService.class);
 
     Connection connection;
 
@@ -41,7 +41,7 @@ public class MySQLDBService extends DBService {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://mysql:" + port + "/" + dbName, user, password);
         } catch (SQLException | ClassNotFoundException exception) {
-            log.error(exception.getMessage() + " : " + MySQLDBService.class.getSimpleName() + " : open()");
+//            log.error(exception.getMessage() + " : " + MySQLDBService.class.getSimpleName() + " : open()");
         }
     }
 
