@@ -63,7 +63,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.addItem(item, params);
-            new DataMigrator(params).updateStorages();
+            new DataMigrator(params,handler).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "inform-page-template";
         } catch (Exception exception) {
@@ -88,7 +88,7 @@ public class ActionsController {
         try {
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.deleteItem(params, id);
-            new DataMigrator(params).updateStorages();
+            new DataMigrator(params,handler).updateStorages();
             handler.informAboutActionSuccess(model, success);
             return "inform-page-template";
         } catch (Exception exception){
@@ -113,7 +113,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.takeItem(params,id, true);
-            new DataMigrator(params).updateStorages();
+            new DataMigrator(params,handler).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception exception){
@@ -139,7 +139,7 @@ public class ActionsController {
         try{
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.takeItem(params,id, false);
-            new DataMigrator(params).updateStorages();
+            new DataMigrator(params,handler).updateStorages();
             handler.informAboutActionSuccess(model,success);
             return "/inform-page-template";
         } catch (Exception exception){

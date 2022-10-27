@@ -2,13 +2,15 @@ package com.company.data_migration;
 
 import com.company.ParametersForWeb;
 import com.company.enums.FilesMenu;
+import com.company.handlers.ControllersHandler;
+import com.company.handlers.ProjectHandler;
 import lombok.AllArgsConstructor;
-
 
 @AllArgsConstructor
 public class DataMigrator {
 
     ParametersForWeb params;
+    ControllersHandler controllersHandler;
 
     public void updateStorages(){
         FilesMenu option = FilesMenu.getByParameter(params.getTypeOfWork());
@@ -36,8 +38,13 @@ public class DataMigrator {
         }
     }
 
-    void updateOneFile(){
+    // 1. Get all components from storage
+    // 2. Get all components from other storages
+    // 3. Compare
+    // 4. Make changes
 
+    void updateOneFile(){
+        ProjectHandler projectHandler = controllersHandler.initProjectHandler(params);
     }
 
     void updateFilePerItem(){
@@ -51,6 +58,5 @@ public class DataMigrator {
     void updateSQLiteDb(){
 
     }
-
 
 }
