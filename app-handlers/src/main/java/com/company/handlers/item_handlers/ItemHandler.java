@@ -28,8 +28,8 @@ public abstract class ItemHandler<T extends Item> {
     // adding journals - 3.31
     //
 
-    private static final Logger log
-            = Logger.getLogger(ItemHandler.class);
+//    private static final Logger log
+//            = Logger.getLogger(ItemHandler.class);
 
     Scanner in; // TODO fix input/output
     PrintWriter out;
@@ -196,7 +196,7 @@ public abstract class ItemHandler<T extends Item> {
             }
             return itemsStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+            //log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
             return Collections.emptyList();
         }
     }
@@ -215,7 +215,7 @@ public abstract class ItemHandler<T extends Item> {
             itemStr.add(borrowedStr);
             return itemStr;
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
+//            log.error(sqlException.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : getItemsAsStringListFromResultSet()");
             return itemStr;
         }
     }
@@ -243,7 +243,7 @@ public abstract class ItemHandler<T extends Item> {
             itemService.addItem(item, userName,userService);
             return true;
         } catch (Exception exception){
-            log.error(exception.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : addItemToDB()");
+//            log.error(exception.getMessage() + " : " + ItemHandler.class.getSimpleName() + " : addItemToDB()");
             return false;
         }
     }

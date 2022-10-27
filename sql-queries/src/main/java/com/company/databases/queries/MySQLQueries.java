@@ -8,8 +8,8 @@ import java.sql.Statement;
 
 public class MySQLQueries extends SQLQueries{
 
-    private static final Logger log
-            = Logger.getLogger(MySQLQueries.class);
+//    private static final Logger log
+//            = Logger.getLogger(MySQLQueries.class);
 
     public MySQLQueries(Connection connection) {
         super(connection);
@@ -33,7 +33,7 @@ public class MySQLQueries extends SQLQueries{
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createItemsTable()");
+//            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createItemsTable()");
         }
     }
 
@@ -46,7 +46,7 @@ public class MySQLQueries extends SQLQueries{
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createUsersTable()");
+//            log.error(sqlException.getMessage() + " : " + MySQLQueries.class.getSimpleName() + " : createUsersTable()");
         }
     }
 }

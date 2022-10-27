@@ -13,8 +13,8 @@ import java.sql.*;
 @NoArgsConstructor
 public abstract class SQLQueries<T extends Item> {
 
-    private static final Logger log
-            = Logger.getLogger(SQLComicsQueries.class);
+//    private static final Logger log
+//            = Logger.getLogger(SQLComicsQueries.class);
 
     Connection connection;
 
@@ -38,7 +38,7 @@ public abstract class SQLQueries<T extends Item> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : insertItemsToTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : insertItemsToTable()");
             return false;
         }
     }
@@ -54,7 +54,7 @@ public abstract class SQLQueries<T extends Item> {
             }
             return null;
         } catch (SQLException sqlException) {
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : getUser()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : getUser()");
             return null;
         }
     }
@@ -67,7 +67,7 @@ public abstract class SQLQueries<T extends Item> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : addUserToTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : addUserToTable()");
             return false;
         }
     }
@@ -108,7 +108,7 @@ public abstract class SQLQueries<T extends Item> {
             int result = statement.executeUpdate(query);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : updateBorrowedItem()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : updateBorrowedItem()");
             return false;
         }
     }
@@ -127,7 +127,7 @@ public abstract class SQLQueries<T extends Item> {
             int result = statement.executeUpdate(queryDel);
             return result != 0;
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : deleteItem()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : deleteItem()");
             return false;
         }
     }
@@ -143,7 +143,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);
         } catch (SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : getItem()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : getItem()");
             return null;
         }
     }
@@ -161,7 +161,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : ShowSortedItem()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : ShowSortedItem()");
             return null;
         }
     }
@@ -177,7 +177,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             return statement.executeQuery(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : showSortedItem()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : showSortedItem()");
             return null;
         }
     }
@@ -199,7 +199,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createItemsTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createItemsTable()");
         }
     }
 
@@ -212,7 +212,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createUsersTable()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createUsersTable()");
         }
     }
     public void createDatabase(){
@@ -221,7 +221,7 @@ public abstract class SQLQueries<T extends Item> {
             Statement statement = connection.createStatement();
             statement.execute(query);
         }catch(SQLException sqlException){
-            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createDatabase()");
+//            log.error(sqlException.getMessage() + " : " + SQLQueries.class.getSimpleName() + " : createDatabase()");
         }
     }
 

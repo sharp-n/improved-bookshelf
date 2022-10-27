@@ -16,8 +16,8 @@ import java.util.*;
 
 public abstract class FilesWorker {
 
-    private static final Logger log
-            = Logger.getLogger(FilesWorker.class);
+//    private static final Logger log
+//            = Logger.getLogger(FilesWorker.class);
 
     public static final String PROGRAM_DIR_NAME_FOR_ITEMS = "book_shelf";
     final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -53,7 +53,7 @@ public abstract class FilesWorker {
             bw.write(gson.toJson(containers));
             bw.close();
         } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : rewriteFile()");
+//            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : rewriteFile()");
         }
     }
 
@@ -105,7 +105,7 @@ public abstract class FilesWorker {
             createFileIfNotExists(filePath);
             return gson.fromJson(new FileReader(filePath.toString()), JsonArray.class);
         } catch (IOException ioException){
-            log.error(ioException.getMessage()  + " : " + FilesWorker.class.getSimpleName() + " : readJsonArrayFromFile()");
+//            log.error(ioException.getMessage()  + " : " + FilesWorker.class.getSimpleName() + " : readJsonArrayFromFile()");
             return new JsonArray();
         }
     }
@@ -119,7 +119,7 @@ public abstract class FilesWorker {
             }
             return file;
         } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
+//            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
             return null;
         }
     }
@@ -131,7 +131,7 @@ public abstract class FilesWorker {
                 Files.createDirectories(path);
             }
         } catch (IOException ioException){
-            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
+//            log.error(ioException.getMessage() + " : " + FilesWorker.class.getSimpleName() + " : createFileIfNotExists()");
         }
     }
 

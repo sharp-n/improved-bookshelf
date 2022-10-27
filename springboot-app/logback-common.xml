@@ -1,0 +1,29 @@
+<included>
+
+    <property name="LOGS" value="./springboot-app/logs" />
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender" level="warn">
+
+        <file>./springboot-app/logs/myapplication.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+            </Pattern>
+            <
+        </encoder>
+
+    </appender>
+
+
+    <!-- LOG everything at INFO level -->
+    <root level="warn">
+        <!--appender-ref ref="RollingFile" /-->
+        <!--appender-ref ref="Console" /-->
+        <appender-ref ref="FILE" />
+    </root>
+
+    <logger name="com.company" level="WARN" additivity="false">
+        <appender-ref ref="FILE" />
+    </logger>
+</included>
