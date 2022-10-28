@@ -1,5 +1,6 @@
 package com.company.handlers;
 
+import com.company.ParametersForWeb;
 import com.company.Validator;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
@@ -13,13 +14,13 @@ public class ChoiceHandler {
     MethodsHandler methodsHandler = new MethodsHandler();
     public void getUsersChoice(){
 
-        ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in),new PrintWriter(System.out));
+        ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out,true));
 
         ItemHandler itemHandler = projectHandler.getItemHandler();
 
         while (processValue) {
             String name = itemHandler.validator.usernameValidation(itemHandler.userInput.usernameInput());
-            if(!name.isEmpty()){
+            if(name!=null) {
                 if (name.equals("exit")) {
                     processValue = false;
                 } else {
@@ -31,23 +32,24 @@ public class ChoiceHandler {
                         Integer usersChoice = projectHandler.getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
                         if (usersChoice == null) usersChoice = -1;
                         ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
+                        ParametersForWeb params = new ParametersForWeb(name,"databaseMySQL",MainMenu.getByIndex(itemsChoice).getOption());
+                        methodsHandler.loginPost(params);
                         mainMenuVariants(actionsWithItem, projectHandler);
+                        name = null;
                     } else {
                         processValue = false;
                     }
                 }
             }
-
         }
     }
 
     private void mainMenuVariants(ActionsWithItem actionsWithItem, ProjectHandler projectHandler) {
         ItemHandler itemHandler = projectHandler.getItemHandler();
-        Librarian librarian = projectHandler.getLibrarian();
         switch (actionsWithItem) {
 
             case ADD:
-                methodsHandler.postForAdd(itemHandler.createItem(itemHandler.getItem(librarian.genItemID())));
+                methodsHandler.postForAdd(itemHandler.createItem(itemHandler.getItem(1)));
                 break;
 
             case DELETE:

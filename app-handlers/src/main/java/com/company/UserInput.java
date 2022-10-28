@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class UserInput {
 
     //private static final org.apache.log4j.Logger log
-     //       = org.apache.log4j.Logger.getLogger(UserInput.class);
+    //       = org.apache.log4j.Logger.getLogger(UserInput.class);
 
     Scanner scan;
     PrintWriter out;
@@ -106,7 +106,6 @@ public class UserInput {
             return null;
         }
     }
-
 
     public Integer getSortingVar(String sortingMenuText) {
         try {

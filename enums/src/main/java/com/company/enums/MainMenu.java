@@ -16,9 +16,14 @@ public enum MainMenu {
     private final String option;
 
 
+
     MainMenu(int num, String option) {
         this.num = num;
         this.option = option;
+    }
+
+    public String getOption(){
+        return option;
     }
 
     @Override
