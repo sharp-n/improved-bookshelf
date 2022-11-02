@@ -34,7 +34,7 @@ public class ChoiceHandler {
                         ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
                         ParametersForWeb params = new ParametersForWeb(name,"databaseMySQL",MainMenu.getByIndex(itemsChoice).getOption());
                         methodsHandler.loginPost(params);
-                        mainMenuVariants(actionsWithItem, projectHandler);
+                        mainMenuVariants(actionsWithItem, projectHandler,params);
                         name = null;
                     } else {
                         processValue = false;
@@ -44,7 +44,7 @@ public class ChoiceHandler {
         }
     }
 
-    private void mainMenuVariants(ActionsWithItem actionsWithItem, ProjectHandler projectHandler) {
+    private void mainMenuVariants(ActionsWithItem actionsWithItem, ProjectHandler projectHandler, ParametersForWeb params) {
         ItemHandler itemHandler = projectHandler.getItemHandler();
         switch (actionsWithItem) {
 
@@ -53,8 +53,9 @@ public class ChoiceHandler {
                 break;
 
             case DELETE:
+                methodsHandler.getForDelete(params);
                 Integer idToDelete = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
-                methodsHandler.postForDelete(idToDelete);
+                methodsHandler.postForDelete(idToDelete,params);
                 break;
 
             case TAKE:

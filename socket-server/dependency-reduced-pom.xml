@@ -16,7 +16,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <lombok.version>1.18.24</lombok.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

@@ -71,9 +71,9 @@
     <module>db-service-for-spring</module>
   </modules>
   <properties>
+    <maven.compiler.target>8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <maven.compiler.source>8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>8</maven.compiler.target>
   </properties>
 </project>

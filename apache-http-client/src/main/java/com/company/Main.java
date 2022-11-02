@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.handlers.ChoiceHandler;
-import org.apache.hc.core5.http.ParseException;
+import org.apache.http.ParseException;
 
 import java.io.IOException;
 

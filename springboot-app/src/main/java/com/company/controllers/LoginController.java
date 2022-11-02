@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -30,9 +31,12 @@ public class LoginController {
     AuthService authService;
 
     @GetMapping("/login")
-    public String showLoginPage(Model model){
+    public String showLoginPage(Model model, HttpServletResponse response){
         try{
             handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
+//            cookieUtil.createCookie(response, CookieNames.USER_NAME,"User");    // TODO remove it
+//            cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,"oneFile");
+//            cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,"Book");
             return "login";
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
@@ -41,11 +45,16 @@ public class LoginController {
     }
 
     @PostMapping(value = "/login",consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_HTML_VALUE)
-    public String getUserName(HttpServletResponse response, @RequestBody Params params, Model model) {
+    public String getUserName(HttpServletResponse response, HttpServletRequest request, @RequestBody Params params, Model model) {
         try{
+
+            System.out.println(params.getName()+" - "+params.getTypeOfWork() + " - " + params.getTypeOfItem());
             cookieUtil.createCookie(response, CookieNames.USER_NAME,params.getName());
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
+            String userName = cookieUtil.getCookies(request).get(CookieNames.USER_NAME);
+            String typeOfWork = cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK);
+            System.out.println("Get cookies: " + userName + " + " + typeOfWork);
             return "redirect:/choose-action";
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());

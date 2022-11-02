@@ -22,11 +22,11 @@
     </dependency>
   </dependencies>
   <properties>
-    <slf4j-api.version>2.0.0</slf4j-api.version>
-    <tomcat.version>10.0.23</tomcat.version>
-    <logback-classic.version>1.2.11</logback-classic.version>
-    <httpclient.version>4.5.13</httpclient.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jstl.version>1.2</jstl.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <slf4j-api.version>2.0.0</slf4j-api.version>
+    <logback-classic.version>1.2.11</logback-classic.version>
+    <tomcat.version>10.0.23</tomcat.version>
+    <httpclient.version>4.5.13</httpclient.version>
   </properties>
 </project>

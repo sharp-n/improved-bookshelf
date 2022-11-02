@@ -7,7 +7,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean validateBasicAuthentication(String appUserName, String typeOfWork) {
-        return !appUserName.isEmpty()&& !typeOfWork.isEmpty();
+        System.out.println("authService: " + appUserName + " - " + typeOfWork);
+        return appUserName != null && typeOfWork != null && !appUserName.isEmpty() && !typeOfWork.isEmpty();
     }
 
 }
