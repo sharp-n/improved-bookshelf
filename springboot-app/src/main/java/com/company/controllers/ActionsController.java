@@ -81,8 +81,8 @@ public class ActionsController {
         }
     }
 
-    @PostMapping(value = "/delete")
-    public String deleteItem(HttpServletRequest request, @RequestParam(name = "item_id") int id, Model model){
+    @PostMapping(value = "/delete",consumes = MediaType.TEXT_PLAIN_VALUE,produces = MediaType.TEXT_HTML_VALUE)
+    public String deleteItem(HttpServletRequest request, @RequestBody int id, Model model){
         try {
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.deleteItem(params, id);

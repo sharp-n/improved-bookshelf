@@ -53,7 +53,7 @@ public class ChoiceHandler {
                 break;
 
             case DELETE:
-                methodsHandler.getForDelete(params);
+                //methodsHandler.getForDelete(params);
                 Integer idToDelete = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForDelete(idToDelete,params);
                 break;
@@ -62,7 +62,6 @@ public class ChoiceHandler {
                 Integer idToTake = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForTake(idToTake);
                 break;
-
             case RETURN:
                 Integer idToReturn = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForReturn(idToReturn);
