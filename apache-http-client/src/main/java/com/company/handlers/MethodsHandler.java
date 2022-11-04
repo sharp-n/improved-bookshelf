@@ -23,27 +23,25 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.cookie.ClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 
 import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class MethodsHandler {
+
+    private static final Logger log
+            = Logger.getLogger(MethodsHandler.class);
+
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     HttpClient httpClient = HttpClientBuilder.create()
             //.setDefaultCookieStore(basicCookieStore)
-            //.setRedirectStrategy(new LaxRedirectStrategy())
             .build();
-    BasicCookieStore basicCookieStore;
-
-    public void simpleGet() throws IOException, ParseException {
-        HttpGet request = new HttpGet("http://localhost:8090/login");
-        HttpResponse response = httpClient.execute(request);
-
-    }
 
     public void loginPost(ParametersForWeb params){
         try {
@@ -61,25 +59,40 @@ public class MethodsHandler {
             request.setHeader("Content-type", "application/json");
 //            HttpContext basicHttpContext = new BasicHttpContext();
 //            basicHttpContext.setAttribute(HttpClientContext.COOKIE_STORE, basicCookieStore);
-            request.addHeader("Cookie","userName=" + params.getName());
-            request.addHeader("Cookie","typeOfWork=" + params.getTypeOfWork());
-            request.addHeader("Cookie","typeOfItem=" + params.getTypeOfItem());
+            setCookies(request,params);
 
             HttpResponse response = httpClient.execute(request);
 
             System.out.println(EntityUtils.toString(response.getEntity()));
         //    CloseableHttpResponse response = httpClient.execute(request);
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            log.error(ioException.getMessage());
         }
     }
 
-    public void postForAdd(Item item){
-//        try{
-//
-//        } catch (IOException ioException) {
-//
-//        }
+    public void setCookies(HttpPost request, ParametersForWeb params){
+        request.addHeader("Cookie","userName=" + params.getName());
+        request.addHeader("Cookie","typeOfWork=" + params.getTypeOfWork());
+        request.addHeader("Cookie","typeOfItem=" + params.getTypeOfItem());
+    }
+    public void postForAdd(Item item, ParametersForWeb params){
+        try{
+            HttpPost request = new HttpPost("http://localhost:8090/choose-action/add");
+            request.setHeader("Accept", "text/html");
+            request.setHeader("Content-type", "application/json");
+
+            String paramsGson =  gson.toJson(item);
+            StringEntity json = new StringEntity(paramsGson, ContentType.APPLICATION_JSON);
+            request.setEntity(json);
+
+            setCookies(request,params);
+
+            HttpResponse response = httpClient.execute(request);
+            System.out.println(EntityUtils.toString(response.getEntity()));
+
+        } catch (IOException ioException) {
+            log.error(ioException.getMessage());
+        }
     }
 
     public BasicCookieStore createCookiesAndBasicCookieStore(ParametersForWeb params,String path){
@@ -98,48 +111,17 @@ public class MethodsHandler {
         return basicCookieStore;
     }
 
-    public void getForDelete(ParametersForWeb params){
-        try {
-
-            HttpPost request = new HttpPost("http://localhost:8090/choose-action/delete");
-            request.setHeader("Accept", "text/html");
-
-//            request.setHeader("Set-Cookie","userName=" + params.getName());
-//            request.setHeader("Set-Cookie","typeOfWork=" + params.getTypeOfWork());
-//            request.setHeader("Set-Cookie","typeOfItem=" + params.getTypeOfItem());
-
-            //BasicCookieStore basicCookieStore = createCookiesAndBasicCookieStore(params,"/choose-action/delete");
-
-//            HttpContext localContext = new BasicHttpContext();
-//            localContext.setAttribute(HttpClientContext.COOKIE_STORE, basicCookieStore);
-
-//            request.setHeader("Set-Cookie","userName=" + params.getName());
-//            request.setHeader("Set-Cookie","typeOfWork=databaseMySQL" + params.getTypeOfWork());
-//            request.setHeader("Set-Cookie","typeOfItem=Newspaper" + params.getTypeOfItem());
-
-            HttpResponse response = httpClient.execute(request);
-            System.out.println(EntityUtils.toString(response.getEntity()));
-        } catch (IOException | ParseException exception) {
-            exception.printStackTrace();
-        }
-    }
     public void postForDelete(int id,ParametersForWeb params){
         try {
             NameValuePair nameValuePair = new BasicNameValuePair("item_id",Integer.toString(id));
             HttpPost request = new HttpPost("http://localhost:8090/choose-action/delete");
-            //request.setHeader("Content-type", "text/plain");
             request.setHeader("Accept", "text/html");
-            // StringEntity entity = new StringEntity(nameValuePair.toString());
-//            HttpContext localContext = new BasicHttpContext();
-//            localContext.setAttribute(HttpClientContext.COOKIE_STORE, basicCookieStore);
             request.setEntity(new UrlEncodedFormEntity(new ArrayList<>(Collections.singletonList(nameValuePair))));
-            request.addHeader("Cookie","userName=" + params.getName());
-            request.addHeader("Cookie","typeOfWork=" + params.getTypeOfWork());
-            request.addHeader("Cookie","typeOfItem=" + params.getTypeOfItem());
+            setCookies(request,params);
             HttpResponse response = httpClient.execute(request);
             System.out.println(EntityUtils.toString(response.getEntity()));
         } catch (IOException | ParseException ioException) {
-            ioException.printStackTrace();
+            log.error(ioException.getMessage());
         }
     }
 
@@ -152,7 +134,7 @@ public class MethodsHandler {
             HttpResponse response = httpClient.execute(request);
             System.out.println(response.getEntity());
         } catch (IOException ioException) {
-
+            log.error(ioException.getMessage());
         }
     }
 
