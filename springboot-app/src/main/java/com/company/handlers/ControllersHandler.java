@@ -1,8 +1,6 @@
 package com.company.handlers;
 
-import com.company.Item;
-import com.company.User;
-import com.company.WebAppService;
+import com.company.*;
 import com.company.controllers.ActionsController;
 import com.company.db.services.ItemService;
 import com.company.db.services.UserService;
@@ -11,7 +9,6 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.DefaultItemHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.ParametersForWeb;
 import com.company.handlers.item_handlers.ItemHandlerProvider;
 import com.company.springappconstants.CookieNames;
 import com.company.springappconstants.MessagesAndTitlesConstants;
@@ -75,9 +72,8 @@ public class ControllersHandler {
         if(!userService.checkUserExistence(params.getName())){
             userService.addUser(params.getName());
         }
-        ItemHandler itemHandler = ItemHandlerProvider.getHandlerByClass(
-                ItemHandlerProvider.getClassBySimpleNameOfClass(params.typeOfItem));
-        return itemHandler.addItemToDB(item,params.getName(), itemService, userService);
+        return ItemHandlerProvider.getHandlerByClass(
+                ItemHandlerProvider.getClassBySimpleNameOfClass(params.typeOfItem)).addItemToDB(item,params.getName(), itemService, userService);
     }
 
     public Boolean deleteItem(ParametersForWeb params, int id) {

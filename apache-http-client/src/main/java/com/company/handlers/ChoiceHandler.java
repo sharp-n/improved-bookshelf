@@ -33,7 +33,7 @@ public class ChoiceHandler {
                         if (usersChoice == null) usersChoice = -1;
                         ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
                         ParametersForWeb params = new ParametersForWeb(name,"databaseMySQL",MainMenu.getByIndex(itemsChoice).getOption());
-                        methodsHandler.loginPost(params);
+                        //methodsHandler.loginPost(params);
                         mainMenuVariants(actionsWithItem, projectHandler,params);
                         name = null;
                     } else {
@@ -49,7 +49,7 @@ public class ChoiceHandler {
         switch (actionsWithItem) {
 
             case ADD:
-                methodsHandler.postForAdd(itemHandler.createItem(itemHandler.getItem(1)));
+                methodsHandler.postForAdd(itemHandler.createItem(itemHandler.getItem(1)),params);
                 break;
 
             case DELETE:

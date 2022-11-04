@@ -252,9 +252,10 @@ public class BookHandler extends ItemHandler<Book> {
                 item.isBorrowed());
     }
 
-    public boolean addItemToDB(Book item, String userName, ItemService itemService, UserService userService){
+    @Override
+    public boolean addItemToDB(Item item, String userName, ItemService itemService, UserService userService){
         try {
-            itemService.addItem(item, userName,userService);
+            itemService.addBook((Book)item, userName,userService);
             return true;
         } catch (Exception exception){
             //log.error(exception.getMessage() + " : " + BookHandler.class.getSimpleName() + " : addItemToDB()");

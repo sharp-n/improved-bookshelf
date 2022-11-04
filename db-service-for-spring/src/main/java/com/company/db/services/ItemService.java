@@ -28,7 +28,7 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    void addItem(Book book, String userName, UserService userService){
+    public void addBook(Book book, String userName, UserService userService){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(
                 book.getClass().getSimpleName(),
                 book.getTitle(),
@@ -41,7 +41,7 @@ public class ItemService {
         itemRepository.save(itemEntity);
     }
 
-    void addItem(Comics comics, String userName, UserService userService){
+    public void addComics(Comics comics, String userName, UserService userService){
         com.company.db.entities.Item item = new com.company.db.entities.Item(
                 comics.getClass().getSimpleName(),
                 comics.getTitle(),

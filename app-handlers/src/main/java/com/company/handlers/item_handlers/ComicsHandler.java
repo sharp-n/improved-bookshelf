@@ -182,9 +182,10 @@ public class ComicsHandler extends ItemHandler<Comics> {
                 item.isBorrowed());
     }
 
-    public boolean addItemToDB(Comics item, String userName, ItemService itemService, UserService userService){
+    @Override
+    public boolean addItemToDB(Item item, String userName, ItemService itemService, UserService userService){
         try {
-            itemService.addItem(item, userName,userService);
+            itemService.addComics((Comics) item, userName,userService);
             return true;
         } catch (Exception exception){
 //            log.error(exception.getMessage() + " : " + ComicsHandler.class.getSimpleName() + " : addItemToDB()");
