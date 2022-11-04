@@ -120,9 +120,10 @@ public class MethodsHandler {
             HttpResponse response = httpClient.execute(request);
             System.out.println(EntityUtils.toString(response.getEntity()));
         } catch (IOException ioException) {
-
+            log.error(ioException.getMessage() + " : " + MethodsHandler.class.getSimpleName() + " : postForShow()");
         }
     }
+
     // Error 406
 //    public void simplePost(ParametersForWeb params) throws IOException, ParseException {
 //        try {
