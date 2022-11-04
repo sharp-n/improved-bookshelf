@@ -3,6 +3,7 @@ package com.company.handlers;
 import com.company.Item;
 import com.company.User;
 import com.company.WebAppService;
+import com.company.controllers.ActionsController;
 import com.company.db.services.ItemService;
 import com.company.db.services.UserService;
 import com.company.enums.FilesMenu;
@@ -18,12 +19,14 @@ import com.company.enums.TemplatesAndRefs;
 import com.company.table.HtmlTableBuilder;
 import com.company.utils.CookieUtil;
 import lombok.AllArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,10 @@ import static com.company.springappconstants.ThymeleafVariables.*;
 @Service
 @AllArgsConstructor
 public class ControllersHandler {
+
+    private static final Logger log
+            = Logger.getLogger(ControllersHandler.class);
+
 
     CookieUtil cookieUtil;
     ItemService itemService;
@@ -83,11 +90,16 @@ public class ControllersHandler {
     }
 
     public boolean delete(int id, ParametersForWeb params){
-        if(itemService.checkItemExistence(id)&params.getName().equals(itemService.getItemById(id).getUser().getName())){
-            itemService.removeItem(id);
-            return true;
+        try {
+            if (itemService.checkItemExistence(id) & params.getName().equals(itemService.getItemById(id).getUser().getName())) {
+                itemService.removeItem(id);
+                return true;
+            }
+            return false;
+        } catch (NoSuchElementException noSuchElementException) {
+            log.error(noSuchElementException.getMessage());
+            return false;
         }
-        return false;
     }
 
     public ProjectHandler initProjectHandler(ParametersForWeb params){
@@ -114,10 +126,15 @@ public class ControllersHandler {
     }
 
     public boolean takeItemFromDB(int id, boolean forBorrow, ParametersForWeb params){
-        if(checkTypeOFFileWork(params)){
-            return itemService.updateBorrowed(id,forBorrow);
+        try {
+            if (checkTypeOFFileWork(params)) {
+                return itemService.updateBorrowed(id, forBorrow);
+            }
+            return false;
+        } catch (NoSuchElementException noSuchElementException){
+            log.error(noSuchElementException.getMessage());
+            return false;
         }
-        return false;
     }
 
     public String showItems(ParametersForWeb params, String option) {

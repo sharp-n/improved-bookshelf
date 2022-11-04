@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -52,12 +53,16 @@ public class ItemService {
         itemRepository.saveAndFlush(item);
     }
 
-    public com.company.db.entities.Item getItemById(int id){
-        return itemRepository.findById(id).get();
+    public com.company.db.entities.Item getItemById(int id) throws NoSuchElementException {
+            return itemRepository.findById(id).get();
     }
 
     public void removeItem(int id){
-        itemRepository.delete(getItemById(id));
+        try {
+            itemRepository.delete(getItemById(id));
+        } catch (NoSuchElementException noSuchElementException){
+
+        }
     }
 
     public List<Item> getAllElements(){
@@ -68,7 +73,7 @@ public class ItemService {
         return itemRepository.existsById(id);
     }
 
-    public boolean updateBorrowed(int id, boolean borrowedToSet){
+    public boolean updateBorrowed(int id, boolean borrowedToSet) throws NoSuchElementException{
         if (checkItemExistence(id)){
             com.company.db.entities.Item item = getItemById(id);
             if (item.isBorrowed()!=borrowedToSet){

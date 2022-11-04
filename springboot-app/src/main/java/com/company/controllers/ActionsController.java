@@ -81,17 +81,17 @@ public class ActionsController {
         }
     }
 
-    @PostMapping(value = "/delete",consumes = MediaType.TEXT_PLAIN_VALUE,produces = MediaType.TEXT_HTML_VALUE)
-    public String deleteItem(HttpServletRequest request, @RequestBody int id, Model model){
-        try {
+    @PostMapping(value = "/delete")
+    public String deleteItem(HttpServletRequest request, @RequestParam(name="item_id") int id, Model model){
+//        try {
             ParametersForWeb params = handler.genAndGetParams(request);
             Boolean success = handler.deleteItem(params, id);
             handler.informAboutActionSuccess(model, success);
             return "inform-page-template";
-        } catch (Exception exception){
-            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
-            return "redirect:/error";
-        }
+//        } catch (Exception exception){
+//            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
+//            return "redirect:/error";
+//        }
     }
 
     @GetMapping("/take")

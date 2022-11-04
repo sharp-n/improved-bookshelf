@@ -7,10 +7,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpsParameters;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -18,10 +21,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.cookie.ClientCookie;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class MethodsHandler {
 
@@ -119,13 +125,14 @@ public class MethodsHandler {
     }
     public void postForDelete(int id,ParametersForWeb params){
         try {
+            NameValuePair nameValuePair = new BasicNameValuePair("item_id",Integer.toString(id));
             HttpPost request = new HttpPost("http://localhost:8090/choose-action/delete");
-            request.setHeader("Content-type", "text/plain");
+            //request.setHeader("Content-type", "text/plain");
             request.setHeader("Accept", "text/html");
-            StringEntity entity = new StringEntity(Integer.toString(id));
+            // StringEntity entity = new StringEntity(nameValuePair.toString());
 //            HttpContext localContext = new BasicHttpContext();
 //            localContext.setAttribute(HttpClientContext.COOKIE_STORE, basicCookieStore);
-            request.setEntity(entity);
+            request.setEntity(new UrlEncodedFormEntity(new ArrayList<>(Collections.singletonList(nameValuePair))));
             request.addHeader("Cookie","userName=" + params.getName());
             request.addHeader("Cookie","typeOfWork=" + params.getTypeOfWork());
             request.addHeader("Cookie","typeOfItem=" + params.getTypeOfItem());
