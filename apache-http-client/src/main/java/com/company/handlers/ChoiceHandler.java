@@ -4,6 +4,7 @@ import com.company.ParametersForWeb;
 import com.company.Validator;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.MainMenu;
+import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
 
 import java.io.PrintWriter;
@@ -33,7 +34,6 @@ public class ChoiceHandler {
                         if (usersChoice == null) usersChoice = -1;
                         ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
                         ParametersForWeb params = new ParametersForWeb(name,"databaseMySQL",MainMenu.getByIndex(itemsChoice).getOption());
-                        //methodsHandler.loginPost(params);
                         mainMenuVariants(actionsWithItem, projectHandler,params);
                         name = null;
                     } else {
@@ -53,7 +53,6 @@ public class ChoiceHandler {
                 break;
 
             case DELETE:
-                //methodsHandler.getForDelete(params);
                 Integer idToDelete = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForDelete(idToDelete,params);
                 break;
@@ -68,7 +67,9 @@ public class ChoiceHandler {
                 break;
 
             case SHOW:
-                methodsHandler.postForShow(itemHandler);
+                int parameter = projectHandler.userInput.getSortingVar(itemHandler.genSortingMenuText());
+                String paramStr = SortingMenu.getByIndex(parameter).getDbColumn();
+                methodsHandler.postForShow(paramStr,params);
                 break;
 
             case EXIT_VALUE:

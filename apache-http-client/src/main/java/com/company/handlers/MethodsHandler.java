@@ -43,38 +43,12 @@ public class MethodsHandler {
             //.setDefaultCookieStore(basicCookieStore)
             .build();
 
-    public void loginPost(ParametersForWeb params){
-        try {
-            HttpPost request = new HttpPost("http://localhost:8090/login");
-            String paramsGson =  gson.toJson(params, ParametersForWeb.class);
-            System.out.println(paramsGson);
-            StringEntity json = new StringEntity(paramsGson, ContentType.APPLICATION_JSON);
-            request.setEntity(json);
-
-            //basicCookieStore = createCookiesAndBasicCookieStore(params, "/*");
-
-
-
-            request.setHeader("Accept", "text/html");
-            request.setHeader("Content-type", "application/json");
-//            HttpContext basicHttpContext = new BasicHttpContext();
-//            basicHttpContext.setAttribute(HttpClientContext.COOKIE_STORE, basicCookieStore);
-            setCookies(request,params);
-
-            HttpResponse response = httpClient.execute(request);
-
-            System.out.println(EntityUtils.toString(response.getEntity()));
-        //    CloseableHttpResponse response = httpClient.execute(request);
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage());
-        }
-    }
-
     public void setCookies(HttpPost request, ParametersForWeb params){
         request.addHeader("Cookie","userName=" + params.getName());
         request.addHeader("Cookie","typeOfWork=" + params.getTypeOfWork());
         request.addHeader("Cookie","typeOfItem=" + params.getTypeOfItem());
     }
+
     public void postForAdd(Item item, ParametersForWeb params){
         try{
             HttpPost request = new HttpPost("http://localhost:8090/choose-action/add");
@@ -131,19 +105,23 @@ public class MethodsHandler {
 
     public void postForTake(int id, ParametersForWeb params) {
         createNewRequestWithIdParameter("/choose-action/take", id, params);
-
     }
 
     public void postForReturn(int id,ParametersForWeb params){
-        createNewRequestWithIdParameter("/choose-action/take", id, params);
+        createNewRequestWithIdParameter("/choose-action/return", id, params);
     }
 
-    public void postForShow(ItemHandler itemHandler){
-//        try {
-//
-//        } catch (IOException ioException) {
-//
-//        }
+    public void postForShow(String parameter,ParametersForWeb params){
+        try {
+            HttpPost request = new HttpPost("http://localhost:8090/choose-action/show");
+            NameValuePair nameValuePair = new BasicNameValuePair("sorting-param",parameter);
+            request.setEntity(new UrlEncodedFormEntity(new ArrayList<>(Collections.singletonList(nameValuePair))));
+            setCookies(request,params);
+            HttpResponse response = httpClient.execute(request);
+            System.out.println(EntityUtils.toString(response.getEntity()));
+        } catch (IOException ioException) {
+
+        }
     }
     // Error 406
 //    public void simplePost(ParametersForWeb params) throws IOException, ParseException {
