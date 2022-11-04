@@ -60,11 +60,11 @@ public class ChoiceHandler {
 
             case TAKE:
                 Integer idToTake = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
-                methodsHandler.postForTake(idToTake);
+                methodsHandler.postForTake(idToTake,params);
                 break;
             case RETURN:
                 Integer idToReturn = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
-                methodsHandler.postForReturn(idToReturn);
+                methodsHandler.postForReturn(idToReturn,params);
                 break;
 
             case SHOW:

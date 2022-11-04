@@ -111,39 +111,31 @@ public class MethodsHandler {
         return basicCookieStore;
     }
 
-    public void postForDelete(int id,ParametersForWeb params){
+    public void createNewRequestWithIdParameter(String path, int id,ParametersForWeb params) {
         try {
-            NameValuePair nameValuePair = new BasicNameValuePair("item_id",Integer.toString(id));
-            HttpPost request = new HttpPost("http://localhost:8090/choose-action/delete");
+            NameValuePair nameValuePair = new BasicNameValuePair("item_id", Integer.toString(id));
+            HttpPost request = new HttpPost("http://localhost:8090" + path);
             request.setHeader("Accept", "text/html");
             request.setEntity(new UrlEncodedFormEntity(new ArrayList<>(Collections.singletonList(nameValuePair))));
-            setCookies(request,params);
+            setCookies(request, params);
             HttpResponse response = httpClient.execute(request);
             System.out.println(EntityUtils.toString(response.getEntity()));
         } catch (IOException | ParseException ioException) {
-            log.error(ioException.getMessage());
+            log.error(ioException.getMessage() + " : " + MethodsHandler.class.getSimpleName() + " : createNewRequestWithIdParameter()");
         }
     }
 
-    public void postForTake(int id) {
-        try {
-            HttpPost request = new HttpPost("/choose-action/take");
-            request.setHeader("Accept", "text/html");
-            StringEntity entity = new StringEntity(Integer.toString(id));
-            request.setEntity(entity);
-            HttpResponse response = httpClient.execute(request);
-            System.out.println(response.getEntity());
-        } catch (IOException ioException) {
-            log.error(ioException.getMessage());
-        }
+    public void postForDelete(int id,ParametersForWeb params){
+        createNewRequestWithIdParameter("/choose-action/delete",id,params);
     }
 
-    public void postForReturn(int id){
-//        try {
-//
-//        } catch (IOException ioException) {
-//
-//        }
+    public void postForTake(int id, ParametersForWeb params) {
+        createNewRequestWithIdParameter("/choose-action/take", id, params);
+
+    }
+
+    public void postForReturn(int id,ParametersForWeb params){
+        createNewRequestWithIdParameter("/choose-action/take", id, params);
     }
 
     public void postForShow(ItemHandler itemHandler){
