@@ -3,6 +3,7 @@ package com.company.handlers;
 import com.company.ParametersForWeb;
 import com.company.Validator;
 import com.company.enums.ActionsWithItem;
+import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.item_handlers.ItemHandler;
@@ -26,18 +27,25 @@ public class ChoiceHandler {
                     processValue = false;
                 } else {
                     processValue = true;
-                    System.out.println(itemHandler.initItemsMenuText());
-                    Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
-                    boolean chosenItem = projectHandler.itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
-                    if (chosenItem) {
-                        Integer usersChoice = projectHandler.getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
-                        if (usersChoice == null) usersChoice = -1;
-                        ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
-                        ParametersForWeb params = new ParametersForWeb(name,"databaseMySQL",MainMenu.getByIndex(itemsChoice).getOption());
-                        mainMenuVariants(actionsWithItem, projectHandler,params);
-                        name = null;
-                    } else {
-                        processValue = false;
+                    int usersFilesMenuChoice = projectHandler.usersFilesMenuChoice(itemHandler.userInput);
+                    String typeOfWork = FilesMenu.getByIndex(usersFilesMenuChoice).getServletParameter();
+                    while(usersFilesMenuChoice>0) {
+
+                        System.out.println(itemHandler.initItemsMenuText());
+                        Integer itemsChoice = itemHandler.userInput.getItemMenuVar();
+
+                        boolean chosenItem = projectHandler.itemMenuSwitch(MainMenu.getByIndex(itemsChoice));
+                        if (chosenItem) {
+                            Integer usersChoice = projectHandler.getUsersMainMenuChoice(itemHandler.initActionsWithItemsMenuText(), itemHandler.userInput);
+                            if (usersChoice == null) usersChoice = -1;
+                            ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
+                            ParametersForWeb params = new ParametersForWeb(name, typeOfWork, MainMenu.getByIndex(itemsChoice).getOption());
+                            mainMenuVariants(actionsWithItem, projectHandler, params);
+                            name = null;
+                        } else {
+                            processValue = false;
+                            usersFilesMenuChoice = -1;
+                        }
                     }
                 }
             }

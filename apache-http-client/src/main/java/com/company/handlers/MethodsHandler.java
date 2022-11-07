@@ -3,6 +3,7 @@ package com.company.handlers;
 import com.company.Item;
 import com.company.ParametersForWeb;
 import com.company.handlers.item_handlers.ItemHandler;
+import com.company.table.TableConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpsParameters;
@@ -27,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -118,7 +120,10 @@ public class MethodsHandler {
             request.setEntity(new UrlEncodedFormEntity(new ArrayList<>(Collections.singletonList(nameValuePair))));
             setCookies(request,params);
             HttpResponse response = httpClient.execute(request);
-            System.out.println(EntityUtils.toString(response.getEntity()));
+            String responsePage = EntityUtils.toString(response.getEntity());
+            String table = responsePage.substring(responsePage.indexOf("<table"),responsePage.indexOf("</table>"));
+            TableConverter tableConverter = new TableConverter();
+            tableConverter.fromHtmlToSimpleTable(table,new PrintWriter(System.out,true));
         } catch (IOException ioException) {
             log.error(ioException.getMessage() + " : " + MethodsHandler.class.getSimpleName() + " : postForShow()");
         }
