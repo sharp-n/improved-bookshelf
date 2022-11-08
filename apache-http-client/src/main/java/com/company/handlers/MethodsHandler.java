@@ -121,7 +121,7 @@ public class MethodsHandler {
             setCookies(request,params);
             HttpResponse response = httpClient.execute(request);
             String responsePage = EntityUtils.toString(response.getEntity());
-            String table = responsePage.substring(responsePage.indexOf("<table"),responsePage.indexOf("</table>"));
+            String table  = responsePage.substring(responsePage.indexOf("<table"),responsePage.indexOf("</table>"));
             TableConverter tableConverter = new TableConverter();
             tableConverter.fromHtmlToSimpleTable(table,new PrintWriter(System.out,true));
         } catch (IOException ioException) {
