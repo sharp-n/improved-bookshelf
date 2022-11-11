@@ -31,7 +31,7 @@ public class ProjectHandler {
     boolean mainProcValue;
 
     Librarian librarian;
-    UserInput userInput;
+    public UserInput userInput;
     String typeOfItem;
 
     public Librarian getLibrarian() {

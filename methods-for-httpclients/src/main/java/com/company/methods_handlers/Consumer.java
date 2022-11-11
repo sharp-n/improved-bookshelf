@@ -1,5 +1,6 @@
-package com.company;
+package com.company.methods_handlers;
 
+import com.company.ParametersForWeb;
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -9,10 +10,10 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class Consumer {
 
-    public static void main(String[] args) {
-        Consumer consumer = new Consumer(new RestTemplate());
-        consumer.postForTakeMethod(3,new ParametersForWeb("yana","oneFile","Newspaper"));
-    }
+//    public static void main(String[] args) {
+//        Consumer consumer = new Consumer(new RestTemplate());
+//        consumer.postForTakeMethod(3,new ParametersForWeb("yana","oneFile","Newspaper"));
+//    }
 
     RestTemplate restTemplate;
 

@@ -1,19 +1,24 @@
-package com.company.handlers;
+package com.company;
 
-import com.company.ParametersForWeb;
-import com.company.Validator;
 import com.company.enums.ActionsWithItem;
 import com.company.enums.FilesMenu;
 import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
+import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
+import com.company.methods_handlers.MethodsHandler;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class ChoiceHandler {
     boolean processValue = true;
-    MethodsHandler methodsHandler = new MethodsHandler();
+    MethodsHandler methodsHandler;
+
+    public ChoiceHandler(MethodsHandler methodsHandler) {
+        this.methodsHandler = methodsHandler;
+    }
+
     public void getUsersChoice(){
 
         ProjectHandler projectHandler = new ProjectHandler(new Scanner(System.in), new PrintWriter(System.out,true));
@@ -69,6 +74,7 @@ public class ChoiceHandler {
                 Integer idToTake = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForTake(idToTake,params);
                 break;
+
             case RETURN:
                 Integer idToReturn = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
                 methodsHandler.postForReturn(idToReturn,params);
