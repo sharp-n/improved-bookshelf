@@ -139,10 +139,11 @@ public class ProjectHandler {
             case JOURNAL:
                 itemHandler = new JournalHandler(out,in);
                 break;
-            case SHOW_ALL_THE_ITEMS:
-                showSortedItems();
-                itemHandler = new JournalHandler(out,in);
-                break;
+//            case SHOW_ALL_THE_ITEMS:
+//                showSortedItems();
+//                chosenItem = false;
+//                //itemHandler = new JournalHandler(out,in);
+//                break;
             default:
                 itemHandler.userInput.printDefaultMessage();
                 chosenItem = false;

@@ -6,6 +6,7 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
+import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
 import com.company.methods_handlers.MethodsHandler;
 
 import java.io.PrintWriter;
@@ -72,12 +73,12 @@ public class ChoiceHandler {
 
             case TAKE:
                 Integer idToTake = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
-                methodsHandler.postForTake(idToTake,params);
+                methodsHandler.postForTakeOrReturn(idToTake,params,true);
                 break;
 
             case RETURN:
                 Integer idToReturn = new Validator(projectHandler.out).validateID(projectHandler.userInput.idUserInput());
-                methodsHandler.postForReturn(idToReturn,params);
+                methodsHandler.postForTakeOrReturn(idToReturn,params,false);
                 break;
 
             case SHOW:
