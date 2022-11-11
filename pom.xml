@@ -28,6 +28,7 @@
         <module>springboot-app</module>
         <module>db-service-for-spring</module>
         <module>apache-http-client</module>
+        <module>spring-rest-template</module>
     </modules>
 
     <properties>
