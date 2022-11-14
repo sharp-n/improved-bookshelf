@@ -1,42 +1,35 @@
-package com.company.handlers;
+package com.company.methods_handlers;
 
 import com.company.Item;
 import com.company.ParametersForWeb;
-import com.company.handlers.item_handlers.ItemHandler;
 import com.company.table.TableConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpsParameters;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.cookie.ClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
-import javax.swing.text.html.parser.Entity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
-public class MethodsHandler {
+public class ApacheHttpClientMethodsHandler implements MethodsHandler {
 
     private static final Logger log
-            = Logger.getLogger(MethodsHandler.class);
+            = Logger.getLogger(ApacheHttpClientMethodsHandler.class);
 
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -97,7 +90,7 @@ public class MethodsHandler {
             HttpResponse response = httpClient.execute(request);
             System.out.println(EntityUtils.toString(response.getEntity()));
         } catch (IOException | ParseException ioException) {
-            log.error(ioException.getMessage() + " : " + MethodsHandler.class.getSimpleName() + " : createNewRequestWithIdParameter()");
+            log.error(ioException.getMessage() + " : " + ApacheHttpClientMethodsHandler.class.getSimpleName() + " : createNewRequestWithIdParameter()");
         }
     }
 
@@ -105,12 +98,13 @@ public class MethodsHandler {
         createNewRequestWithIdParameter("/choose-action/delete",id,params);
     }
 
-    public void postForTake(int id, ParametersForWeb params) {
-        createNewRequestWithIdParameter("/choose-action/take", id, params);
-    }
+    public void postForTakeOrReturn(int id, ParametersForWeb params,boolean toTake) {
+        if(toTake){
+            createNewRequestWithIdParameter("/choose-action/take", id, params);
+        } else {
+            createNewRequestWithIdParameter("/choose-action/return", id, params);
+        }
 
-    public void postForReturn(int id,ParametersForWeb params){
-        createNewRequestWithIdParameter("/choose-action/return", id, params);
     }
 
     public void postForShow(String parameter,ParametersForWeb params){
@@ -125,7 +119,7 @@ public class MethodsHandler {
             TableConverter tableConverter = new TableConverter();
             tableConverter.fromHtmlToSimpleTable(table,new PrintWriter(System.out,true));
         } catch (IOException ioException) {
-            log.error(ioException.getMessage() + " : " + MethodsHandler.class.getSimpleName() + " : postForShow()");
+            log.error(ioException.getMessage() + " : " + ApacheHttpClientMethodsHandler.class.getSimpleName() + " : postForShow()");
         }
     }
 

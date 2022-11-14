@@ -1,21 +1,11 @@
 package com.company;
 
-import com.company.handlers.ChoiceHandler;
-import org.apache.http.ParseException;
-
-import java.io.IOException;
+import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
 
 public class Main {
 
-
-
-    public static void main(String[] args) throws IOException, ParseException {
-//        MethodsHandler methodsHandler = new MethodsHandler();
-//        methodsHandler.simpleGet();
-//        methodsHandler.postForTake();
-//        ParametersForWeb params = new ParametersForWeb("User","oneFile","journal");
-//        simplePost(params);
-        ChoiceHandler choiceHandler = new ChoiceHandler();
+    public static void main(String[] args)  {
+        ChoiceHandler choiceHandler = new ChoiceHandler(new ApacheHttpClientMethodsHandler());
         choiceHandler.getUsersChoice();
     }
 }
