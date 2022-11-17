@@ -29,6 +29,7 @@
         <module>db-service-for-spring</module>
         <module>apache-http-client</module>
         <module>spring-rest-template</module>
+        <module>feign-http-client</module>
     </modules>
 
     <properties>

@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
+import com.company.methods_handlers.apache_http_client.ApacheHttpClientMethodsHandler;
 
 public class Main {
 

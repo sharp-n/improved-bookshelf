@@ -1,5 +1,6 @@
 package com.company.controllers;
 
+import com.company.ParametersForWeb;
 import com.company.auth.AuthService;
 import com.company.db.repositories.UserRepository;
 import com.company.handlers.ControllersHandler;
@@ -9,7 +10,9 @@ import com.company.utils.CookieUtil;
 import com.company.utils.Params;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,12 +34,9 @@ public class LoginController {
     AuthService authService;
 
     @GetMapping("/login")
-    public String showLoginPage(Model model, HttpServletResponse response){
+    public String showLoginPage(Model model){
         try{
             handler.addAttribute(model,BlocksNames.LOGIN, BlocksNames.NO_REFS);
-//            cookieUtil.createCookie(response, CookieNames.USER_NAME,"User");    // TODO remove it
-//            cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,"oneFile");
-//            cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,"Book");
             return "login";
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
@@ -48,13 +48,10 @@ public class LoginController {
     public String getUserName(HttpServletResponse response, HttpServletRequest request, @RequestBody Params params, Model model) {
         try{
 
-            System.out.println(params.getName()+" - "+params.getTypeOfWork() + " - " + params.getTypeOfItem());
             cookieUtil.createCookie(response, CookieNames.USER_NAME,params.getName());
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_FILE_WORK,params.getTypeOfWork());
             cookieUtil.createCookie(response, CookieNames.TYPE_OF_ITEM,params.getTypeOfItem());
-            String userName = cookieUtil.getCookies(request).get(CookieNames.USER_NAME);
-            String typeOfWork = cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_FILE_WORK);
-            System.out.println("Get cookies: " + userName + " + " + typeOfWork);
+
             return "redirect:/choose-action";
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
@@ -70,6 +67,18 @@ public class LoginController {
             log.error(exception.getMessage() + ":" + LoginController.class.getSimpleName());
             return "redirect:/error";
         }
+    }
+
+    @PostMapping("/cookies")
+    public ResponseEntity login(@RequestBody ParametersForWeb params){
+        ResponseEntity<Object> responseEntity = ResponseEntity
+                .ok()
+                .header(HttpHeaders.SET_COOKIE,
+                        CookieNames.USER_NAME + "=" + params.getName(),
+                        CookieNames.TYPE_OF_FILE_WORK + "=" + params.getTypeOfWork(),
+                        CookieNames.TYPE_OF_ITEM + "=" + params.getTypeOfItem())
+                .build();
+        return responseEntity;
     }
 
 }

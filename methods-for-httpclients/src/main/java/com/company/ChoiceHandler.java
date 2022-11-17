@@ -6,13 +6,13 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
 import com.company.methods_handlers.MethodsHandler;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class ChoiceHandler {
+
     boolean processValue = true;
     MethodsHandler methodsHandler;
 

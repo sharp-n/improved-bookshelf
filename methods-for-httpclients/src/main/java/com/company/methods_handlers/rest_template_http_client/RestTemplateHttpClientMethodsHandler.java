@@ -1,7 +1,8 @@
-package com.company.methods_handlers;
+package com.company.methods_handlers.rest_template_http_client;
 
 import com.company.Item;
 import com.company.ParametersForWeb;
+import com.company.methods_handlers.MethodsHandler;
 import com.company.table.TableConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +13,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 
