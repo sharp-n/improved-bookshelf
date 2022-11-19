@@ -6,7 +6,6 @@ import com.company.methods_handlers.MethodsHandler;
 import com.company.table.TableConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

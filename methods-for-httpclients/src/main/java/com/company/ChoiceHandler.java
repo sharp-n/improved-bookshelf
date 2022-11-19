@@ -7,10 +7,12 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.methods_handlers.MethodsHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+@Component
 public class ChoiceHandler {
 
     boolean processValue = true;
