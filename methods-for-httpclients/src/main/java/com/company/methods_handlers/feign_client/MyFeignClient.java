@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public interface MyFeignClient {
 
     @PostMapping("/cookies")
-    ResponseEntity login(@RequestBody ParametersForWeb params);
+    public ResponseEntity login(@RequestBody ParametersForWeb params);
 
     @PutMapping("/choose-action/add")
     ResponseEntity add(String item,
@@ -32,6 +32,12 @@ public interface MyFeignClient {
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
                                  @CookieValue("typeOfItem") String typeOfItem);
+
+    @PutMapping("/return")
+    ResponseEntity returnItem(int id,
+                          @CookieValue("userName") String userName,
+                          @CookieValue("typeOfWork") String typeOfWork,
+                          @CookieValue("typeOfItem") String typeOfItem);
 
     @PostMapping(value = "/show-items")
     String showItems(@CookieValue("userName") String userName,
