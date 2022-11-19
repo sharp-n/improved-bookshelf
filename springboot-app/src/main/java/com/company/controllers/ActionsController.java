@@ -1,5 +1,6 @@
 package com.company.controllers;
 
+import com.company.Item;
 import com.company.ParametersForWeb;
 import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
@@ -9,11 +10,13 @@ import com.company.utils.CookieUtil;
 import lombok.AllArgsConstructor;
 import org.apache.log4j.Logger;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -70,6 +73,24 @@ public class ActionsController {
         }
     }
 
+    @PutMapping("/add")
+    public ResponseEntity add(String item,
+                              @CookieValue("userName") String userName,
+                              @CookieValue("typeOfWork") String typeOfWork,
+                              @CookieValue("typeOfItem") String typeOfItem){
+        Boolean success =
+                handler.addItem(item, new ParametersForWeb(userName,typeOfWork,typeOfItem));
+        ResponseEntity responseEntity;
+        if(success) {
+            responseEntity = ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            responseEntity = ResponseEntity.internalServerError().build();
+        }
+        return responseEntity;
+    }
+
     @GetMapping("/delete")
     public String showDeleteItemPage(Model model){
         try {
@@ -92,6 +113,23 @@ public class ActionsController {
 //            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
 //            return "redirect:/error";
 //        }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity delete(int id,
+                                 @CookieValue("userName") String userName,
+                                 @CookieValue("typeOfWork") String typeOfWork,
+                                 @CookieValue("typeOfItem") String typeOfItem){ //todo cookies management
+        ResponseEntity responseEntity;
+        boolean success = handler.deleteItem(new ParametersForWeb(userName,typeOfWork,typeOfItem),id);
+        if(success) {
+            responseEntity = ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            responseEntity = ResponseEntity.internalServerError().build(); // todo create method for it
+        }
+        return responseEntity;
     }
 
     @GetMapping("/take")
@@ -119,6 +157,23 @@ public class ActionsController {
 
     }
 
+    @PutMapping("/take")
+    public ResponseEntity borrow(int id,
+                                 @CookieValue("userName") String userName,
+                                 @CookieValue("typeOfWork") String typeOfWork,
+                                 @CookieValue("typeOfItem") String typeOfItem){
+        boolean success = handler.takeItem(new ParametersForWeb(userName,typeOfWork,typeOfItem),id,true);
+        ResponseEntity responseEntity;
+        if(success) {
+            responseEntity = ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            responseEntity = ResponseEntity.internalServerError().build();
+        }
+        return responseEntity;
+    }
+
     @GetMapping("/return")
     public String showReturnItemPage(Model model){
         try{
@@ -144,12 +199,45 @@ public class ActionsController {
 
     }
 
+    @PutMapping("/return")
+    public ResponseEntity returnItem(int id,
+                                     @CookieValue("userName") String userName,
+                                     @CookieValue("typeOfWork") String typeOfWork,
+                                     @CookieValue("typeOfItem") String typeOfItem){
+        boolean success = handler.takeItem(new ParametersForWeb(userName,typeOfWork,typeOfItem),id,false);
+        ResponseEntity responseEntity;
+        if(success) {
+            responseEntity = ResponseEntity
+                    .ok()
+                    .build();
+        } else {
+            responseEntity = ResponseEntity.internalServerError().build();
+        }
+        return responseEntity;
+
+    }
+
     @GetMapping("/show")
     public String showItemsPage(HttpServletRequest request,Model model){
         try {
             String template = handler.getSortingTemplateByTypeOfItem(cookieUtil.getCookies(request).get(CookieNames.TYPE_OF_ITEM));
             handler.addAttribute(model,template, BlocksNames.REF_TO_LOGIN_ACTION);
             return "item-actions";
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
+            return "redirect:/error";
+        }
+    }
+
+    @PostMapping(value = "/show-items")
+    public String showItems(@CookieValue("userName") String userName,
+                            @CookieValue("typeOfWork") String typeOfWork,
+                            @CookieValue("typeOfItem") String typeOfItem,
+                            @RequestParam(name = "sorting-param") String comparator){
+        try {
+            ParametersForWeb params = new ParametersForWeb(userName,typeOfWork,typeOfItem);
+            return handler.showItems(params, comparator);
+
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";
