@@ -7,6 +7,7 @@ import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
 import com.company.methods_handlers.MethodsHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ public class ChoiceHandler {
     boolean processValue = true;
     MethodsHandler methodsHandler;
 
+    @Autowired
     public ChoiceHandler(MethodsHandler methodsHandler) {
         this.methodsHandler = methodsHandler;
     }

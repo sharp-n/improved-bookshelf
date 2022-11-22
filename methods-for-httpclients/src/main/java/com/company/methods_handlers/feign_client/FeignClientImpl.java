@@ -1,20 +1,22 @@
 package com.company.methods_handlers.feign_client;
 
 import com.company.ParametersForWeb;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class FeignClientImpl implements MyFeignClient {
 
     final MyFeignClient myFeignClient;
 
-    @Autowired
-    public FeignClientImpl(@Qualifier("com.company.MyFeignClient") MyFeignClient myFeignClient){
-        this.myFeignClient = myFeignClient;
-    }
+//    @Autowired
+//    public FeignClientImpl(@Qualifier("com.company.MyFeignClient") MyFeignClient myFeignClient){
+//        this.myFeignClient = myFeignClient;
+//    }
 
 
     @Override

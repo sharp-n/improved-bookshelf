@@ -42,7 +42,7 @@ public class ActionsController {
     }
 
     @PostMapping
-    public String redirectToAction(HttpServletRequest request, @RequestParam String action){
+    public String redirectToAction(@RequestParam String action){
             return "redirect:/choose-action/" + action;
     }
 
@@ -74,7 +74,7 @@ public class ActionsController {
     }
 
     @PutMapping("/add")
-    public ResponseEntity add(String item,
+    public ResponseEntity add(@RequestBody String item,
                               @CookieValue("userName") String userName,
                               @CookieValue("typeOfWork") String typeOfWork,
                               @CookieValue("typeOfItem") String typeOfItem){
@@ -116,7 +116,7 @@ public class ActionsController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity delete(int id,
+    public ResponseEntity delete(@RequestBody int id,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
                                  @CookieValue("typeOfItem") String typeOfItem){ //todo cookies management
@@ -158,11 +158,11 @@ public class ActionsController {
     }
 
     @PutMapping("/take")
-    public ResponseEntity borrow(int id,
+    public ResponseEntity borrow(@RequestBody int itemId,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
                                  @CookieValue("typeOfItem") String typeOfItem){
-        boolean success = handler.takeItem(new ParametersForWeb(userName,typeOfWork,typeOfItem),id,true);
+        boolean success = handler.takeItem(new ParametersForWeb(userName,typeOfWork,typeOfItem),itemId,true);
         ResponseEntity responseEntity;
         if(success) {
             responseEntity = ResponseEntity
@@ -200,7 +200,7 @@ public class ActionsController {
     }
 
     @PutMapping("/return")
-    public ResponseEntity returnItem(int id,
+    public ResponseEntity returnItem(@RequestBody int id,
                                      @CookieValue("userName") String userName,
                                      @CookieValue("typeOfWork") String typeOfWork,
                                      @CookieValue("typeOfItem") String typeOfItem){
@@ -233,7 +233,7 @@ public class ActionsController {
     public String showItems(@CookieValue("userName") String userName,
                             @CookieValue("typeOfWork") String typeOfWork,
                             @CookieValue("typeOfItem") String typeOfItem,
-                            @RequestParam(name = "sorting-param") String comparator){
+                            @RequestBody String comparator){
         try {
             ParametersForWeb params = new ParametersForWeb(userName,typeOfWork,typeOfItem);
             return handler.showItems(params, comparator);

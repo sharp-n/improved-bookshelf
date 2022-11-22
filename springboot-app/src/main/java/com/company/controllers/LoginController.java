@@ -69,7 +69,7 @@ public class LoginController {
         }
     }
 
-    @PostMapping("/cookies")
+    @PostMapping(value = "/cookies", consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity login(@RequestBody ParametersForWeb params){
         ResponseEntity<Object> responseEntity = ResponseEntity
                 .ok()

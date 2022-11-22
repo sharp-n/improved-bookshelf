@@ -30,6 +30,7 @@
         <module>apache-http-client</module>
         <module>spring-rest-template</module>
         <module>feign-http-client</module>
+        <module>methods-for-httpclients</module>
     </modules>
 
     <properties>
