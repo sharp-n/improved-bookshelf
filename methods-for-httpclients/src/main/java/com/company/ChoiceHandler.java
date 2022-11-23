@@ -51,10 +51,10 @@ public class ChoiceHandler {
                             ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
                             ParametersForWeb params = new ParametersForWeb(name, typeOfWork, MainMenu.getByIndex(itemsChoice).getOption());
                             mainMenuVariants(actionsWithItem, projectHandler, params);
-                            name = null;
                         } else {
                             processValue = false;
                             usersFilesMenuChoice = -1;
+                            name = null;
                         }
                     }
                 }

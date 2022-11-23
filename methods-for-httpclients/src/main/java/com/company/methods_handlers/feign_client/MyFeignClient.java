@@ -14,37 +14,37 @@ import org.springframework.web.bind.annotation.*;
 @Component
 public interface MyFeignClient {
 
-    @PostMapping("/cookies")
-    public ResponseEntity login(@RequestBody ParametersForWeb params);
+//    @PostMapping(value = "/cookies", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity login(@Param("params") ParametersForWeb params);
 
-    @PutMapping("/choose-action/add")
-    ResponseEntity add(String item,
+    @PutMapping(value = "/choose-action/add", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity add(@Param String item,
                               @CookieValue("userName") String userName,
                               @CookieValue("typeOfWork") String typeOfWork,
                               @CookieValue("typeOfItem") String typeOfItem);
 
-    @DeleteMapping("/choose-action/delete")
-    ResponseEntity delete(int id,
+    @DeleteMapping(value = "/choose-action/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity delete(@Param int id,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
                                  @CookieValue("typeOfItem") String typeOfItem);
 
-
-    @PutMapping("/choose-action/take")
+    @PutMapping(value = "/choose-action/take", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity borrow(@Param int itemId,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
                                  @CookieValue("typeOfItem") String typeOfItem);
 
-    @PutMapping("/choose-action/return")
+    @PutMapping(value = "/choose-action/return", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity returnItem(@Param int id,
                           @CookieValue("userName") String userName,
                           @CookieValue("typeOfWork") String typeOfWork,
                           @CookieValue("typeOfItem") String typeOfItem);
 
-    @PostMapping(value = "/choose-action/show-items")
+    @PostMapping(value = "/choose-action/show-items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
     String showItems(@CookieValue("userName") String userName,
-                            @CookieValue("typeOfWork") String typeOfWork,
-                            @CookieValue("typeOfItem") String typeOfItem,
-                            String comparator);
+                     @CookieValue("typeOfWork") String typeOfWork,
+                     @CookieValue("typeOfItem") String typeOfItem,
+                     @Param("comparator") String comparator);
+
 }

@@ -1,6 +1,5 @@
 package com.company.controllers;
 
-import com.company.Item;
 import com.company.ParametersForWeb;
 import com.company.handlers.ControllersHandler;
 import com.company.springappconstants.CookieNames;
@@ -16,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 
 @Controller
@@ -73,7 +71,7 @@ public class ActionsController {
         }
     }
 
-    @PutMapping("/add")
+    @PutMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity add(@RequestBody String item,
                               @CookieValue("userName") String userName,
                               @CookieValue("typeOfWork") String typeOfWork,
@@ -115,7 +113,7 @@ public class ActionsController {
 //        }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity delete(@RequestBody int id,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
@@ -157,7 +155,7 @@ public class ActionsController {
 
     }
 
-    @PutMapping("/take")
+    @PutMapping(value = "/take", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity borrow(@RequestBody int itemId,
                                  @CookieValue("userName") String userName,
                                  @CookieValue("typeOfWork") String typeOfWork,
@@ -199,7 +197,7 @@ public class ActionsController {
 
     }
 
-    @PutMapping("/return")
+    @PutMapping(value = "/return", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity returnItem(@RequestBody int id,
                                      @CookieValue("userName") String userName,
                                      @CookieValue("typeOfWork") String typeOfWork,
@@ -229,7 +227,7 @@ public class ActionsController {
         }
     }
 
-    @PostMapping(value = "/show-items")
+    @PostMapping(value = "/show-items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
     public String showItems(@CookieValue("userName") String userName,
                             @CookieValue("typeOfWork") String typeOfWork,
                             @CookieValue("typeOfItem") String typeOfItem,
@@ -237,7 +235,19 @@ public class ActionsController {
         try {
             ParametersForWeb params = new ParametersForWeb(userName,typeOfWork,typeOfItem);
             return handler.showItems(params, comparator);
-
+        } catch (Exception exception){
+            log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
+            return "redirect:/error";
+        }
+    }
+    @PostMapping(value = "/show-all-the-items", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_HTML_VALUE)
+    public String showAllTheItems(@CookieValue("userName") String userName,
+                            @CookieValue("typeOfWork") String typeOfWork){
+        try {
+            ParametersForWeb params = new ParametersForWeb();
+            params.setName(userName);
+            params.setTypeOfWork(typeOfWork);
+            return handler.showItems(params);
         } catch (Exception exception){
             log.error(exception.getMessage() + ":" + ActionsController.class.getSimpleName());
             return "redirect:/error";

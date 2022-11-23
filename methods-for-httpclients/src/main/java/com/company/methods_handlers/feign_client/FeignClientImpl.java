@@ -19,10 +19,10 @@ public class FeignClientImpl implements MyFeignClient {
 //    }
 
 
-    @Override
-    public ResponseEntity login(ParametersForWeb params) {
-        return myFeignClient.login(params);
-    }
+//    @Override
+//    public ResponseEntity login(ParametersForWeb params) {
+//        return myFeignClient.login(params);
+//    }
 
     @Override
     public ResponseEntity add(String userName, String typeOfWork, String typeOfItem, String item) {
@@ -47,5 +47,10 @@ public class FeignClientImpl implements MyFeignClient {
     @Override
     public String showItems(String userName, String typeOfWork, String typeOfItem, String comparator) {
         return myFeignClient.showItems(userName, typeOfWork, typeOfItem, comparator);
+    }
+
+    @Override
+    public String showAllTheItems(String userName, String typeOfWork) {
+        return myFeignClient.showAllTheItems(userName,typeOfWork);
     }
 }
