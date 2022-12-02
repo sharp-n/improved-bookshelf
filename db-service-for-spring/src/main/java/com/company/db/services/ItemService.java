@@ -5,6 +5,7 @@ import com.company.Comics;
 import com.company.db.entities.Item;
 import com.company.db.repositories.ItemRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,10 +13,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-@AllArgsConstructor
+//@AllArgsConstructor
 public class ItemService {
 
     ItemRepository itemRepository;
+
+    @Autowired
+    public ItemService(ItemRepository itemRepository){
+        this.itemRepository=itemRepository;
+    }
 
     public void addItem(com.company.Item itemCore, String userName, UserService userService){
         com.company.db.entities.Item itemEntity = new com.company.db.entities.Item(

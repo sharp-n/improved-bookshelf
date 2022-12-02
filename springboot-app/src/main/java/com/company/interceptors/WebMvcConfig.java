@@ -18,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //                .addPathPatterns("/choose-item")
                 .excludePathPatterns(
                         "/login**",
+                        "/cookies**",
                         "/script-for-json.js",
                         "/tag-style.css")
                 .order(-1)

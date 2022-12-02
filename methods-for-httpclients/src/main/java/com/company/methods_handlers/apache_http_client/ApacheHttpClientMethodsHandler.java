@@ -1,7 +1,8 @@
-package com.company.methods_handlers;
+package com.company.methods_handlers.apache_http_client;
 
 import com.company.Item;
 import com.company.ParametersForWeb;
+import com.company.methods_handlers.MethodsHandler;
 import com.company.table.TableConverter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

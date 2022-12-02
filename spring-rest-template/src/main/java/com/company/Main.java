@@ -1,7 +1,6 @@
 package com.company;
 
-import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
-import com.company.methods_handlers.RestTemplateHttpClientMethodsHandler;
+import com.company.methods_handlers.rest_template_http_client.RestTemplateHttpClientMethodsHandler;
 import org.springframework.web.client.RestTemplate;
 
 public class Main {

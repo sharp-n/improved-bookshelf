@@ -6,16 +6,20 @@ import com.company.enums.MainMenu;
 import com.company.enums.SortingMenu;
 import com.company.handlers.ProjectHandler;
 import com.company.handlers.item_handlers.ItemHandler;
-import com.company.methods_handlers.ApacheHttpClientMethodsHandler;
 import com.company.methods_handlers.MethodsHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+@Component
 public class ChoiceHandler {
+
     boolean processValue = true;
     MethodsHandler methodsHandler;
 
+    @Autowired
     public ChoiceHandler(MethodsHandler methodsHandler) {
         this.methodsHandler = methodsHandler;
     }
@@ -47,10 +51,10 @@ public class ChoiceHandler {
                             ActionsWithItem actionsWithItem = ActionsWithItem.getByIndex(usersChoice);
                             ParametersForWeb params = new ParametersForWeb(name, typeOfWork, MainMenu.getByIndex(itemsChoice).getOption());
                             mainMenuVariants(actionsWithItem, projectHandler, params);
-                            name = null;
                         } else {
                             processValue = false;
                             usersFilesMenuChoice = -1;
+                            name = null;
                         }
                     }
                 }

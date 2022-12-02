@@ -69,6 +69,9 @@
     <module>web-service</module>
     <module>springboot-app</module>
     <module>db-service-for-spring</module>
+    <module>apache-http-client</module>
+    <module>spring-rest-template</module>
+    <module>feign-http-client</module>
   </modules>
   <properties>
     <maven.compiler.target>8</maven.compiler.target>

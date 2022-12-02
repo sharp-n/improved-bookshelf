@@ -2,7 +2,9 @@ package com.company.methods_handlers;
 
 import com.company.Item;
 import com.company.ParametersForWeb;
+import org.springframework.stereotype.Component;
 
+@Component
 public interface MethodsHandler {
 
     void postForAdd(Item item, ParametersForWeb params);
